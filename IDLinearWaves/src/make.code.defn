@@ -3,8 +3,8 @@
 
 # Source files in this directory
 SRCS = 	\
-	planewaves.F\
-	teukwaves.F
+	planewaves.F77\
+	teukwaves.F77
 
 # Subdirectories containing source files
 SUBDIRS = 

@@ -35,8 +35,7 @@ c Using macro definitions from Einstein
       implicit none
       
       DECLARE_CCTK_ARGUMENTS
-      DECLARE_CCTK_PARAMETERS
-      
+
       CCTK_REAL amp,m,ra,pi
       CCTK_REAL wave,wave2,wave3,wave4,wave5,wave6,wave7,wave8
       INTEGER ipacket,iparity
@@ -64,7 +63,9 @@ c     from old spheretocart
       CHARACTER*200 infoline
       INTEGER i,j,k
       INTEGER CCTK_Equals
-      
+
+      DECLARE_CCTK_PARAMETERS
+            
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
       pi    = 3.14159265358979
@@ -570,16 +571,24 @@ c     time symmetry
 c     initialize the conformal factor
       if (use_conformal == 1) then
          conformal_state = CONFORMAL_METRIC
-         psi   = 1d0
-         psix  = 0d0
-         psiy  = 0d0
-         psiz  = 0d0    
-         psixy = 0d0
-         psixz = 0d0
-         psiyz = 0d0  
-         psixx = 0d0
-         psiyy = 0d0
-         psizz = 0d0
+         do k=1,cctk_lsh(3)
+            do j=1,cctk_lsh(2)
+               do i=1,cctk_lsh(1)		 
+
+                  psi(i,j,k)   = 1d0
+                  psix(i,j,k)  = 0d0
+                  psiy(i,j,k)  = 0d0
+                  psiz(i,j,k)  = 0d0    
+                  psixy(i,j,k) = 0d0
+                  psixz(i,j,k) = 0d0
+                  psiyz(i,j,k) = 0d0  
+                  psixx(i,j,k) = 0d0
+                  psiyy(i,j,k) = 0d0
+                  psizz(i,j,k) = 0d0
+
+               end do
+            end do
+         end do
       else
          conformal_state = NOCONFORMAL_METRIC
       end if
