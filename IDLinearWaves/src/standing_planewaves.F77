@@ -3,6 +3,7 @@ c     $Header$
 
 #include "cctk.h"
 #include "cctk_Arguments.h"
+#include "cctk_Functions.h"
 #include "cctk_Parameters.h"
       
       subroutine IDLinearWaves_StandWaves (CCTK_ARGUMENTS)
