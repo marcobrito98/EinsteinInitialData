@@ -555,7 +555,12 @@ chebft_Zeros (double u[], int n, int inv)
     }
   }
   for (j = 0; j < n; j++)
-    u[j] = c[j];
+#if 0
+    if (fabs(c[j]) < 5.e-16)
+      u[j] = 0.0;
+    else
+#endif
+      u[j] = c[j];
   free_dvector (c, 0, n);
 }
 
