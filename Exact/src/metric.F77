@@ -191,7 +191,7 @@ c
      $        guxx, guyy, guzz, guxy, guyz, guxz,
      $        psi, Tmunu_flag)
 
-CC this metric doesn't work and has been moved to ../archive/
+CC this metric doesnt work and has been moved to ../archive/
 CC      elseif (decoded_exact_model .eq. EXACT__Robertson_Walker) then
 CC         call Exact__Robertson_Walker(
 CC     $        x, y, z, t,
