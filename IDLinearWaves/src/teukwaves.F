@@ -72,8 +72,7 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       kappa = sqrt(143.0d0/pi)/12288.0d0
       
       if (wavecenter.ne.0.) then
-         call CCTK_WARN(0,"Teukwaves: wavecenter must be 
-     &   zero for time symmetry")
+         call CCTK_WARN(0,"Teukwaves: wavecenter must be zero for time symmetry")
       endif
  
 c     CACTUS 4.0: all REAL/INTEGER parameter are available as variables and 
