@@ -35,7 +35,6 @@ c@@*/
 c     Perhaps this and others should go into cctk.h
       integer CCTK_Equals
       
-      
       real*8 axibheps, rmax, dq, deta
       integer levels,id5,id9,idi,idg,ier
       real*8, allocatable :: cc(:,:),ce(:,:),cw(:,:),cn(:,:),cs(:,:),
@@ -74,13 +73,6 @@ c     Set up the grid spacings
       ny = cctk_lsh(2)
       nz = cctk_lsh(3)
       
-c     Brill wave parameters
-
-      print *,"Brill wave + BH Axisymmetric solve"
-      write (*,123)amp,eta0,sigma,n
-      print *,'etamax=',etamax
- 123  format(1x,'Pars : Amp',f8.5,'  eta0',f8.5,'  sigma',f8.5,'  n ',i3)
-
 c     Solve on this sized cartesian grid
 c     2D grid size NE x NQ
 c     Add 2 zones for boundaries...
@@ -133,17 +125,23 @@ c     Boundary conditions
       enddo
 
 c     Do the solve
-      print *, "     Calling axisymmetric solver"
+      call CCTK_INFO("Calling axisymmetric solver")
+
       call mgparm (levels,5,id5,id9,idi,idg,neb,nqb)
       call mg5 (neb,2,neb-1,nqb,2,nqb-1,
      $          cc,cn,cs,cw,ce,psi2d,rhs,
      $          id5,id9,idi,idg,1,axibheps,rmax,ier)
-      print *, "     Solve complete"
+
+      call CCTK_INFO("Solve complete")
+
 c     The solution is now available.
 c     Debugging is needed, a stop statement should
 c     be called if the IVP solve is not successful
 
-      if(ier .ne. 0) stop 'bad solution to brill wave problem'
+      if(ier .ne. 0) then
+         call CCTK_WARN(0,"Solution to BH+Brill Wave not found")
+      end if
+
       print *,'rmax = ',rmax
       print *,'axibheps = ',axibheps
       print *,'psi2d = ',maxval(psi2d),' ',minval(psi2d)
@@ -158,16 +156,16 @@ c     be called if the IVP solve is not successful
       enddo
       print *,'Resulting eps =',ep2
 
-      ! what a pain all this is....
       do j=1,nqb
          psi2d(1,j)=psi2d(3,j)
          psi2d(neb,j)=-deta*psi2d(neb-1,j)+psi2d(neb-2,j)
       enddo
+
       do i=1,neb
         psi2d(i,1)=psi2d(i,2)
         psi2d(i,nqb)=psi2d(i,nqb-1)
       enddo
-c      goto 111
+
       do j=2,nqb-1
          do i=2,neb-1
             dqpsi2d(i,j)=0.5*(psi2d(i,j+1)-psi2d(i,j-1))/dq
@@ -177,6 +175,7 @@ c      goto 111
      $           (psi2d(i+1,j)+psi2d(i-1,j)-2.*psi2d(i,j))/deta**2
          enddo
       enddo
+
       do j=1,nqb
         detapsi2d(1,j)=-detapsi2d(3,j)
         detapsi2d(neb,j)=detapsi2d(neb-2,j) ! simplified
@@ -190,6 +189,7 @@ c      goto 111
         dqpsi2d(1,j)=dqpsi2d(3,j)
         dqpsi2d(neb,j)=-dq*dqpsi2d(neb-1,j)+dqpsi2d(neb-2,j)
       enddo
+
       do i=1,neb
         detapsi2d(i,1)=detapsi2d(i,2)
         detapsi2d(i,nqb)=detapsi2d(i,nqb-1)
@@ -203,26 +203,30 @@ c      goto 111
         dqpsi2d(i,1)=-dqpsi2d(i,2)
         dqpsi2d(i,nqb)=-dqpsi2d(i,nqb-1)
       enddo
+
       do j=2,nqb-1
         do i=2,neb-1
           detaqpsi2d(i,j)=0.5*(detapsi2d(i,j+1)-detapsi2d(i,j-1))/dq
         enddo
       enddo
+
       do j=1,nqb
         detaqpsi2d(1,j)=-detaqpsi2d(3,j)
         detaqpsi2d(neb,j)=detaqpsi2d(neb-2,j) ! simplified
       enddo
+
       do i=1,ne
         detaqpsi2d(i,1)=-detaqpsi2d(i,2)
         detaqpsi2d(i,nqb)=-detaqpsi2d(i,nqb-1)
       enddo
+
       do j=1,nqb
         psi2d(:,j)=psi2d(:,j)+2.*cosh(0.5*etagrd)
       enddo
 
 c     Now evaluate each of the following at x(i,j,k), y(i,j,k) and 
 c     z(i,j,k) where i,j,k go from 1 to nx,ny,nz
-      
+
 c     Conformal factor
 
       eta = 0.5d0 * dlog (x**2 + y**2 + z**2)
