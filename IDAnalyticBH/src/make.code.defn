@@ -8,7 +8,8 @@ SRCS = 	ParamChecker.c\
 	BrillLindquist.c\
         Misner_standard.c\
 	Misner_multiple.c\
-	Misner_points.c
+	Misner_points.c \
+        misc.c
 
 # Subdirectories containing source files
 SUBDIRS = 

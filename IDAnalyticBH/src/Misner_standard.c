@@ -21,6 +21,8 @@
 #include "cctk_Arguments.h"
 #include "cctk_Parameters.h"
 
+#include "IDAnalyticBH.h"
+
 static const char *rcsid = "$Header$";
 
 CCTK_FILEVERSION(CactusEinstein_IDAnalyticBH_Misner_standard_c)
@@ -111,18 +113,18 @@ void Misner_standard(CCTK_ARGUMENTS)
    */
   if (make_conformal_derivs)
   {
-    memset (psix, 0, npoints * sizeof (CCTK_REAL));
-    memset (psiy, 0, npoints * sizeof (CCTK_REAL));
-    memset (psiz, 0, npoints * sizeof (CCTK_REAL));
+    IDAnalyticBH_zero_CCTK_REAL_array(npoints, psix);
+    IDAnalyticBH_zero_CCTK_REAL_array(npoints, psiy);
+    IDAnalyticBH_zero_CCTK_REAL_array(npoints, psiz);
 
     if(*conformal_state > 2)
     {
-      memset (psixx, 0, npoints * sizeof (CCTK_REAL));
-      memset (psixy, 0, npoints * sizeof (CCTK_REAL));
-      memset (psixz, 0, npoints * sizeof (CCTK_REAL));
-      memset (psiyy, 0, npoints * sizeof (CCTK_REAL));
-      memset (psiyz, 0, npoints * sizeof (CCTK_REAL));
-      memset (psizz, 0, npoints * sizeof (CCTK_REAL));
+      IDAnalyticBH_zero_CCTK_REAL_array(npoints, psixx);
+      IDAnalyticBH_zero_CCTK_REAL_array(npoints, psixy);
+      IDAnalyticBH_zero_CCTK_REAL_array(npoints, psixz);
+      IDAnalyticBH_zero_CCTK_REAL_array(npoints, psiyy);
+      IDAnalyticBH_zero_CCTK_REAL_array(npoints, psiyz);
+      IDAnalyticBH_zero_CCTK_REAL_array(npoints, psizz);
     }
   }
 
@@ -259,19 +261,19 @@ void Misner_standard(CCTK_ARGUMENTS)
       gzz[i] = gxx[i];
     }
   }
-  memset (gxy, 0, npoints * sizeof (CCTK_REAL));
-  memset (gxz, 0, npoints * sizeof (CCTK_REAL));
-  memset (gyz, 0, npoints * sizeof (CCTK_REAL));
+  IDAnalyticBH_zero_CCTK_REAL_array(npoints, gxy);
+  IDAnalyticBH_zero_CCTK_REAL_array(npoints, gxz);
+  IDAnalyticBH_zero_CCTK_REAL_array(npoints, gyz);
 
   /*     Time-symmetric data
    *     -------------------
    */
-  memset (kxx, 0, npoints * sizeof (CCTK_REAL));
-  memset (kyy, 0, npoints * sizeof (CCTK_REAL));
-  memset (kzz, 0, npoints * sizeof (CCTK_REAL));
-  memset (kxy, 0, npoints * sizeof (CCTK_REAL));
-  memset (kxz, 0, npoints * sizeof (CCTK_REAL));
-  memset (kyz, 0, npoints * sizeof (CCTK_REAL));
+  IDAnalyticBH_zero_CCTK_REAL_array(npoints, kxx);
+  IDAnalyticBH_zero_CCTK_REAL_array(npoints, kxy);
+  IDAnalyticBH_zero_CCTK_REAL_array(npoints, kxz);
+  IDAnalyticBH_zero_CCTK_REAL_array(npoints, kyy);
+  IDAnalyticBH_zero_CCTK_REAL_array(npoints, kyz);
+  IDAnalyticBH_zero_CCTK_REAL_array(npoints, kzz);
 
   if (csch)
   {

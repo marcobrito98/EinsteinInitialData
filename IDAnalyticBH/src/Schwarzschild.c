@@ -15,6 +15,8 @@
 #include "cctk_Arguments.h"
 #include "cctk_Parameters.h"
 
+#include "IDAnalyticBH.h"
+
 static const char *rcsid = "$Header$";
 CCTK_FILEVERSION(CactusEinstein_IDAnalyticBH_Schwarzschild_c)
 
@@ -113,10 +115,10 @@ void Schwarzschild(CCTK_ARGUMENTS)
   }
 
   /*     time symmetric initial slice */
-  memset (kxx, 0, npoints * sizeof (CCTK_REAL));
-  memset (kxy, 0, npoints * sizeof (CCTK_REAL));
-  memset (kxz, 0, npoints * sizeof (CCTK_REAL));
-  memset (kyy, 0, npoints * sizeof (CCTK_REAL));
-  memset (kyz, 0, npoints * sizeof (CCTK_REAL));
-  memset (kzz, 0, npoints * sizeof (CCTK_REAL));
+  IDAnalyticBH_zero_CCTK_REAL_array(npoints, kxx);
+  IDAnalyticBH_zero_CCTK_REAL_array(npoints, kxy);
+  IDAnalyticBH_zero_CCTK_REAL_array(npoints, kxz);
+  IDAnalyticBH_zero_CCTK_REAL_array(npoints, kyy);
+  IDAnalyticBH_zero_CCTK_REAL_array(npoints, kyz);
+  IDAnalyticBH_zero_CCTK_REAL_array(npoints, kzz);
 }
