@@ -1,0 +1,17 @@
+implements: IDBrillData
+inherits: einstein
+
+# Grid functions for linear elliptic equation.
+
+private: 
+
+real linearelliptic TYPE=GF
+{
+  Mlinear,
+  Nsource
+} "Coefficients for linear elliptic equation"
+
+real brillconf TYPE=GF
+{
+  brillpsi
+} "Conformal factor for Brill data"
