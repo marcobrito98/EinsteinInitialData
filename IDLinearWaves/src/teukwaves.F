@@ -1,6 +1,6 @@
 #include "cctk.h"
-#include "cctk_arguments.h"
-#include "cctk_parameters.h"
+#include "cctk_Arguments.h"
+#include "cctk_Parameters.h"
 c Using macro definitions from Einstein
 #include "CactusEinstein/Einstein/src/Einstein.h"
 
