@@ -36,11 +36,8 @@ c output arguments
       CCTK_REAL psi
       LOGICAL   Tmunu_flag
 
-c local static variables
-      logical firstcall
+c local parameter copies
       CCTK_REAL a, o, d, fs
-      data firstcall /.true./
-      save firstcall, a, o, d, fs
 
 c local variables
       CCTK_REAL H
@@ -54,29 +51,30 @@ C This is a vacuum spacetime with no cosmological constant
       Tmunu_flag = .false.
 
 C     Get parameters of the exact solution.
-
-      if (firstcall) then
-         a  = Minkowski_gauge_wave__amplitude
-         o  = Minkowski_gauge_wave__omega
-         d  = Minkowski_gauge_wave__lambda
-         fs = Minkowski_gauge_wave__phase
-
-         firstcall = .false.
-      end if
+      a  = Minkowski_gauge_wave__amplitude
+      o  = Minkowski_gauge_wave__omega
+      d  = Minkowski_gauge_wave__lambda
+      fs = Minkowski_gauge_wave__phase
 
 C     How should the wave look like.
-      if (CCTK_Equals(Minkowski_gauge_wave__what_fn,"sin").eq.1) then
+      if (CCTK_EQUALS(Minkowski_gauge_wave__what_fn,"sin")) then
         d = Minkowski_gauge_wave__lambda * half / Pi
         if (Minkowski_gauge_wave__diagonal.ne.0) then
-          H = one - a * sin((x-y)/d - o*t/d)
+          H = one - a * sin((x-y)/d - o*t/d - fs)
         else
           H = one - a * sin((x-o*t)/d - fs)
         end if
-      elseif (CCTK_Equals(Minkowski_gauge_wave__what_fn,"expsin").eq.1) then
+      elseif (CCTK_EQUALS(Minkowski_gauge_wave__what_fn,"expsin")) then
+c$$$        d = Minkowski_gauge_wave__lambda * half / Pi
+c$$$        H = exp(a*sin(x/d)*cos(t/d))
         d = Minkowski_gauge_wave__lambda * half / Pi
-        H = exp(a*sin(x/d)*cos(t/d))
-      elseif (CCTK_Equals(Minkowski_gauge_wave__what_fn,"Gaussian").eq.1) then
-        H = one - a*dexp(-(x-t)**2/d**2)
+        if (Minkowski_gauge_wave__diagonal.ne.0) then
+          H = exp(- a * sin((x-y)/d - o*t/d - fs))
+        else
+          H = exp(- a * sin((x-o*t)/d - fs))
+        end if
+      elseif (CCTK_EQUALS(Minkowski_gauge_wave__what_fn,"Gaussian")) then
+        H = one - a*exp(-(x-t)**2/d**2)
       else
         write (warn_buffer, '(a,a,a)')
      $        'Unknown Minkowski_gauge_wave__what_fn = "',

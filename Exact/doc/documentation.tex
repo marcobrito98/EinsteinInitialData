@@ -533,15 +533,16 @@ The line element is
 \begin{equation}
 ds^2=-H dt^2 +Hdx^2+dy^2+dz^2,
 \end{equation}
-where $H=H(x-t)$, for instance $H=1-a*\sin\big((x-t)/d\big)$.
+where $H=H(x-t)$, for instance $H=1-a\sin\left((x-t)/\Lambda\right)$.
 This is flat space but the slice is a planar wave travelling along the x axis.
 
 This thorn implements several possible choices for the $H$ function,
 controlled by the \verb|Minkowski_gauge_wave__what_fn| parameter:
 \begin{eqnarray}
-H(x-t)	&=& 1- A \sin \left(\frac{x-t}{d}\right)			\\
-H(x-t)	&=& \exp \left(A*sin(x)*cos(x)\right)				\\
-H(x-t)	&=& 1- A exp(-x^2)						%%%\\
+H(x-t)	&=& 1 - A \sin \left(\frac{x-\omega t}{\Lambda} - \delta\right)	\\
+H(x-t)	&=& \exp \left(- A \sin \left(\frac{x-\omega t}{\Lambda}
+                                      - \delta\right)\right)		\\
+H(x-t)	&=& 1 - A \exp(-x^2)						%%%\\
 \end{eqnarray}
 The parameters are
 \begin{itemize}
@@ -550,10 +551,6 @@ The parameters are
 \item	$\lambda = \verb|Minkowski_gauge_wave__lambda|$, the wavelength
 \item	$\delta = \verb|Minkowski_gauge_wave__phase|$, the phase shift
 \end{itemize}
-Unfortunately, you have to look at the source code to see exactly what
-these do. :(
-FIXME: someone reverse-engineer the code and change the equations above
-to match whatever the code actually does.
 
 If the Boolean parameter \verb|Minkowski_gauge_wave__diagonal| is true,
 then we make the gauge wave travel diagonally across the grid by the
