@@ -10,6 +10,12 @@ EXTENDS KEYWORD initial_data
   "twopunctures" :: "two puncture black holes"
 } 
 
+EXTENDS KEYWORD initial_lapse
+{
+  "twopunctures-antisymmetric" :: "antisymmetric lapse for two puncture black holes, -1 <= alpha <= +1"
+  "twopunctures-averaged"      :: "averaged lapse for two puncture black holes, 0 <= alpha <= +1"
+}
+
 
 
 SHARES: StaticConformal

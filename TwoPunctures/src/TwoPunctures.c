@@ -32,6 +32,8 @@ TwoPunctures (CCTK_ARGUMENTS)
   enum GRID_SETUP_METHOD { GSM_Taylor_expansion, GSM_evaluation };
   enum GRID_SETUP_METHOD gsm;
 
+  int antisymmetric_lapse, averaged_lapse;
+
   int nvar = 1, n1 = npoints_A, n2 = npoints_B, n3 = npoints_phi;
 
   int i, j, k, ntotal = n1 * n2 * n3 * nvar;
@@ -68,6 +70,9 @@ TwoPunctures (CCTK_ARGUMENTS)
   {
     CCTK_WARN (0, "internal error");
   }
+
+  antisymmetric_lapse = CCTK_EQUALS(initial_lapse, "twopunctures-antisymmetric");
+  averaged_lapse = CCTK_EQUALS(initial_lapse, "twopunctures-averaged");
 
   CCTK_INFO ("Interpolating result");
   if (CCTK_EQUALS(metric_type, "static conformal")) {
@@ -212,6 +217,21 @@ TwoPunctures (CCTK_ARGUMENTS)
         kyy[ind] = Aij[1][1] / pow2(psi1);
         kyz[ind] = Aij[1][2] / pow2(psi1);
         kzz[ind] = Aij[2][2] / pow2(psi1);
+
+        if (antisymmetric_lapse || averaged_lapse) {
+/*           const double alp1 = ((1.0 - 0.5 * par_m_plus / r_plus) */
+/*                                / (1.0 + 0.5 * par_m_plus / r_plus)); */
+/*           const double alp2 = ((1.0 - 0.5 * par_m_minus / r_minus) */
+/*                                / (1.0 + 0.5 * par_m_minus / r_minus)); */
+/*           alp[ind] = alp1 * alp2; */
+          alp[ind] =
+            ((1.0 - 0.5 * par_m_plus / r_plus - 0.5 * par_m_minus / r_minus)
+             / (1.0 + 0.5 * par_m_plus / r_plus + 0.5 * par_m_minus / r_minus));
+          
+          if (averaged_lapse) {
+            alp[ind] = 0.5 * (1.0 + alp[ind]);
+          }
+        }
 
       }
     }
