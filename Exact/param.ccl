@@ -576,8 +576,8 @@ REAL Alvi__separation "Alvi: spatial separation of the black holes"
 
 KEYWORD Thorne_fakebinary__atype "Thorne-fakebinary: binary type"
 {
-  "constant"  :: ""
-  "quadrupole :: ""
+  "constant"   :: ""
+  "quadrupole" :: ""
 } "constant"
 
 BOOLEAN Thorne_fakebinary__retarded "Thorne-fakebinary: use retarded time?"
