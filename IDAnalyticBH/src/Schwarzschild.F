@@ -12,14 +12,14 @@ c Need include file from Einstein
       DECLARE_CCTK_FARGUMENTS
       DECLARE_PARAMETERS
 
-      REAL zero,one,two,three
+      CCTK_REAL zero,one,two,three
 
-      REAL t1,r0
+      CCTK_REAL t1,r0
 
       integer CCTK_Equals
       integer i,j,k
       integer is,js,ks,ie,je,ke
-      REAL inval
+      CCTK_REAL inval
 
       zero = 0.d0
       one = 1.d0

@@ -34,9 +34,9 @@
       DECLARE_PARAMETERS
 
       integer :: i, j, k
-      REAL :: xval, yval, zval
-      REAL :: one, zero, tmp0, tmp1, tmp2, tmp3, tmp4
-      REAL, parameter :: nm_eps = 1.d-6   ! finite differencing step
+      CCTK_REAL :: xval, yval, zval
+      CCTK_REAL :: one, zero, tmp0, tmp1, tmp2, tmp3, tmp4
+      CCTK_REAL, parameter :: nm_eps = 1.d-6   ! finite differencing step
 
       one  = 1.0D0
       zero = 0.0D0

@@ -56,7 +56,7 @@
 
       integer :: n
       INTEGER :: CCTK_Equals
-      REAL :: zero, one, three
+      CCTK_REAL :: zero, one, three
 
       zero  = 0.d0
       one   = 1.d0
