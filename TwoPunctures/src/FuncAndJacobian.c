@@ -250,7 +250,7 @@ F_of_v (CCTK_POINTER_TO_CONST cctkGH,
           // (U, U_x, U_y, U_z, U_xx, U_xy, U_xz, U_yy, U_yz, U_zz)
           rx3_To_xyz (nvar, s_x[i3D], r, phi, &(s_y[i3D]), &(s_z[i3D]), U);
         }
-    Rho_ADM(cctkGH, n1*n2*n3, sources, s_x, s_y, s_z);
+    Set_Rho_ADM(cctkGH, n1*n2*n3, sources, s_x, s_y, s_z);
     free(s_z);
     free(s_y);
     free(s_x);
