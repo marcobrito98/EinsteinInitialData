@@ -7,6 +7,7 @@
 \def\ie{i.e.\hbox{}}
 \def\eg{e.g.\hbox{}}
 \def\etal{{\it et~al.\/}}
+\def\nb{n.b.\hbox{}}
 \def\Nb{N.b.\hbox{}}
 
 \def\defn#1{{\bf #1}}
@@ -73,7 +74,7 @@ parameter:
 	\item[{\tt "KerrSchild"}]
 		Kerr spacetime in Kerr-Schild coordinates
 	\item[{\tt "fakebinary"}]
-		Non-Einstein fake-binary of Thorn et al
+		Non-Einstein fake-binary of Thorn~\etal{} (gr-qc/9808024)
 	\item[{\tt "multiBH"}]
 		Maximally charged multi BH solutions
 	\end{description}
@@ -129,7 +130,7 @@ in the usual Minkowski coordinates:
 \begin{equation}
 g_{ab} = \left[
 	 \begin{array}{cccc}
-	 1	& 0	& 0	& 0	\\
+	 -1	& 0	& 0	& 0	\\
 	 0	& 1	& 0	& 0	\\
 	 0	& 0	& 1	& 0	\\
 	 0	& 0	& 0	& 1	%%%\\
@@ -185,25 +186,34 @@ types of coordinates:
 \subsection{Schwarzschild spacetime with flat spatial metric}
 
 \verb|Exact::exactmodel = "flatSchwarz"| specifies Schwarzschild spacetime
-in XXX coordinates.  These have $g_{ij}$ a {\em flat\/} metric.
+in FIXME coordinates.  These have $g_{ij}$ a {\em flat\/} metric.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Schwarzschild spacetime in Novikov coordinates}
 
 \verb|Exact::exactmodel = "Novikov"| specifies Schwarzschild spacetime
-in Novikov coordinates.
+in Novikov coordinates, as described in MTW section~31.4 and figure~31.2.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Schwarzschild spacetime in Eddington-Finkelstein coordinates}
 
 \verb|Exact::exactmodel = "Finkelstein"| specifies Schwarzschild spacetime
-in (ingoing) Eddington-Finkelstein coordinates, as described in MTW
-box~31.2 and figure~32.1 (\ie{} $r$ is the usual areal radial coordinate,
-and $t+r$ is an ingoing null coordinate):
+in (ingoing) Eddington-Finkelstein coordinates $(t,r,\theta,\phi)$, as
+described in MTW box~31.2 and figure~32.1 (that is, $r$ is the usual
+areal radial coordinate, and $t+r$ is an ingoing null coordinate),
+but transformed to the usual Cactus $(t,x,y,z)$ Cartesian-topology
+coordinates.  The only physics parameter is
+\begin{equation}
+m = \verb|KerrSchild_m|
+\end{equation}
+(note the slightly counterintuitive name!)
+There is also a parameter \verb|KerrSchild_eps| (again note the name!)
+which is used internally in the code; you can probably ignore it for
+most purposes.
 
-In Cartesian coordinates $(t,x,y,z)$,
+In the Cactus $(t,x,y,z)$ Cartesian-topology coordinates the 4-metric is
 \begin{equation}
 g_{ab} = \left[
 	 \begin{array}{cccc}
@@ -228,22 +238,21 @@ g_{ab} = \left[
 	 \right]
 \end{equation}
 
-In polar spherical coordinates $(t,r,\theta,\phi)$
-\begin{equation}
-g_{ab} = \left[
-	 \begin{array}{cccc}
-	 - \left( 1 - \frac{2m}{r} \right)
-			& \frac{2m}{r}	& 0		& 0		\\
-	 \frac{2m}{r}	& 1 + \frac{2m}{r}
-					& 0		& 0		\\
-	 0		& 0		& r^2		& 0		\\
-	 0		& 0		& 0		& r^2 \sin^2 \theta
-									%%%\\
-	 \end{array}
-	 \right]
-\end{equation}
-so that
+In the usual polar spherical $(t,r,\theta,\phi)$ coordinates, the 4-metric
+and ADM variables are
 \begin{align}
+g_{ab} & = \left[
+	   \begin{array}{cccc}
+	   - \left( 1 - \frac{2m}{r} \right)
+			& \frac{2m}{r}	& 0	& 0	\\
+	   \frac{2m}{r}	& 1 + \frac{2m}{r}
+					& 0	& 0	\\
+	   0		& 0		& r^2	& 0	\\
+	   0		& 0		& 0	& r^2 \sin^2 \theta
+							%%%\\
+	   \end{array}
+	   \right]
+									\\
 g_{ij} & = \diag
 	   \left[
 	   \begin{array}{ccc}
@@ -271,18 +280,61 @@ K_{ij} & = \diag
 	   \right]
 									%%%\\
 \end{align}
-(Various other $3+1$ variables for Schwarzschild spacetime in
-Eddington-Finkelstein coordinates are tabulated in appendix~2 of
-Jonathan Thornburg's Ph.D thesis,
-\verb|http://www.aei.mpg.de/~jthorn/phd/html/phd.html|.)
+(Various other $3+1$ variables for Schwarzschild spacetime in these
+coordinates are tabulated in appendix~2 of Jonathan Thornburg's Ph.D
+thesis, \verb|http://www.aei.mpg.de/~jthorn/phd/html/phd.html|.)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Kerr Kerr-Schild form of boosted rotating black hole}
+\subsection{Kerr-Schild form of boosted rotating black hole}
+
+\verb|Exact::exactmodel = "KerrSchild"| specifies Kerr spacetime
+in Kerr-Schild coordinates, as described in MTW exercise~33.8, 
+but transformed to the usual Cactus $(t,x,y,z)$ Cartesian-topology
+coordinates, and Lorentz boosted in the $z$ direction so the black hole
+is centered at the position $z = vt$.  The physics parameters are
+\begin{align}
+a & = \text{\tt KerrSchild\_a}						\\
+m & = \text{\tt KerrSchild\_m}						\\
+v & = \text{\tt KerrSchild\_boostv}					%%%\\
+\end{align}
+There is also a parameter \verb|KerrSchild_eps| which is used
+internally in the code; you can probably ignore it for most purposes.
+
+Kerr-Schild coordinates use the same time slicing (\nb{} non-maximal!)
+and $z$~spatial coordinate as Kerr coordinates, but define new spatial
+coordinates $x$ and~$y$ by
+\begin{equation}
+x + iy = (r + ia) e^{i\phi} \sin\theta
+\end{equation}
+so that
+\begin{align}
+x	& = x_\text{Kerr} - a \sin\theta \sin\phi			\\
+y	& = y_\text{Kerr} + a \sin\theta \cos\phi			%%%\\
+\end{align}
+
+In these coordinates the 4-metric can be written
+\begin{equation}
+g_{ab} = \eta_{ab} + 2 H k_a k_b
+\end{equation}
+where
+\begin{equation}
+H = \frac{Mr}{r^2 + a^2z^2/r^2}
+\end{equation}
+and where
+\begin{equation}
+k^a = - \frac{r(x\,dx + y\,dy) - a(x\,dy - y\,dx)}{r^2 + a^2}
+      - \frac{z\,dz}{r}
+      - dt
+\end{equation}
+is a null vector.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Kerr spacetime in cartesian coordinates}
+
+\verb|Exact::exactmodel = "KerrSchild"| specifies Kerr spacetime
+in XXX coordinates.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
