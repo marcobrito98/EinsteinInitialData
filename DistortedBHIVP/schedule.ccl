@@ -4,6 +4,12 @@
 if (CCTK_Equals(initial_data,"distortedbh"))
 { 
   STORAGE: sph_to_car_coord, sph_to_car_psi 
+
+  schedule DistortedBHIVP_ParamCheck at PARAMCHECK
+  {
+    LANG: C
+  } "Check Parameters"
+
   schedule DistortedBHIVP at CCTK_INITIAL
   {
     LANG: Fortran

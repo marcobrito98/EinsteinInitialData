@@ -2,7 +2,7 @@
 # $Header$
 
 implements: distortedbhivp
-inherits: einstein
+inherits: admbase staticconformal grid admanalysis
 
 private:
 
