@@ -15,6 +15,12 @@ C     in the Bona-Masso formalism, at an initial time.
 
       integer i,j,k
       integer nx,ny,nz
+      integer CCTK_Equals
+
+      CCTK_REAL gxxjunk, gyyjunk, gzzjunk,
+     $     gxyjunk, gyzjunk, gxzjunk,
+     $     kxxjunk, kyyjunk, kzzjunk, 
+     $     kxyjunk, kyzjunk, kxzjunk,
 
       CCTK_REAL alpjunk, axjunk, ayjunk, azjunk, 
      $     betaxjunk, betayjunk, betazjunk,
@@ -36,11 +42,41 @@ C     Set data pointwise.
       ny = cctk_lsh(2)
       nz = cctk_lsh(3)
 
-      do k=1,nz
-         do j=1,ny
-            do i=1,nx
+      if ((CCTK_Equals(initial_data,"exact") == 1).and.
+     .    (CCTK_Equals(initial_lapse,"exact") == 1)) then
 
-               call exactdata(x(i,j,k), y(i,j,k), z(i,j,k), cctk_time,
+         do k=1,nz
+            do j=1,ny
+               do i=1,nx
+
+                  call exactdata(x(i,j,k), y(i,j,k), z(i,j,k), cctk_time,
+     $              gxx(i,j,k), gyy(i,j,k), gzz(i,j,k), 
+     $              gxy(i,j,k), gyz(i,j,k), gxz(i,j,k),
+     $              kxx(i,j,k), kyy(i,j,k), kzz(i,j,k), 
+     $              kxy(i,j,k), kyz(i,j,k), kxz(i,j,k),
+     $              dxgxxjunk, dxgyyjunk, dxgzzjunk, 
+     $              dxgxyjunk, dxgyzjunk, dxgxzjunk,
+     $              dygxxjunk, dygyyjunk, dygzzjunk, 
+     $              dygxyjunk, dygyzjunk, dygxzjunk,
+     $              dzgxxjunk, dzgyyjunk, dzgzzjunk, 
+     $              dzgxyjunk, dzgyzjunk, dzgxzjunk,
+     $              alp(i,j,k), axjunk, ayjunk, azjunk, 
+     $              betaxjunk, betayjunk, betazjunk,
+     $              bxxjunk, bxyjunk, bxzjunk,
+     $              byxjunk, byyjunk, byzjunk,
+     $              bzxjunk, bzyjunk, bzzjunk)
+
+               end do
+            end do
+         end do
+
+      else if (CCTK_Equals(initial_data,"exact") == 1) then
+
+         do k=1,nz
+            do j=1,ny
+               do i=1,nx
+
+                  call exactdata(x(i,j,k), y(i,j,k), z(i,j,k), cctk_time,
      $              gxx(i,j,k), gyy(i,j,k), gzz(i,j,k), 
      $              gxy(i,j,k), gyz(i,j,k), gxz(i,j,k),
      $              kxx(i,j,k), kyy(i,j,k), kzz(i,j,k), 
@@ -53,13 +89,42 @@ C     Set data pointwise.
      $              dzgxyjunk, dzgyzjunk, dzgxzjunk,
      $              alpjunk, axjunk, ayjunk, azjunk, 
      $              betaxjunk, betayjunk, betazjunk,
-     $              bxxjunk, bxyjunk, bxzjunk, 
-     $              byxjunk, byyjunk, byzjunk, 
+     $              bxxjunk, bxyjunk, bxzjunk,
+     $              byxjunk, byyjunk, byzjunk,
      $              bzxjunk, bzyjunk, bzzjunk)
 
+               end do
             end do
          end do
-      end do
+
+      else if (CCTK_Equals(initial_lapse,"exact") == 1) then
+
+         do k=1,nz
+            do j=1,ny
+               do i=1,nx
+
+                  call exactdata(x(i,j,k), y(i,j,k), z(i,j,k), cctk_time,
+     $                 gxxjunk, gyyjunk, gzzjunk, 
+     $                 gxyjunk, gyzjunk, gxzjunk,
+     $                 kxxjunk, kyyjunk, kzzjunk, 
+     $                 kxyjunk, kyzjunk, kxzjunk,
+     $                 dxgxxjunk, dxgyyjunk, dxgzzjunk, 
+     $                 dxgxyjunk, dxgyzjunk, dxgxzjunk,
+     $                 dygxxjunk, dygyyjunk, dygzzjunk, 
+     $                 dygxyjunk, dygyzjunk, dygxzjunk,
+     $                 dzgxxjunk, dzgyyjunk, dzgzzjunk, 
+     $                 dzgxyjunk, dzgyzjunk, dzgxzjunk,
+     $                 alp(i,j,k), axjunk, ayjunk, azjunk, 
+     $                 betaxjunk, betayjunk, betazjunk,
+     $                 bxxjunk, bxyjunk, bxzjunk, 
+     $                 byxjunk, byyjunk, byzjunk, 
+     $                 bzxjunk, bzyjunk, bzzjunk)
+
+               end do
+            end do
+         end do
+
+      end if
 
 C     Tell the code there is no need to treat the conformal factor
 C     as a separate field. That is, we have set the physical metric here.

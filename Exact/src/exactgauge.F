@@ -66,7 +66,6 @@ C     Set both lapse and shift.
      $                 bxxjunk, bxyjunk, bxzjunk, 
      $                 byxjunk, byyjunk, byzjunk, 
      $                 bzxjunk, bzyjunk, bzzjunk)
-
                end do
             end do
          end do

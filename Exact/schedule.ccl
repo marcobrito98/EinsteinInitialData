@@ -4,7 +4,7 @@
 
 # Initial data from exact solution.
 
-if (CCTK_Equals(initial_data,"exact"))
+if ((CCTK_Equals(initial_data,"exact")) || (CCTK_Equals(initial_lapse,"exact")))
 {
   schedule exactinitialize at CCTK_INITIAL
   {
