@@ -2,7 +2,7 @@
 #!DESC "Initial data for axisymmetric distored black hole"
 ######################################################################
 
-ActiveThorns = "time iobasic ADMconstraints pugh pughreduce pughslab interp cartgrid3d einstein ADM DistortedBHIVP ioascii ioutil"
+ActiveThorns = "time iobasic ADMconstraints pugh pughreduce pughslab pughinterp cartgrid3d einstein ADM DistortedBHIVP ioascii ioutil"
 
 # GENERAL 
 
@@ -37,7 +37,7 @@ distortedbhivp::n        = 4
 distortedbhivp::neta     = 102
 distortedbhivp::ntheta   = 27
 distortedbhivp::nphi     = 5
-interp::order            = 1
+distortedbhivp::interpolation_order = 1
 
 
 # GAUGE
