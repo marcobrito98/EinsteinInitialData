@@ -10,8 +10,8 @@
 #include <math.h>
 
 #include "cctk.h"
-#include "cctk_arguments.h"
-#include "cctk_parameters.h"
+#include "cctk_Arguments.h"
+#include "cctk_Parameters.h"
 
 #include "CactusEinstein/Einstein/src/Einstein.h"
 
