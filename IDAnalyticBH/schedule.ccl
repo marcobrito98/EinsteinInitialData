@@ -1,6 +1,16 @@
 # Schedule definitions for thorn IDAnalyticBH
 # $Header$
 
+if (CCTK_Equals(initial_data,"schwarzschild") ||
+    CCTK_Equals(initial_data,"bl_bh") ||
+    CCTK_Equals(initial_data,"misner_bh") ||
+    CCTK_Equals(initial_data,"multiple_misner"))
+{
+  schedule ParamChecker at CACTUS_PARAMCHECK
+  {
+    LANG: Fortran
+  } "Construct parameters for analytic black hole solutions"
+}
 
 if (CCTK_Equals(initial_data,"schwarzschild")) 
 { 
