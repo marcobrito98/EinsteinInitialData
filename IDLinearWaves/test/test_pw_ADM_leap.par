@@ -13,8 +13,8 @@ driver::global_ny  =  3
 driver::global_nz  =  3     
 time::dtfac = 0.25
 
-grid::type         =  "byspacing"
-grid::dxyz         =  0.01
+grid::type         = "byspacing"
+grid::dxyz         = 0.01
 grid::domain     =  "full"
 
 cactus::cctk_initial_time  =  0.     
@@ -43,9 +43,7 @@ idlinearwaves::wavesgoing = "both"
 
 IO::outdir         = "test_pw_ADM_leap"
 IOBasic::outScalar_every =  10      
-IOBasic::outScalar_vars  = "einstein::gzz einstein::kzz 
-	admconstraints::ADMconstraints 
-	einstein::grr einstein::alp"
+IOBasic::outScalar_vars  = "einstein::gzz einstein::kzz einstein::alp"
 IOASCII::out1D_every =  10      
 IOASCII::out1D_vars  = "einstein::gxx einstein::gxy einstein::gxz
                         einstein::gyy einstein::gyz einstein::gzz
@@ -54,6 +52,6 @@ IOASCII::out1D_vars  = "einstein::gxx einstein::gxy einstein::gxz
 
 
 IOBasic::outInfo_every = 5
-IOBasic::outInfo_vars = "admconstraints::ham einstein::gzz"
+IOBasic::outInfo_vars = "einstein::gzz"
 
 ##################################################################
