@@ -641,7 +641,7 @@ c
          enddo
       enddo
       
-      call CCTK_GetInterpHandle (handle, "simple_local")
+      call CCTK_InterpHandle (handle, "simple_local")
       
       npoints = nx*ny*nz
 
