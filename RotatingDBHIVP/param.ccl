@@ -14,11 +14,11 @@ EXTENDS KEYWORD initial_data ""
 
 private:
 
-LOGICAL kerr_slice "initial slice for kerr"
+BOOLEAN kerr_slice "initial slice for kerr"
 {
 } "no"
 
-LOGICAL kerr_shift "kerr shift"
+BOOLEAN kerr_shift "kerr shift"
 {
 } "no"
 
@@ -68,7 +68,7 @@ INT nphi "Eta resolution for solve"
   *:* :: "No restriction"
 } 5
 
-LOGICAL verbose ""
+BOOLEAN verbose ""
 {
 } "yes"
 
