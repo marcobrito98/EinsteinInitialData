@@ -1,9 +1,6 @@
 #include "cctk.h"
 #include "cctk_Arguments.h"
 #include "cctk_Parameters.h"
-c Using macro definitions from Einstein
-#include "CactusEinstein/Einstein/src/Einstein.h"
-
 
 /*@@
   @file     teukwaves.F
