@@ -91,8 +91,8 @@ void Schwarzschild(CCTK_ARGUMENTS)
   {
     for (i = 0; i < npoints; i++)
     {
-      r_squared = r[i] * r[i];
-      gxx[i] = one + mass/two/(r_squared * r_squared);
+      tmp = one + mass/two/r[i];
+      gxx[i] = tmp*tmp*tmp*tmp;
       gyy[i] = gxx[i];
       gzz[i] = gxx[i];
       gxy[i] = zero;
