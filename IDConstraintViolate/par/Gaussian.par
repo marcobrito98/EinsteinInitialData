@@ -1,0 +1,35 @@
+
+!DESC "Constraint violating Gaussian initial data"
+
+ActiveThorns = "SpaceMask Boundary ADMBase ADM ADMMacros ADMAnalysis ADMConstraints CoordGauge StaticConformal CartGrid3D IOBasic IOUtil IOASCII IDConstraintViolate PsiKadelia Pugh PughReduce PughSlab Time"
+ 
+#------------------------------------------------------------------------------
+
+driver::global_nsize       = 40
+
+cactus::cctk_itlast        = 1000
+
+IOBasic::outInfo_vars      = "admbase::alp admbase::gxx admconstraints::ham"
+IOBasic::outInfo_every     = 5
+IOASCII::out1D_vars        = "admbase::alp admbase::gxx admanalysis::grr psikadelia::psi0re admconstraints::ham admconstraints::momentum"
+IOASCII::out1D_every       =  5
+
+#------------------------------------------------------------------------------
+
+IO::out_dir                      = "Gaussian"
+
+grid::type                       = "box"
+
+time::dtfac                      = 0.25 
+ 
+admbase::metric_type             = "physical"
+admbase::initial_data            = "constraint violating gaussian"  
+admbase::evolution_method        = "ADM"     
+admbase::lapse_evolution_method  = "1+log"
+admbase::initial_lapse	         = "one"
+
+adm::bound                       = "radiative"      
+adm::method                      = "stagleap"
+
+#------------------------------------------------------------------------------
+
