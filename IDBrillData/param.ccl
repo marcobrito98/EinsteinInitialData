@@ -1,4 +1,6 @@
 # Parameter definitions for thorn IDBrillData
+# $Header$
+
 
 shares:einstein
 
@@ -25,17 +27,17 @@ KEYWORD brill_bound "Which boundary condition to use"
   "robin" :: "Robin boundary: set brill_robin_falloff, brill_robin_inf"
 } "const"
 
-CCTK_REAL brill_const_v0 "Value of constant BC"
-{
-  : :: "anything goes"
-} 1.0
-
-CCTK_INT brill_robin_falloff "Fall-off of Robin BC"
+INT brill_robin_falloff "Fall-off of Robin BC"
 {
   0: :: "any positive integer value"
 } 1
 
-CCTK_REAL brill_robin_inf "Value at infinity of Robin BC"
+REAL brill_const_v0 "Value of constant BC"
+{
+  : :: "anything goes"
+} 1.0
+
+REAL brill_robin_inf "Value at infinity of Robin BC"
 {
   : :: "anything goes"
 } 1.0
@@ -55,22 +57,22 @@ BOOLEAN axisym "Axisymmetric initial data?"
 INT brill_q  "Form of function q [0,1,2]"
 {
   0:2 :: "Only cases 0,1,2 defined at the moment"
-} 1
+} 2
 
 REAL brill_a "Brill wave: Amplitude"
 {
   : :: "Anything"
 } 0.0
 
-REAL brill_b "Brill wave: rho^b"
+INT brill_b "Brill wave: rho^b"
 {
   : :: "Anything"
-} 2.0
+} 2
 
-REAL brill_c "Brill wave: (r^2 - r0^2)^(c/2)"
+INT brill_c "Brill wave: (r^2 - r0^2)^(c/2)"
 {  
   : :: "Anything"
-} 2.0
+} 2
 
 REAL brill_rho0 "Brill wave: radius of torus in rho"
 {
@@ -88,6 +90,11 @@ REAL brill_srho "Brill wave: sigma in rho"
 } 1.0
 
 REAL brill_sr "Brill wave: sigma in r"
+{
+  : :: "Anything"
+} 1.0
+
+REAL brill_sz "Brill wave: sigma in z"
 {
   : :: "Anything"
 } 1.0
@@ -128,13 +135,14 @@ KEYWORD outputpsi "Output conformal factor?"
 
 # Additional parameters
 
-REAL brill_eps "epsilon for finite differencing"
-{
-  0: :: "Positive please"
-} 1.e-6
-
 REAL brill_rhofudge "delta rho for axis fudge"
 {
   0: :: "Positive please"
-} 1.e-6
+} 0.00001
+
+
+
+
+
+
 
