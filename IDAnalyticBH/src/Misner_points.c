@@ -18,7 +18,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <assert.h>
+
 #include <math.h>
 
 #include "cctk.h"
@@ -100,7 +100,8 @@ void Misner_init(int n, CCTK_REAL mu, int terms)
   int i;
   CCTK_REAL pi,ang;
 
-  assert((nbholes=n) < MAXBHOLES);
+  if (! ((nbholes=n) < MAXBHOLES))
+    CCTK_VWarn (0, __LINE__, __FILE__,"IDAnalyticBH", "Number of black holes exceed maximum number of black holes");
 
   pi = 4.0*atan(1.);
 
@@ -225,7 +226,8 @@ static void fill_iso(struct bhole *b, int n)
     return;
   }
   b->isos = (struct bhole *)malloc(sizeof(struct bhole)*(nbholes-1));
-  assert(b->isos != 0);
+  if (! (b->isos != 0))
+    CCTK_VWarn (0, __LINE__, __FILE__,"IDAnalyticBH", "error in function fill_iso");
   for(j=0, i=0;i<nbholes;i++)
   {
     if(i != b->i) {
