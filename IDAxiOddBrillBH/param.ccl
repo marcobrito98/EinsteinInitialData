@@ -8,7 +8,7 @@ EXTENDS KEYWORD initial_lapse
 }
 EXTENDS KEYWORD initial_data 
 {
-   "axioddbh" :: "Axisymmetry Initial data for Bradt-Seidel"
+   "axioddbh" :: "Axisymmetry Initial data for Brandt-Seidel"
 }
 
 private:
@@ -28,7 +28,7 @@ REAL sigma "Brill wave width (in eta)"
   *:* :: "No restriction"
 } 1.0
 
-REAL byJ "Bowen & York Momenta"
+REAL byJ "Bowen and York Momenta"
 {
   *:* :: "No restriction"
 } 0.0
@@ -39,7 +39,7 @@ REAL etamax "Eta value for outer edge of grid"
 } 5.0
 
 
-INT n "sin^n theta in brill wave"
+INT n "sin**n theta in brill wave"
 {
   *:* :: "No restriction"
 } 3
