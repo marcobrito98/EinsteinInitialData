@@ -1,0 +1,9 @@
+# Interface definition for thorn AxiOddBrillBHIVP
+# $Header$
+
+implements: axiodd
+inherits: einstein
+
+#public:
+
+
