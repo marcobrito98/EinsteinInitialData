@@ -6,7 +6,7 @@
 #
 ##############################################################################
 
-ActiveThorns = "iobasic ellbase ellsor idbrilldata pugh pughreduce einstein cartgrid3d ioutil ioascii"
+ActiveThorns = "time boundary iobasic ellbase ellsor idbrilldata pugh pughreduce pughslab einstein cartgrid3d ioutil ioascii"
 
 # General
 
