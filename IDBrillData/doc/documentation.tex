@@ -110,7 +110,7 @@ q = {\tt gundlach\_a} \quad \rho^2 e^{-r^2}
 $$
 
 {\tt IDBrillData} can use the elliptic solvers (type LinMetric)
-provided by {\tt CactusEinstein/EllSOR}, {\tt AEIThorns/BAM\_Elliptic}
+provided by {\tt CactusEinstein/EllSOR},\\ {\tt AEIThorns/BAM\_Elliptic},
 or {\tt CactusElliptic/EllPETSc} to solve the equation resulting from 
 the Hamiltonian constraint. 
 In all cases the parameter {\tt thresh} sets the threshold for the elliptic
@@ -125,14 +125,14 @@ parameters control the maximum number of iterations ({\tt sor\_maxit}).
 \item {\tt bam}: {\tt BAM\_Elliptic} does not properly implement the
 elliptic infrastructure of {\tt EllBase}, and the {\tt BAM\_Elliptic}
 parameter to use the Robin boundary condition must be set independently
-of {tt IDBrillWave::brill\_bound}.
+of \\{\tt IDBrillWave::brill\_bound}.
 
 \end{itemize}
 
 \section{Notes}
 
-Thorn {\tt IDBrillData} understands both the {\tt physical} and {\tt
-static conformal} {\tt metric\_type}. In the case of a conformal
+Thorn {\tt IDBrillData} understands both the ``{\tt physical}'' and ``{\tt
+static conformal}'' {\tt metric\_type}. In the case of a conformal
 metric being chosen, the conformal factor is set to $\Psi$. Currently
 the derivatives of the conformal factor are not calculated, so that
 only {\tt staticconformal::conformal\_storage = "factor"} is
