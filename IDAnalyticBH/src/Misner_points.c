@@ -71,7 +71,7 @@ static CCTK_REAL csch(CCTK_REAL theta);
 static CCTK_REAL coth(CCTK_REAL theta);
 static void iso(struct bhole *a1, struct bhole *a2, struct bhole *a3);
 static void fill_iso(struct bhole *b, int n);
-static CCTK_REAL eval_bh_psi(struct bhole *b,
+static CCTK_REAL eval_bh_psi(const struct bhole *b,
 			     CCTK_REAL x, CCTK_REAL y, CCTK_REAL z);
 
 /******************************************************************************/
@@ -162,13 +162,13 @@ static CCTK_REAL coth(CCTK_REAL theta) {
 /******************************************************************************/
 
  /*@@
-   @routine    fill_iso
+   @routine    iso
    @date
    @author     Steve Brandt
    @desc
      	       Isometrize black hole a1 through hole a2
    @enddesc
-   @calls      fill_iso
+   @calls      iso
    @history
 
    @endhistory
@@ -241,7 +241,7 @@ static void fill_iso(struct bhole *b, int n)
    @endhistory
 
 @@*/
-static CCTK_REAL eval_bh_psi(struct bhole *b,
+static CCTK_REAL eval_bh_psi(const struct bhole *b,
 			     CCTK_REAL x, CCTK_REAL y, CCTK_REAL z)
 {
   int i;
