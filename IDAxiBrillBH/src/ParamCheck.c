@@ -50,13 +50,26 @@ void IDAxiBrillBH_ParamChecker(CCTK_ARGUMENTS)
 
   /* Do we know how to deal with this type of metric ? */
   if( ! CCTK_EQUALS(metric_type, "static conformal"))
+  {
     if (CCTK_EQUALS(metric_type, "physical"))
-      {
-	CCTK_PARAMWARN("\n\tPlease add code into IDAxiBrillBH.F to compute\n\tthe physical metric from the conformal metric.");
-      } else 
-	{
-	  CCTK_PARAMWARN("Unknown ADMBase::metric_type - known types are \"physical\" and \"static conformal\"");
-	}
+    {
+      CCTK_PARAMWARN("\n\tPlease add code into IDAxiBrillBH.F to compute\n\tthe physical metric from the conformal metric.");
+    } 
+    else 
+    {
+      CCTK_PARAMWARN("Unknown ADMBase::metric_type - known types are \"physical\" and \"static conformal\"");
+    }
+  }
+
+  /* Report on parameters */
+  
+  CCTK_INFO("Initial data will be axisymmetric BH+Brill Wave");
+  CCTK_VInfo(CCTK_THORNSTRING,"  ... wave amplitude: %f",amp);
+  CCTK_VInfo(CCTK_THORNSTRING,"  ... wave center (in eta coords): %f",eta0);
+  CCTK_VInfo(CCTK_THORNSTRING,"  ... wave sigma: %f",sigma);
+  CCTK_VInfo(CCTK_THORNSTRING,"  ... wave power of sin theta: %d",n);
+  CCTK_VInfo(CCTK_THORNSTRING,"  ... outer edge of eta grid: %f",etamax);
+
 }
 
 /********************************************************************
