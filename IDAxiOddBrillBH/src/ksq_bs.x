@@ -15,7 +15,7 @@
         o15 = o9**2
 c        exc33(i,j) = 0
 c        exc32(i,j) = -(dngtil*o1*o4*o5**n)
-        exc31(i,j) = gtil*o4*o5**(-1.00000000000000d0 + n)*o9
+c        exc31(i,j) = gtil*o4*o5**(-1.00000000000000d0 + n)*o9
 c        exc22(i,j) = 0
 c        exc21(i,j) = 0
 c        exc11(i,j) = 0
