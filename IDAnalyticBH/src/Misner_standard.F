@@ -129,7 +129,7 @@ c     --------------------
 
 c     Should initialize lapse to Cadez value if possible
 c     --------------------------------------------------
-      if (CCTK_Equals(lapseinit,"cadez") == 1) then 
+      if (CCTK_Equals(initial_lapse,"cadez") == 1) then 
          write (*,*)"Initialise with cadez lapse"
          alp = one
          do n = 1,nmax
