@@ -1,0 +1,6 @@
+# Interface definition for thorn NoExcision
+# $Header$
+
+IMPLEMENTS: NoExcision
+
+INHERITS: ADMBase StaticConformal grid

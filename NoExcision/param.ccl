@@ -1,0 +1,43 @@
+# Parameter definitions for thorn NoExcision
+# $Header$
+
+BOOLEAN verbose "Produce some screen output"
+{
+} "no"
+
+BOOLEAN overwrite_geometry "Set the geometry to Minkowski"
+{
+} "yes"
+
+BOOLEAN overwrite_lapse "Set the lapse to one"
+{
+} "yes"
+
+BOOLEAN overwrite_shift "Set the shift to zero"
+{
+} "yes"
+
+INT num_regions "Number of no-excision regions"
+{
+  0:10 :: ""
+} 0
+
+REAL centre_x[10] "X-coordinate of the centre of the region"
+{
+  (*:*) :: ""
+} 0.0
+
+REAL centre_y[10] "Y-coordinate of the centre of the region"
+{
+  (*:*) :: ""
+} 0.0
+
+REAL centre_z[10] "Z-coordinate of the centre of the region"
+{
+  (*:*) :: ""
+} 0.0
+
+REAL radius[10] "Radius of the region"
+{
+  0.0:*) :: ""
+} 1.0

@@ -1,0 +1,7 @@
+# Schedule definitions for thorn NoExcision
+# $Header$
+
+SCHEDULE NoExcision_Overwrite AT initial AFTER (ADMBase_InitialData ADMBase_InitialGauge)
+{
+  LANG: Fortran
+} "Overwrite regions with Minkowski"
