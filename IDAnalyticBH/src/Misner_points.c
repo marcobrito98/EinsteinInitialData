@@ -1,13 +1,15 @@
-/* This code written by Steve Brandt. */
-
-/* This calculates the conformal factor for nbh black holes, 
-with naked mass m0 = 2 csch(mu) each, and placed on a circle in the
-xy plane around the origin, of radius coth(mu). 
-One of them sits on the positive x axis, the others are evenly spaced.
-Naked mass here corresponds to the term m0 / (2 |r - r0|) in the expansion.
-For nbh =2, these are the same masses as in the routine misner.F, 
-with the difference that here two BHs sit on the positive and negative
-x axis, there on the z-axis. */
+ /*@@
+   @file      Misner_points.c
+   @date      
+   @author    Steve Brandt
+   @desc 
+      	      This calculates the conformal factor for nbh black holes, 
+              with naked mass m0 = 2 csch(mu) each, and placed on a circle in the
+              xy plane around the origin, of radius coth(mu). 
+              One of them sits on the positive x axis, the others are evenly spaced.
+              Naked mass here corresponds to the term m0 / (2 |r - r0|) in the expansion.
+   @enddesc 
+ @@*/
 
 #include "cctk.h"
 
@@ -16,12 +18,12 @@ x axis, there on the z-axis. */
 #include <math.h>
 
 int nbholes;
-double mu;
+Double mu;
 
 /* Basic data about a brill-lindquist black hole term. */
 struct bhole {
-  double x,y;
-  double mass;
+  Double x,y;
+  Double mass;
 
   /* i gives either the number of the seed
      black hole we are starting with, or
@@ -35,16 +37,30 @@ struct bhole {
 /* The seed black holes. */
 struct bhole bholes[MAXBHOLES];
 
-double csch(double mu) {
+Double csch(Double mu) {
   return 1.0/sinh(mu); 
 }
-double coth(double mu) {
+Double coth(Double mu) {
   return cosh(mu)/sinh(mu); 
 }
 
-/* Isometrize black hole a1 through hole a2 */
-void iso(struct bhole *a1, struct bhole *a2, struct bhole *a3) {
-  double rad,radtwo;
+ /*@@
+   @routine    fill_iso
+   @date       
+   @author     Steve Brandt
+   @desc 
+     	       Isometrize black hole a1 through hole a2
+   @enddesc 
+   @calls      fill_iso   
+   @history 
+ 
+   @endhistory 
+
+@@*/
+
+void iso(struct bhole *a1, struct bhole *a2, struct bhole *a3) 
+{
+  Double rad,radtwo;
   radtwo=(
       (a1->x - a2->x)*(a1->x - a2->x)+
       (a1->y - a2->y)*(a1->y - a2->y)
@@ -55,17 +71,33 @@ void iso(struct bhole *a1, struct bhole *a2, struct bhole *a3) {
   a3->y = a2->y+(a2->mass*a2->mass)*(a1->y - a2->y)/radtwo;
 }
 
-/* Fills in the iso structure of a given black hole.  Applies
-   recursively to the number of terms desired. */
-void fill_iso(struct bhole *b,int n) {
+ /*@@
+   @routine    fill_iso
+   @date       
+   @author     Steve Brandt
+   @desc 
+     	       Fills in the iso structure of a given black hole.  
+               Applies recursively to the number of terms desired.
+   @enddesc 
+   @calls      fill_iso   
+   @history 
+ 
+   @endhistory 
+
+@@*/
+
+void fill_iso(struct bhole *b, int n) 
+{
   int i,j;
-  if(n==0) {
+  if(n==0) 
+  {
     b->isos = 0;
     return;
   }
   b->isos = (struct bhole *)malloc(sizeof(struct bhole)*(nbholes-1));
   assert(b->isos != 0);
-  for(j=0, i=0;i<nbholes;i++) {
+  for(j=0, i=0;i<nbholes;i++) 
+  {
     if(i != b->i) {
       iso(b,&bholes[i],&b->isos[j]);
       b->isos[j].i = i;
@@ -75,32 +107,70 @@ void fill_iso(struct bhole *b,int n) {
   }
 }
 
-/* Initializes the black holes, then makes the
-   isometry black holes. */
-void FORTRAN_NAME(nmisner_init)(int *n, double *mu,int *terms) 
+ /*@@
+   @routine    Misner_init
+   @date       
+   @author     Steve Brandt
+   @desc 
+      Initialises the black holes then makes the isometry black holes
+   @enddesc 
+   @calls     
+   @history 
+ 
+   @endhistory 
+
+@@*/
+
+void FORTRAN_NAME(Misner_init)(int *n, Double *mu, int *terms) 
 {
+
   int i;
-  double pi,ang;
+  Double pi,ang;
+
   assert((nbholes=*n) < MAXBHOLES);
+
   pi = 4.0*atan(1.);
+
   ang = 2.*pi/(*n);
-  for(i=0;i<*n;i++) {
+
+  for(i=0;i<*n;i++) 
+  {
     bholes[i].x = coth(*mu)*cos(ang*i);
     bholes[i].y = coth(*mu)*sin(ang*i);
     bholes[i].mass = csch(*mu);
     bholes[i].i = i;
     bholes[i].isos = 0;
   }
+
   for(i=0;i<*n;i++)
     fill_iso(&bholes[i],*terms);
+
 }
 
-double eval_bh_psi(struct bhole *b,double x,double y,double z) {
+
+ /*@@
+   @routine    eval_bh_psi
+   @date       
+   @author     Steve Brandt
+   @desc 
+      
+   @enddesc 
+   @calls      eval_bh_psi   
+   @history 
+ 
+   @endhistory 
+
+@@*/
+
+Double eval_bh_psi(struct bhole *b, Double x, Double y, Double z) 
+{
   int i;
-  double res;
+  Double res;
   res = 0.0;
-  if(b->isos != 0) {
-    for(i=0;i<nbholes-1;i++) {
+  if(b->isos != 0) 
+  {
+    for(i=0;i<nbholes-1;i++) 
+    {
       res += eval_bh_psi(&b->isos[i],x,y,z);
     }
   }
@@ -112,8 +182,23 @@ double eval_bh_psi(struct bhole *b,double x,double y,double z) {
   return res;
 }
 
-/* use this function to evaluate psi at a point. */
-void FORTRAN_NAME(nmisner_eval_psi)(double *x,double *y,double *z,double *res) {
+
+ /*@@
+   @routine    MisnerEvalPsi
+   @date       
+   @author     Steve Brandt
+   @desc 
+      Evaluate psi at a point
+   @enddesc 
+   @calls      eval_bh_psi
+   @history 
+ 
+   @endhistory 
+
+@@*/
+
+void FORTRAN_NAME(MisnerEvalPsi)(Double *x, Double *y, Double *z, Double *res) 
+{
   int i;
   *res = 1;
   for(i=0;i<nbholes;i++)

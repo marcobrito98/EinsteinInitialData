@@ -4,3 +4,10 @@
 implements: idanalyticbh
 inherits: einstein
 
+real misner_workspace TYPE = GF
+{
+  csch,
+  coth,
+  r1,
+  r2
+} "Workspace arrays for Misner_standard"

@@ -1,20 +1,29 @@
 Cactus Code Thorn IDAnalyticBH
-Authors    : ...
-Managed by : ... <...@...........>
-Version    : ...  
+Authors    : Cactus Maintainers (originally written by Paul Walker and Joan Masso)
+Managed by : Cactus Maintainers <cactus-maint@aei-potsdam.mpg.de>
+Version    : 1.0
 CVS info   : $Header$
 --------------------------------------------------------------------------
 
 1. Purpose of the thorn
 
-This thorn does ...
+This thorn calculates analytic initial data for the Einstein grid functions
+(lapse, shift, metric, curv) for various black hole spacetimes:
+
+	Schwarzschild black hole
+ 	2 Misner black holes placed on the z-axis
+	n Misner black holes placed in a circle in the x-y plane
+	Brill-Lindquist data
 
 2. Dependencies of the thorn
 
-This thorn additionally requires thorns ...
+This thorn additionally requires thorns Einstein, which defines
+the Grid Functions.
 
 3. Thorn distribution
 
-This thorn is available to ...
+This thorn is publically available.
 
 4. Additional information
+
+
