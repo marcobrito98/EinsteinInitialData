@@ -8,10 +8,9 @@
    @version   $Id$
  @@*/
 
-#include "cctk.h"
-
 #include <string.h>
 
+#include "cctk.h"
 #include "cctk_Arguments.h"
 #include "cctk_Parameters.h"
 
@@ -19,8 +18,6 @@
 
 static const char *rcsid = "$Header$";
 CCTK_FILEVERSION(CactusEinstein_IDAnalyticBH_Schwarzschild_c)
-
-void Schwarzschild(CCTK_ARGUMENTS);
 
 
 void Schwarzschild(CCTK_ARGUMENTS)

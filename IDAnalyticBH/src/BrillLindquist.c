@@ -8,11 +8,10 @@
    @version   $Header$
  @@*/
 
-#include "cctk.h"
-
 #include <math.h>
 #include <string.h>
 
+#include "cctk.h"
 #include "cctk_Arguments.h"
 #include "cctk_Parameters.h"
 
@@ -21,12 +20,7 @@
 static const char *rcsid = "$Header$";
 CCTK_FILEVERSION(CactusEinstein_IDAnalyticBH_BrillLindquist_c)
 
-
-#define SQR(a) ((a)*(a))
-
 #define MAX_HOLES 4
-
-void BrillLindquist(CCTK_ARGUMENTS);
 
  /*@@
    @routine    BrillLindquist

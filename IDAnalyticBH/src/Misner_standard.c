@@ -12,12 +12,11 @@
    @version   $Header$
  @@*/
 
-#include "cctk.h"
-
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
 
+#include "cctk.h"
 #include "cctk_Arguments.h"
 #include "cctk_Parameters.h"
 
@@ -26,10 +25,6 @@
 static const char *rcsid = "$Header$";
 
 CCTK_FILEVERSION(CactusEinstein_IDAnalyticBH_Misner_standard_c)
-
-#define SQR(a) ((a)*(a))
-
-void Misner_standard(CCTK_ARGUMENTS);
 
  /*@@
    @routine    Misner_standard

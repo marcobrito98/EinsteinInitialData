@@ -9,14 +9,15 @@
    @version $Header$
  @@*/
 
-#include "cctk.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
+#include "cctk.h"
 #include "cctk_Arguments.h"
 #include "cctk_Parameters.h"
+
+#include "IDAnalyticBH.h"
 
 static const char *rcsid = "$Header$";
 
@@ -33,8 +34,6 @@ CCTK_FILEVERSION(CactusEinstein_IDAnalyticBH_ParamChecker_c)
 /********************************************************************
  ***************** Scheduled Routine Prototypes *********************
  ********************************************************************/
-
-void IDAnalyticBH_ParamChecker(CCTK_ARGUMENTS);
 
 /********************************************************************
  ********************* Other Routine Prototypes *********************
@@ -168,7 +167,3 @@ void IDAnalyticBH_ParamChecker(CCTK_ARGUMENTS)
   }        
 
 }
-
-/********************************************************************
- *********************     Local Routines   *************************
- ********************************************************************/
