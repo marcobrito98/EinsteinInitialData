@@ -40,16 +40,15 @@ c     Perhaps this and others should go into cctk.h
 
       real*8 deta,dq
       real*8, allocatable :: ac(:,:),ae(:,:),aw(:,:),an(:,:),as(:,:),
-     $     rhs(:,:),Ksq(:,:), psi2dv(:,:),dpsi2dv(:,:),ddpsi2dv(:,:),
+     $     rhs(:,:),ksq(:,:), psi2dv(:,:),dpsi2dv(:,:),ddpsi2dv(:,:),
      $     detapsisph(:,:),dqpsisph(:,:),detaetapsisph(:,:),
      $     detaqpsisph(:,:),dqqpsisph(:,:),
      $     etagrd(:),qgrd(:)
       real*8, allocatable :: eta(:,:,:),abseta(:,:,:),sign_eta(:,:,:),
      $     q(:,:,:),phi(:,:,:)
       real*8, allocatable :: psi2d(:,:,:),detapsi2d(:,:,:),
-     $     dqpsi2d(:,:,:),dqpsi2d(:,:,:),detaetapsi2d(:,:,:),
+     $     dqpsi2d(:,:,:),detaetapsi2d(:,:,:),
      $     detaqpsi2d(:,:,:),dqqpsi2d(:,:,:)
-      real*8, allocatable :: exc31(:,:)
       real*8 o1,o2,o3,o4,o5,o6,o7,o8,o9,o10,
      $     o11,o12,o13,o14,o15,o16,o17,o18,o19,
      $     o20,o21,o22,o23,o24,o25,o26,o27,o28,o29,
@@ -61,7 +60,7 @@ c     Perhaps this and others should go into cctk.h
       real*8 rhsmax,rmax,odd_get2d,adm,Jmom
       real*8,parameter :: rbh_tol = 1.0d-7,rbh_eps = 1.0d-10
       integer,parameter :: itmax = 50 
-      real*8 r,pi,zero,one,two
+      real*8 pi,zero,one,two
       integer :: nx,ny,nz
       integer :: i,j,k,it,ier,nquads,ntries
       integer :: npoints,handle,ierror
@@ -93,7 +92,7 @@ c     Add 2 zones for eta coordinate and 4 for theta
       nq = nq+2
 c     
       allocate(ac(ne,nq),ae(ne,nq),aw(ne,nq),an(ne,nq),as(ne,nq),
-     $     rhs(ne,nq),Ksq(ne,nq),psi2dv(ne,nq),dpsi2dv(ne,nq),
+     $     rhs(ne,nq),ksq(ne,nq),psi2dv(ne,nq),dpsi2dv(ne,nq),
      $     ddpsi2dv(ne,nq),detapsisph(ne,nq),dqpsisph(ne,nq),
      $     detaetapsisph(ne,nq),detaqpsisph(ne,nq),dqqpsisph(ne,nq),
      $     etagrd(ne),qgrd(nq))
@@ -102,7 +101,6 @@ c
      $     psi2d(nx,ny,nz),detapsi2d(nx,ny,nz),dqpsi2d(nx,ny,nz),
      $     detaetapsi2d(nx,ny,nz),detaqpsi2d(nx,ny,nz),
      $     dqqpsi2d(nx,ny,nz))
-      allocate(exc31(ne,nq))
 c     
 c     Initialize some array
 c     
@@ -163,7 +161,7 @@ c
      $              deta**2+(dpsi2dv(i,j+1)-2.*dpsi2dv(i,j)+
      $              dpsi2dv(i,j-1))/dq**2+0.5*(dpsi2dv(i,j+1)-
      $              dpsi2dv(i,j-1))/(dq*tan(qgrd(j)))-0.25*dpsi2dv(i,j)+
-     $              0.125*Ksq(i,j)/(psi2dv(i,j)+dpsi2dv(i,j))**7
+     $              0.125*ksq(i,j)/(psi2dv(i,j)+dpsi2dv(i,j))**7
             enddo
          enddo
 c     
@@ -193,7 +191,7 @@ c
          do j = 2,nq-1
             do i = 2,ne-1
                ac(i,j) = -2./deta**2-2./dq**2-sin(qgrd(j))**2-0.25-
-     $              0.875*Ksq(i,j)/(psi2dv(i,j)+ 
+     $              0.875*ksq(i,j)/(psi2dv(i,j)+ 
      $              dpsi2dv(i,j))**8
 c     
                ae(i,j) = 1./deta**2
@@ -485,12 +483,11 @@ c      print *,'Angular momentum: ',Jmom
          alp = (2.*r - adm)/(2.*r+adm)
       endif
       
-      deallocate(ac,ae,aw,an,as,rhs,Ksq,psi2dv,dpsi2dv,ddpsi2dv,
+      deallocate(ac,ae,aw,an,as,rhs,ksq,psi2dv,dpsi2dv,ddpsi2dv,
      $     detapsisph,dqpsisph,detaetapsisph,detaqpsisph,dqqpsisph,
      $     etagrd,qgrd,
      $     eta,abseta,sign_eta,q,phi,psi2d,detapsi2d,dqpsi2d,
      $     detaetapsi2d,detaqpsi2d,dqqpsi2d)
-      deallocate(exc31)
 
       return
       end
