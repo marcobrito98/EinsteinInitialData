@@ -12,7 +12,7 @@ the boost-rotation-symmetric spacetimes, was the first application.
 
 Later, the thorn developed as a reservoir for a variety of exact spacetimes,
 some of them in different coordinate systems, and even some non-Einstein
-spcetimes.  All od these exact spacetimes have been found useful for
+spcetimes.  All of these exact spacetimes have been found useful for
 testing different aspect of the code.  Since mamy different people have
 contributed to this thorn by adding new exact solutions, you should expect
 many different styles of coding here.
