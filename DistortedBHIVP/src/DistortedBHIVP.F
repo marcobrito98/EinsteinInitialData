@@ -620,7 +620,7 @@ c     Compute eta,q,phi at the each points of cartesian grid
 
       interp_coords(1) = CCTK_PointerTo(abseta)
       interp_coords(2) = CCTK_PointerTo(q)
-      interp_coords(2) = CCTK_PointerTo(phi)
+      interp_coords(3) = CCTK_PointerTo(phi)
 
       in_array_dims(1) = ne
       in_array_dims(2) = nq

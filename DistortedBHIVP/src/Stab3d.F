@@ -97,12 +97,14 @@ c
       real*8 x(im*jm*km),r(im*jm*km)
 c     Local variables
       integer :: i,j,k,kk
-      real*8 :: p(im*jm*km),Ap(im*jm*km),w(im*jm*km),As(im*jm*km)
+      real*8, allocatable :: p(:),Ap(:),w(:),As(:)
       real*8 :: omega, chi,chi1,chi2, delta, deltap, pp
 *
 ***********************************************************************
 *
-
+c
+      allocate(p(im*jm*km),Ap(im*jm*km),w(im*jm*km),As(im*jm*km))
+      
       do i = 1,im*jm*km
          p(i) = 0.
          Ap(i) = 0.
@@ -237,6 +239,9 @@ c      rnorm = sum(r**2)
       rnorm=sqrt(rnorm)
             
       if (rnorm .gt. tol) goto 1
+c
+      deallocate(p,Ap,w,As)
+c      
       return
       end
 c
