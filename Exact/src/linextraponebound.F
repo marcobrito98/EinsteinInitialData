@@ -1,11 +1,11 @@
 #include "cctk.h"
 #include "cctk_Arguments.h"
 
-      subroutine linextraponebound(CCTK_FARGUMENTS,var)
+      subroutine linextraponebound(CCTK_ARGUMENTS,var)
 
       implicit none
 
-      DECLARE_CCTK_FARGUMENTS
+      DECLARE_CCTK_ARGUMENTS
 
       integer nx,ny,nz
 

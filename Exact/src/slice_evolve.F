@@ -3,14 +3,15 @@ C     Evolve the slice in the exact spacetime.
 #include "cctk.h"
 #include "cctk_Arguments.h"
 
-      subroutine slice_evolve(CCTK_FARGUMENTS)
+      subroutine slice_evolve(CCTK_ARGUMENTS)
 
       implicit none
 
-      DECLARE_CCTK_FARGUMENTS
+      DECLARE_CCTK_ARGUMENTS
 
       integer i,j,k,m,n
       integer nx,ny,nz
+      integer ierr
 
       CCTK_REAL s1d(4,3), nd(4), nu(4), norm, gd(4,4), gu(4,4)
       CCTK_REAL dx,dy,dz,dt
@@ -38,12 +39,12 @@ C     by slice_data.
 
 C     Synchronize and bound slice.
 
-      call linextraponebound(CCTK_FARGUMENTS,slicetmp1x)
-      call linextraponebound(CCTK_FARGUMENTS,slicetmp1y)
-      call linextraponebound(CCTK_FARGUMENTS,slicetmp1z)
-      call linextraponebound(CCTK_FARGUMENTS,slicetmp1t)
+      call linextraponebound(CCTK_ARGUMENTS,slicetmp1x)
+      call linextraponebound(CCTK_ARGUMENTS,slicetmp1y)
+      call linextraponebound(CCTK_ARGUMENTS,slicetmp1z)
+      call linextraponebound(CCTK_ARGUMENTS,slicetmp1t)
 
-      call CCTK_SyncGroup(cctkGH,"Exact::Exact_slicetemp1")
+      call CCTK_SyncGroup(ierr,cctkGH,"Exact::Exact_slicetemp1")
 
 C     Prepare leapfrog step.
 C     Sum over interior points on the slice, now at midpoint slicetmp1.
@@ -91,10 +92,10 @@ C     Calculate n^A and dx^A/dt
 
 C     Synchronize and bound slicetmp2, which contains dx^A/dt.
 
-      call linextraponebound(CCTK_FARGUMENTS,slicetmp2x)
-      call linextraponebound(CCTK_FARGUMENTS,slicetmp2y)
-      call linextraponebound(CCTK_FARGUMENTS,slicetmp2z)
-      call linextraponebound(CCTK_FARGUMENTS,slicetmp2t)
+      call linextraponebound(CCTK_ARGUMENTS,slicetmp2x)
+      call linextraponebound(CCTK_ARGUMENTS,slicetmp2y)
+      call linextraponebound(CCTK_ARGUMENTS,slicetmp2z)
+      call linextraponebound(CCTK_ARGUMENTS,slicetmp2t)
 
       call CCTK_SyncGroup(cctkGH,"Exact::Exact_slicetemp2")
 
@@ -107,17 +108,17 @@ C Leapfrog step.
 
 C     Synchronize and bound slice.
 
-      call linextraponebound(CCTK_FARGUMENTS,slicex)
-      call linextraponebound(CCTK_FARGUMENTS,slicey)
-      call linextraponebound(CCTK_FARGUMENTS,slicez)
-      call linextraponebound(CCTK_FARGUMENTS,slicet)
+      call linextraponebound(CCTK_ARGUMENTS,slicex)
+      call linextraponebound(CCTK_ARGUMENTS,slicey)
+      call linextraponebound(CCTK_ARGUMENTS,slicez)
+      call linextraponebound(CCTK_ARGUMENTS,slicet)
 
       call CCTK_SyncGroup(cctkGH,"Exact::Exact_slice")
 
 C     Extract Cauchy data at the new position, and store dxA/dt 
 C     for use in the next Lax step.
 
-      call slice_data(CCTK_FARGUMENTS)
+      call slice_data(CCTK_ARGUMENTS)
 
       return
       end

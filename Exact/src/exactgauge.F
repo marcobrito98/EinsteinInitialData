@@ -6,11 +6,11 @@ C     to set the Bona-Masso variables B_xx etc.
 #include "cctk_Parameters.h"
 #include "cctk_Arguments.h"
 
-      subroutine exactgauge(CCTK_FARGUMENTS)
+      subroutine exactgauge(CCTK_ARGUMENTS)
 
       implicit none
 
-      DECLARE_CCTK_FARGUMENTS
+      DECLARE_CCTK_ARGUMENTS
       DECLARE_CCTK_PARAMETERS
 
       integer i,j,k

@@ -3,11 +3,11 @@
 #include "cctk_Parameters.h"
 #include "cctk_Arguments.h"
 
-      subroutine exactboundary(CCTK_FARGUMENTS)
+      subroutine exactboundary(CCTK_ARGUMENTS)
 
       implicit none
 
-      DECLARE_CCTK_FARGUMENTS
+      DECLARE_CCTK_ARGUMENTS
 
       integer i,j,k
       integer nx,ny,nz

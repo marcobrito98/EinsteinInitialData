@@ -1,13 +1,13 @@
 #include "cctk.h"
 #include "cctk_Arguments.h"
 
-      subroutine ComparisonMetric(CCTK_FARGUMENTS, 
+      subroutine ComparisonMetric(CCTK_ARGUMENTS, 
      $     gxx_ex, gxy_ex, gxz_ex,
      $     gyy_ex, gyz_ex, gzz_ex)
 
       implicit none
 
-      DECLARE_CCTK_FARGUMENTS
+      DECLARE_CCTK_ARGUMENTS
 
       CCTK_REAL gxx_ex(cctk_lsh(1),cctk_lsh(2),cctk_lsh(3))
       CCTK_REAL gxy_ex(cctk_lsh(1),cctk_lsh(2),cctk_lsh(3))
@@ -65,13 +65,13 @@ C     thrown away, variables ending in ...junk.
 
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
-      subroutine ComparisonCurvature(CCTK_FARGUMENTS,
+      subroutine ComparisonCurvature(CCTK_ARGUMENTS,
      $     hxx_ex, hxy_ex, hxz_ex,
      $     hyy_ex, hyz_ex, hzz_ex)
 
       implicit none
 
-      DECLARE_CCTK_FARGUMENTS
+      DECLARE_CCTK_ARGUMENTS
 
       CCTK_REAL hxx_ex(cctk_lsh(1),cctk_lsh(2),cctk_lsh(3))
       CCTK_REAL hxy_ex(cctk_lsh(1),cctk_lsh(2),cctk_lsh(3))
@@ -127,12 +127,12 @@ c     Note the exact shift comes in even if the shift is not
 c     allocated (eg if shift is "none"). In this case just
 c     don't use it, since it won't be compared against acctk_lsh(2)thing.
 
-      subroutine ComparisonGauge(CCTK_FARGUMENTS,
+      subroutine ComparisonGauge(CCTK_ARGUMENTS,
      $     alp_ex, betax_ex, betay_ex, betaz_ex)
 
       implicit none
 
-      DECLARE_CCTK_FARGUMENTS
+      DECLARE_CCTK_ARGUMENTS
 
       CCTK_REAL alp_ex(cctk_lsh(1),cctk_lsh(2),cctk_lsh(3))
       CCTK_REAL betax_ex(cctk_lsh(1),cctk_lsh(2),cctk_lsh(3))

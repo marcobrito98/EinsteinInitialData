@@ -4,11 +4,11 @@
 #include "cctk_Arguments.h"
 #include "CactusEinstein/Einstein/src/Einstein.h"
 
-      subroutine slice_initialize(CCTK_FARGUMENTS)
+      subroutine slice_initialize(CCTK_ARGUMENTS)
 
       implicit none
 
-      DECLARE_CCTK_FARGUMENTS
+      DECLARE_CCTK_ARGUMENTS
       DECLARE_CCTK_PARAMETERS
 
 C     Initialize position of slice in exact solution spacetime.
@@ -23,7 +23,7 @@ C     exact solution, and the exact solution time is a Gaussian.
 
 C     Calculate Cauchy data and dx^A/dt.
 
-      call slice_data(CCTK_FARGUMENTS)
+      call slice_data(CCTK_ARGUMENTS)
 
 C     This tells the code that what we have set is the physical metric,
 C     not a conformally rescaled one.

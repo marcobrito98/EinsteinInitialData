@@ -4,11 +4,11 @@ C     slicey, slicez, slicet, and calculate dx^A/dt.
 #include "cctk.h"
 #include "cctk_Arguments.h"
 
-      subroutine slice_data(CCTK_FARGUMENTS)
+      subroutine slice_data(CCTK_ARGUMENTS)
 
       implicit none
 
-      DECLARE_CCTK_FARGUMENTS
+      DECLARE_CCTK_ARGUMENTS
 
       integer i, j, k, l, m, n, p, q, s
       integer nx,ny,nz
@@ -301,32 +301,32 @@ C     Calculate K_ij.
 
 C     Synchronize and bound slicetmp2, which contains dx^A/dt.
 
-      call linextraponebound(CCTK_FARGUMENTS,slicetmp2x)
-      call linextraponebound(CCTK_FARGUMENTS,slicetmp2y)
-      call linextraponebound(CCTK_FARGUMENTS,slicetmp2z)
-      call linextraponebound(CCTK_FARGUMENTS,slicetmp2t)
+      call linextraponebound(CCTK_ARGUMENTS,slicetmp2x)
+      call linextraponebound(CCTK_ARGUMENTS,slicetmp2y)
+      call linextraponebound(CCTK_ARGUMENTS,slicetmp2z)
+      call linextraponebound(CCTK_ARGUMENTS,slicetmp2t)
  
-      call CCTK_SyncGroup(cctkGH,"Exact::Exact_slicetemp2")
+      call CCTK_SyncGroup(ierr,cctkGH,"Exact::Exact_slicetemp2")
 
 C     Bound and synchronize the 3-metric and extrinsic curvature.
 
-      call linextraponebound(CCTK_FARGUMENTS,gxx)
-      call linextraponebound(CCTK_FARGUMENTS,gxy)
-      call linextraponebound(CCTK_FARGUMENTS,gxz)
-      call linextraponebound(CCTK_FARGUMENTS,gyy)
-      call linextraponebound(CCTK_FARGUMENTS,gyz)
-      call linextraponebound(CCTK_FARGUMENTS,gzz)
+      call linextraponebound(CCTK_ARGUMENTS,gxx)
+      call linextraponebound(CCTK_ARGUMENTS,gxy)
+      call linextraponebound(CCTK_ARGUMENTS,gxz)
+      call linextraponebound(CCTK_ARGUMENTS,gyy)
+      call linextraponebound(CCTK_ARGUMENTS,gyz)
+      call linextraponebound(CCTK_ARGUMENTS,gzz)
 
-      call CCTK_SyncGroup(cctkGH,"Einstein::metric")
+      call CCTK_SyncGroup(ierr,cctkGH,"Einstein::metric")
 
-      call linextraponebound(CCTK_FARGUMENTS,kxx)
-      call linextraponebound(CCTK_FARGUMENTS,kxy)
-      call linextraponebound(CCTK_FARGUMENTS,kxz)
-      call linextraponebound(CCTK_FARGUMENTS,kyy)
-      call linextraponebound(CCTK_FARGUMENTS,kyz)
-      call linextraponebound(CCTK_FARGUMENTS,kzz)
+      call linextraponebound(CCTK_ARGUMENTS,kxx)
+      call linextraponebound(CCTK_ARGUMENTS,kxy)
+      call linextraponebound(CCTK_ARGUMENTS,kxz)
+      call linextraponebound(CCTK_ARGUMENTS,kyy)
+      call linextraponebound(CCTK_ARGUMENTS,kyz)
+      call linextraponebound(CCTK_ARGUMENTS,kzz)
 
-      call CCTK_SyncGroup(cctkGH,"Einstein::curv")
+      call CCTK_SyncGroup(ierr,cctkGH,"Einstein::curv")
 
       return
       end

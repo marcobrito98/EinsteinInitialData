@@ -7,11 +7,11 @@ C     in the Bona-Masso formalism, at an initial time.
 #include "cctk_Arguments.h"
 #include "CactusEinstein/Einstein/src/Einstein.h"
 
-      subroutine exactinitialize(CCTK_FARGUMENTS)
+      subroutine exactinitialize(CCTK_ARGUMENTS)
 
       implicit none
 
-      DECLARE_CCTK_FARGUMENTS
+      DECLARE_CCTK_ARGUMENTS
       DECLARE_CCTK_PARAMETERS
 
       integer i,j,k

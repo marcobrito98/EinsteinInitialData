@@ -3,11 +3,11 @@
 #include "cctk_Arguments.h"
 #include "CactusEinstein/Einstein/src/Einstein.h"
 
-      subroutine exactcartblendboundary(CCTK_FARGUMENTS)
+      subroutine exactcartblendboundary(CCTK_ARGUMENTS)
 
       implicit none
 
-      DECLARE_CCTK_FARGUMENTS
+      DECLARE_CCTK_ARGUMENTS
       DECLARE_CCTK_PARAMETERS
 
       logical doKij, doGij, doDs, doVs, doLapse, doShift
