@@ -28,8 +28,10 @@ C     Calculate Cauchy data and dx^A/dt.
 C     This tells the code that what we have set is the physical metric,
 C     not a conformally rescaled one.
 
-      conformal_state = 0
-      psi = 1.0D0
+c     Commented out in einstein revamp, now Exact doesnot inherit anything
+c     about the conformal factor
+c      conformal_state = 0
+c      psi = 1.0D0
 
       return
       end

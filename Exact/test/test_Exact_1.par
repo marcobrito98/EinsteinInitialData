@@ -2,7 +2,7 @@
 
 # Required thorns
 
-ActiveThorns = "admbase adm admmacros coordgauge staticconformal time pugh pughslab boundary cartgrid3d exact ioascii ioutil iobasic PughReduce"
+ActiveThorns = "admbase adm admmacros staticconformal coordgauge time pugh pughslab boundary cartgrid3d exact ioascii ioutil iobasic PughReduce"
 
 # Grid
 
@@ -21,8 +21,7 @@ time::dtfac = 0.25
 
 # Initial data 
 
-admbase::metric_type = "static conformal"
-staticconformal::conformal_storage = "factor+derivs+2nd derivs"
+admbase::metric_type = "physical"
 admbase::initial_data = "exact"
 
 exact::exactmodel = "bowl"

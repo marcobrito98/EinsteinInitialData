@@ -3,7 +3,7 @@
 
 implements: exact
 
-inherits: admbase staticconformal grid
+inherits: admbase grid
 
 # For running with ADM
 # friend: ADM ADMConstraints

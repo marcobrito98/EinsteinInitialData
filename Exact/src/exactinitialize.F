@@ -65,9 +65,10 @@ C     Set data pointwise.
       
 C     Tell the code there is no need to treat the conformal factor
 C     as a separate field. That is, we have set the physical metric here.
+c     Commented out in einstein revamp, now Exact doesnot inherit anything
+c     about the conformal factor
+c      conformal_state = 0
+c      psi = 1.0D0
 
-      conformal_state = 0
-      psi = 1.d0
-           
       return
       end
