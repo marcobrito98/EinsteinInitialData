@@ -55,7 +55,7 @@ void Schwarzschild(CCTK_ARGUMENTS)
     {
       CCTK_VWarn(0, __LINE__, __FILE__, CCTK_THORNSTRING,
 "Schwarzschild(): impossible value for conformal_storage=\"%s\"!",
-		 conformal_storage);				/*NOTREACHED*/
+                 conformal_storage);                            /*NOTREACHED*/
     }
   }      
 

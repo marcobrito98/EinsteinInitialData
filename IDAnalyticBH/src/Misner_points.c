@@ -3,7 +3,7 @@
    @date
    @author    Steve Brandt
    @desc
-      	      This calculates the conformal factor for nbh black holes,
+              This calculates the conformal factor for nbh black holes,
               with naked mass m0 = 2 csch(mu) each, and placed on a circle in the
               xy plane around the origin, of radius coth(mu).
               One of them sits on the positive x axis, the others are evenly spaced.
@@ -77,7 +77,7 @@ static CCTK_REAL coth(CCTK_REAL theta);
 static void iso(struct bhole *a1, struct bhole *a2, struct bhole *a3);
 static void fill_iso(struct bhole *b, int n);
 static CCTK_REAL eval_bh_psi(const struct bhole *b,
-			     CCTK_REAL x, CCTK_REAL y, CCTK_REAL z);
+                             CCTK_REAL x, CCTK_REAL y, CCTK_REAL z);
 
 /******************************************************************************/
 /***** functions visible outside this file ************************************/
@@ -177,7 +177,7 @@ static CCTK_REAL coth(CCTK_REAL theta) {
    @date
    @author     Steve Brandt
    @desc
-     	       Isometrize black hole a1 through hole a2
+               Isometrize black hole a1 through hole a2
    @enddesc
    @calls      iso
    @history
@@ -206,7 +206,7 @@ static void iso(struct bhole *a1, struct bhole *a2, struct bhole *a3)
    @date
    @author     Steve Brandt
    @desc
-     	       Fills in the iso structure of a given black hole.
+               Fills in the iso structure of a given black hole.
                Applies recursively to the number of terms desired.
    @enddesc
    @calls      fill_iso
@@ -253,7 +253,7 @@ static void fill_iso(struct bhole *b, int n)
 
 @@*/
 static CCTK_REAL eval_bh_psi(const struct bhole *b,
-			     CCTK_REAL x, CCTK_REAL y, CCTK_REAL z)
+                             CCTK_REAL x, CCTK_REAL y, CCTK_REAL z)
 {
   int i;
   CCTK_REAL res;
