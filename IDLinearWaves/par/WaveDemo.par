@@ -12,11 +12,11 @@
 #
 #------------------------------------------------------------------------------
 
-!DESC "Evolution of Gravitation Waves: Demo"
+!DESC "Evolution of Linearized Gravitational Waves: Demo"
 
 # These thorns must be compiled
 
-ActiveThorns = "einstein time adm iobasic ioutil ioascii pugh pughslab pughreduce cartgrid3d boundary idlinearwaves"
+ActiveThorns = "admbase admmacros admanalysis coordgauge staticconformal time adm iobasic ioutil ioascii pugh pughslab pughreduce cartgrid3d boundary idlinearwaves"
 
 #------------------------------------------------------------------------------
 
@@ -31,9 +31,9 @@ cactus::cctk_final_time    = 4.0
 # What to output and when
 
 iobasic::outinfo_every     = 10
-iobasic::outinfo_vars      = "einstein::grr"
+iobasic::outinfo_vars      = "ADMAnalysis::grr"
 ioascii::out1d_every       = 10
-ioascii::out1d_vars        ="einstein::grr einstein::alp"
+ioascii::out1d_vars        = "ADMAnalysis::grr ADMBase::alp"
 
 #------------------------------------------------------------------------------
 # 
@@ -48,14 +48,14 @@ grid::xyzmax               =  3.0
 
 time::dtfac                = 0.25 
 
-einstein::evolution_system = "ADM"
+ADMBase::evolution_method  = "ADM"
 
 adm::method                = "stagleap"
 adm::bound                 = "radiative"
 adm::harmonic_f            = 2
 
-einstein::slicing          = "1+log"     
-einstein::initial_data     = "teukwaves"
+ADMBase::lapse_evolution_method = "1+log"     
+ADMBase::initial_data           = "teukwaves"
 
 idlinearwaves::mvalue      = 2          
 idlinearwaves::parity      = "even"     
@@ -65,5 +65,3 @@ idlinearwaves::wavecenter  = 0.
 idlinearwaves::wavelength  = 2.
 
 IO::out_dir                 = "WaveDemo"
-
-
