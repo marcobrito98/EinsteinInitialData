@@ -7,6 +7,7 @@ This directory contains the main top-level files for thorn Exact.
 
 There are subdirectories
 include/	include files
+		(n.b. all the code for the stress-energy tensor lives here)
 metrics/	individual 4-metrics for the various models
 
 

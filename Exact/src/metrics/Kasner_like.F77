@@ -15,30 +15,39 @@ C $Header$
      $     gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $     gutt, gutx, guty, gutz, 
      $     guxx, guyy, guzz, guxy, guyz, guzx,
-     $     psi)
+     $     psi, Tmunu_flag)
 
       implicit none
 
       DECLARE_CCTK_PARAMETERS
 
+c input arguments
       CCTK_REAL x, y, z, t
+
+c output arguments
       CCTK_REAL gdtt, gdtx, gdty, gdtz, 
      $       gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $       gutt, gutx, guty, gutz, 
-     $       guxx, guyy, guzz, guxy, guyz, guzx,
-     $       psi
+     $       guxx, guyy, guzz, guxy, guyz, guzx
+      CCTK_REAL psi
+      LOGICAL   Tmunu_flag
 
+c local static variables
       logical firstcall
-    
-      CCTK_REAL qq,a1,a3
-
       data firstcall /.true./
       save firstcall, qq
+
+c local variables
+      CCTK_REAL qq,a1,a3
+ 
+c this model sets the stress-energy tensor in the "CalcTmunu" code
+      Tmunu_flag = .true.
+
       if (firstcall) then
           qq = Kasner_like__q
           firstcall = .false.
       end if
- 
+
       a1= t**(2.d0*qq)
       a3= t**(2.d0-4.d0*qq)    
 

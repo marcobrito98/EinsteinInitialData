@@ -95,6 +95,25 @@ KEYWORD overwrite_boundary "Overwrite g and K on the boundary"
 } "no"
 
 ################################################################################
+##### parameters for boosting any non-stress-energy-tensor model ###############
+################################################################################
+
+private:
+
+REAL boost_vx "x component of boost velocity"
+{
+*:* :: "any real number"
+} 0.0
+REAL boost_vy "y component of boost velocity"
+{
+*:* :: "any real number"
+} 0.0
+REAL boost_vz "z component of boost velocity"
+{
+*:* :: "any real number"
+} 0.0
+
+################################################################################
 ##### general comments #########################################################
 ################################################################################
 

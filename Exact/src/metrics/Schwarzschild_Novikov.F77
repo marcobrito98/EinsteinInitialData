@@ -15,40 +15,44 @@ C $Header$
      $     gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $     gutt, gutx, guty, gutz, 
      $     guxx, guyy, guzz, guxy, guyz, guzx,
-     $     psi)
+     $     psi, Tmunu_flag)
 
       implicit none
 
       DECLARE_CCTK_PARAMETERS
 
-c     Input.
-
+c input arguments
       CCTK_REAL x, y, z, t
 
-c     Output.
-
+c output arguments
       CCTK_REAL gdtt, gdtx, gdty, gdtz, 
      $       gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $       gutt, gutx, guty, gutz, 
-     $       guxx, guyy, guzz, guxy, guyz, guzx,
-     $       psi
+     $       guxx, guyy, guzz, guxy, guyz, guzx
+      CCTK_REAL psi
+      LOGICAL   Tmunu_flag
 
-c     Internal.
+c local static variables
       logical firstcall
-
       CCTK_REAL eps, mass
-
       data firstcall /.true./
       save firstcall, eps, mass
 
+c local variables
       CCTK_REAL radius
       CCTK_REAL r,c,psi4
-      CCTK_REAL zero,one,two
 
       CCTK_REAL nov_dr_drmax, nov_rmax, nov_r
       CCTK_REAL grr, gqq, detg
 
       CCTK_REAL psi4_o_r2
+
+c constants
+      CCTK_REAL zero,one,two
+      parameter (zero=0.0d0, one=1.0d0, two=2.0d0)
+
+C This is a vacuum spacetime with no cosmological constant
+      Tmunu_flag = .false.
 
 C     Get parameters of the exact solution.
 
@@ -62,12 +66,6 @@ C     Get parameters of the exact solution.
       end if
 
       r = max(sqrt(x**2 + y**2 + z**2), eps)
-
-c     Find {zero,one,two}.
-
-      zero = 0.0D0
-      one  = 1.0D0
-      two  = 2.0D0
 
 c     Find r.
       r = dsqrt(x**2 + y**2 + z**2)

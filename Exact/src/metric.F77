@@ -1,5 +1,6 @@
 c This subroutine calculates the 4-metric and its inverse at an event,
-c by decoding  decoded_exact_model  and calling the appropriate subroutine
+c for a given model, by decoding  decoded_exact_model  and calling the
+c appropriate subroutine for that model.
 C $Header$
 
 #include "cctk.h"
@@ -8,13 +9,14 @@ C $Header$
 
 #include "param_defs.inc"
 
-      subroutine Exact__metric(
+      subroutine Exact__metric_for_model(
      $     decoded_exact_model,
      $     x, y, z, t,
      $     gdtt, gdtx, gdty, gdtz,
      $     gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $     gutt, gutx, guty, gutz,
-     $     guxx, guyy, guzz, guxy, guyz, guxz, psi, rama)
+     $     guxx, guyy, guzz, guxy, guyz, guxz,
+     $     psi, Tmunu_flag, rama)
 
       implicit none
       DECLARE_CCTK_FUNCTIONS
@@ -25,7 +27,10 @@ c arguments
      $     gdtt, gdtx, gdty, gdtz,
      $     gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $     gutt, gutx, guty, gutz,
-     $     guxx, guyy, guzz, guxy, guyz, guxz, psi, rama
+     $     guxx, guyy, guzz, guxy, guyz, guxz
+      CCTK_REAL psi
+      LOGICAL   Tmunu_flag
+      CCTK_REAL rama
 
 c local variables
       character*100 warn_buffer
@@ -43,7 +48,7 @@ c
      $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz,
-     $        psi)
+     $        psi, Tmunu_flag)
 
       elseif (decoded_exact_model .eq. EXACT__Minkowski_shift) then
          call Exact__Minkowski_shift(
@@ -52,7 +57,7 @@ c
      $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz,
-     $        psi)
+     $        psi, Tmunu_flag)
 
       elseif (decoded_exact_model .eq. EXACT__Minkowski_funny) then
          call Exact__Minkowski_funny(
@@ -61,7 +66,7 @@ c
      $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz,
-     $        psi)
+     $        psi, Tmunu_flag)
 
       elseif (decoded_exact_model .eq. EXACT__Minkowski_gauge_wave) then
          call Exact__Minkowski_gauge_wave(
@@ -70,7 +75,7 @@ c
      $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz,
-     $        psi)
+     $        psi, Tmunu_flag)
 
       elseif (decoded_exact_model .eq. EXACT__Minkowski_conf_wave) then
          call Exact__Minkowski_conf_wave(
@@ -79,7 +84,7 @@ c
      $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz,
-     $        psi)
+     $        psi, Tmunu_flag)
 
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
@@ -94,7 +99,7 @@ c
      $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz,
-     $        psi)
+     $        psi, Tmunu_flag)
 
       elseif (decoded_exact_model .eq. EXACT__Schwarzschild_PG) then
          call Exact__Schwarzschild_PG(
@@ -103,7 +108,7 @@ c
      $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz,
-     $        psi)
+     $        psi, Tmunu_flag)
 
       elseif (decoded_exact_model .eq. EXACT__Schwarzschild_Novikov) then
          call Exact__Schwarzschild_Novikov(x,y,z,t,
@@ -111,7 +116,7 @@ c
      $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz,
-     $        psi)
+     $        psi, Tmunu_flag)
 
       elseif (decoded_exact_model .eq. EXACT__Kerr_BoyerLindquist) then
          call Exact__Kerr_BoyerLindquist(
@@ -120,7 +125,7 @@ c
      $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz,
-     $        psi)
+     $        psi, Tmunu_flag)
 
       elseif (decoded_exact_model .eq. EXACT__Kerr_KerrSchild) then
          call Exact__Kerr_KerrSchild(
@@ -129,7 +134,7 @@ c
      $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz,
-     $        psi)
+     $        psi, Tmunu_flag)
 
       elseif (decoded_exact_model .eq. EXACT__Schwarzschild_Lemaitre) then
          call Exact__Schwarzschild_Lemaitre(
@@ -138,7 +143,7 @@ c
      $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz,
-     $        psi)
+     $        psi, Tmunu_flag)
 
       elseif (decoded_exact_model .eq. EXACT__multi_BH) then
          call Exact__multi_BH(
@@ -147,7 +152,7 @@ c
      $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz,
-     $        psi)
+     $        psi, Tmunu_flag)
 
 c
 c not fully implemented yet -- see Nina Jansen for details
@@ -159,7 +164,7 @@ c    $        gdtt, gdtx, gdty, gdtz,
 c    $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
 c    $        gutt, gutx, guty, gutz,
 c    $        guxx, guyy, guzz, guxy, guyz, guxz,
-c    $        psi)
+c    $        psi, Tmunu_flag)
 c
 
       elseif (decoded_exact_model .eq. EXACT__Thorne_fakebinary) then
@@ -169,7 +174,7 @@ c
      $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz,
-     $        psi)
+     $        psi, Tmunu_flag)
 
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
@@ -184,7 +189,7 @@ c
      $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz,
-     $        psi)
+     $        psi, Tmunu_flag)
 
       elseif (decoded_exact_model .eq. EXACT__Robertson_Walker) then
          call Exact__Robertson_Walker(
@@ -192,7 +197,8 @@ c
      $        gdtt, gdtx, gdty, gdtz,
      $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz,
-     $        guxx, guyy, guzz, guxy, guyz, guxz, psi, rama)
+     $        guxx, guyy, guzz, guxy, guyz, guxz,
+     $        psi, Tmunu_flag, rama)
 
       elseif (decoded_exact_model .eq. EXACT__de_Sitter) then
          call Exact__de_Sitter(
@@ -201,7 +207,7 @@ c
      $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz,
-     $        psi)
+     $        psi, Tmunu_flag)
 
       elseif (decoded_exact_model .eq. EXACT__de_Sitter_Lambda) then
          call Exact__de_Sitter_Lambda(
@@ -210,7 +216,7 @@ c
      $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz,
-     $        psi)
+     $        psi, Tmunu_flag)
 
       elseif (decoded_exact_model .eq. EXACT__anti_de_Sitter_Lambda) then
          call Exact__anti_de_Sitter_Lambda(
@@ -219,7 +225,7 @@ c
      $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz,
-     $        psi)
+     $        psi, Tmunu_flag)
 
       elseif (decoded_exact_model .eq. EXACT__Bianchi_I) then
          call Exact__Bianchi_I(
@@ -228,7 +234,7 @@ c
      $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz,
-     $        psi)
+     $        psi, Tmunu_flag)
 
       elseif (decoded_exact_model .eq. EXACT__Goedel) then
          call Exact__Goedel(
@@ -237,7 +243,7 @@ c
      $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz,
-     $        psi)
+     $        psi, Tmunu_flag)
 
       elseif (decoded_exact_model .eq. EXACT__Bertotti) then
          call Exact__Bertotti(
@@ -246,7 +252,7 @@ c
      $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz,
-     $        psi)
+     $        psi, Tmunu_flag)
 
       elseif (decoded_exact_model .eq. EXACT__Kasner_like) then
          call Exact__Kasner_like(
@@ -255,7 +261,7 @@ c
      $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz,
-     $        psi)
+     $        psi, Tmunu_flag)
 
       elseif (decoded_exact_model .eq. EXACT__Kasner_axisymmetric) then
          call Exact__Kasner_axisymmetric(
@@ -264,7 +270,7 @@ c
      $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz,
-     $        psi)
+     $        psi, Tmunu_flag)
 
       elseif (decoded_exact_model .eq. EXACT__Kasner_generalized) then
          call Exact__Kasner_generalized(
@@ -273,7 +279,7 @@ c
      $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz,
-     $        psi)
+     $        psi, Tmunu_flag)
 
       elseif (decoded_exact_model .eq. EXACT__Gowdy_wave) then
          call Exact__Gowdy_wave(
@@ -282,7 +288,7 @@ c
      $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz,
-     $        psi)
+     $        psi, Tmunu_flag)
 
       elseif (decoded_exact_model .eq. EXACT__Milne) then
          call Exact__Milne(
@@ -291,7 +297,7 @@ c
      $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz,
-     $        psi)
+     $        psi, Tmunu_flag)
 
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
@@ -306,7 +312,7 @@ c
      $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz,
-     $        psi)
+     $        psi, Tmunu_flag)
 
       elseif (decoded_exact_model .eq. EXACT__bowl) then
          call Exact__bowl(
@@ -315,7 +321,7 @@ c
      $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz,
-     $        psi)
+     $        psi, Tmunu_flag)
 
       elseif (decoded_exact_model .eq. EXACT__constant_density_star) then
          call Exact__constant_density_star(
@@ -324,7 +330,7 @@ c
      $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz,
-     $        psi)
+     $        psi, Tmunu_flag)
 
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 

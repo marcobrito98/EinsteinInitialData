@@ -58,43 +58,46 @@ c $Header$
      $     gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $     gutt, gutx, guty, gutz, 
      $     guxx, guyy, guzz, guxy, guyz, guzx,
-     $     psi)
+     $     psi, Tmunu_flag)
 
       implicit none
 
       DECLARE_CCTK_PARAMETERS
       DECLARE_CCTK_FUNCTIONS
 
-c     Input.
+c input arguments
       CCTK_REAL x, y, z, t
 
-c     Output.
+c output arguments
       CCTK_REAL gdtt, gdtx, gdty, gdtz, 
      $          gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $          gutt, gutx, guty, gutz, 
-     $          guxx, guyy, guzz, guxy, guyz, guzx,
-     $          psi
+     $          guxx, guyy, guzz, guxy, guyz, guzx
+      CCTK_REAL psi
+      LOGICAL   Tmunu_flag
 
+c local static variables
       logical firstcall,evolve
-
-      integer type
-
       CCTK_REAL a,c,s
       CCTK_REAL dx,dy,dz
-      CCTK_REAL r,r2,rr2
-      CCTK_REAL xr,yr,zr,xr2,yr2,zr2
-      CCTK_REAL fac,det
-      CCTK_REAL tfac,st,t0
-      CCTK_REAL zero,one,two
-
+      CCTK_REAL t0,st
       data firstcall /.true./
       save firstcall,evolve,type,a,c,s,dx,dy,dz,t0,st
 
-c     Find {zero,one,two}.
+c local variables
+      integer type
 
-      zero = 0.0d0
-      one  = 1.0d0
-      two  = 2.0d0
+      CCTK_REAL r,r2,rr2
+      CCTK_REAL xr,yr,zr,xr2,yr2,zr2
+      CCTK_REAL fac,det
+      CCTK_REAL tfac
+
+c constants
+      CCTK_REAL zero,one,two
+      parameter (zero=0.0d0, one=1.0d0, two=2.0d0)
+
+C This is a vacuum spacetime with no cosmological constant
+      Tmunu_flag = .false.
 
 c     Get parameters of the metric.
 

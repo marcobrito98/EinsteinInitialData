@@ -12,30 +12,35 @@ C $Header$
      $     gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $     gutt, gutx, guty, gutz, 
      $     guxx, guyy, guzz, guxy, guyz, guzx,
-     $     psi)
+     $     psi, Tmunu_flag)
 
       implicit none
 
       DECLARE_CCTK_PARAMETERS
 
-
+c input arguments
       CCTK_REAL x, y, z, t
-      logical firstcall
 
-      CCTK_REAL m1,m2,b
-
-      data firstcall /.true./
-
-      save firstcall, m1,m2,b
-
+c output arguments
       CCTK_REAL gdtt, gdtx, gdty, gdtz, 
      $       gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $       gutt, gutx, guty, gutz, 
-     $       guxx, guyy, guzz, guxy, guyz, guzx,
-     $       psi
+     $       guxx, guyy, guzz, guxy, guyz, guzx
+      CCTK_REAL psi
+      LOGICAL   Tmunu_flag
 
+c static locals
+      logical firstcall
+      CCTK_REAL m1,m2,b
+      data firstcall /.true./
+      save firstcall, m1,m2,b
 
+c locals
       CCTK_REAL rin1,rin2,rout,x1,x2, r1, r2, r3, results(10)
+
+C this is a vacuum solution with no cosmological constant
+C ==> it doesn't set the stress-energy tensor
+      Tmunu_flag = .false.
 
       if (firstcall) then
          m1 = Alvi__mass1

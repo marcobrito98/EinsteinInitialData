@@ -25,32 +25,40 @@ c $Header$
      $     gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $     gutt, gutx, guty, gutz, 
      $     guxx, guyy, guzz, guxy, guyz, guzx,
-     $     psi)
+     $     psi, Tmunu_flag)
 
       implicit none
 
       DECLARE_CCTK_PARAMETERS
 
-c     Input.
+c input arguments
       CCTK_REAL x, y, z, t
 
-c     Output.
+c output arguments
       CCTK_REAL gdtt, gdtx, gdty, gdtz, 
      $       gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $       gutt, gutx, guty, gutz, 
-     $       guxx, guyy, guzz, guxy, guyz, guzx,
-     $       psi
+     $       guxx, guyy, guzz, guxy, guyz, guzx
+      CCTK_REAL psi
+      LOGICAL   Tmunu_flag
 
+c local static variables
       logical firstcall
-
-      CCTK_REAL kt_r, kt_aa, kt_omega
-      CCTK_REAL one,zero
       CCTK_REAL kt_xbh(10),kt_ybh(10),kt_zbh(10),kt_mbh(10)
-
-      integer i
-
       data firstcall /.true./
       save firstcall,kt_xbh,kt_ybh,kt_zbh,kt_mbh
+
+c local variables
+      CCTK_REAL kt_r, kt_aa, kt_omega
+      integer i
+
+c constants
+      CCTK_REAL zero,one
+      parameter (zero=0.0d0, one=1.0d0)
+
+C This model doesn't set the stress-energy tensor
+C FIXME: should it?  I.e. isn't there a nonzero Maxwell tensor here?
+      Tmunu_flag = .false.
 
 c     Get parameters of the exact solution.
 
@@ -96,9 +104,6 @@ c     Get parameters of the exact solution.
          firstcall = .false.
 
       end if
-
-      one =1.0
-      zero=0.0 
 
       kt_aa=exp(multi_BH__Hubble*t)
       kt_omega=1.0

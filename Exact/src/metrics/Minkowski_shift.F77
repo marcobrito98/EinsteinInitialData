@@ -22,37 +22,34 @@ c $Header$
      $     gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $     gutt, gutx, guty, gutz, 
      $     guxx, guyy, guzz, guxy, guyz, guzx,
-     $     psi)
+     $     psi, Tmunu_flag)
 
       implicit none
 
       DECLARE_CCTK_PARAMETERS
 
-c     Input.
-
+c input arguments
       CCTK_REAL x,y,z,t
 
-c     Output.
-
+c output arguments
       CCTK_REAL gdtt, gdtx, gdty, gdtz, 
      $          gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $          gutt, gutx, guty, gutz, 
-     $          guxx, guyy, guzz, guxy, guyz, guzx,
-     $          psi
+     $          guxx, guyy, guzz, guxy, guyz, guzx
+      CCTK_REAL psi
+      LOGICAL   Tmunu_flag
 
-
-c     Internal.
-
+c local variables
       CCTK_REAL a,s
       CCTK_REAL r,r2,x2,y2,z2
       CCTK_REAL f,fp,fpr,fpr2
+
+c constants
       CCTK_REAL zero,one,two
+      parameter (zero=0.0d0, one=1.0d0, two=2.0d0)
 
-c     Define numbers.
-
-      zero = 0.0d0
-      one  = 1.0d0
-      two  = 2.0d0
+c This is a vacuum spacetime with no cosmological constant
+      Tmunu_flag = .false.
 
 c     Read parameters
 

@@ -54,6 +54,8 @@ The new code added in the June 2002 revisions to this thorn
    is copyright (C) 2001-2002 by Jonathan Thornburg <jthorn@aei.mpg.de>
 Minkowski_conf_wave and the conformal factor code added in January 2003
    is copyright (C) 2003 by Frank Loeffler <frank.loeffler@aei.mpg.de>
+Option to boost any non-stress-energy-tensor model
+   is copyright (C) 2003 by Jonathan Thornburg <jthorn@aei.mpg.de>
 
 This code is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

@@ -11,29 +11,39 @@ c $Header$
      $     gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $     gutt, gutx, guty, gutz, 
      $     guxx, guyy, guzz, guxy, guyz, guzx,
-     $     psi)
+     $     psi, Tmunu_flag)
 
       implicit none
 
       DECLARE_CCTK_PARAMETERS
 
-      CCTK_REAL x, y, z, t,
-     $    gdtt, gdtx, gdty, gdtz, 
-     $    gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
-     $    gutt, gutx, guty, gutz, 
-     $    guxx, guyy, guzz, guxy, guyz, guzx,
-     $    psi
+c input arguments
+      CCTK_REAL x, y, z, t
+
+c output arguments
+      CCTK_REAL gdtt, gdtx, gdty, gdtz,
+     $       gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
+     $       gutt, gutx, guty, gutz,
+     $       guxx, guyy, guzz, guxy, guyz, guzx
+      CCTK_REAL psi
+      LOGICAL   Tmunu_flag
+
+c functions local to this file
+      CCTK_REAL gfunc
+
+c local variables
       CCTK_REAL a, b, mu0, mu1, lam1, mu2, lam2,
      $    lam3, mu4, lam4, mu5, lam5, num, div, f,
-     $    elam, emu0, delta, gfunc, tmp
-      CCTK_REAL h, d, numlim
+     $    elam, emu0, delta, tmp
 
-      external gfunc
-
+c local static variables
       logical firstcall
-
+      CCTK_REAL h, d, numlim
       data firstcall /.true./
       save firstcall, h, d, numlim
+
+C This is a vacuum spacetime with no cosmological constant
+      Tmunu_flag = .false.
 
 C     Get parameters of the exact solution.
 
@@ -141,13 +151,13 @@ ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 C     Calculates g = [exp (x f) - 1] / x as a power series for small x, 
 C     so that the expression is regular at x = 0.
 
-      function gfunc(x, f)
+      CCTK_REAL function gfunc(x, f)
     
       implicit none
 
       integer n
 
-      CCTK_REAL x, f, gfunc
+      CCTK_REAL x, f
       CCTK_REAL sum, tmp
 
       if (abs(x*f) .ge. 1.d-6) then

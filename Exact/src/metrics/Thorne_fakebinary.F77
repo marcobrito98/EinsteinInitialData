@@ -16,28 +16,26 @@ C $Header$
      $     gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $     gutt, gutx, guty, gutz, 
      $     guxx, guyy, guzz, guxy, guyz, guxz,
-     $     psi)
+     $     psi, Tmunu_flag)
 
       implicit none
       DECLARE_CCTK_PARAMETERS
       DECLARE_CCTK_FUNCTIONS
 
-C     input
+c input arguments
       CCTK_REAL x, y, z, t
 
-C     output
+c output arguments
       CCTK_REAL gdtt, gdtx, gdty, gdtz, 
      $       gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $       gutt, gutx, guty, gutz, 
-     $       guxx, guyy, guzz, guxy, guyz, guxz,
-     $       psi
+     $       guxx, guyy, guzz, guxy, guyz, guxz
+      CCTK_REAL psi
+      LOGICAL   Tmunu_flag
 
-C     static
-
+c local variables
       logical firstcall
-
       CCTK_REAL eps, m, a0, Omega0, bround, atype, aretarded
-
       data firstcall /.true./
       save firstcall, eps, m, a0, Omega0, bround, atype, aretarded
 
@@ -47,10 +45,12 @@ C     temps
       CCTK_REAL rho, r, sinp, cosp, phi, sint, cost, tx, ty, tz, px, py, pz
       CCTK_REAL a2, b2, bx, by, bz, detgd
 
+C This is a vacuum spacetime with no cosmological constant
+      Tmunu_flag = .false.
+
 C     get parameters of the exact solution.
 
       if (firstcall) then
-
          firstcall = .false.
 
          eps = Thorne_fakebinary__epsilon
@@ -76,7 +76,6 @@ C     get parameters of the exact solution.
          else
             aretarded = 0.d0
          endif
-
       end if
 
 C     spherical coordinates

@@ -1,7 +1,7 @@
 ************************************************
 ***** How to Add a New Model to this Thorn *****
 ************************************************
-$Header: /usr/local/svn/cvs-repositories/numrelcvs/AEIThorns/Exact/doc/how_to_add_a_new_model,v 1.4 2003-01-28 15:04:14 knarf Exp $
+$Header: /usr/local/svn/cvs-repositories/numrelcvs/AEIThorns/Exact/doc/how_to_add_a_new_model,v 1.5 2003-05-23 16:35:44 jthorn Exp $
 
 A general note:  Please keep the sections for various models in the
 same order in all the files.  This makes it _much_ easier for people
@@ -22,6 +22,11 @@ Then you need to modify...
 	gr-qc and/or well-known books.  Please also explain the physics
 	meanings of all the parameters -- users should *not* have to look
 	at your source code to figure out what a given parameter means!
+  README
+	Add a line or two giving the copyright status of your new code.
+	You can either put this in one of the existing licensing sections,
+	or create a new licensing section and add your copyright information
+	there.
   param.ccl:
 	Add the new model's character-string name as another possible value
 	for the exact_model parameter.
@@ -48,10 +53,14 @@ Then you need to modify...
 	It's probably easiest to start with a copy of an existing file and
 	modify it to compute your new metric -- that will help you get all
 	the "boilerplate" code right.
-  One additional information about the conformal factor which is passed
-  to the function: It is preset to 1.0 or 0.0 according to the fact if
-  it is wanted or not. If you want to have a physical metric, just do not
-  change it.
+	Please put a comment at the top of the file giving your name,
+	a copyright line, and the licensing status of the file (GPL, LGPL,
+	GPL-with-the-usual-Cactus-exemption-for-linking-with-non-GPL-thorns,
+	top-secret-you-can-look-at-it-but-then-we-have-to-shoot-you, whatever).
+	One additional information about the conformal factor which is passed
+	to the function: It is preset to 1.0 or 0.0 according to the fact if
+	it is wanted or not. If you want to have a physical metric, just do not
+	change it.
   src/metrics/make.code.defn:
 	Add the new file name to the list of files to be compiled.
 

@@ -13,22 +13,26 @@ C $Header$
      $     gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $     gutt, gutx, guty, gutz, 
      $     guxx, guyy, guzz, guxy, guyz, guzx,
-     $     psi)
+     $     psi, Tmunu_flag)
 
       implicit none
 
-c     Input.
-
+c input arguments
       CCTK_REAL x, y, z, t
 
-c     Output.
-
+c output arguments
       CCTK_REAL gdtt, gdtx, gdty, gdtz, 
      $       gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $       gutt, gutx, guty, gutz, 
-     $       guxx, guyy, guzz, guxy, guyz, guzx,
-     $       psi,
-     $       coef, x2,y2,z2,t2
+     $       guxx, guyy, guzz, guxy, guyz, guzx
+      CCTK_REAL psi
+      LOGICAL   Tmunu_flag
+
+c local variables
+      CCTK_REAL coef, x2,y2,z2,t2
+
+C This is a vacuum spacetime with no cosmological constant
+      Tmunu_flag = .false.
 
       x2= x*x
       y2= y*y

@@ -11,30 +11,40 @@ C $Header$
      $     gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $     gutt, gutx, guty, gutz, 
      $     guxx, guyy, guzz, guxy, guyz, guzx,
-     $     psi)
+     $     psi, Tmunu_flag)
 
       implicit none
 
       DECLARE_CCTK_PARAMETERS
 
+c input arguments
       CCTK_REAL x, y, z, t
+
+c output arguments
       CCTK_REAL gdtt, gdtx, gdty, gdtz, 
      $       gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $       gutt, gutx, guty, gutz, 
-     $       guxx, guyy, guzz, guxy, guyz, guzx,
-     $       psi
+     $       guxx, guyy, guzz, guxy, guyz, guzx
+      CCTK_REAL psi
+      LOGICAL   Tmunu_flag
 
+c static local variables
       logical firstcall
-    
-      CCTK_REAL baza, unu, doi
-
       data firstcall /.true./
       save firstcall, baza
+
+c local variables
+      CCTK_REAL baza
+      CCTK_REAL unu, doi
+ 
+C this model has a cosmological constant
+C ==> it sets the stress-energy tensor in the "CalcTmunu" code
+      Tmunu_flag = .true.
+
       if (firstcall) then
           baza = Bertotti__Lambda
           firstcall = .false.
       end if
- 
 
       unu=exp(2.0D0*dsqrt(-baza)*x)
       doi=exp(2.0D0*dsqrt(-baza)*z)   

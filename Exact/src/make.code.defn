@@ -13,6 +13,8 @@ SRCS = ParamCheck.c			\
 					\
        gauge.F77			\
        Bona_Masso_data.F77		\
+					\
+       boost.F77			\
        metric.F77			\
 					\
        boundary.F77			\

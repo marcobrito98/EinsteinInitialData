@@ -13,32 +13,38 @@ c $Header$
      $     gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $     gutt, gutx, guty, gutz, 
      $     guxx, guyy, guzz, guxy, guyz, guzx,
-     $     psi)
+     $     psi, Tmunu_flag)
 
       implicit none
       DECLARE_CCTK_PARAMETERS
       DECLARE_CCTK_FUNCTIONS
 
+c input arguments
       CCTK_REAL x, y, z, t
+
+c output arguments
       CCTK_REAL gdtt, gdtx, gdty, gdtz, 
      $       gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $       gutt, gutx, guty, gutz, 
-     $       guxx, guyy, guzz, guxy, guyz, guzx,
-     $       psi
+     $       guxx, guyy, guzz, guxy, guyz, guzx
+      CCTK_REAL psi
+      LOGICAL   Tmunu_flag
 
+c local static variables
       logical firstcall
-
-      CCTK_REAL a, o, H, d, fs
-      CCTK_REAL zero,half,one
-
+      CCTK_REAL a, o, d, fs
       data firstcall /.true./
       save firstcall, a, o, d, fs
 
-C     Numbers.
+c local variables
+      CCTK_REAL H
 
-      zero = 0.0d0
-      half = 0.5d0
-      one  = 1.0d0
+c constants
+      CCTK_REAL zero,half,one
+      parameter (zero = 0.0d0, half=0.5d0, one=1.0d0)
+
+C This is a vacuum spacetime with no cosmological constant
+      Tmunu_flag = .false.
 
 C     Get parameters of the exact solution.
 

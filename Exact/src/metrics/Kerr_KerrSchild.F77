@@ -13,27 +13,33 @@ C $Header$
      $     gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $     gutt, gutx, guty, gutz, 
      $     guxx, guyy, guzz, guxy, guyz, guzx,
-     $     psi)
+     $     psi, Tmunu_flag)
 
       implicit none
 
       DECLARE_CCTK_PARAMETERS
       DECLARE_CCTK_FUNCTIONS
 
+c input arguments
       CCTK_REAL x, y, z, t
+
+c output arguments
       CCTK_REAL gdtt, gdtx, gdty, gdtz, 
      $       gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $       gutt, gutx, guty, gutz, 
-     $       guxx, guyy, guzz, guxy, guyz, guzx,
-     $       psi
+     $       guxx, guyy, guzz, guxy, guyz, guzx
+      CCTK_REAL psi
+      LOGICAL   Tmunu_flag
 
-      CCTK_REAL gamma, t0, z0, x0, y0, rho02, r02, r0, costheta0, 
-     $     lt0, lx0, ly0, lz0, hh, lt, lx, ly, lz
-
+c local static variables
       logical firstcall
       CCTK_REAL boostv, eps, m, a
       data firstcall /.true./
       save firstcall, boostv, eps, m, a
+
+c local variables
+      CCTK_REAL gamma, t0, z0, x0, y0, rho02, r02, r0, costheta0, 
+     $     lt0, lx0, ly0, lz0, hh, lt, lx, ly, lz
 
       integer R02_TOO_SMALL_WARN_LEVEL
       parameter (R02_TOO_SMALL_WARN_LEVEL = 2)
@@ -41,6 +47,9 @@ C $Header$
       character*100 warn_buffer
 
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+
+C This is a vacuum spacetime with no cosmological constant
+      Tmunu_flag = .false.
 
 C     Get parameters of the exact solution,
 C     and convert from parameter file spin parameter J/m^2

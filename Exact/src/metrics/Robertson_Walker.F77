@@ -13,27 +13,39 @@ C $Header$
      $     gdtt, gdtx, gdty, gdtz, 
      $     gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $     gutt, gutx, guty, gutz, 
-     $     guxx, guyy, guzz, guxy, guyz, guzx, psi, rama)
+     $     guxx, guyy, guzz, guxy, guyz, guzx,
+     $     psi, Tmunu_flag,
+     $     rama)
 
       implicit none
 
       DECLARE_CCTK_PARAMETERS
       DECLARE_CCTK_FUNCTIONS      
 
-
+c input arguments
       CCTK_REAL x, y, z, t
+
+c output arguments
       CCTK_REAL gdtt, gdtx, gdty, gdtz, 
      $       gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $       gutt, gutx, guty, gutz, 
-     $       guxx, guyy, guzz, guxy, guyz, guzx, psi, rama
-      
+     $       guxx, guyy, guzz, guxy, guyz, guzx
+      CCTK_REAL psi
+      LOGICAL   Tmunu_flag
+      CCTK_REAL rama
 
+c local static variables
       logical firstcall
-    
-      CCTK_REAL r2,x2,y2,z2,am,ag, kapa
-
+      CCTK_REAL kapa
       data firstcall /.true./
       save firstcall, kapa
+
+c local variables
+      CCTK_REAL r2,x2,y2,z2,am,ag
+
+C This model may set the stress-energy tensor
+      Tmunu_flag = .true.
+
       if (firstcall) then
           kapa = Robertson_Walker__k
           firstcall = .false.

@@ -98,10 +98,11 @@
 % Add all definitions used in this documentation here 
 %   \def\mydef etc
 
+\def\thorn#1{{\bf #1}}
+\def\defn#1{{\bf #1}}
+
 % force a line break in a itemize/description/enumerate environment
 \def\forcelinebreak{\mbox{}\\[-\baselineskip]}
-
-\def\defn#1{{\bf #1}}
 
 \def\eg{e.g.\hbox{}}
 \def\ie{i.e.\hbox{}}
@@ -110,9 +111,11 @@
 \def\Nb{N.b.\hbox{}}
 
 % math stuff
+\def\dfrac#1#2{{\displaystyle\frac{#1}{#2}}}
+\def\tfrac#1#2{{\textstyle   \frac{#1}{#2}}}
 \def\diag{\text{diag}}
 \def\Gaussian{{\sf G}}
-\def\half{{\textstyle \frac{1}{2}}}
+\def\half{\tfrac{1}{2}}
 \def\sech{\text{sech}}
 
 % Add an abstract for this thorn's documentation
@@ -122,9 +125,10 @@ of exact spacetimes/coordinates, and even some non-Einstein
 spcetimes/coordinates.  It's easy to add more spacetimes/coordinates:
 all you have to supply is the 4-metric $g_{ab}$ and the inverse 4-metric
 $g^{ab}$ (this thorn automagically calculates all the ADM variables
-from these). Optionally, the ADM variables can be calculated on an
+from these).  Optionally, any 4-metric can be Lorentz-boosted in any
+direction.  As another option, the ADM variables can be calculated on an
 arbitrary slice through the spacetime, using arbitrary coordinates on
-the slice. Given a lapse and shift, the slice can be evolved through
+the slice.  Given a lapse and shift, the slice can be evolved through
 the exact solution, in order to check on an evolution code, or in
 order to test gauge conditions without the need for an evolution code.
 \end{abstract}
@@ -144,6 +148,12 @@ slice only.  However, setting\\
 makes this thorn set up the ADM variables at \verb|CCTK_PRESTEP|
 every time step of an evolution, so you get an exact {\em spacetime\/},
 not just a single slice.
+
+There is an option to Lorentz-boost any vacuum model
+(more precisely any model which doesn't set the stress-energy tensor;
+see table~\ref{AEIThorns/Exact/tab-all-models} and
+section~\ref{AEIThorns/Exact/sect-Lorentz-boosting-a-spacetime}
+for details) in any direction.
 
 There is also a more general option to set up the ADM variables
 on an arbitrary slice through the spacetime, using arbitrary
@@ -166,7 +176,8 @@ see the comments there for details.
 
 \subsection{Models Supported}
 
-The following models are currently supported:%%%
+Table~\ref{AEIThorns/Exact/tab-all-models} shows the models supported
+by thorn~\thorn{Exact}.%%%
 \footnote{%%%
 	 To add a new model, you have to modify a
 	 number of files in this thorn.  See the file
@@ -175,90 +186,110 @@ The following models are currently supported:%%%
 	 what to do.  Please follow the naming conventions
 	 given in the next subsection.
 	 }%%%
-\begin{description}
-\item[Minkowski spacetime]\forcelinebreak
-	\begin{description}
-	\item[{\tt "Minkowski"}]
-		Minkowski spacetime
-	\item[{\tt "Minkowski/shift"}]
-		Minkowski spacetime with time-dependent shift vector
-	\item[{\tt "Minkowski/funny"}]
-		Minkowski spacetime in non-trivial spatial coordinates
-	\item[{\tt "Minkowski/gauge wave"}]
-		Minkowski spacetime in gauge-wave coordinates
-	\item[{\tt "Minkowski/conf wave"}]
-		Minkowski spacetime with sinus in conformal factor
-	\end{description}
-\item[Black hole spacetimes]\forcelinebreak
-	\begin{description}
-	\item[{\tt "Schwarzschild/EF"}]
-		Schwarzschild spacetime in Eddington-Finkelstein coordinates
-	\item[{\tt "Schwarzschild/PG"}]
-		Schwarzschild spacetime in Painlev\'{e}-Gullstrand coordinates
-		(these have a flat 3-metric)
-	\item[{\tt "Schwarzschild/Novikov"}]
-		Schwarzschild spacetime in Novikov coordinates
-	\item[{\tt "Kerr/Boyer-Lindquist"}]
-		Kerr spacetime in Boyer-Lindquist coordinates
-	\item[{\tt "Kerr/Kerr-Schild"}]
-		Kerr spacetime in Kerr-Schild coordinates
-	\item[{\tt "Schwarzschild-Lemaitre"}]
-		Schwarzschild-Lemaitre spacetime
-		(Schwarzschild black hole with a cosmological constant)
-	\item[{\tt "multi-BH"}]
-		Majumdar-Papapetrou or Kastor-Traschen
-		maximally-charged (extreme Reissner-Nordstrom)
-		multi-BH solutions
-	\item[{\tt "Alvi"}]
-		Alvi post-Newtonian 2BH spacetime (not fully implemented yet)
-	\item[{\tt "Thorne-fakebinary"}]
-		Thorne's ``fake binary'' spacetime (non-Einstein)
-	\end{description}
-\item[Cosmological spacetimes]\forcelinebreak
-	\begin{description}
-	\item[{\tt "Lemaitre"}]
-		Lemaitre-type spacetime
-	\item[{\tt "Robertson-Walker"}]
-		Robertson-Walker spacetime
-	\item[{\tt "de Sitter"}]
-		de~Sitter spacetime
-	\item[{\tt "de Sitter+Lambda"}]
-		de~Sitter spacetime with cosmological constant
-	\item[{\tt "anti-de Sitter+Lambda"}]
-		anti-de~Sitter spacetime with cosmological constant
-	\item[{\tt "Bianchi I"}]
-		approximate Bianchi type~I spacetime
-	\item[{\tt "Goedel"}]
-		G\"{o}del spacetime
-	\item[{\tt "Bertotti"}]
-		Bertotti spacetime
-	\item[{\tt "Kasner"}]
-		Kasner-like spacetime
-	\item[{\tt "Kasner-axisymmetric"}]
-		axisymmetric Kasner spacetime
-	\item[{\tt "Kasner-generalized"}]
-		generalized Kasner spacetime
-	\item[{\tt "Milne"}]
-		Milne spacetime for pre-big-bang cosmology
-	\end{description}
-\item[Miscellaneous spacetimes]\forcelinebreak
-	\begin{description}
-	\item[{\tt "boost-rotation symmetric"}]
-		boost-rotation symmetric spacetime
-	\item[{\tt "bowl"}]
-		bowl (``bag of gold'') spacetime (non-Einstein)
-	\item[{\tt "constant density star"}]
-		constant density (Schwarzschild) star
-	\end{description}
-\end{description}
+{}  As a general policy, this thorn includes only cases where the full
+4-metric $g_{ab}$ (and its inverse, although we could dispense with
+that if needed) is known throughout the spacetime.  Cases where this
+is only known on one specific slice, should live in separate initial
+data thorns.
 
-As a general policy, this thorn includes only cases where the full
-4-metric $g_{ab}$ (and its inverse, although we could probably dispense
-with that if needed) is known throughout the spacetime.  Cases where
-this is only known on one specific slice, should live in separate
-initial data thorns.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[htbp]
+\begin{center}
+\hyphenpenalty=10000	% forbid hyphenation
+\begin{tabular}{@{\qquad}lcp{80mm}}
+Model Name
+	& $T_{\mu\nu}$?
+		& Description						\\
+\hline %----------------------------------------------------------------
+%
+\multicolumn{3}{l}{\bf Minkowski spacetime}				\\
+{\tt "Minkowski"}
+	& --	& Minkowski spacetime					\\
+{\tt "Minkowski/shift"}
+	& --	& Minkowski spacetime with time-dependent shift vector	\\
+{\tt "Minkowski/funny"}
+	& --	& Minkowski spacetime in non-trivial spatial coordinates\\
+{\tt "Minkowski/gauge wave"}
+	& --	& Minkowski spacetime in gauge-wave coordinates		\\
+{\tt "Minkowski/conf wave"}
+	& --	& Minkowski spacetime with $\sin$ in conformal factor	\\[1ex]
+%
+\multicolumn{3}{l}{\bf Black hole spacetimes}				\\
+{\tt "Schwarzschild/EF"}
+	& --	& Schwarzschild spacetime
+		  in Eddington-Finkelstein coordinates			\\
+{\tt "Schwarzschild/PG"}
+	& --	& Schwarzschild spacetime in Painlev\'{e}-Gullstrand
+		  coordinates (these have a flat 3-metric)		\\
+{\tt "Schwarzschild/Novikov"}
+	& --	& Schwarzschild spacetime in Novikov coordinates	\\
+{\tt "Kerr/Boyer-Lindquist"}
+	& --	& Kerr spacetime in Boyer-Lindquist coordinates		\\
+{\tt "Kerr/Kerr-Schild"}
+	& --	& Kerr spacetime in Kerr-Schild coordinates		\\
+{\tt "Schwarzschild-Lemaitre"}
+	& Yes	& Schwarzschild-Lemaitre spacetime (Schwarzschild
+		  black hole with a cosmological constant)		\\
+{\tt "multi-BH"}
+	& --	& Majumdar-Papapetrou or Kastor-Traschen
+		  maximally-charged (extreme Reissner-Nordstrom)
+		  multi-BH solutions					\\
+{\tt "Alvi"}
+	& --	& Alvi post-Newtonian 2BH spacetime
+		  (not fully implemented yet)				\\
+{\tt "Thorne-fakebinary"}
+	& --	& Thorne's ``fake binary'' spacetime (non-Einstein)	\\[1ex]
+%
+\multicolumn{3}{l}{\bf Cosmological spacetimes}				\\
+{\tt "Lemaitre"}
+	& Yes	& Lemaitre-type spacetime				\\
+{\tt "Robertson-Walker"}
+	& Yes	& Robertson-Walker spacetime				\\
+{\tt "de Sitter"}
+	& Yes	& de~Sitter spacetime					\\
+{\tt "de Sitter+Lambda"}
+	& Yes	& de~Sitter spacetime with cosmological constant	\\
+{\tt "anti-de Sitter+Lambda"}
+	& Yes	& anti-de~Sitter spacetime with cosmological constant	\\
+{\tt "Bianchi I"}
+	& --	& approximate Bianchi type~I spacetime			\\
+{\tt "Goedel"}
+	& --	& G\"{o}del spacetime					\\
+{\tt "Bertotti"}
+	& Yes	& Bertotti spacetime					\\
+{\tt "Kasner"}
+	& Yes	& Kasner-like spacetime					\\
+{\tt "Kasner-axisymmetric"}
+	& --	& axisymmetric Kasner spacetime				\\
+{\tt "Kasner-generalized"}
+	& Yes	& generalized Kasner spacetime				\\
+{\tt "Gowdy-wave"}
+	& --	& Gowdy metric (polarized wave in an expanding universe)\\
+{\tt "Milne"}
+	& --	& Milne spacetime for pre-big-bang cosmology		\\[1ex]
+%
+\multicolumn{3}{l}{\bf Miscellaneous spacetimes}			\\
+{\tt "boost-rotation symmetric"}
+	& --	& boost-rotation symmetric spacetime			\\
+{\tt "bowl"}
+	& --	& bowl (``bag of gold'') spacetime (non-Einstein)	\\
+{\tt "constant density star"}
+	& Yes	& constant density (Schwarzschild) star			%%%\\
+\end{tabular}
+\end{center}
+\caption{
+	This table shows all the models currently supported by
+	thorn \thorn{Exact}.  The $T_{\mu\nu}$ column shows which
+	models set the Cactus stress-energy tensor; as discussed in
+	section~\ref{AEIThorns/Exact/cosmological-constant+stress-energy-tensor}
+	this includes both all non-vacuum models and all models
+	with a cosmological constant.
+	}
+\label{AEIThorns/Exact/tab-all-models}
+\end{table}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Naming Conventions}
 
@@ -305,6 +336,7 @@ REAL Schwarzschild_EF__mass "Schwarzschild/EF: BH mass"
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{The Cosmological Constant and the Stress-Energy Tensor}
+\label{AEIThorns/Exact/cosmological-constant+stress-energy-tensor}
 
 A number of these models have a cosmological constant.  To use these
 with the Cactus code (which generally is written for the case of no
@@ -315,7 +347,7 @@ tensor.
 
 This thorn uses the standard Cactus ``\verb|CalcTmunu|'' interface
 for introducing terms into the stress-energy tensor.  See Ian Hawke's
-documentation for the {\bf ADMCoupling} thorn for details.
+documentation for the \thorn{ADMCoupling} thorn for details.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -327,6 +359,112 @@ the source code itself.  In particular, much of this documentation
 was developed by reverse-engineering from these primary sources, so
 it's quite possible (indeed even likely!) that there are errors or
 omissions here.  Caveat Lector!
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Lorentz-Boosting a Spacetime}
+\label{AEIThorns/Exact/sect-Lorentz-boosting-a-spacetime}
+
+For any of the models which don't set the stress-energy tensor
+(\ie{} which are vacuum and have no cosmological constant;
+see section~\ref{AEIThorns/Exact/cosmological-constant+stress-energy-tensor}
+and table~\ref{AEIThorns/Exact/tab-all-models} for details),%%%
+\footnote{%%%
+	 Only $g_{ab}$ and $g^{ab}$ are transformed, not the
+	 stress-energy tensor, which is why this only works
+	 for models which don't set the stress-energy tensor.
+	 }%%%
+{} you can optionally Lorentz-boost the model by a specified 3-velocity
+$v^i$.  The parameters for this are \verb|boost_vx|, \verb|boost_vy|,
+and \verb|boost_vz|.
+
+We define the Cactus spacetime coordinates to be $(t,x^i)$,
+while the model is at rest in coordinates $(T,X^i)$.  The model's
+``origin'' $X^i = 0$ is located at the Cactus coordinates $x^i = v^i t$.  
+
+The boost Lorentz transformation is defined by
+\begin{equation}
+\renewcommand{\arraystretch}{1.333}
+\begin{array}{lcl}
+T		& = &	\gamma (t - \eta_{ij} v^i x^j)		\\
+X^i_\parallel	& = &	\gamma (x^i_\parallel - v^i t)		\\
+X^i_\perp	& = &	x^i_\perp				%%%\\
+\end{array}
+\end{equation}
+and the inverse transformation by
+\begin{equation}
+\renewcommand{\arraystretch}{1.333}
+\begin{array}{lcl}
+t		& = &	\gamma (T + \eta_{ij} v^i X^j)		\\
+x^i_\parallel	& = &	\gamma (X^i_\parallel + v^i T)		\\
+x^i_\perp	& = &	X^i_\perp				%%%\\
+\end{array}
+\end{equation}
+where $\gamma \equiv (1 - v^2)^{-1/2}$ is the usual Lorentz factor,
+$\eta_{ij}$ is the flat metric, and $\parallel$ and $\perp$ refer
+to the (flat-space) components of $x^i$ parallel and perpendicular
+to $v^i$, respectively.
+
+In more detail, define the unit vector $n^i = v^i / \sqrt{\eta_{jk} v^j v^k}$
+and the (flat-space) projection operators
+\begin{equation}
+\renewcommand{\arraystretch}{1.333}
+\begin{array}{lclcl}
+\parallel^i{}\!_j
+		& = &	\eta_{jk} n^i n^k				\\
+		& \equiv &
+			n^i n_j
+			\qquad
+			\hbox{(using $\eta_{ij}$ to raise/lower indices)}
+									\\
+\perp^i{}\!_j	& = &	\delta^i{}_j - \parallel^i{}\!_j		%%%\\
+\end{array}
+\end{equation}
+Then the Lorentz transformations are
+\begin{equation}
+\renewcommand{\arraystretch}{1.333}
+\begin{array}{lcl}
+T	& = &	\gamma (t - \eta_{ij} v^i x^j)				\\
+X^i	& = &	\gamma (\parallel^i{}\!_j x^j - v^i t)
+		+ \perp^i{}\!_j x^j					%%%\\
+\end{array}
+\end{equation}
+and
+\begin{equation}
+\renewcommand{\arraystretch}{1.333}
+\begin{array}{lcl}
+t	& = &	\gamma (T + \eta_{ij} v^i X^j)				\\
+x	& = &	\gamma (\parallel^i{}\!_j X^j + v^i T)
+		+ \perp^i{}\!_j X^j					%%%\\
+\end{array}
+\end{equation}
+so their coordinate partial derivatives for transforming $g_{ab}$
+and $g^{ab}$ are
+\begin{equation}
+\renewcommand{\arraystretch}{2.5}
+\begin{array}{lcl@{\qquad\qquad\qquad}lcl}
+\dfrac{\partial T}{\partial t}		& = &	\gamma
+	&
+\dfrac{\partial T}{\partial x^j}	& = &	- \gamma v^j		\\
+\dfrac{\partial X^i}{\partial t}	& = &	- \gamma v^i
+	&
+\dfrac{\partial X^i}{\partial x^j}	& = &	\gamma \parallel^i{}\!_j
+						+ \perp^i{}\!_j		%%%\\
+\end{array}
+\end{equation}
+and
+\begin{equation}
+\renewcommand{\arraystretch}{2.5}
+\begin{array}{lcl@{\qquad\qquad\qquad}lcl}
+\dfrac{\partial t}{\partial T}		& = &	\gamma
+	&
+\dfrac{\partial t}{\partial X^j}	& = &	\gamma v^j		\\
+\dfrac{\partial x^i}{\partial T}	& = &	\gamma v^i
+	&
+\dfrac{\partial x^i}{\partial X^j}	& = &	\gamma \parallel^i{}\!_j
+						+ \perp^i{}\!_j		%%%\\
+\end{array}
+\end{equation}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -429,10 +567,12 @@ conditions, to see whether the code is able to cope with that.
 The tricky part is to make the wave fit the grid exactly (otherwise the
 periodic boundary wouldn't make sence), especially in the diagonal case.
 
-\subsection{Minkowski Spacetime with sinus in conformal factor}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-This spacetime just puts a sinus in the conformal factor and the metric
-is calculated to be Minkowski.\\
+\subsection{Minkowski Spacetime with $\sin$ term in conformal factor}
+
+\verb|Exact::exact_model = "Minkowski/conf wave"| specifies Minkowski
+spacetime with a $\sin$~term in the Cactus static conformal factor.
 You have three parameters:
 \begin{itemize}
  \item Minkowski\_conf\_wave\_\_amplitude ($a$)
@@ -444,6 +584,7 @@ These control $\Psi$ in the following form:
  \Psi=a\sin\left(\frac{2\pi}{l}D\right)+1
 \end{equation}
 Here $D$ is x, y or z according to d of 0, 1 or 2.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Black Hole Spacetimes}
@@ -751,6 +892,10 @@ $H = \verb|multi_BH__Hubble|$, and then for each black hole $i = 1, \dots, N$,
 the mass $m_i = \verb|multi_BH__mass|\,i$ and the $x$, $y$, and $z$ positions
 $x_i = \verb|multi_BH__x|\,i$, $y_i = \verb|multi_BH__y|\,i$,
 and $z_i = \verb|multi_BH__z|\,i$ respectively.
+
+Note that this thorn does {\bf not} set $T_{\mu\nu}$.
+{\bf FIXME: does treating this metric as vacuum still give a solution
+to the Einstein equations?}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -1098,6 +1243,19 @@ spacetimes, see gr-qc/0110031.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\subsection{Gowdy Spacetime}
+
+\verb|Exact::exact_model = "Gowdy"| specifies a Gowdy spacetime,
+which gives a polarized wave in an expanding universe.  See
+K.~New, K.~Watt, C.~W.~Misner, and J.~Centrella,
+``Stable 3-level leapfrog integration in numerical relativity'',
+PRD 58, 064022.
+
+There is only a single parameter, the wave amplitude
+\verb|Gowdy_wave__amplitude|.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsection{Milne Spacetime for Pre-Big-Bang Cosmology}
 
 \verb|Exact::exact_model = "Milne"| specifies a Milne spacetime,
@@ -1235,8 +1393,9 @@ spherical symmetry of the metric.
 The original code, including the boost-rotation symmetric metric
 and the slice evolver, was written by Carsten Gundlach and Miguel Alcubierre.
 Many different people have contributed exact solutions.
-Mitica Vulcanov wrote the Schwarzschild/Lemaitre solution and most
-(all?) of the cosmological solutions.
+The Schwarzschild/Lemaitre solution
+and most (all?) of the cosmological solutions
+were written by Mitica Vulcanov.
 The Minkowski/gauge wave model was written by Michael Koppitz.
 In May-June 2002 Jonathan Thornburg cleaned up a lot of the code,
 systematized the spacetime/coordinate and parameter names, and
@@ -1246,8 +1405,10 @@ code works.)
 The description of the Kastor-Traschen maximally charged multi-BH
 model is adapted from the file \verb|KTsol.tex| in this same directory,
 by Hisa-aki Shinkai.
+The Gowdy model was written by Denis Pollney.
 The \verb|ADMBase::evolution_method = "exact"| code was written
 by Peter Diener.
+The ``boost any vacuum solution'' code was written by Jonathan Thornburg.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

@@ -11,6 +11,6 @@ c If this option is not needed, then the Fortran 90 code can all be
 c #ifdef-ed out, allowing this thorn to be compiled on a system
 c having only Fortran 77 and C compilers (i.e. no Fortran 90 compiler).
 c To do this, uncomment the following line:
-c   #define EXACT_NO_F90
+#define EXACT_NO_F90
 
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc

@@ -13,28 +13,37 @@ C $Header$
      $     gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $     gutt, gutx, guty, gutz, 
      $     guxx, guyy, guzz, guxy, guyz, guzx,
-     $     psi)
+     $     psi, Tmunu_flag)
 
       implicit none
 
       DECLARE_CCTK_PARAMETERS
       DECLARE_CCTK_FUNCTIONS      
 
-
+c input arguments
       CCTK_REAL x, y, z, t
+
+c output arguments
       CCTK_REAL gdtt, gdtx, gdty, gdtz, 
      $       gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $       gutt, gutx, guty, gutz, 
-     $       guxx, guyy, guzz, guxy, guyz, guzx,
-     $       psi
+     $       guxx, guyy, guzz, guxy, guyz, guzx
+      CCTK_REAL psi
+      LOGICAL   Tmunu_flag
       
 
+c local static variables
       logical firstcall
-    
-      CCTK_REAL la, e0, ka, unu, ra, ra2, r0, Pii
-
+      CCTK_REAL ka, la, e0, r0
       data firstcall /.true./
       save firstcall, ka, la, e0, r0
+    
+c local variables
+      CCTK_REAL unu, ra, ra2, Pii
+
+c this model sets the stress-energy tensor in the "CalcTmunu" code
+      Tmunu_flag = .true.
+
       if (firstcall) then
           ka = Lemaitre__kappa
           e0 = Lemaitre__epsilon0
