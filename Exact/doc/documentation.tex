@@ -13,12 +13,13 @@
 \def\tfrac#1#2{{\textstyle \frac{#1}{#2}}}
 \def\dfrac#1#2{{\displaystyle \frac{#1}{#2}}}
 
-\def\half{\frac{1}{2}}
-\def\third{\frac{1}{3}}
+\def\half{\tfrac{1}{2}}
+\def\third{\tfrac{1}{3}}
 
 \def\new{\text{new}}
 \def\G{{\sf G}}
 \def\diag{\operatorname{diag}}
+\def\sech{\operatorname{sech}}
 
 % nicely typeset "C++" (adapted from a comp.lang.C++ FAQ entry)
 \def\Cplusplus{\hbox{C\hspace{-.05em}\raisebox{.4ex}{\tiny\bf ++}}}
@@ -106,7 +107,7 @@ parameter:
 	\item[{\tt "starSchwarz"}]
 		Schwarzschild (constant density) star
 	\item[{\tt "bowl"}]
-		Non-Einstein bowl (bag-of-gold) spacetime
+		Non-Einstein Bowl (``bag of gold'') spacetime
 	\end{description}
 \end{description}
 
@@ -125,7 +126,7 @@ types of coordinates:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Minkowski spacetime}
+\subsection{Minkowski Spacetime}
 
 \verb|Exact::exactmodel = "Minkowski"| specifies Minkowski spacetime
 in the usual Minkowski coordinates:
@@ -139,7 +140,7 @@ g_{ab} = \diag \left[
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Minkowski spacetime in non-trivial spatial coordinates}
+\subsection{Minkowski Spacetime in Non-Trivial Spatial Coordinates}
 
 \verb|Exact::exactmodel = "flatfunny"| specifies Minkowski spacetime
 with the usual Minkowski time slicing, but using the nontrivial spatial
@@ -156,7 +157,7 @@ Cartesian coordinates.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Minkowski spacetime in non-trivial slices with shift}
+\subsection{Minkowski Spacetime in Non-Trivial Slices with Shift}
 
 \verb|Exact::exactmodel = "flatshift"| specifies Minkowski spacetime
 with the nontrivial time slicing and spatial coordinates defined as
@@ -182,7 +183,7 @@ types of coordinates:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Schwarzschild spacetime with flat spatial metric}
+\subsection{Schwarzschild Spacetime with Flat Spatial Metric}
 
 \verb|Exact::exactmodel = "flatSchwarz"| specifies Schwarzschild spacetime
 in coordinates chosen so the spatial metric is flat, then
@@ -220,7 +221,7 @@ FIXME: get more info from Miguel
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Schwarzschild spacetime in Novikov coordinates}
+\subsection{Schwarzschild Spacetime in Novikov Coordinates}
 
 \verb|Exact::exactmodel = "Novikov"| specifies the unit-mass Schwarzschild
 spacetime in Novikov coordinates, as described in gr-qc/9608050
@@ -230,7 +231,7 @@ no parameters.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Schwarzschild spacetime in Eddington-Finkelstein coordinates}
+\subsection{Schwarzschild Spacetime in Eddington-Finkelstein Coordinates}
 
 \verb|Exact::exactmodel = "Finkelstein"| specifies Schwarzschild spacetime
 in (ingoing) Eddington-Finkelstein coordinates $(t,r,\theta,\phi)$, as
@@ -319,7 +320,7 @@ g_{ab} = \left[
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Kerr spacetime in cartesian coordinates}
+\subsection{Kerr Spacetime in Cartesian Coordinates}
 
 \verb|Exact::exactmodel = "Kerr"| specifies Kerr spacetime in
 FIXME coordinates.
@@ -328,7 +329,7 @@ FIXME: more detail needed from Mitica
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Kerr-Schild form of boosted rotating black hole}
+\subsection{Kerr-Schild form of Boosted Rotating Black Hole}
 
 \verb|Exact::exactmodel = "KerrSchild"| specifies Kerr spacetime in
 Kerr-Schild coordinates, as described in MTW exercise~33.8, Lorentz
@@ -374,7 +375,7 @@ is a null vector.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Thorne's ``fake binary'' approximate spacetime}
+\subsection{Thorne's ``Fake Binary'' Approximate Spacetime}
 
 \verb|Exact::exactmodel = "fakebinary"| specifies Thorne's ``fake binary''
 approximate spacetime, as described in gr-qc/9808024.  This is not an
@@ -394,7 +395,7 @@ black hole's center; the default setting should be ok for most purposes.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Maximally charged multi BH solutions}
+\subsection{Maximally Charged Multi-BH Solutions}
 
 FIXME: get more info from Hisa-aki
 
@@ -404,7 +405,7 @@ FIXME: get more info from Hisa-aki
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Pure-Radiation Robertson-Walker cosmology}
+\subsection{Pure-Radiation Robertson-Walker Cosmology}
 
 \verb|Exact::exactmodel = "Rob-Wal"| specifies a pure-radiation
 Robertson-Walker spacetie ($p = \third \rho$, $k=0$), as described in
@@ -419,22 +420,21 @@ a = \text{\tt Desitt\_a}
 The general Robertson-Walker line element in $(t,r,\theta,\phi)$ coordinates
 is
 \begin{equation}
-ds^2 = -dt^2 + R(t)^2 \left[ \frac{dr^2}{1 - kr^2} + r^2 d\Omega^2 \right]
+ds^2 = -dt^2 + R(t)^2 \left[ \frac{dr^2}{1 - kr^2} + r^2 \, d\Omega^2 \right]
 \end{equation}
 
 For the special case here, $R(t) = \sqrt{at}$, so
 \begin{equation}
-ds^2 = -dt^2 + a t \left[ dr^2 + r^2 d\Omega^2 \right]
+ds^2 = -dt^2 + a t \left[ dr^2 + r^2 \, d\Omega^2 \right]
 \end{equation}
 
-At present this thorn doesn't set up the stress-energy tensor;
-you have to do this ``by hand''.
+This thorn also sets up the stress-energy tensor for this spacetime.
 
 FIXME: more detail needed from Mitica
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{De~Sitter spacetime}
+\subsection{De~Sitter Spacetime}
 
 \verb|Exact::exactmodel = "DeSitter"| specifies an Einstein-De~Sitter
 spacetime (a zero-pressure spatially-flat Robertson-Walker spacetime),
@@ -449,21 +449,19 @@ The Einstein-De~Sitter spacetime is the special case
 $R(t) = \sqrt{a}\,t^{2/3}$, $k = 0$ of the more general Robertson-Walker
 spacetime, so the line element in $(t,r,\theta,\phi)$ coordinates is
 \begin{equation}
-ds^2 = -dt^2 + a t^{4/3} \left[ dr^2 + r^2 d\Omega^2 \right]
+ds^2 = -dt^2 + a t^{4/3} \left[ dr^2 + r^2 \, d\Omega^2 \right]
 \end{equation}
-The only non-vanishing component of
-the stress-energy tensor is
+The only non-vanishing component of the stress-energy tensor is
 \begin{equation}
 T_{tt} = \frac{1}{6 \pi t^2}
 \end{equation}
-However, at present this thorn doesn't set up the stress-energy tensor;
-you have to do this ``by hand''.
+This is properly set up by this thorn.
 
 FIXME: more detail needed from Mitica
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{G\"{o}del spacetime}
+\subsection{G\"{o}del Spacetime}
 
 \verb|Exact::exactmodel = "Godel"| (sic) specifies a G\"{o}del
 spacetime, as described in Hawking and Ellis section~5.7, transformed
@@ -481,7 +479,7 @@ FIXME: more detail needed from Mitica
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Approximate Bianchi type~I spacetime}
+\subsection{Approximate Bianchi type~I Spacetime}
 
 \verb|Exact::exactmodel = "BianchiI"| specifies an approximation to
 a Bianchi type~I spacetime.
@@ -490,7 +488,7 @@ FIXME: more detail needed from Mitica
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Kasner-like spacetime}
+\subsection{Kasner-like Spacetime}
 
 \verb|Exact::exactmodel = "Kasner"| specifies a Kasner-like spacetime,
 as described in gr-qc/0110031, and in more detail in
@@ -526,12 +524,13 @@ T_{ab} = \diag \left[
 	 \end{array}
 	 \right]
 \end{equation}
+This is properly set up by this thorn.
 
 FIXME: verify this with Mitica
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Milne spacetime for pre-big-bang cosmology}
+\subsection{Milne Spacetime for Pre-Big-Bang Cosmology}
 
 \verb|Exact::exactmodel = "Milne"| specifies a De~Milne spacetime,
 \begin{equation}
@@ -557,15 +556,80 @@ FIXME: more detail needed from Mitica
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Boost rotation symmetric spacetime}
+\subsection{Boost Rotation Symmetric Spacetime}
+
+FIXME: get info from Miguel
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Schwarzschild (constant density) star}
+\subsection{Schwarzschild (Constant Density) Star}
+
+\verb|Exact::exactmodel = "starSchwarz"| specifies a constant-density
+``Schwarzschild'' star, as described in MTW~Box 23.2.  The stress-energy
+tensor is also properly set up.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Non-Einstein bowl (bag-of-gold) spacetime}
+\subsection{Non-Einstein Bowl (``Bag of Gold'') Spacetime}
+
+\verb|Exact::exactmodel = "bowl"| specifies a ``bag of Gold'' metric.
+This is useful for testing purposes, but isn't a solution of the
+Einstein equations.  The physics parameters are
+\begin{align}
+a	& = \text{\tt bowl\_a}						\\
+\sigma	& = \text{\tt bowl\_s}						\\
+c	& = \text{\tt bowl\_c}						\\
+\delta x& = \text{\tt bowl\_dx}						\\
+\delta y& = \text{\tt bowl\_dy}						\\
+\delta z& = \text{\tt bowl\_dz}						\\
+t_0	& = \text{\tt bowl\_t0}						\\
+\sigma_t& = \text{\tt bowl\_st}						%%%\\
+\end{align}
+There are also algorithm parameters \verb|bowl_type| and \verb|bowl_evolve|.
+
+The line element in $(t,r,\theta,\phi)$ coordinates is
+\begin{equation}
+ds^2 = -dt^2 + dr^2 + R^2(r) \, d\Omega^2
+\end{equation}
+
+We choose $R(r)$ such that $\displaystyle \lim_{r \ll 1} R(r) = r$
+and $\displaystyle \lim_{r \gg 1} R(r) = r$, so we have a flat 3-metric
+(and hence 4-metric too) for very small~$r$ and for very large~$r$.
+For intermediate values of~$r$, we take $0 < R(r) < r$; this deficit
+in areal radius produces the ``bag of gold'' geometry.
+
+The size of the deviation from a flat geometry is controled by the
+parameter $a = \verb|bowl_a|$.  If $a = 0$, we are in flat spacetime.
+The width of the curved region is controled by $\sigma = \verb|bowl_s|$,
+and the place where the curvature becomes significant (the center of
+the deformation) is controled by $c = \verb|bowl_c|$.
+
+In detail, we choose
+\begin{equation}
+R(r) = r - A f(r) g(r)
+\end{equation}
+Here $A = a$ if \verb|bowl_evolve = "false"|, but is multiplied by
+a Fermi factor
+\begin{equation}
+A = \dfrac{a}{1 + \exp(-\sigma_t(t-t_0))}
+\end{equation}
+if \verb|bowl_evolve = "true"|.  For this latter case we have
+flat spacetime far in the past, and a static bowl far in the future.
+$f(r)$ is either a Gaussian or a Fermi function,
+\begin{equation}
+f(r) = \begin{cases}
+       \exp \left( -\half (r-c)^2/\sigma^2 \right)
+			& \text{if {\tt bowl\_type = "Gauss"}}		\\[1ex]
+       \dfrac{1}{1 + \exp(-\sigma(r-c))}
+			& \text{if {\tt bowl\_type = "Fermi"}}		%%%\\
+       \end{cases}
+\end{equation}
+$g(r) = 1 - \sech 4r$ is a fixup factor to ensure that
+$\displaystyle \lim_{r \to 0} R(r) = r$.
+
+The three extra paramters $(\delta x, \delta y, \delta z)$
+scale the $(x,y,z)$ axes respectively.  Their default values are all~1.
+These parameters are useful to hide the spherical symmetry of the metric.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
