@@ -10,9 +10,11 @@
 \def\nb{n.b.\hbox{}}
 \def\Nb{N.b.\hbox{}}
 
-\def\defn#1{{\bf #1}}
+\def\tfrac#1#2{{\textstyle \frac{#1}{#2}}}
+\def\dfrac#1#2{{\displaystyle \frac{#1}{#2}}}
 
 \def\half{\frac{1}{2}}
+\def\third{\frac{1}{3}}
 
 \def\new{\text{new}}
 \def\G{{\sf G}}
@@ -81,19 +83,19 @@ parameter:
 	\end{description}
 \item[Cosmological spacetimes]\mbox{}\\[-\baselineskip]
 	\begin{description}
-	\item[{\tt "BianchiI"}]
-		Bianchi type~I spacetime
 	\item[{\tt "Rob-Wal"}]
-		Robertson-Walker cosmology
+		Pure-radiation Robertson-Walker cosmology
+	\item[{\tt "DeSitter"}]
+		Einstein-De~Sitter spacetime
 	\item[{\tt "Godel"}]
 		G\"{o}del spacetime%%%
 \footnote{%%%
 	 Note that the parameter is {\em not\/} "Goedel"!
 	 }%%%
-	\item[{\tt "DeSitter"}]
-		Einstein-De~Sitter spacetime
+	\item[{\tt "BianchiI"}]
+		Bianchi type~I spacetime
 	\item[{\tt "Kasner"}]
-		Kasner like spacetime
+		Kasner-like spacetime
 	\item[{\tt "Milne"}]
 		Milne spacetime for pre-big-bang cosmology
 	\end{description}
@@ -128,12 +130,9 @@ types of coordinates:
 \verb|Exact::exactmodel = "Minkowski"| specifies Minkowski spacetime
 in the usual Minkowski coordinates:
 \begin{equation}
-g_{ab} = \left[
+g_{ab} = \diag \left[
 	 \begin{array}{cccc}
-	 -1	& 0	& 0	& 0	\\
-	 0	& 1	& 0	& 0	\\
-	 0	& 0	& 1	& 0	\\
-	 0	& 0	& 0	& 1	%%%\\
+	 -1	& 1	& 1	& 1	%%%\\
 	 \end{array}
 	 \right]
 \end{equation}
@@ -186,7 +185,38 @@ types of coordinates:
 \subsection{Schwarzschild spacetime with flat spatial metric}
 
 \verb|Exact::exactmodel = "flatSchwarz"| specifies Schwarzschild spacetime
-in FIXME coordinates.  These have $g_{ij}$ a {\em flat\/} metric.
+in coordinates chosen so the spatial metric is flat, then
+transformed to the usual Cactus $(t,x,y,z)$ Cartesian-topology
+coordinates.  The only physics parameter is
+\begin{equation}
+m = \text{\tt KerrSchild\_m}
+\end{equation}
+(note the name!).
+There is also a numerical parameter \verb|KerrSchild_eps| (again note
+the name!) which is used internally in the code; you can probably ignore
+it for most purposes.
+
+In the usual Cactus $(t,x,y,z)$ Cartesian-topology coordinates, the
+4-metric is
+\begin{equation}
+g_{ab} = \left[
+	 \begin{array}{cccc}
+	 -1 + \frac{2m}{r}
+		& \sqrt{\frac{2m}{r}} \frac{x}{r}
+			& \sqrt{\frac{2m}{r}} \frac{y}{r}
+				& \sqrt{\frac{2m}{r}} \frac{z}{r}
+									\\
+	 \sqrt{\frac{2m}{r}} \frac{x}{r}
+		& 1	& 0	& 0					\\
+	 \sqrt{\frac{2m}{r}} \frac{y}{r}
+		& 0	& 1	& 0					\\
+	 \sqrt{\frac{2m}{r}} \frac{z}{r}
+		& 0	& 0	& 1					%%%\\
+	 \end{array}
+	 \right]
+\end{equation}
+
+FIXME: get more info from Miguel
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -209,37 +239,12 @@ areal radial coordinate, and $t+r$ is an ingoing null coordinate),
 but transformed to the usual Cactus $(t,x,y,z)$ Cartesian-topology
 coordinates.  The only physics parameter is
 \begin{equation}
-m = \verb|KerrSchild_m|
+m = \text{\tt KerrSchild\_m}
 \end{equation}
-(note the slightly counterintuitive name!)
+(note the name!).
 There is also a numerical parameter \verb|KerrSchild_eps| (again note
 the name!) which is used internally in the code; you can probably ignore
 it for most purposes.
-
-In the Cactus $(t,x,y,z)$ Cartesian-topology coordinates the 4-metric is
-\begin{equation}
-g_{ab} = \left[
-	 \begin{array}{cccc}
-	 - \left( 1 - \frac{2m}{r} \right)
-			& \frac{2m}{r} \frac{x}{r}
-				& \frac{2m}{r} \frac{y}{r}
-					& \frac{2m}{r} \frac{z}{r}	\\
-	 \frac{2m}{r} \frac{x}{r}
-			& 1 + \frac{2m}{r} \frac{x^2}{r^2}
-				& \frac{2m}{r} \frac{xy}{r^2}
-					& \frac{2m}{r} \frac{xz}{r^2}	\\
-	 \frac{2m}{r} \frac{y}{r}
-			& \frac{2m}{r} \frac{xy}{r^2}
-				& 1 + \frac{2m}{r} \frac{y^2}{r^2}
-					& \frac{2m}{r} \frac{yz}{r^2}	\\
-	 \frac{2m}{r} \frac{z}{r}
-			& \frac{2m}{r} \frac{xz}{r^2}
-				& \frac{2m}{r} \frac{yz}{r^2}
-					& 1 + \frac{2m}{r} \frac{z^2}{r^2}
-									%%%\\
-	 \end{array}
-	 \right]
-\end{equation}
 
 In the usual polar spherical $(t,r,\theta,\phi)$ coordinates, the 4-metric
 and ADM variables are
@@ -287,6 +292,31 @@ K_{ij} & = \diag
 coordinates are tabulated in appendix~2 of Jonathan Thornburg's Ph.D
 thesis, \verb|http://www.aei.mpg.de/~jthorn/phd/html/phd.html|.)
 
+In the Cactus $(t,x,y,z)$ Cartesian-topology coordinates the 4-metric is
+\begin{equation}
+g_{ab} = \left[
+	 \begin{array}{cccc}
+	 - \left( 1 - \frac{2m}{r} \right)
+			& \frac{2m}{r} \frac{x}{r}
+				& \frac{2m}{r} \frac{y}{r}
+					& \frac{2m}{r} \frac{z}{r}	\\
+	 \frac{2m}{r} \frac{x}{r}
+			& 1 + \frac{2m}{r} \frac{x^2}{r^2}
+				& \frac{2m}{r} \frac{xy}{r^2}
+					& \frac{2m}{r} \frac{xz}{r^2}	\\
+	 \frac{2m}{r} \frac{y}{r}
+			& \frac{2m}{r} \frac{xy}{r^2}
+				& 1 + \frac{2m}{r} \frac{y^2}{r^2}
+					& \frac{2m}{r} \frac{yz}{r^2}	\\
+	 \frac{2m}{r} \frac{z}{r}
+			& \frac{2m}{r} \frac{xz}{r^2}
+				& \frac{2m}{r} \frac{yz}{r^2}
+					& 1 + \frac{2m}{r} \frac{z^2}{r^2}
+									%%%\\
+	 \end{array}
+	 \right]
+\end{equation}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Kerr-Schild form of boosted rotating black hole}
@@ -322,7 +352,7 @@ g_{ab} = \eta_{ab} + 2 H k_a k_b
 \end{equation}
 where
 \begin{equation}
-H = \frac{Mr}{r^2 + a^2z^2/r^2}
+H = \frac{mr}{r^2 + a^2z^2/r^2}
 \end{equation}
 and where
 \begin{equation}
@@ -337,7 +367,9 @@ is a null vector.
 \subsection{Kerr spacetime in cartesian coordinates}
 
 \verb|Exact::exactmodel = "Kerr"| specifies Kerr spacetime in
-FIXME-WHAT-IS-TIME-SLICING coordinates.
+FIXME coordinates.
+
+FIXME: more detail needed from Mitica
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -353,7 +385,7 @@ m	& = \text{\tt fakebinary\_m}					\\
 a_0	& = \text{\tt fakebinary\_a0}					\\
 \Omega_0& = \text{\tt fakebinary\_Omega0}				%%%\\
 \end{align}
-as well as the algorithm parameters \verb|fakebinary_atype|,
+There are also algorithm parameters \verb|fakebinary_atype|,
 \verb|fakebinary_retarded|, and \verb|fakebinary_bround|.
 There is also a numerical parameter \verb|fakebinary_eps| which is used
 internally in the code; you can probably ignore it for most purposes.
@@ -362,53 +394,160 @@ internally in the code; you can probably ignore it for most purposes.
 
 \subsection{Maximally charged multi BH solutions}
 
+FIXME: get more info from Hisa-aki
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Cosmological Spacetimes}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Bianchi type~I spacetime}
+\subsection{Pure-Radiation Robertson-Walker cosmology}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\verb|Exact::exactmodel = "Rob-Wal"| specifies a pure-radiation
+Robertson-Walker spacetie ($p = \third \rho$, $k=0$), as described in
+Hawking and Ellis section~5.3 and MTW section~27.11 (see also gr-qc/0110031),
+transformed to the usual Cactus $(t,x,y,z)$ Cartesian-topology coordinates.
+The only physics parameter is
+\begin{equation}
+a = \text{\tt Desitt\_a}
+\end{equation}
+(note the name!).
 
-\subsection{Robertson-Walker cosmology (near $t=0$,pure radiation case)}
+The general Robertson-Walker line element in $(t,r,\theta,\phi)$ coordinates
+is
+\begin{equation}
+ds^2 = -dt^2 + R(t)^2 \left[ \frac{dr^2}{1 - kr^2} + r^2 d\Omega^2 \right]
+\end{equation}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+For the special case here, $R(t) = \sqrt{at}$, so
+\begin{equation}
+ds^2 = -dt^2 + a t \left[ dr^2 + r^2 d\Omega^2 \right]
+\end{equation}
 
-\subsection{G\"{o}del spacetime}
+At present this thorn doesn't set up the stress-energy tensor;
+you have to do this ``by hand''.
+
+FIXME: more detail needed from Mitica
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{De~Sitter spacetime}
 
-\verb|Exact::exactmodel = "DeSitter"| specifies Einstein-De~Sitter
-spacetime, as described in Hawking and Ellis section~5.3 and MTW
-section~27.11, transformed to the usual Cactus $(t,x,y,z)$
+\verb|Exact::exactmodel = "DeSitter"| specifies an Einstein-De~Sitter
+spacetime (a zero-pressure spatially-flat Robertson-Walker spacetime),
+as described in Hawking and Ellis section~5.3 and MTW section~27.11
+(see also gr-qc/0110031), transformed to the usual Cactus $(t,x,y,z)$
 Cartesian-topology coordinates.  The only physics parameter is
 \begin{equation}
-a = \verb|Desitt_a|
+a = \text{\tt Desitt\_a}
 \end{equation}
 
-The Einstein-De~Sitter line element in $(t,r,\theta,\phi)$ coordinates
-is given by
+The Einstein-De~Sitter spacetime is the special case
+$R(t) = \sqrt{a}\,t^{2/3}$, $k = 0$ of the more general Robertson-Walker
+spacetime, so the line element in $(t,r,\theta,\phi)$ coordinates is
 \begin{equation}
 ds^2 = -dt^2 + a t^{4/3} \left[ dr^2 + r^2 d\Omega^2 \right]
 \end{equation}
-and is a special case (flat spatial geometry, no pressure) of the more
-general Robertson-Walker metric.  The only non-vanishing component of
+The only non-vanishing component of
 the stress-energy tensor is
 \begin{equation}
 T_{tt} = \frac{1}{6 \pi t^2}
 \end{equation}
+However, at present this thorn doesn't set up the stress-energy tensor;
+you have to do this ``by hand''.
+
+FIXME: more detail needed from Mitica
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Kasner like spacetime}
+\subsection{G\"{o}del spacetime}
+
+\verb|Exact::exactmodel = "Godel"| (sic) specifies a G\"{o}del
+spacetime, as described in Hawking and Ellis section~5.7, transformed
+to the usual Cactus $(t,x,y,z)$ Cartesian-topology coordinates.  The
+only physics parameter is
+\begin{equation}
+a = \text{\tt Godel\_a}
+\end{equation}
+(note the name!).
+
+At present this thorn doesn't set up the stress-energy tensor;
+you have to do this ``by hand''.
+
+FIXME: more detail needed from Mitica
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Bianchi type~I spacetime}
+
+\verb|Exact::exactmodel = "BianchiI"| specifies an approximation to
+a Bianchi type~I spacetime.
+
+FIXME: more detail needed from Mitica
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Kasner-like spacetime}
+
+\verb|Exact::exactmodel = "Kasner"| specifies a Kasner-like spacetime,
+as described in gr-qc/0110031, and in more detail in
+L. Pimentel,
+International Journal of Theoretical Physics {\bf 32}(6) [1993], 979,
+and
+S. Gotlober, \etal{},
+``Early Evolution of the Universe and Formation [of] Structure'',
+Akad. Verlag, 1990.
+There is one physics parameter,
+\begin{equation}
+q = \text{\tt Kasner\_q}						%%%\\
+\end{equation}
+
+In the usual Cactus $(t,x,y,z)$ Cartesian-topology coordinates, the
+4-metric is
+\begin{equation}
+g_{ab} = \diag \left[
+	 \begin{array}{cccc}
+	 -1	& t^{2q}	& t^{2q} 	& t^{2-4q}	%%%\\
+	 \end{array}
+	 \right]
+\end{equation}
+and the stress-energy tensor is
+\begin{equation}
+T_{ab} = \diag \left[
+	 \begin{array}{cccc}
+	 q \dfrac{2 - 3q}{8\pi t^2}
+		& q \dfrac{(2 - 3q) t^{2q}}{8\pi t^2}
+			& q \dfrac{(2 - 3q) t^{2q}}{8\pi t^2}
+				& q \dfrac{(2 - 3q) t^{2-4q}}{8\pi t^2}
+								%%%\\
+	 \end{array}
+	 \right]
+\end{equation}
+
+FIXME: verify this with Mitica
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Milne spacetime for pre-big-bang cosmology}
+
+\verb|Exact::exactmodel = "Milne"| specifies a De~Milne spacetime,
+\begin{equation}
+g_{ab} = \left[
+	 \begin{array}{cccc}
+	 -1	& 0		& 0		& 0		\\
+	 0	& V(1+y^2+z^2)	& -Vxy		& -Vxz		\\
+	 0	& -Vxy		& V(1+x^2+z^2)	& -Vyz		\\
+	 0	& -Vxz		& -Vyz		& V(1+x^2+y^2)	%%%\\
+	 \end{array}
+	 \right]
+\end{equation}
+where
+\begin{equation}
+V = \frac{t^2}{1 + x^2 + y^2 + z^2}
+\end{equation}
+
+FIXME: more detail needed from Mitica
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
