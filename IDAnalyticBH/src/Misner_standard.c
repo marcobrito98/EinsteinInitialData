@@ -62,139 +62,93 @@ void Misner_standard(CCTK_ARGUMENTS)
   DECLARE_CCTK_ARGUMENTS
   DECLARE_CCTK_PARAMETERS
 
-  int i,j,k;
-  int n;
-  char *message;
-  CCTK_REAL zero, one, three;
-  CCTK_REAL csch, coth, r1, r2;
-  CCTK_REAL x_squared, y_squared;
-  CCTK_REAL r1_cubed, r2_cubed;
-  CCTK_REAL r1_5, r2_5;
+  int i,n;
+  int npoints;
+  CCTK_REAL csch, coth, inv_r1, inv_r2;
+  CCTK_REAL x_squared, y_squared, xy_squared;
+  CCTK_REAL inv_r1_cubed, inv_r2_cubed;
+  CCTK_REAL inv_r1_5, inv_r2_5;
+  CCTK_REAL inv_psi;
   CCTK_INT powfac;
-
-  int nx,ny,nz;
-  int index;
-  nx = cctk_lsh[0];
-  ny = cctk_lsh[1];
-  nz = cctk_lsh[2];
+  const CCTK_REAL zero = 0.0, one = 1.0, three = 3.0;
 
 
-  zero  = 0.0;
-  one   = 1.0;
-  three = 3.0;
+  /* total number of points on this processor */
+  npoints = cctk_lsh[0] * cctk_lsh[1] * cctk_lsh[2];
+
 
   /*     Initialize so we can accumulate
    *     ------------------------------- 
    */
-  for(k=0; k < nz; k++)
+  if (use_conformal_derivs)
   {
-    for(j=0; j < ny; j++)
-    {
-      for(i=0; i < nx; i++)
-      {
-        index = CCTK_GFINDEX3D(cctkGH, i,j,k);
-        
-        psi[index] = one;
-      }
-    }
+    memset (psix, 0, npoints * sizeof (CCTK_REAL));
+    memset (psiy, 0, npoints * sizeof (CCTK_REAL));
+    memset (psiz, 0, npoints * sizeof (CCTK_REAL));
+    memset (psixx, 0, npoints * sizeof (CCTK_REAL));
+    memset (psixy, 0, npoints * sizeof (CCTK_REAL));
+    memset (psixz, 0, npoints * sizeof (CCTK_REAL));
+    memset (psiyy, 0, npoints * sizeof (CCTK_REAL));
+    memset (psiyz, 0, npoints * sizeof (CCTK_REAL));
+    memset (psizz, 0, npoints * sizeof (CCTK_REAL));
   }
 
-  if (use_conformal_derivs == 1)
+  for(i = 0; i < npoints; i++)
   {
-    for(k=0; k < nz; k++)
+    psi [i] = one;
+
+    x_squared  = SQR(x[i]);
+    y_squared  = SQR(y[i]);
+    xy_squared = x_squared + y_squared;
+
+    for(n = nmax; n >= 1; n--)
     {
-      for(j=0; j < ny; j++)
-      {
-        for(i=0; i < nx; i++)
-        {
-          index = CCTK_GFINDEX3D(cctkGH, i,j,k);
+      csch = one/sinh(mu*n);
+      coth = one/tanh(mu*n);
+      inv_r1 = one / sqrt(xy_squared+SQR(z[i]+coth));
+      inv_r2 = one / sqrt(xy_squared+SQR(z[i]-coth));
           
-          psix[index]  = zero;
-          psiy[index]  = zero;
-          psiz[index]  = zero;
-          psixx[index] = zero;
-          psixy[index] = zero;
-          psixz[index] = zero;
-          psiyy[index] = zero;
-          psiyz[index] = zero;
-          psizz[index] = zero;
-        }
+      psi[i] += csch*(inv_r1 + inv_r2);
+          
+      if (use_conformal_derivs)
+      {
+        inv_r1_cubed = inv_r1 * inv_r1 * inv_r1;
+        inv_r2_cubed = inv_r2 * inv_r2 * inv_r2;
+        inv_r1_5     = pow(inv_r1, 5);
+        inv_r2_5     = pow(inv_r2, 5);
+        psix[i]  +=  -x[i] * (inv_r2_cubed + inv_r1_cubed) * csch;
+        psiy[i]  +=  -y[i] * (inv_r2_cubed + inv_r1_cubed) * csch;
+        psiz[i]  +=  (-(z[i]-coth)*inv_r2_cubed - (z[i]+coth)*inv_r1_cubed) * csch;
+        psixx[i] +=  (three*x_squared*(inv_r1_5 + inv_r2_5)
+                      - inv_r1_cubed - inv_r2_cubed) * csch;
+        psixy[i] +=  three*x[i]*y[i]*(inv_r1_5 + inv_r2_5) * csch;
+        psixz[i] +=  (three*x[i]*(z[i] - coth)*inv_r2_5 
+                      + three*x[i]*(z[i] + coth)*inv_r1_5) * csch;
+        psiyy[i] +=  (three*y_squared*(inv_r1_5 + inv_r2_5)
+                      - inv_r1_cubed - inv_r2_cubed) * csch;
+        psiyz[i] +=  (three*y[i]*(z[i] - coth)*inv_r2_5
+                      + three*y[i]*(z[i] + coth)*inv_r1_5) * csch;
+        psizz[i] += (-inv_r2_cubed+three*SQR(z[i] - coth)*inv_r2_5
+                      + three*SQR(z[i] + coth)*inv_r1_5 - inv_r1_cubed) * csch;
       }
     }
-  }
 
-  for(n = nmax; n >= 1; n--)
-  {
-    csch = one/sinh(mu*n);
-    coth = one/tanh(mu*n);
-    
-    for(k=0; k < nz; k++)
+    /*     Cactus convention
+     *     -----------------
+     */
+    if (use_conformal_derivs)
     {
-      for(j=0; j < ny; j++)
-      {
-        for(i=0; i < nx; i++)
-        {
-          index = CCTK_GFINDEX3D(cctkGH, i,j,k);
-          
-          x_squared = SQR(x[index]);
-          y_squared = SQR(y[index]);
-          r1 = sqrt(x_squared+y_squared+SQR(z[index]+coth));
-          r2 = sqrt(x_squared+y_squared+SQR(z[index]-coth));
-          
-          psi[index] += csch*(one/r1 + one/r2);
-          
-          if (use_conformal_derivs == 1)
-          {
-            r1_cubed = r1*r1*r1;
-            r2_cubed = r2*r2*r2;
-            r1_5     = pow(r1, 5);
-            r2_5     = pow(r2, 5);
-            psix[index]  +=  (-(x[index]/r2_cubed)-x[index]/r1_cubed)*csch;
-            psiy[index]  +=  (-(y[index]/r2_cubed)-y[index]/r1_cubed)*csch;
-            psiz[index]  +=  (-((z[index]-coth)/r2_cubed)-(z[index] + coth)/r1_cubed)*csch;
-            psixx[index] +=  ((three*x_squared)/r2_5-one/r2_cubed
-                              +(three*x_squared)/r1_5-one/r1_cubed)*csch;
-            psixy[index] +=  ((three*x[index]*y[index])/r2_5
-                              +(three*x[index]*y[index])/r1_5)*csch;
-            psixz[index] +=  ((three*x[index]*(z[index]-coth))/r2_5 
-                              +(three*x[index]*(z[index]+coth))/r1_5)*csch;
-            psiyy[index] +=  ((three*y_squared)/r2_5-one/r2_cubed 
-                              +(three*y_squared)/r1_5-one/r1_cubed)*csch;
-            psiyz[index] +=  ((three*y[index]*(z[index]-coth))/r2_5
-                              +(three*y[index]*(z[index]+coth))/r1_5)*csch;
-            psizz[index] += (-one/r2_cubed+(three*SQR(z[index]-coth))/r2_5+
-                             (three*SQR(z[index]+coth))/r1_5-one/r1_cubed)*csch;
-          }
-        }
-      }
-    }
-  }
+      inv_psi = one / psi[i];
 
-  /*     Cactus convention
-   *     -----------------
-   */
-
-  if (use_conformal_derivs == 1)
-  {
-    for(k=0; k < nz; k++)
-    {
-      for(j=0; j < ny; j++)
-      {
-        for(i=0; i < nx; i++)
-        {
-          index = CCTK_GFINDEX3D(cctkGH, i,j,k);
-          
-          psix[index]  /= psi[index];
-          psiy[index]  /= psi[index];
-          psiz[index]  /= psi[index];
-          psixx[index] /= psi[index];
-          psixy[index] /= psi[index];
-          psixz[index] /= psi[index];
-          psiyy[index] /= psi[index];
-          psiyz[index] /= psi[index];
-          psizz[index] /= psi[index];
-        }
-      }
+      psix[i]  *= inv_psi;
+      psiy[i]  *= inv_psi;
+      psiz[i]  *= inv_psi;
+      psixx[i] *= inv_psi;
+      psixy[i] *= inv_psi;
+      psixz[i] *= inv_psi;
+      psiyy[i] *= inv_psi;
+      psiyz[i] *= inv_psi;
+      psizz[i] *= inv_psi;
     }
   }
   
@@ -205,50 +159,37 @@ void Misner_standard(CCTK_ARGUMENTS)
   
   for(n = 1; n <= nmax; n++)
   {
-    mass += 4./sinh(n*mu);
+    mass += 4.0 / sinh(n*mu);
   }
+  CCTK_VInfo(CCTK_THORNSTRING, "ADM mass is %f", mass);
 
-  message = (char *)malloc(200*sizeof(char));
-  sprintf(message,"ADM mass is %f",mass);
-  CCTK_INFO(message);
-  free(message);
-  
   /*     Should initialize lapse to Cadez value if possible
    *     --------------------------------------------------
    */
 
-  if (CCTK_Equals(initial_lapse,"cadez") )
+  if (CCTK_Equals(initial_lapse,"cadez"))
   { 
     CCTK_INFO("Initialise with cadez lapse");
     
-    for(k=0; k < nz; k++)
+    for(i = 0; i < npoints; i++)
     {
-      for(j=0; j < ny; j++)
+      xy_squared = SQR(x[i]) + SQR(y[i]);
+
+      alp[i] = one;
+
+      powfac = 1;
+
+      for(n = 1; n <= nmax; n++)
       {
-        for(i=0; i < nx; i++)
-        {
-          index = CCTK_GFINDEX3D(cctkGH, i,j,k);
-          
-          x_squared = SQR(x[index]);
-          y_squared = SQR(y[index]);
-            
-          alp[index] = one;
+        coth = one/tanh(mu*n);
+        inv_r1 = one / sqrt(xy_squared+SQR(z[i]+coth));
+        inv_r2 = one / sqrt(xy_squared+SQR(z[i]-coth));
+        powfac = -powfac;
 
-          powfac = 1;
-
-          for(n = 1; n <= nmax; n++)
-          {
-            coth = one/tanh(mu*n);
-            r1 = sqrt(x_squared+y_squared+SQR(z[index]+coth));
-            r2 = sqrt(x_squared+y_squared+SQR(z[index]-coth));
-            powfac *= -1;
-
-            alp[index] += powfac * one/sinh(mu*n)*(one/r1 + one/r2);
-          }
-          
-          alp[index] /= psi[index];
-        }
+        alp[i] += powfac * one/sinh(mu*n)*(inv_r1 + inv_r2);
       }
+
+      alp[i] /= psi[i];
     }
   }
   
@@ -258,71 +199,34 @@ void Misner_standard(CCTK_ARGUMENTS)
 
   if (*conformal_state == CONFORMAL_METRIC)
   {
-    for(k=0; k < nz; k++)
+    for(i = 0; i < npoints; i++)
     {
-      for(j=0; j < ny; j++)
-      {
-        for(i=0; i < nx; i++)
-        {
-          index = CCTK_GFINDEX3D(cctkGH, i,j,k);
-          
-
-          gxx[index] = one;
-          gyy[index] = one;
-          gzz[index] = one;
-          gxy[index] = zero;
-          gxz[index] = zero;
-          gyz[index] = zero;
-        }
-      }
+      gxx[i] = one;
+      gyy[i] = one;
+      gzz[i] = one;
     }
   }
   else 
   {
-    for(k=0; k < nz; k++)
+    for(i = 0; i < npoints; i++)
     {
-      for(j=0; j < ny; j++)
-      {
-        for(i=0; i < nx; i++)
-        {
-          index = CCTK_GFINDEX3D(cctkGH, i,j,k);
-          
-          gxx[index] = pow(psi[index],4);
-          gyy[index] = gxx[index];
-          gzz[index] = gxx[index];
-          gxy[index] = zero;
-          gxz[index] = zero;
-          gyz[index] = zero;
-        }
-      }
+      gxx[i] = pow(psi[i],4);
+      gyy[i] = gxx[i];
+      gzz[i] = gxx[i];
     }
   }
+  memset (gxy, 0, npoints * sizeof (CCTK_REAL));
+  memset (gxz, 0, npoints * sizeof (CCTK_REAL));
+  memset (gyz, 0, npoints * sizeof (CCTK_REAL));
 
   /*     Time-symmetric data
    *     -------------------
    */
-
-  for(k=0; k < nz; k++)
-  {
-    for(j=0; j < ny; j++)
-    {
-      for(i=0; i < nx; i++)
-      {
-        index = CCTK_GFINDEX3D(cctkGH, i,j,k);
-          
-        kxx[index] = zero;
-        kyy[index] = zero;
-        kzz[index] = zero;
-        kxy[index] = zero;
-        kxz[index] = zero;
-        kyz[index] = zero;
-      }
-    }
-  }
-
-  return;
-
-  
-  
+  memset (kxx, 0, npoints * sizeof (CCTK_REAL));
+  memset (kyy, 0, npoints * sizeof (CCTK_REAL));
+  memset (kzz, 0, npoints * sizeof (CCTK_REAL));
+  memset (kxy, 0, npoints * sizeof (CCTK_REAL));
+  memset (kxz, 0, npoints * sizeof (CCTK_REAL));
+  memset (kyz, 0, npoints * sizeof (CCTK_REAL));
 
 }
