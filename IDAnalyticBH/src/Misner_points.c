@@ -38,10 +38,10 @@ struct bhole {
 /* The seed black holes. */
 struct bhole bholes[MAXBHOLES];
 
-CCTK_REAL csch(CCTK_REAL mu) {
+static CCTK_REAL csch(CCTK_REAL mu) {
   return 1.0/sinh(mu); 
 }
-CCTK_REAL coth(CCTK_REAL mu) {
+static CCTK_REAL coth(CCTK_REAL mu) {
   return cosh(mu)/sinh(mu); 
 }
 
@@ -59,7 +59,7 @@ CCTK_REAL coth(CCTK_REAL mu) {
 
 @@*/
 
-void iso(struct bhole *a1, struct bhole *a2, struct bhole *a3) 
+static void iso(struct bhole *a1, struct bhole *a2, struct bhole *a3) 
 {
   CCTK_REAL rad,radtwo;
   radtwo=(
@@ -87,7 +87,7 @@ void iso(struct bhole *a1, struct bhole *a2, struct bhole *a3)
 
 @@*/
 
-void fill_iso(struct bhole *b, int n) 
+static void fill_iso(struct bhole *b, int n) 
 {
   int i,j;
   if(n==0) 
@@ -122,29 +122,29 @@ void fill_iso(struct bhole *b, int n)
 
 @@*/
 
-void FMODIFIER FORTRAN_NAME(Misner_init)(int *n, CCTK_REAL *mu, int *terms) 
+void Misner_init(int n, CCTK_REAL mu, int terms) 
 {
 
   int i;
   CCTK_REAL pi,ang;
 
-  assert((nbholes=*n) < MAXBHOLES);
+  assert((nbholes=n) < MAXBHOLES);
 
   pi = 4.0*atan(1.);
 
-  ang = 2.*pi/(*n);
+  ang = 2.*pi/(n);
 
-  for(i=0;i<*n;i++) 
+  for(i=0;i<n;i++) 
   {
-    bholes[i].x = coth(*mu)*cos(ang*i);
-    bholes[i].y = coth(*mu)*sin(ang*i);
-    bholes[i].mass = csch(*mu);
+    bholes[i].x = coth(mu)*cos(ang*i);
+    bholes[i].y = coth(mu)*sin(ang*i);
+    bholes[i].mass = csch(mu);
     bholes[i].i = i;
     bholes[i].isos = 0;
   }
 
-  for(i=0;i<*n;i++)
-    fill_iso(&bholes[i],*terms);
+  for(i=0;i<n;i++)
+    fill_iso(&bholes[i],terms);
 
 }
 
@@ -163,7 +163,7 @@ void FMODIFIER FORTRAN_NAME(Misner_init)(int *n, CCTK_REAL *mu, int *terms)
 
 @@*/
 
-CCTK_REAL eval_bh_psi(struct bhole *b, CCTK_REAL x, CCTK_REAL y, CCTK_REAL z) 
+static CCTK_REAL eval_bh_psi(struct bhole *b, CCTK_REAL x, CCTK_REAL y, CCTK_REAL z) 
 {
   int i;
   CCTK_REAL res;
@@ -198,10 +198,10 @@ CCTK_REAL eval_bh_psi(struct bhole *b, CCTK_REAL x, CCTK_REAL y, CCTK_REAL z)
 
 @@*/
 
-void FMODIFIER FORTRAN_NAME(MisnerEvalPsi)(CCTK_REAL *x, CCTK_REAL *y, CCTK_REAL *z, CCTK_REAL *res) 
+void MisnerEvalPsi(CCTK_REAL x, CCTK_REAL y, CCTK_REAL z, CCTK_REAL *res) 
 {
   int i;
   *res = 1;
   for(i=0;i<nbholes;i++)
-    *res += eval_bh_psi(&bholes[i],*x,*y,*z);
+    *res += eval_bh_psi(&bholes[i],x,y,z);
 }
