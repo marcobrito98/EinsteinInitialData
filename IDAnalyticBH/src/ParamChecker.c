@@ -32,9 +32,9 @@
 
 @@*/
 
-void ParamChecker(CCTK_CARGUMENTS)
+void ParamChecker(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_CARGUMENTS
+  DECLARE_CCTK_ARGUMENTS
   DECLARE_CCTK_PARAMETERS
 
   char *message;
