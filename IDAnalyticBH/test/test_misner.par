@@ -27,9 +27,10 @@ cactus::cctk_itlast        = 10
 adm::bound                 = "flat"      
 adm::method                = "leapfrog"
 
-IO::outdir           = "test_misner"
+IO::outdir               = "test_misner"
+IO::out_fileinfo         = "none"
 IOBasic::outInfo_every   = 1
-IOBasic::outInfo_vars  = "einstein::gxx einstein::kxx"
+IOBasic::outInfo_vars    = "einstein::gxx einstein::kxx"
 IOBasic::outScalar_every = 2
 IOBasic::outScalar_vars  = "einstein::grr einstein::trk"
 
