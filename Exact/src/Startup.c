@@ -8,5 +8,4 @@ void Exact_RegisterSlicing(void)
   int handle;
   handle=Einstein_RegisterSlicing("exact");
   if (handle<0) CCTK_WARN(1,"Cannot register exact slicing");
-*/
 }
