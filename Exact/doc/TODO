@@ -55,3 +55,11 @@ Failing that, it could at least check if FishEye is active
 ----------------------------------------
 It would be nice if Exact supported the "static conformal" metric type.
 ----------------------------------------
+
+Most of this thorn is C or Fortran 77.  There are only a few Fortran 90
+files, and they're only used when computing initial data on an arbitrary
+slice (as opposed to a t=constant slice).  It would be nice if there
+were a clean/simple way to optionally disable that code/functionality
+so this thorn could be compiled on systems without a Fortran 90 compiler.
+
+----------------------------------------
