@@ -12,14 +12,30 @@ private:
 
 # Parameters for elliptic solve
 
-KEYWORD solver "Which elliptic solver to use"
+KEYWORD brill_solver "Which elliptic solver to use"
 {
   "sor"    ::  "Use SOR solver"
   "petsc"  ::  "Use PETSc solver"
   "bam"    ::  "Use bam solver"
 } "sor"
 
-REAL thresh "How far (absolute norm) to go"
+KEYWORD brill_bound "Which boundary condition to use"
+{
+  "const" :: "constant boundary: set brill_const_v0"
+  "robin" :: "Robin boundary: set brill_robin_falloff, brill_robin_inf
+} "const"
+
+CCTK_INT brill_robin_falloff "Fall-off of Robin BC"
+{
+  0: :: "any positive integer value"
+} 1
+
+CCTK_REAL brill_robin_inf " inf-value of Robin BC"
+{
+  : :: "anything goes"
+} 1.0
+
+REAL brill_thresh "How far (absolute norm) to go"
 {
   0.0: :: "Positive number please"
 } 0.00001

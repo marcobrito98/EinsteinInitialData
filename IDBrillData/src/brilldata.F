@@ -44,7 +44,7 @@ c     to find conformal factor.
       call CCTK_VarIndex (Mlin_index,      "IDBrillData::Mlinear")
       call CCTK_VarIndex (Nsrc_index,      "IDBrillData::Nsource")
 
-      AbsTol(1)= 0.0001
+      AbsTol(1)= brill_thresh
       AbsTol(2)= -1
       AbsTol(3)= -1
  
@@ -52,8 +52,27 @@ c     to find conformal factor.
       RelTol(2)= -1
       RelTol(3)= -1
 
-      call Ell_LinConfMetricSolver(ierr,cctkGH,metpsi_index,
-     .field_index,Mlin_index,Nsrc_index,AbsTol,RelTol,"sor")
+      if (CCTK_EQUALS(brill_bound,"const")) then
+         call Ell_SetRealKey(ierr,brill_const_v0,
+     .   "EllLinConfMetric::Bnd::Const::V0")
+      end if
+
+      if (CCTK_EQUALS(brill_bound,"robin")) then
+         call Ell_SetIntKey(ierr,brill_robin_falloff,
+     .   "EllLinConfMetric::Bnd::Robin::falloff")
+         call Ell_SetRealKey(ierr,brill_robin_inf,
+     .   "EllLinConfMetric::Bnd::Robin::inf")
+      endif
+
+      if (CCTK_EQUALS(brill_solver,"sor")) then
+         call Ell_LinConfMetricSolver(ierr,cctkGH,metpsi_index,
+     .   field_index,Mlin_index,Nsrc_index,AbsTol,RelTol,"sor")
+      end if
+
+      if (CCTK_EQUALS(brill_solver,"petsc)) then
+         call Ell_LinConfMetricSolver(ierr,cctkGH,metpsi_index,
+     .   field_index,Mlin_index,Nsrc_index,AbsTol,RelTol,"petsc")
+      end if
 
 c     Synchronize conformal factor.
 
