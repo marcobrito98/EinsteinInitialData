@@ -349,9 +349,10 @@ REAL Schwarzschild_Lemaitre__mass "Schwarzschild-Lemaitre: BH mass"
 
 # parameters for Kerr metric in Boyer-Lindquist coordinates
 
-REAL Kerr_BoyerLindquist__spin "Kerr/Boyer-Lindquist: spin parameter a = J/m^2"
+REAL Kerr_BoyerLindquist__spin \
+  "Kerr/Boyer-Lindquist: dimensionless spin parameter a = J/m^2"
 {
--1.0:1.0 :: "spin parameter for Kerr black hole"
+-1.0:1.0 :: "dimensionless spin parameter a = J/m^2 for Kerr black hole"
 } 0.6
 
 REAL Kerr_BoyerLindquist__mass "Kerr/Boyer-Lindquist: BH mass"
@@ -382,9 +383,10 @@ REAL Kerr_KerrSchild__mass "Kerr/Kerr-Schild: BH mass"
 (0.0:*  ::  "any real number > 0"
 } 1.0
 
-REAL Kerr_KerrSchild__spin "Kerr/Kerr-Schild: spin parameter a = J/m^2"
+REAL Kerr_KerrSchild__spin \
+  "Kerr/Kerr-Schild: dimensionless spin parameter a = J/m^2"
 {
--1.0:1.0 :: "spin parameter for Kerr black hole"
+-1.0:1.0 :: "dimensionless spin parameter a = J/m^2 for Kerr black hole"
 } 0.6
 
 ################################################################################
