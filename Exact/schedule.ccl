@@ -1,2 +1,61 @@
 # Schedule definitions for thorn Exact
 # $Header$
+
+
+# Initial data from exact solution.
+
+if (CCTK_Equals(initial_data,"exact"))
+{
+  schedule exactinitialize at CCTK_INITIAL
+  {
+    LANG: Fortran
+  } "Set initial data from exact solution"
+}
+
+
+# Exact lapse and/or shift.
+
+if ((CCTK_Equals(slicing,"exact")) || (CCTK_Equals(shift,"exact")))
+{
+  schedule Exact_RegisterSlicing at CCTK_STARTUP
+  {
+    LANG: C
+  } "Register slicings"
+
+  schedule exactgauge at CCTK_POSTINITIAL
+  {
+    LANG: Fortran
+  } "Set initial lapse and/or shift from exact solution"
+
+  schedule exactgauge at CCTK_PRESTEP
+  {
+    LANG: Fortran
+  } "Set evolution lapse and/or shift from exact solution"
+}
+
+
+# The slice evolver.
+
+if ((CCTK_Equals(initial_data,"slice")) || (CCTK_Equals(evolution_system,"slice")))
+{
+  STORAGE: Exact_slice
+  STORAGE: Exact_slicetemp1
+  STORAGE: Exact_slicetemp2
+
+  COMMUNICATION: Exact_slice
+  COMMUNICATION: Exact_slicetemp1
+  COMMUNICATION: Exact_slicetemp2
+
+  schedule slice_initialize at CCTK_INITIAL
+  {
+    LANG: Fortran
+  } "Set initial data from exact solution on arbitrary slice"
+}
+
+if (CCTK_Equals(evolution_system,"slice"))
+{
+  schedule slice_evolve at CCTK_EVOL
+  {
+    LANG: Fortran
+  } "Evolve arbitrary slice and  extract Cauchy data"
+}
