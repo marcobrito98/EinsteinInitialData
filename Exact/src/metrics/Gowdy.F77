@@ -5,9 +5,8 @@ C  @author    Denis Pollney
 C  @desc
 C             Cosmological Gowdy metric for a polarized wave in an
 C	      expanding universe. See
-C	        "Stable 3-level leapfrog integration in numerical
-C		relativity" New, K, Watt, K, Misner, C and Centrella,
-C		J, PRD 58, 064022.
+C	        "Stable 3-level leapfrog integration in numerical relativity"
+C               New, K, Watt, K, Misner, C and Centrella, J, PRD 58, 064022.
 C  @desc
 C  @version   $Header$
 C @@
