@@ -742,8 +742,8 @@ at the origin; the default setting should be ok for most purposes.
 
 \verb|Exact::exact_model = "Kerr/Boyer-Lindquist"| specifies Kerr
 spacetime in (cartesian) Boyer-Lindquist coordinates, as described
-in MTW box~33.2.  The physics parameters are
-the black hole mass $m = \verb|Kerr_BoyerLindquist__mass|$, and the
+in MTW box~33.2 (the spin axis is the $z$~axis).  The physics parameters
+are the black hole mass $m = \verb|Kerr_BoyerLindquist__mass|$, and the
 dimensionless spin parameter $a = J/m^2 = \verb|Kerr_BoyerLindquist__spin|$.
 
 Mitica Vulcanov says: this metric still need some work in order to
@@ -755,10 +755,10 @@ units for the parameters and variables.
 \subsection{Kerr-Schild form of Boosted Rotating Black Hole}
 
 \verb|Exact::exact_model = "KerrSchild"| specifies Kerr spacetime in
-Kerr-Schild coordinates, as described in MTW exercise~33.8, Lorentz
-boosted in the $z$ direction so the black hole is centered at the
-position $z = vt$.  The physics parameters are
-the black hole mass $m = \verb|Kerr_KerrSchild__m|$, the
+Kerr-Schild coordinates, as described in MTW exercise~33.8 (the spin
+axis is the $z$~axis), Lorentz boosted in the $z$ direction so the
+black hole is centered at the position $z = vt$.  The physics parameters
+are the black hole mass $m = \verb|Kerr_KerrSchild__m|$, the
 dimensionless spin parameter $a = J/m^2 = \verb|Kerr_KerrSchild__spin|$,
 and the boost velocity $v = \verb|Kerr_KerrSchild__boost_v|$.
 
