@@ -55,6 +55,8 @@ void Misner_multiple(CCTK_ARGUMENTS)
   /* Check if we should create and store conformal factor stuff */
   if(CCTK_EQUALS(metric_type, "static conformal"))
   {
+    *conformal_state = 1;
+
     if(CCTK_EQUALS(conformal_storage,"factor+derivs"))
     {
       *conformal_state = 2;

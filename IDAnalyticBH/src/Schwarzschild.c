@@ -37,6 +37,8 @@ void Schwarzschild(CCTK_ARGUMENTS)
   {
     int make_conformal_derivs;
 
+    *conformal_state = 1;
+
     if(CCTK_EQUALS(conformal_storage,"factor+derivs"))
     {
       *conformal_state = 2;
