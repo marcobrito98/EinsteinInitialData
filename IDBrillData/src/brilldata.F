@@ -42,17 +42,17 @@ c     Get indices for grid functions.
 
       call CCTK_VarIndex(ipsi,"idbrilldata::brillpsi")
       if (ipsi.lt.0) then
-	call CCTK_WARN(0,"Grid variable index for ipsi not found")
+        call CCTK_WARN(0,"Grid variable index for ipsi not found")
       end if
 
       call CCTK_VarIndex(iMcoeff,"idbrilldata::brillMlinear")
       if (iMcoeff.lt.0) then
-	call CCTK_WARN(0,"Grid variable index for brillMlinear not found")
+        call CCTK_WARN(0,"Grid variable index for brillMlinear not found")
       end if
 
       call CCTK_VarIndex(iNcoeff,"idbrilldata::brillNsource")
       if (iNcoeff.lt.0) then
-	call CCTK_WARN(0,"Grid variable index for brillNsource not found")
+        call CCTK_WARN(0,"Grid variable index for brillNsource not found")
       end if
 
 c     Set up background metric and coefficients for linear solve.
@@ -112,11 +112,11 @@ c     Check for errors.
       if (ierr.eq.ELL_SUCCESS) then
         call CCTK_INFO("Leaving elliptic solver: solve successful")
       else if (ierr.eq.ELL_NOCONVERGENCE) then
-	call CCTK_INFO("Leaving elliptic solver: solver failed to converge")
+        call CCTK_INFO("Leaving elliptic solver: solver failed to converge")
       else if (ierr.eq.ELL_NOSOLVER) then
-	call CCTK_INFO("Elliptic solver not found")
+        call CCTK_INFO("Elliptic solver not found")
       else 
-        call CCTK_INFO("Leaving elliptic solver: solve failed")	
+        call CCTK_INFO("Leaving elliptic solver: solve failed") 
       end if
 
 c     Synchronization and symmetry boundaries.
