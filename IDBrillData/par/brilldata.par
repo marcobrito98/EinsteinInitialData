@@ -34,12 +34,12 @@ idbrilldata::brill_a 				= 1.0
 idbrilldata::brill_solver 			= "sor"
 idbrilldata::brill_thresh			= 0.001
 
-ellsor::maxit					= 1000
-ellsor::sor_bound				= "robin"
+idbrilldata::sor_maxit				= 1000
 
 # Output.
 
 IO::out_every = 1
+IO::outdir = "brilldata"
 
 IOASCII::out1D_vars = "einstein::gxx einstein::gyy einstein::gzz einstein::gxy einstein::gxz einstein::gyz idbrilldata::brillpsi"
 
