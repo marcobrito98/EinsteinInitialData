@@ -44,7 +44,7 @@ C     order numerical scheme.
 C     Set both lapse and shift.
 
       if ((CCTK_Equals(slicing,"exact").ne.0).and.
-     .    (CCTK_Equals(shift,"exact").ne.0) ) then
+     .    (CCTK_Equals(shift,"exact").ne.0)) then
 
          do k=1,nz
             do j=1,ny

@@ -54,14 +54,14 @@ C     Get the spacetime metric and its inverse at the base point.
       call exactmetric(
      $     x, y, z, t,
      $     gdtt, gdtx, gdty, gdtz, 
-     $     gxx, gyy, gzz, 
-     $     gxy, gyz, gxz,
+     $     gxx, gyy, gzz, gxy, gyz, gxz,
      $     gutt, gutx, guty, gutz, 
      $     guxx, guyy, guzz, guxy, guyz, guxz)
 
 C     Calculate lapse and shift from the upper metric.
 
-      alp = 1.d0 / sqrt(- gutt)
+      alp = 1.d0 / sqrt(-gutt)
+
       betax = - gutx / gutt
       betay = - guty / gutt
       betaz = - gutz / gutt
@@ -84,13 +84,16 @@ C     Calculate x-derivatives.
      $     gdxx_m, gdyy_m, gdzz_m, gdxy_m, gdyz_m, gdxz_m,
      $     gutt_m, gutx_m, guty_m, gutz_m,
      $     guxx_m, guyy_m, guzz_m, guxy_m, guyz_m, guxz_m)
+
       dxgxx = (gdxx_p  - gdxx_m)  / 4.d0 / eps
       dxgyy = (gdyy_p  - gdyy_m)  / 4.d0 / eps
       dxgzz = (gdzz_p  - gdzz_m)  / 4.d0 / eps
       dxgxy = (gdxy_p  - gdxy_m)  / 4.d0 / eps
       dxgyz = (gdyz_p  - gdyz_m)  / 4.d0 / eps
       dxgxz = (gdxz_p  - gdxz_m)  / 4.d0 / eps
+
       ax = - 0.5d0 * (gutt_p - gutt_m) / 2.d0 / eps / gutt
+
       bxx = ((- gutx_p / gutt_p) - (- gutx_m / gutt_m)) / 4.d0 / eps
       bxy = ((- guty_p / gutt_p) - (- guty_m / gutt_m)) / 4.d0 / eps
       bxz = ((- gutz_p / gutt_p) - (- gutz_m / gutt_m)) / 4.d0 / eps
@@ -109,13 +112,16 @@ C     Calculate y-derivatives.
      $     gdxx_m, gdyy_m, gdzz_m, gdxy_m, gdyz_m, gdxz_m,
      $     gutt_m, gutx_m, guty_m, gutz_m,
      $     guxx_m, guyy_m, guzz_m, guxy_m, guyz_m, guxz_m)
+
       dygxx = (gdxx_p  - gdxx_m)  / 4.d0 / eps
       dygyy = (gdyy_p  - gdyy_m)  / 4.d0 / eps
       dygzz = (gdzz_p  - gdzz_m)  / 4.d0 / eps
       dygxy = (gdxy_p  - gdxy_m)  / 4.d0 / eps
       dygyz = (gdyz_p  - gdyz_m)  / 4.d0 / eps
       dygxz = (gdxz_p  - gdxz_m)  / 4.d0 / eps
+
       ay = - 0.5d0 * (gutt_p - gutt_m) / 2.d0 / eps / gutt
+
       byx = ((- gutx_p / gutt_p) - (- gutx_m / gutt_m)) / 4.d0 / eps
       byy = ((- guty_p / gutt_p) - (- guty_m / gutt_m)) / 4.d0 / eps
       byz = ((- gutz_p / gutt_p) - (- gutz_m / gutt_m)) / 4.d0 / eps
@@ -134,13 +140,16 @@ C     Calculate z-derivatives.
      $     gdxx_m, gdyy_m, gdzz_m, gdxy_m, gdyz_m, gdxz_m,
      $     gutt_m, gutx_m, guty_m, gutz_m,
      $     guxx_m, guyy_m, guzz_m, guxy_m, guyz_m, guxz_m)
+
       dzgxx = (gdxx_p  - gdxx_m)  / 4.d0 / eps
       dzgyy = (gdyy_p  - gdyy_m)  / 4.d0 / eps
       dzgzz = (gdzz_p  - gdzz_m)  / 4.d0 / eps
       dzgxy = (gdxy_p  - gdxy_m)  / 4.d0 / eps
       dzgyz = (gdyz_p  - gdyz_m)  / 4.d0 / eps
       dzgxz = (gdxz_p  - gdxz_m)  / 4.d0 / eps
+
       az = - 0.5d0 * (gutt_p - gutt_m) / 2.d0 / eps / gutt
+
       bzx = ((- gutx_p / gutt_p) - (- gutx_m / gutt_m)) / 4.d0 / eps
       bzy = ((- guty_p / gutt_p) - (- guty_m / gutt_m)) / 4.d0 / eps
       bzz = ((- gutz_p / gutt_p) - (- gutz_m / gutt_m)) / 4.d0 / eps
@@ -186,7 +195,6 @@ C     Calculate t-derivatives, and extrinsic curvature.
      $     + (dxgxz * betax + dygxz * betay + dzgxz * betaz      
      $     + bxx * gxz + bxy * gyz + bxz * gzz
      $     + bzx * gxx + bzy * gxy + bzz * gxz) / alp
-
 
       return
       end

@@ -32,8 +32,7 @@ C     Call the corresponding routine.
          call boostrotmetric(
      $        x, y, z, t,
      $        gdtt, gdtx, gdty, gdtz, 
-     $        gdxx, gdyy, gdzz, 
-     $        gdxy, gdyz, gdxz,
+     $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz, 
      $        guxx, guyy, guzz, guxy, guyz, guxz)
 
@@ -42,8 +41,7 @@ C     Call the corresponding routine.
          call finkelstein(
      $        x, y, z, t,
      $        gdtt, gdtx, gdty, gdtz, 
-     $        gdxx, gdyy, gdzz, 
-     $        gdxy, gdyz, gdxz,
+     $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz, 
      $        guxx, guyy, guzz, guxy, guyz, guxz)
 
@@ -52,8 +50,7 @@ C     Call the corresponding routine.
          call kerrschild(
      $        x, y, z, t,
      $        gdtt, gdtx, gdty, gdtz, 
-     $        gdxx, gdyy, gdzz, 
-     $        gdxy, gdyz, gdxz,
+     $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz, 
      $        guxx, guyy, guzz, guxy, guyz, guxz)
 
@@ -62,8 +59,7 @@ C     Call the corresponding routine.
          call flatschwarz(
      $        x, y, z, t,
      $        gdtt, gdtx, gdty, gdtz, 
-     $        gdxx, gdyy, gdzz, 
-     $        gdxy, gdyz, gdxz,
+     $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz, 
      $        guxx, guyy, guzz, guxy, guyz, guxz)
 
@@ -72,8 +68,7 @@ C     Call the corresponding routine.
          call starschwarz(
      $        x, y, z, t,
      $        gdtt, gdtx, gdty, gdtz, 
-     $        gdxx, gdyy, gdzz, 
-     $        gdxy, gdyz, gdxz,
+     $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz, 
      $        guxx, guyy, guzz, guxy, guyz, guxz)
 
@@ -81,8 +76,7 @@ C     Call the corresponding routine.
 
          call novikov(x,y,z,t,
      $        gdtt, gdtx, gdty, gdtz, 
-     $        gdxx, gdyy, gdzz, 
-     $        gdxy, gdyz, gdxz,
+     $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz, 
      $        guxx, guyy, guzz, guxy, guyz, guxz)
 
@@ -91,8 +85,7 @@ C     Call the corresponding routine.
          call bowl(
      $        x, y, z, t,
      $        gdtt, gdtx, gdty, gdtz, 
-     $        gdxx, gdyy, gdzz, 
-     $        gdxy, gdyz, gdxz,
+     $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz, 
      $        guxx, guyy, guzz, guxy, guyz, guxz)
 
@@ -101,8 +94,7 @@ C     Call the corresponding routine.
          call minkowski(
      $        x, y, z, t,
      $        gdtt, gdtx, gdty, gdtz, 
-     $        gdxx, gdyy, gdzz, 
-     $        gdxy, gdyz, gdxz,
+     $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz, 
      $        guxx, guyy, guzz, guxy, guyz, guxz)
 
@@ -111,8 +103,7 @@ C     Call the corresponding routine.
          call fakebinary(
      $        x, y, z, t,
      $        gdtt, gdtx, gdty, gdtz, 
-     $        gdxx, gdyy, gdzz, 
-     $        gdxy, gdyz, gdxz,
+     $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz, 
      $        guxx, guyy, guzz, guxy, guyz, guxz)
 
@@ -121,8 +112,7 @@ C     Call the corresponding routine.
          call multi_BHs(
      $        x, y, z, t,
      $        gdtt, gdtx, gdty, gdtz, 
-     $        gdxx, gdyy, gdzz, 
-     $        gdxy, gdyz, gdxz,
+     $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $        gutt, gutx, guty, gutz, 
      $        guxx, guyy, guzz, guxy, guyz, guxz)
 

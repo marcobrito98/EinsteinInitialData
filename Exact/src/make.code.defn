@@ -5,9 +5,10 @@
 SRCS = exactinitialize.F exactgauge.F exactboundary.F \
        exactdata.F exactmetric.F \
        boostrotmetric.F finkelstein.F kerrschild.F flatschwarz.F \
-       starschwarz.F bowl.F novikov.F  minkowski.F fakebinary.F multiBH.F\
+       starschwarz.F bowl.F novikov.F  minkowski.F fakebinary.F multiBH.F \
        exactblendbound.F exactcartblendbound.F \
-       slice_initialize.F slice_evolve.F slice_data.F linextraponebound.F
+       slice_initialize.F slice_evolve.F slice_data.F linextraponebound.F \
+       Startup.c
 #      ComparisonSolutions.F Comparison.c
 
 # Subdirectories containing source files

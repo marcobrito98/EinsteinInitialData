@@ -306,14 +306,12 @@ C     Synchronize and bound slicetmp2, which contains dx^A/dt.
 C     This is really just for output, and will eventually be redundant.
 
       call linextraponebound(CCTK_FARGUMENTS,slicetmp2x)
-      call synconefunc(slicetmp2x)
       call linextraponebound(CCTK_FARGUMENTS,slicetmp2y)
-      call synconefunc(slicetmp2y)
       call linextraponebound(CCTK_FARGUMENTS,slicetmp2z)
-      call synconefunc(slicetmp2z)
       call linextraponebound(CCTK_FARGUMENTS,slicetmp2t)
-      call synconefunc(slicetmp2t)
  
+      call CCTK_SyncGroup(cctkGH,"Exact::Exact_slicetemp2")
+
       kxx = - kxx
       kxy = - kxy
       kxz = - kxz

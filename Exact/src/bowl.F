@@ -103,6 +103,8 @@ c     Get parameters of the metric.
          dy = bowl_dy
          dz = bowl_dz
 
+         print *, a,c,s,dx,dy,dz
+
          if (dx.le.zero) then
             call CCTK_WARN(0,"The parameter bowl_dx must be greater than 0")
          end if
@@ -123,7 +125,7 @@ c     Get parameters of the metric.
             call CCTK_WARN(0,"Unknown type of bowl metric")
          end if
 
-         if (CCTK_Equals(bowl_evolve,"yes").ne.0) then
+         if (bowl_evolve.eq.1) then
             evolve = .true.
             t0 = bowl_t0
             st = bowl_st

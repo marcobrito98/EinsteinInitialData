@@ -39,13 +39,11 @@ C     by slice_data.
 C     Synchronize and bound slice.
 
       call linextraponebound(CCTK_FARGUMENTS,slicetmp1x)
-      call synconefunc(slicetmp1x)
       call linextraponebound(CCTK_FARGUMENTS,slicetmp1y)
-      call synconefunc(slicetmp1y)
       call linextraponebound(CCTK_FARGUMENTS,slicetmp1z)
-      call synconefunc(slicetmp1z)
       call linextraponebound(CCTK_FARGUMENTS,slicetmp1t)
-      call synconefunc(slicetmp1t)
+
+      call CCTK_SyncGroup(cctkGH,"Exact::Exact_slicetemp1")
 
 C     Prepare leapfrog step.
 C     Sum over interior points on the slice, now at midpoint slicetmp1.
@@ -94,14 +92,12 @@ C     Calculate n^A and dx^A/dt
 C     Synchronize and bound slicetmp2, which contains dx^A/dt.
 
       call linextraponebound(CCTK_FARGUMENTS,slicetmp2x)
-      call synconefunc(slicetmp2x)
       call linextraponebound(CCTK_FARGUMENTS,slicetmp2y)
-      call synconefunc(slicetmp2y)
       call linextraponebound(CCTK_FARGUMENTS,slicetmp2z)
-      call synconefunc(slicetmp2z)
       call linextraponebound(CCTK_FARGUMENTS,slicetmp2t)
-      call synconefunc(slicetmp2t)
- 
+
+      call CCTK_SyncGroup(cctkGH,"Exact::Exact_slicetemp2")
+
 C Leapfrog step.
 
       slicex = slicex + dt * slicetmp2x
@@ -112,13 +108,11 @@ C Leapfrog step.
 C     Synchronize and bound slice.
 
       call linextraponebound(CCTK_FARGUMENTS,slicex)
-      call synconefunc(slicex)
       call linextraponebound(CCTK_FARGUMENTS,slicey)
-      call synconefunc(slicey)
       call linextraponebound(CCTK_FARGUMENTS,slicez)
-      call synconefunc(slicez)
       call linextraponebound(CCTK_FARGUMENTS,slicet)
-      call synconefunc(slicet)
+
+      call CCTK_SyncGroup(cctkGH,"Exact::Exact_slice")
 
 C     Extract Cauchy data at the new position, and store dxA/dt 
 C     for use in the next Lax step.
