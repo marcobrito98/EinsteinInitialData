@@ -1149,7 +1149,7 @@ cxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
       do 111 i=2,im1
                write(lout,1010) im,jm,an(i,j)
                write(lout,1012) i,j,aw(i,j),ac(i,j),ae(i,j)
- 111           write(lout,1011) as(i,j)
+  111          write(lout,1011) as(i,j)
  1010 format(2(1x,i2),14x,f12.5)
  1011 format(20x,f12.5)
  1012 format(2(1x,i2),3(1x,f12.5))
@@ -1159,7 +1159,7 @@ cxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
       do 115 i=2,im1
                write(lout,1017) im,jm,anw(i,j),an(i,j),ane(i,j)
                write(lout,1017) i,j,aw(i,j),ac(i,j),ae(i,j)
- 115           write(lout,1016) asw(i,j),as(i,j),ase(i,j)
+  115          write(lout,1016) asw(i,j),as(i,j),ase(i,j)
  1016  format(6x,3(1x,f12.5))
  1017  format(2(1x,i2),3(1x,f12.5))
           endif
@@ -1174,7 +1174,7 @@ cxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
      + rc(i,jc)
       write(lout,2014) aswc(i,jc),asc(i,jc),asec(i,jc),pu(i,jc-1),
      + ru(i,jc-1)
- 211  write(lout,*) '                          m, kf-1=',m,kf-1
+  211 write(lout,*) '                          m, kf-1=',m,kf-1
  2014 format(9x,3(1x,f11.5),3x,2(f11.5,1x))
  2013 format(3x,2(1x,i2),3(1x,f11.5),3x,2(f11.5,1x))
  2015 format(3x,2(1x,i2),3(1x,f11.5),3x,2(f11.5,1x))
@@ -1194,7 +1194,7 @@ c**********************************************************************
       im1=im-1
       jm1=jm-1
       ie=1
- 20   ib=ie+1
+   20 ib=ie+1
       ie=ib+min0(5,im1-ib)
       do 10 j=jm1,2,-1
    10 write(lout,100) j,(q(i,j),i=ib,ie)
@@ -1227,7 +1227,7 @@ c
       aw(i,j)=0.
       as(i,j)=0.
       ae(i,j)=0.
- 321  an(i,j)=0.
+  321 an(i,j)=0.
 c
       nx1=nx+1
       ny1=ny+1
