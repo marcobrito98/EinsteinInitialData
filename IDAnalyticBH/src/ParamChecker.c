@@ -101,11 +101,11 @@ void ParamChecker(CCTK_CARGUMENTS)
     CCTK_INFO("Black hole initial data uses conformal metric");
     if (use_conformal_derivs == 1)
     {
-      CCTK_INFO("  ... and conformal derivatives");
+      CCTK_INFO("  and conformal derivatives");
     }
     else
     {
-      CCTK_INFO("  ... but no conformal derivatives");
+      CCTK_INFO("  but no conformal derivatives");
     }
   }
   else
