@@ -60,8 +60,9 @@ Many of the individual metrics (you can find them by grepping in the
    header comments in the  src/metrics/  directory) are
    copyright (C) 2000-2003 by Dumitru "Mitica" Vulcanov <vulcan@aei.mpg.de>
 
-This code is under the standard Cactus "GPL with exceptions for
-proprietory thorns" license.
+This code is under the same "GPL with exceptions for other thorns"
+license as the Cactus flesh; see the file CACTUS.COPYRIGHT in this
+directory for details.
 
 ----------------------------------------
 
