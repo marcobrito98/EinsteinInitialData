@@ -1,4 +1,10 @@
+C This subroutine sets up Minkowski spacetime with a gague wave.
+C
 c $Header$
+C
+C Author: unknown
+C Copyright/License: unknown
+C
 
 #include "cctk.h"
 #include "cctk_Arguments.h"

@@ -1,6 +1,9 @@
 C Kerr metric in cartesian Boyer-Lindquist coordinates,
 C as per MTW box 33.2.
+C
 C Author : D. Vulcanov (Timisoara, Romania)
+C see ../../README for copyright & licensing info
+C
 C $Header$
 
 #include "cctk.h"

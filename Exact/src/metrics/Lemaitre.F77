@@ -1,5 +1,9 @@
 C Lemaitre type universe - FRW with k =0, p=k rho and 
 C cosmological constant
+C
+C Author : D. Vulcanov (Timisoara, Romania)
+C see ../../README for copyright & licensing info
+C
 C $Header$
 
 

@@ -1,5 +1,8 @@
 C Kasner generalized metric spacetime !!!!
+C
 C Author : D. Vulcanov
+C see ../../README for copyright & licensing info
+C
 C $Header$
 
 #include "cctk.h"

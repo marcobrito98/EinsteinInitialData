@@ -5,7 +5,10 @@ C See :J.N. Islam, An Introduction to
 C Mathematical Cosmology, Cambridge, 1992 and 
 C S. Hawking, G.F.R. Ellis, The Large Scale
 C Structure of space-time, Cambridge, 1973
+C
 C Author : D. Vulcanov (Timisoara, Romania)
+C see ../../README for copyright & licensing info
+C
 C $Header$
 
 #include "cctk.h"

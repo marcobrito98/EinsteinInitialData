@@ -1,7 +1,10 @@
 C  Schwarzschild-Lemaitre metric
 c  (Schwarzschild black hole with cosmological constant)
 C  Proposed by Lemaitre in 1932 
+C
 C Author : D. Vulcanov (Timisoara, Romania)
+C see ../../README for copyright & licensing info
+C
 C $Header$
 
 #include "cctk.h"

@@ -46,6 +46,9 @@ c     (bowl__x_scale,bowl__y_scale,bowl__z_scale) that set the
 c     scales for the (x,y,z) axis respectively.  Their default
 c     value are all 1.  These parameters are useful to hide the
 c     spherical symmetry of the metric.
+C
+C Author: unknown
+C Copyright/License: unknown
 c
 c $Header$
 

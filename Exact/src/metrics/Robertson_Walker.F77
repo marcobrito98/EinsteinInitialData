@@ -1,7 +1,10 @@
 C Robertson-Walker universe 
 C See: J.N. Islam, An Introduction to 
 C Mathematical Cosmology, Cambridge, 1992
+C
 C Author : D. Vulcanov (Timisoara, Romania)
+C see ../../README for copyright & licensing info
+C
 C $Header$
 
 #include "cctk.h"

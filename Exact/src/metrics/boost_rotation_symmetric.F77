@@ -1,5 +1,9 @@
 c Boost-Rotation symmetric metric
 c see Pravda and Pravdova [a-acute accent on last a], gr-qc/0003067
+C
+C Author: unknown
+C Copyright/License: unknown
+C
 c $Header$
 
 #include "cctk.h"

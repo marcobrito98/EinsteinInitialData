@@ -1,7 +1,10 @@
 C Bianchi-I spacetime !!!! Fake one...
 C It is not a real Bianchi I spacetime, it just emulates
 C one, taking the two BianchiI functions as harmonic ones...
+C
 C Author : D. Vulcanov (Timisoara, Romania)
+C see ../../README for copyright & licensing info
+C
 C $Header$
 
 #include "cctk.h"

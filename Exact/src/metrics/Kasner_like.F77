@@ -3,7 +3,10 @@ C See: L. Pimentel, Int. Journ. of Theor. Physics,
 C, vol. 32, No. 6, 1993, p. 979 (and the references
 C cited here), and S. Gotlober, et. al. Early Evolution
 C of the Universe and Formation Structure, Akad. Verlag, 1990
+C
 C Author : D. Vulcanov
+C see ../../README for copyright & licensing info
+C
 C $Header$
 
 #include "cctk.h"

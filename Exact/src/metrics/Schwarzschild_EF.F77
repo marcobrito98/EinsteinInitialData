@@ -1,5 +1,9 @@
 c Schwarzschild metric in Eddington-Finkelstein coordinates,
 c as per MTW box 31.2
+C
+C Author: unknown
+C Copyright/License: unknown
+C
 c $Header$
 
 #include "cctk.h"

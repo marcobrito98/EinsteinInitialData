@@ -1,7 +1,10 @@
 C Goedel spacetime !!!!
 C See: S. Hawking, G.F.R. Ellis, The Large
 C Scale Structure of space-time, Cambridge, 1973
+C
 C Author : D. Vulcanov (Timsioara, Romania)
+C see ../../README for copyright & licensing info
+C
 C $Header$
 
 #include "cctk.h"

@@ -2,7 +2,10 @@ C Milne spacetime metric ?!?!?
 C Suggested by Matteo Rossi and E. Onofri (Univ. di Parma, Italy)
 C They inted to use thsi metric for simulating an Pre-Big-Bang
 C Cosmology, as proposed by Veneziano some year ago 
+C
 C Author : D. Vulcanov (Timsoara, Romania)
+C see ../../README for copyright & licensing info
+C
 C $Header$
 
 #include "cctk.h"

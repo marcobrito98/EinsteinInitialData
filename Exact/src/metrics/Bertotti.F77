@@ -1,5 +1,8 @@
 C Bertotti spacetime with cosmological constant
+C
 C Author : D. Vulcanov (Timisoara, Romania)
+C see ../../README for copyright & licensing info
+C
 C $Header$
 
 #include "cctk.h"

@@ -1,5 +1,8 @@
 C Anti DeSitter metric spacetime with csomological constant
+C
 C Author : D. Vulcanov (Timisoara, Romania)
+C see ../../README for copyright & licensing info
+C
 C $Header$
 
 #include "cctk.h"

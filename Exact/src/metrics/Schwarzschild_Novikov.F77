@@ -3,6 +3,10 @@ c     in isotropic coordinates, as presented first in Bruegman96
 c     then in correct form in Cactus paper 1. This code is the code
 c     which was used for the comparisons in cactus paper 1, and is written
 c     by PW with input from BB.
+C
+C Author: unknown
+C Copyright/License: unknown
+C
 C $Header$
 
 

@@ -2,6 +2,10 @@ C     Kerr-Schild form of boosted rotating black hole.
 C     Program g_ab = eta_ab + H l_a l_b, g^ab = eta^ab - H l^a l^b.
 C     Here eta_ab is Minkowski in Cartesian coordinates, H is a scalar,
 C     and l is a null vector.
+C
+C Author: unknown
+C Copyright/License: unknown
+C
 C $Header$
 
 #include "cctk.h"

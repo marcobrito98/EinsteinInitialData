@@ -1,6 +1,10 @@
 c Schwarzschild spacetime in Painleve [e-acute on last e]-Gullstrand
 c coordinates.  These have a *flat* 3-metric, and are described in
 c detail in Martel and Poisson, gr-qc/0001069
+C
+C Author: unknown
+C Copyright/License: unknown
+C
 c $Header$
 
 #include "cctk.h"

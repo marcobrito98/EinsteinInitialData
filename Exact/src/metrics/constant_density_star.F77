@@ -3,7 +3,10 @@ c     density star, also known as a "Schwarzschild" star.
 c     There is corresponding code in
 c        include/Scalar_CalcTmunu.inc
 c     to set up the matter variables.
+C
 c     Author: Mitica Vulcanov 
+C     see ../../README for copyright & licensing info
+C
 c $Header$
 
 c

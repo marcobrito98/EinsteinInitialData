@@ -9,6 +9,10 @@ c
 c     where f(r) is a gaussian centered at r=0 with amplitude 1.
 c     Finally, I transform back to cartesian coordinates.
 c     For  0 <= a < 1, the transformation above is monotonic.
+C
+C Author: unknown
+C Copyright/License: unknown
+C
 c $Header$
 
 #include "cctk.h"
