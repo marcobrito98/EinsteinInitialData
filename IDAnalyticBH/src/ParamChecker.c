@@ -20,7 +20,7 @@
 
 static const char *rcsid = "$Header$";
 
-CCTK_FILEVERSION(CactusEinstein_Einstein_ParamChecker_c)
+CCTK_FILEVERSION(CactusEinstein_IDAnalyticBH_ParamChecker_c)
 
 void ParamChecker(CCTK_ARGUMENTS);
 
