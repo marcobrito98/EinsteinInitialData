@@ -53,7 +53,8 @@ c Using macro definitions from Einstein
       CCTK_REAL wave,wavep
       CCTK_REAL kx,ky,kz,w
       CCTK_REAL kxp,kyp,kzp,wp
-      
+      CHARACTER*200 :: infoline
+
 c     local arrays (scalars! Man, what a sweat!)
       CCTK_REAL plus,minus,plusp,minusp,ain,aout
       
@@ -94,11 +95,19 @@ c     and convert it from degrees to radians
       the = pi*wavetheta/180.d0
       phi = pi*wavephi/180.d0
       
-      write(*,*)'Plane waves'
-      write(*,*)'amplitude  = ',amplitude
-      write(*,*)'wavecenter = ',ra
-      write(*,*)'wavelength = ',wave
-      write(*,*)'wavepulse  = ',wavep
+      call CCTK_INFO('Plane waves')
+      write(infoline,'(A13,G12.7)')
+     &    ' amplitude = ',amplitude
+      call CCTK_INFO(infoline)
+      write(infoline,'(A14,G12.7)')
+     &    ' wavecenter = ',ra
+      call CCTK_INFO(infoline)
+      write(infoline,'(A14,G12.7)')
+     &    ' wavelength = ',wave
+      call CCTK_INFO(infoline)
+      write(infoline,'(A14,G12.7)')
+     &    ' wavepulse = ',wavep
+      call CCTK_INFO(infoline)
 
 c     precalc
       kx = 2*pi*sin(the)*cos(phi)/wave
