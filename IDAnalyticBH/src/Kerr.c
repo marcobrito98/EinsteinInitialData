@@ -30,7 +30,7 @@ void KerrID(CCTK_ARGUMENTS)
   CCTK_REAL Phi4,fourPhi3,Phi,Chi2;
   CCTK_REAL Phi_R,Phi_RR,Phi_Rq,Phi_q,Phi_qq;
   CCTK_REAL Phi4_R,Phi4_RR,Phi4_Rq,Phi4_q,Phi4_qq;
-  //CCTK_REAL gRR,gqq,gjj;
+  /* CCTK_REAL gRR,gqq,gjj; */
   CCTK_REAL Krj,KRj,Kqj;
   CCTK_REAL dRdx,dRdy,dRdz,dqdx,dqdy,dqdz,djdx,djdy;
   CCTK_REAL d2Rdxx,d2Rdxy,d2Rdxz,d2Rdyy,d2Rdyz,d2Rdzz;
@@ -51,11 +51,11 @@ void KerrID(CCTK_ARGUMENTS)
   }
   
 
-  //printf("npoints: %i\n",npoints);
+  /* printf("npoints: %i\n",npoints); */
   for(i = 0; i < npoints; i++)
   {
-    //if((i/1000)*1000==i||i>35930)printf("i=%i\n",i);
-    //Define coordinate functions
+    /* if((i/1000)*1000==i||i>35930)printf("i=%i\n",i); */
+    /* Define coordinate functions */
     xx=x[i];  yy=y[i];  zz=z[i];
     rho_2=xx*xx+yy*yy;
     rho=sqrt(rho_2);
@@ -68,7 +68,7 @@ void KerrID(CCTK_ARGUMENTS)
     sth=rho/R;
 
 
-    //Special to Kerr
+    /* Special to Kerr */
     rK=R+m+m2_a2/4/R;
     r_2=rK*rK;
     sqrt_Delta=R-m2_a2/4/R;
@@ -76,29 +76,29 @@ void KerrID(CCTK_ARGUMENTS)
     Sigma=r_2+a_2*cth_2;
     beta_phi=-2*m*rK*a*sth_2/Sigma;
     p2=a_2+r_2-a*beta_phi;
-    //drdR=sqrt_Delta/R;
+    /* drdR=sqrt_Delta/R; */
     lapse=sqrt_Delta/sqrt(p2);
     shift_phi=-2*m*rK*a/p2;
     
-    //Kerr metric in quasi-isotropic coordinates
-    //ds^2=Phi4*(dR^2+R^2*dth^2+R^2*Chi^2*sin(th)^2*dphi^2)
+    /* Kerr metric in quasi-isotropic coordinates */
+    /* ds^2=Phi4*(dR^2+R^2*dth^2+R^2*Chi^2*sin(th)^2*dphi^2) */
     Phi4=Sigma/R_2;
     Chi2=p2/Sigma;
-    //gRR=1;
-    //gqq=R_2;
-    //gjj=R_2*sth_2*Chi2;
+    /* gRR=1; */
+    /* gqq=R_2; */
+    /* gjj=R_2*sth_2*Chi2; */
     
-    //extrinsic curvature
-    //tmp=p2+a*beta_phi/2;
-    //Krj=(beta_phi*rK)/(2/lapse/p2)*(1+(2/Sigma-1/R_2)*tmp);
-    //Kqj=(-2*m*a*sth*cth/Sigma)/lapse*((r_2+a_2)/(p2*Sigma)*tmp-.5);
-    //transform r to R
-    //KRj=drdR*Krj;
+    /* extrinsic curvature */
+    /* tmp=p2+a*beta_phi/2; */
+    /* Krj=(beta_phi*rK)/(2/lapse/p2)*(1+(2/Sigma-1/R_2)*tmp); */
+    /* Kqj=(-2*m*a*sth*cth/Sigma)/lapse*((r_2+a_2)/(p2*Sigma)*tmp-.5); */
+    /* transform r to R */
+    /* KRj=drdR*Krj; */
     tmp=sqrt(p2)*Sigma;
     KRj=a*m*sth_2/R/tmp*(r_2-a_2+2*r_2*(r_2+a_2)/Sigma);
     Kqj=sqrt_Delta*beta_phi*a_2*sth*cth/tmp;
 
-    //Conformal factor derivatives
+    /* Conformal factor derivatives */
     {
       double drdR=sqrt_Delta/R;
       double d2rdR2=m2_a2/2/R_3;
@@ -107,8 +107,8 @@ void KerrID(CCTK_ARGUMENTS)
       Phi4_R=dSigmadR/R_2-2*Sigma/R_3;
       Phi4_RR=d2SigmadR2/R_2-4*dSigmadR/R_3+6*Sigma/R_2/R_2;
     }
-    //Phi4_R =2/R_3*(rK*sqrt_Delta-Sigma);
-    //Phi4_RR=(m2_a2*rK/R+2*(Delta+Sigma)-8*rK*sqrt_Delta)/R_2/R_2;
+    /* Phi4_R =2/R_3*(rK*sqrt_Delta-Sigma); */
+    /* Phi4_RR=(m2_a2*rK/R+2*(Delta+Sigma)-8*rK*sqrt_Delta)/R_2/R_2; */
     Phi4_q =-2*a_2*cth*sth/R_2;
     Phi4_Rq=-2*Phi4_q/R;
     Phi4_qq=2*a_2*(-cth_2+sth_2)/R_2;
@@ -122,11 +122,11 @@ void KerrID(CCTK_ARGUMENTS)
     Phi_Rq=(Phi4_Rq-3*Phi4_R*Phi4_q/Phi4/4)/fourPhi3;
     Phi_qq=(Phi4_qq-3*Phi4_q*Phi4_q/Phi4/4)/fourPhi3;
 
-    //Now we set the cactus variables
+    /* Now we set the cactus variables */
     psi [i] = Phi;
     if(do_lapse)alp[i]=lapse;
 
-    //transform to cartesian coordinates
+    /* transform to cartesian coordinates */
     dRdx=xx/R;           
     dRdy=yy/R;            
     dRdz=zz/R;
@@ -153,8 +153,8 @@ void KerrID(CCTK_ARGUMENTS)
       d2qdyz=-zz*dqdy*tmp;
     
 
-      //conformal factor partial derivatives
-      //note second derivatives are not tensors
+      /* conformal factor partial derivatives */
+      /* note second derivatives are not tensors */
       psix[i] = dRdx*Phi_R + dqdx*Phi_q;
       psiy[i] = dRdy*Phi_R + dqdy*Phi_q;
       psiz[i] = dRdz*Phi_R + dqdz*Phi_q;
@@ -188,7 +188,7 @@ void KerrID(CCTK_ARGUMENTS)
       psizz[i] *= inv_psi;
     }
 
-    //metric
+    /* metric */
     tmp=(Chi2-1)*R_2*sth_2;
     gxx[i] = 1 + djdx*djdx*tmp;
     gxy[i] = djdx*djdy*tmp;
@@ -198,7 +198,7 @@ void KerrID(CCTK_ARGUMENTS)
     gzz[i] = 1;
   
 
-    //extrinsic curvature
+    /* extrinsic curvature */
     kxx[i] = 2*(dRdx*KRj+dqdx*Kqj)*djdx;
     kxy[i] = (dRdx*KRj+dqdx*Kqj)*djdy + (dRdy*KRj+dqdy*Kqj)*djdx;
     kxz[i] = (dRdz*KRj+dqdz*Kqj)*djdx;
@@ -206,7 +206,7 @@ void KerrID(CCTK_ARGUMENTS)
     kyz[i] = (dRdz*KRj+dqdz*Kqj)*djdy;
     kzz[i] = 0;
 
-    /*    //probable convention to define conformal extrinsic curvature:
+    /*    probable convention to define conformal extrinsic curvature:
 	  if (*conformal_state == CONFORMAL_METRIC){
 	  tmp=Psi*Psi;
 	  kxx[i] *=tmp;
@@ -216,7 +216,7 @@ void KerrID(CCTK_ARGUMENTS)
 	  kyz[i] *=tmp;
       }*/
 
-    //shift
+    /* shift */
     if(do_shift){
       betax[i]=-yy*shift_phi;
       betay[i]=xx*shift_phi;
@@ -230,7 +230,7 @@ void KerrID(CCTK_ARGUMENTS)
   
   if (*conformal_state != CONFORMAL_METRIC){
     for(i = 0; i < npoints; i++){
-      //if((i/1000)*1000==i||i>35930)printf("i=%i\n",i);
+      /* if((i/1000)*1000==i||i>35930)printf("i=%i\n",i); */
       tmp=psi[i];tmp*=tmp;tmp*=tmp;
       gxx[i] *= tmp;
       gxy[i] *= tmp;
