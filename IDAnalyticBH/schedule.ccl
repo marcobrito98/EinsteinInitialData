@@ -3,10 +3,37 @@
 
 if (CCTK_Equals(model,"schwarzschild")) 
 { 
+   if (use_conformal)
+   {
+     STORAGE: confac, confac_1derivs, confac_2derivs
+   }
+	
    schedule Schwarzschild at CACTUS_INITIAL
    {
      LANG: Fortran
    } "Construct initial data for a single Schwarzschild black hole"
+
+}
+
+if (CCTK_Equals(model,"bl_bh")) 
+{ 
+   STORAGE: confac, confac_1derivs, confac_2derivs
+
+   schedule BrillLindquist at CACTUS_INITIAL
+   {
+     LANG: Fortran
+   } "Construct initial data for Brill Lindquist black holes"
+
+}
+
+if (CCTK_Equals(model,"misner_bh")) 
+{ 
+   STORAGE: confac, confac_1derivs, confac_2derivs
+
+   schedule Misner at CACTUS_INITIAL
+   {
+     LANG: Fortran
+   } "Construct initial data for Misner black holes"
 
 }
  

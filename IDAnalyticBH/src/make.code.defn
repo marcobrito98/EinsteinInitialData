@@ -2,7 +2,11 @@
 # $Header$
 
 # Source files in this directory
-SRCS = Schwarzschild.F
+SRCS = 	ParamChecker.F\
+	Schwarzschild.F\
+	BrillLindquist.F\
+	Misner.F\
+	Misner_points.c
 
 # Subdirectories containing source files
 SUBDIRS = 
