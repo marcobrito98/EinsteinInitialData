@@ -1,0 +1,6 @@
+# Interface definition for thorn TwoPunctures
+# $Header$
+
+IMPLEMENTS: TwoPunctures
+
+INHERITS: ADMBase StaticConformal grid

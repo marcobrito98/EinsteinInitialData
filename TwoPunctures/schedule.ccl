@@ -1,0 +1,7 @@
+# Schedule definitions for thorn TwoPunctures
+# $Header$
+
+SCHEDULE TwoPunctures IN ADMBase_InitialData
+{
+  LANG: C
+} "Create puncture black hole initial data"

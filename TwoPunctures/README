@@ -1,0 +1,13 @@
+CVS info   : $Header$
+
+Cactus Code Thorn TwoPunctures
+Thorn Author(s)     : Marcus Ansorg <marcus.ansorg@aei.mpg.de>
+                    : Erik Schnetter <schnetter@aei.mpg.de>
+Thorn Maintainer(s) : Marcus Ansorg <marcus.ansorg@aei.mpg.de>
+                    : Erik Schnetter <schnetter@aei.mpg.de>
+--------------------------------------------------------------------------
+
+Purpose of the thorn:
+
+Create initial for two puncture black holes using a single domain
+spectral method.
