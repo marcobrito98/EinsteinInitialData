@@ -39,11 +39,6 @@ EXTENDS KEYWORD evolution_system ""
   "slice" :: "Evolve arbitrary slice and  extract Cauchy data"
 } ""
 
-EXTENDS KEYWORD evolution_system ""
-{
-  "slice" :: "Evolve arbitrary slice and  extract Cauchy data"
-} ""
-
 
 # In view of using this thorn in conjunction with other thorns
 # his parameters are declared global
