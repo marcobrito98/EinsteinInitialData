@@ -28,11 +28,21 @@ driver::global_nsize       = 100
 
 cactus::cctk_final_time    = 4.0
 
+# Hosts to which remote visualisation is announced
+
+NetGeometry::amira_announce = ""
+
+# What to output and when
+
+iobasic::outinfo_every     = 10
+iobasic::outinfo_vars      = "einstein::grr"
+ioascii::out1d_every       = 10
+ioascii::out1d_vars        = "einstein::grr einstein::alp"
 
 #------------------------------------------------------------------------------
 # 
 # IsoSurfacer
-#
+# 
 #------------------------------------------------------------------------------
 
 # IsoSurfacer parameters:
@@ -41,7 +51,7 @@ cactus::cctk_final_time    = 4.0
 #  - the output format
 #  - frequency , first iteration, resolution of output, uniq_vertices flag
 
-IsoSurfacer::isosurfacer = "{(einstein::gzz) (0.999,1.001) (SOCK) (1, 1, 1, 1)}"
+IsoSurfacer::isosurfacer = "{(einstein::grr) (0.999,1.001) (SOCK) (1, 1, 1, 1)}"
 
 IsoSurfacer::allow_empty_sends = "yes"
 
@@ -49,9 +59,6 @@ http::port                  = 7050
 
 NetGeometry::port           = 7051
 NetGeometry::tcpwindowsize  = 1048576
-
-# A list of hosts to which announce the remote viz when it starts up.
-NetGeometry::amira_announce = ""
 
 #------------------------------------------------------------------------------
 # 
@@ -70,21 +77,18 @@ einstein::evolution_system = "ADM"
 
 adm::method                = "stagleap"
 adm::bound                 = "radiative"
-
+adm::harmonic_f            = 2
+cd
 einstein::slicing          = "1+log"     
 einstein::initial_data     = "teukwaves"
 
 idlinearwaves::mvalue      = 2          
 idlinearwaves::parity      = "even"     
 idlinearwaves::packet      = "eppley"   
-idlinearwaves::wavesgoing  = "in"       
+idlinearwaves::wavesgoing  = "inout"       
 idlinearwaves::wavecenter  = 0.
 idlinearwaves::wavelength  = 2.
 
-io::outdir                 = "WaveDemo"
+io::outdir                 = "WaveDemo-Iso"
 
-iobasic::outinfo_every     = 10
-iobasic::outinfo_vars      = "einstein::grr"
-ioascii::out1d_every       = 10
-ioascii::out1d_vars        = "einstein::grr einstein::alp"
 

@@ -28,6 +28,12 @@ driver::global_nsize       = 100
 
 cactus::cctk_final_time    = 4.0
 
+# What to output and when
+
+iobasic::outinfo_every     = 10
+iobasic::outinfo_vars      = "einstein::grr"
+ioascii::out1d_every       = 10
+ioascii::out1d_vars        = "einstein::grr einstein::alp"
 
 #------------------------------------------------------------------------------
 # 
@@ -46,21 +52,18 @@ einstein::evolution_system = "ADM"
 
 adm::method                = "stagleap"
 adm::bound                 = "radiative"
-
+adm::harmonic_f            = 2
+cd
 einstein::slicing          = "1+log"     
 einstein::initial_data     = "teukwaves"
 
 idlinearwaves::mvalue      = 2          
 idlinearwaves::parity      = "even"     
 idlinearwaves::packet      = "eppley"   
-idlinearwaves::wavesgoing  = "in"       
+idlinearwaves::wavesgoing  = "inout"       
 idlinearwaves::wavecenter  = 0.
 idlinearwaves::wavelength  = 2.
 
 io::outdir                 = "WaveDemo"
 
-iobasic::outinfo_every     = 10
-iobasic::outinfo_vars      = "einstein::grr"
-ioascii::out1d_every       = 10
-ioascii::out1d_vars        = "einstein::grr einstein::alp"
 
