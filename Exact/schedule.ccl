@@ -42,10 +42,6 @@ if ((CCTK_Equals(initial_data,"slice")) || (CCTK_Equals(evolution_system,"slice"
   STORAGE: Exact_slicetemp1
   STORAGE: Exact_slicetemp2
 
-  COMMUNICATION: Exact_slice
-  COMMUNICATION: Exact_slicetemp1
-  COMMUNICATION: Exact_slicetemp2
-
   schedule slice_initialize at CCTK_INITIAL
   {
     LANG: Fortran
