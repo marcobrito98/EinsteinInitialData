@@ -19,6 +19,8 @@
 
 #define MAX_HOLES 4
 
+void BrillLindquist(CCTK_ARGUMENTS);
+
  /*@@
    @routine    BrillLindquist
    @date       

@@ -17,6 +17,9 @@
 /* Need include file from Einstein */
 #include "CactusEinstein/Einstein/src/Einstein.h"
 
+void Schwarzschild(CCTK_ARGUMENTS);
+
+
 void Schwarzschild(CCTK_ARGUMENTS)
 {
   DECLARE_CCTK_ARGUMENTS

@@ -19,6 +19,7 @@
 
 void Misner_init(int n, CCTK_REAL mu, int terms);
 void MisnerEvalPsi(CCTK_REAL x, CCTK_REAL y, CCTK_REAL z, CCTK_REAL *res); 
+void Misner_multiple(CCTK_ARGUMENTS);
 
  /*@@
    @routine    Misner_multiple

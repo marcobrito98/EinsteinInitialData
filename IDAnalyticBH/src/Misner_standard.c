@@ -21,6 +21,8 @@
 
 #include "CactusEinstein/Einstein/src/Einstein.h"
 
+void Misner_standard(CCTK_ARGUMENTS);
+
 #define SQR(a) ((a)*(a))
 
  /*@@
