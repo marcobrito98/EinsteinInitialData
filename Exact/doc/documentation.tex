@@ -383,6 +383,40 @@ by numerically finite differencing the 4-metric%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\subsection{Time Levels}
+
+In the context of Cactus grid functions with (potentially) multiple
+time levels,
+\textbf{this thorn only sets the initial data on the current time level!}.
+This is a bug. :(
+
+If you're doing a time evolution using the standard Cactus \thorn{MoL}
+thorn,
+\begin{itemize}
+\item	Variables that you're going to \emph{evolve}
+	(for example the ADM 3-metric if you're evolving
+	it directly) only need initial data to be set
+	on the current time level.
+\item	Other variables that are used by the evolution system,
+	but aren't themselves evolved (for example the ADM 3-metric
+	if you're evolving some other fields on a fixed background)
+	must have initial data set on \emph{all} time levels.
+	\thorn{MoL} calls these ``save-and-restore'' variables.
+\end{itemize}
+
+\thorn{MoL} offers a useful option to help work around problems
+of this sort (only the current time level is set, when you need
+all time levels):  If you set
+\begin{verbatim}
+MoL::initial_data_is_crap = true
+\end{verbatim}
+then \thorn{MoL} will copy the current time level to all other time
+levels, for all grid functions that are registered as ``evolved'',
+``save-and-restore'', and/or ``constrained'' variables.  This happens
+in the \verb|POSTINITIAL| schedule bin.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsection{Further Sources of Information}
 
 This documentation is at best a secondary source of information about
