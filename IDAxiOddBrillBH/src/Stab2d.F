@@ -229,7 +229,6 @@ c      rnorm = sum(r**2)
       rnorm=sqrt(rnorm)
             
       if (rnorm .gt. tol) goto 1
-      write(*,*) "ncyc =",kk
       return
       end
 c
