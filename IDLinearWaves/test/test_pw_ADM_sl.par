@@ -40,7 +40,8 @@ idlinearwaves::wavesgoing = "both"
 
 # Output
 
-IO::outdir         = "test_pw_ADM_sl"
+IO::outdir               = "test_pw_ADM_sl"
+IO::out_fileinfo         = "none"
 IOBasic::outScalar_every =  10      
 IOBasic::outScalar_vars  = "einstein::gxx einstein::kxx 
                             einstein::grr einstein::alp"
