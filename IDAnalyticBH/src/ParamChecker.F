@@ -37,10 +37,13 @@
       DECLARE_CCTK_PARAMETERS
 
       integer CCTK_Equals
+      character*80 infoline
 
       if (CCTK_Equals(initial_data,"schwarzschild") == 1) then
 
-         write(*,*) 'One Black Hole:  Throat at :',mass/2d0
+         write(infoline,'(A26,G12.7)') 
+     &        'One Black Hole: Throat at ',mass/2d0
+         call CCTK_INFO(infoline)
 
       else if (CCTK_Equals(initial_data,"bl") == 1) then
 
@@ -51,11 +54,11 @@
 
       else if (CCTK_Equals(initial_data,"multiple_misner") == 1) then
 
-         write(*,*) "Setting up Misner solution for multiple holes"
+         call CCTK_INFO("Setting up Misner solution for multiple holes")
 
       else if (CCTK_Equals(initial_data,"misner")==1) then
 
-         write(*,*) "Setting up Misner solution for two holes"
+         call CCTK_INFO("Setting up Misner solution for two holes");
          write(*,*) "  mu = ",mu
 
       end if
@@ -63,15 +66,15 @@
 c     Remind users about the conformal metric
 c     ---------------------------------------
       if (use_conformal == 1) then
-        write(*,*) "Implements conformal metric"
+        call CCTK_INFO("Implements conformal metric")
         if (use_conformal_derivs == 1) then
-          write(*,*) "  ... and conformal derivatives"
+          call CCTK_INFO("  ... and conformal derivatives")
         else
-          write(*,*) "  ... but no conformal derivatives"
+          call CCTK_INFO("  ... but no conformal derivatives")
         end if
       else 
-        write(*,*) "Implements non-conformal metric" 
-        write(*,*) "  (Not usually a good idea!)"        
+        call CCTK_INFO("Implements non-conformal metric");
+        call CCTK_INFO("  (Not usually a good idea!)")        
       end if
 
       return

@@ -69,7 +69,7 @@ c        derivatives of psi / psi
 
 c     If the initial lapse is not one ...
       if (CCTK_Equals(initial_lapse,"schwarz")==1) then 
-         print *,"Initialise with schwarzschild lapse"
+         call CCTK_INFO("Initialise with schwarzschild lapse")
          alp = (2.*r - mass)/(2.*r+mass)
       endif
       
@@ -80,6 +80,8 @@ c     time symmetric initial slice
       kyy = zero
       kyz = zero
       kzz = zero
+
+      print *,psi(5,5,5)
 
       return
       end subroutine Schwarzschild
