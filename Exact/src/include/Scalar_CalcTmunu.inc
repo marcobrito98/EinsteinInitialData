@@ -121,36 +121,37 @@ c
           Txz = Txz
 
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-
-c
-c Robertson-Walker spacetime
-C
-        elseif (decoded_exact_model .eq. EXACT__Robertson_Walker) then
-          rr2  = x(i,j,k)*x(i,j,k)+y(i,j,k)*y(i,j,k)+z(i,j,k)*z(i,j,k)
-
-          if (Robertson_Walker___pressure .gt. 0) then
-            aha1  = Robertson_Walker___k * (Robertson_Walker___R0**2)
-     &                                  / (8.0D0*pi*(raza(i,j,k)**2))
-            aha2 = Robertson_Walker___k/(1.0D0 - Robertson_Walker___k*rr2) 
-
-            Ttt =  Ttt + 3.0D0*aha1/(raza(i,j,k)*raza(i,j,k))
-            Txx =  Txx + aha1*(1.0D0 + aha2*x(i,j,k)*x(i,j,k))
-            Tyy =  Tyy + aha1*(1.0D0 + aha2*y(i,j,k)*y(i,j,k))
-            Tzz =  Tzz + aha1*(1.0D0 + aha2*z(i,j,k)*z(i,j,k))
-            Txy =  Txy + aha1*aha2*x(i,j,k)*y(i,j,k)
-            Txz =  Txz + aha1*aha2*x(i,j,k)*z(i,j,k)
-            Tyz =  Tyz + aha1*aha2*y(i,j,k)*y(i,j,k)
-          else
-            Ttt = Ttt+Robertson_Walker___rho * (Robertson_Walker___R0**3)
-     &                                      / (raza(i,j,k)**3)
-            Txx = Txx
-            Tyy = Tyy
-            Tzz = Tzz
-            Txy = Txy
-            Txz = Txz
-            Tyz = Tyz
-          endif
-
+ccc
+ccc this metric doesn't work and has been moved to ../../archive/
+ccc
+ccc Robertson-Walker spacetime
+ccc
+cc        elseif (decoded_exact_model .eq. EXACT__Robertson_Walker) then
+cc          rr2  = x(i,j,k)*x(i,j,k)+y(i,j,k)*y(i,j,k)+z(i,j,k)*z(i,j,k)
+cc
+cc          if (Robertson_Walker___pressure .gt. 0) then
+cc            aha1  = Robertson_Walker___k * (Robertson_Walker___R0**2)
+cc     &                                  / (8.0D0*pi*(raza(i,j,k)**2))
+cc            aha2 = Robertson_Walker___k/(1.0D0 - Robertson_Walker___k*rr2) 
+cc
+cc            Ttt =  Ttt + 3.0D0*aha1/(raza(i,j,k)*raza(i,j,k))
+cc            Txx =  Txx + aha1*(1.0D0 + aha2*x(i,j,k)*x(i,j,k))
+cc            Tyy =  Tyy + aha1*(1.0D0 + aha2*y(i,j,k)*y(i,j,k))
+cc            Tzz =  Tzz + aha1*(1.0D0 + aha2*z(i,j,k)*z(i,j,k))
+cc            Txy =  Txy + aha1*aha2*x(i,j,k)*y(i,j,k)
+cc            Txz =  Txz + aha1*aha2*x(i,j,k)*z(i,j,k)
+cc            Tyz =  Tyz + aha1*aha2*y(i,j,k)*y(i,j,k)
+cc          else
+cc            Ttt = Ttt+Robertson_Walker___rho * (Robertson_Walker___R0**3)
+cc     &                                      / (raza(i,j,k)**3)
+cc            Txx = Txx
+cc            Tyy = Tyy
+cc            Tzz = Tzz
+cc            Txy = Txy
+cc            Txz = Txz
+cc            Tyz = Tyz
+cc          endif
+cc
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
 c

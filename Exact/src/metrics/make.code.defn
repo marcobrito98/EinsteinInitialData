@@ -22,7 +22,6 @@ SRCS = Minkowski.F77			\
        Thorne_fakebinary.F77		\
 					\
        Lemaitre.F77			\
-       Robertson_Walker.F77		\
        de_Sitter.F77			\
        de_Sitter_Lambda.F77		\
        anti_de_Sitter_Lambda.F77	\

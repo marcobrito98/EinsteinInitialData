@@ -83,8 +83,9 @@ c black hole spacetimes
 c cosmological spacetimes
 	elseif (CCTK_Equals(exact_model, "Lemaitre") .ne. 0) then
 	     decoded_exact_model = EXACT__Lemaitre
-	elseif (CCTK_Equals(exact_model, "Robertson-Walker") .ne. 0) then
-	     decoded_exact_model = EXACT__Robertson_Walker
+C this metric doesn't work and has been moved to ../archive/
+CC	elseif (CCTK_Equals(exact_model, "Robertson-Walker") .ne. 0) then
+CC	     decoded_exact_model = EXACT__Robertson_Walker
 	elseif (CCTK_Equals(exact_model, "de Sitter") .ne. 0) then
 	     decoded_exact_model = EXACT__de_Sitter
 	elseif (CCTK_Equals(exact_model, "de Sitter+Lambda") .ne. 0) then
@@ -139,15 +140,16 @@ c
 	Lemaitre___R0       = Lemaitre__R0
 
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-
-c
-c parameters for Robertson-Walker spacetime
-c
-	Robertson_Walker___R0       = Robertson_Walker__R0
-	Robertson_Walker___rho      = Robertson_Walker__rho
-	Robertson_Walker___k        = Robertson_Walker__k
-	Robertson_Walker___pressure = Robertson_Walker__pressure
-
+CCC
+CCC this metric doesn't work and has been moved to ../archive/
+CCc
+CCc parameters for Robertson-Walker spacetime
+CCc
+CC	Robertson_Walker___R0       = Robertson_Walker__R0
+CC	Robertson_Walker___rho      = Robertson_Walker__rho
+CC	Robertson_Walker___k        = Robertson_Walker__k
+CC	Robertson_Walker___pressure = Robertson_Walker__pressure
+CC
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
 c

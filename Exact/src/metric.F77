@@ -191,14 +191,15 @@ c
      $        guxx, guyy, guzz, guxy, guyz, guxz,
      $        psi, Tmunu_flag)
 
-      elseif (decoded_exact_model .eq. EXACT__Robertson_Walker) then
-         call Exact__Robertson_Walker(
-     $        x, y, z, t,
-     $        gdtt, gdtx, gdty, gdtz,
-     $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
-     $        gutt, gutx, guty, gutz,
-     $        guxx, guyy, guzz, guxy, guyz, guxz,
-     $        psi, Tmunu_flag, rama)
+CC this metric doesn't work and has been moved to ../archive/
+CC      elseif (decoded_exact_model .eq. EXACT__Robertson_Walker) then
+CC         call Exact__Robertson_Walker(
+CC     $        x, y, z, t,
+CC     $        gdtt, gdtx, gdty, gdtz,
+CC     $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
+CC     $        gutt, gutx, guty, gutz,
+CC     $        guxx, guyy, guzz, guxy, guyz, guxz,
+CC     $        psi, Tmunu_flag, rama)
 
       elseif (decoded_exact_model .eq. EXACT__de_Sitter) then
          call Exact__de_Sitter(

@@ -244,8 +244,8 @@ Model Name
 \multicolumn{3}{l}{\bf Cosmological spacetimes}				\\
 {\tt "Lemaitre"}
 	& Yes	& Lemaitre-type spacetime				\\
-{\tt "Robertson-Walker"}
-	& Yes	& Robertson-Walker spacetime				\\
+%%{\tt "Robertson-Walker"}
+%%	& Yes	& Robertson-Walker spacetime				\\
 {\tt "de Sitter"}
 	& Yes	& de~Sitter spacetime					\\
 {\tt "de Sitter+Lambda"}
@@ -1000,36 +1000,36 @@ and the scale factor (radius) of the universe at time $t = 0$,
 $R_0 = \verb|Lemaitre__R0|$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Robertson-Walker spacetime}
-\label{AEIThorns/Exact/sect-Robertson-Walker}
-
-\verb|Exact::exact_model = "Robertson-Walker"| specifies a 
-Robertson-Walker spacetime  as described in Hawking and Ellis section~5.3
-and MTW section~27.11 (see also gr-qc/0110031),
-transformed to the usual Cactus $(t,x,y,z)$ Cartesian-topology coordinates.
-The general Robertson-Walker line element in $(t,r,\theta,\phi)$ coordinates
-is
-\begin{equation}
-ds^2 = -dt^2 + R(t)^2 \left[ \frac{dr^2}{1 - kr^2} + r^2 \, d\Omega^2 \right]
-\end{equation}
-
-The physics parameters are
-the scale factor $R(t)$ at time $t = 0$, $R_0 = \verb|Robertson_Walker__R0|$,
-a parameter $\rho = \verb|Robertson_Walker__rho|$ which is related to
-the actual value of the matter density in the Universe,
-the geometry curvature parameter $k = \verb|Robertson_Walker__k|$,
-which can take (only) the values $k=-1$, $0$, or $+1$, corresponding
-to open, flat, or closed 3-geometries, and finally
-the Boolean parameter \verb|Robertson_Walker__pressure| to select
-whether or not to include pressure terms in the model.  If pressure
-is included we have a radiation-dominated universe $p = \frac{1}{3} \rho$;
-if pressure is not included we have a matter-dominated universe $p=0$.
-
-For a good simulation it is necessary to give good numerical values
-for the above parameters (they are very strictly related, through the
-Einstein equations).  See gr-qc/0110031 for some examples.
-
+%%
+%%\subsection{Robertson-Walker spacetime}
+%%\label{AEIThorns/Exact/sect-Robertson-Walker}
+%%
+%%\verb|Exact::exact_model = "Robertson-Walker"| specifies a 
+%%Robertson-Walker spacetime  as described in Hawking and Ellis section~5.3
+%%and MTW section~27.11 (see also gr-qc/0110031),
+%%transformed to the usual Cactus $(t,x,y,z)$ Cartesian-topology coordinates.
+%%The general Robertson-Walker line element in $(t,r,\theta,\phi)$ coordinates
+%%is
+%%\begin{equation}
+%%ds^2 = -dt^2 + R(t)^2 \left[ \frac{dr^2}{1 - kr^2} + r^2 \, d\Omega^2 \right]
+%%\end{equation}
+%%
+%%The physics parameters are
+%%the scale factor $R(t)$ at time $t = 0$, $R_0 = \verb|Robertson_Walker__R0|$,
+%%a parameter $\rho = \verb|Robertson_Walker__rho|$ which is related to
+%%the actual value of the matter density in the Universe,
+%%the geometry curvature parameter $k = \verb|Robertson_Walker__k|$,
+%%which can take (only) the values $k=-1$, $0$, or $+1$, corresponding
+%%to open, flat, or closed 3-geometries, and finally
+%%the Boolean parameter \verb|Robertson_Walker__pressure| to select
+%%whether or not to include pressure terms in the model.  If pressure
+%%is included we have a radiation-dominated universe $p = \frac{1}{3} \rho$;
+%%if pressure is not included we have a matter-dominated universe $p=0$.
+%%
+%%For a good simulation it is necessary to give good numerical values
+%%for the above parameters (they are very strictly related, through the
+%%Einstein equations).  See gr-qc/0110031 for some examples.
+%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{de~Sitter spacetime}

@@ -202,7 +202,7 @@ KEYWORD exact_model "The exact solution/coordinates used in thorn exact"
 # cosmological spacetimes
 #
 "Lemaitre"             :: "Lemaitre-type spacetime"
-"Robertson-Walker"     :: "Robertson-Walker spacetime"
+##"Robertson-Walker"     :: "Robertson-Walker spacetime"
 "de Sitter"            :: "de Sitter spacetime (R-W cosmology, near t=0, p=0)"
 "de Sitter+Lambda"     :: "de Sitter spacetime with cosmological constant"
 "anti-de Sitter+Lambda":: "anti-de Sitter spacetime with cosmological constant"
@@ -622,34 +622,34 @@ REAL Lemaitre__R0 "Lemaitre: scale factor (radius) of the universe at time t=0"
 } 1.0
 
 ################################################################################
-
-#
-# parameters for Robertson-Walker spacetime
-#
-
-REAL Robertson_Walker__R0 \
-  "Robertson-Walker: scale factor (radius) of the universe at time t=0"
-{
-(0.0:* :: "any positive real number"
-} 0.1
-
-REAL Robertson_Walker__rho "Robertson-Walker: density parameter"
-{
-0.0:* :: "any real number >= 0"
-} 0.1
-
-INT Robertson_Walker__k "Robertson-Walker: geometry type parameter"
-{
--1:1:1 :: "one of the values -1, 0, 1"
-} 0
-
-# true ==> include pressure terms (radiation-dominated universe)
-# false ==> don't include pressure terms (matter-dominated universe)
-BOOLEAN Robertson_Walker__pressure \
-  "Robertson-Walker: are pressure terms included?"
-{
-} "true"
-
+##
+###
+### parameters for Robertson-Walker spacetime
+###
+##
+##REAL Robertson_Walker__R0 \
+##  "Robertson-Walker: scale factor (radius) of the universe at time t=0"
+##{
+##(0.0:* :: "any positive real number"
+##} 0.1
+##
+##REAL Robertson_Walker__rho "Robertson-Walker: density parameter"
+##{
+##0.0:* :: "any real number >= 0"
+##} 0.1
+##
+##INT Robertson_Walker__k "Robertson-Walker: geometry type parameter"
+##{
+##-1:1:1 :: "one of the values -1, 0, 1"
+##} 0
+##
+### true ==> include pressure terms (radiation-dominated universe)
+### false ==> don't include pressure terms (matter-dominated universe)
+##BOOLEAN Robertson_Walker__pressure \
+##  "Robertson-Walker: are pressure terms included?"
+##{
+##} "true"
+##
 ################################################################################
 
 #

@@ -49,7 +49,8 @@ c black hole spacetimes
 
 c cosmological spacetimes
 #define EXACT__Lemaitre			50
-#define EXACT__Robertson_Walker		51
+CC this metric doesn't work, and has been moved to ./archive/
+CC#define EXACT__Robertson_Walker	51
 #define EXACT__de_Sitter		52
 #define EXACT__de_Sitter_Lambda		53
 #define EXACT__anti_de_Sitter_Lambda	54

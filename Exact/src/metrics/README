@@ -20,7 +20,6 @@ inverse 4-metric $g^{ab}$:
      $       guxx, guyy, guzz, guxy, guyz, guzx
       CCTK_REAL psi
       LOGICAL   Tmunu_flag
-      CCTK_REAL rama
 	...
       RETURN
       END
@@ -33,11 +32,6 @@ The subroutine should set  Tmunu_flag  to .true. if this model needs
 to set the stress-energy tensor (i.e. if it's non-vacuum and/or it has
 a cosmological constant, or .false. if it doesn't (i.e. if it's vacuum
 and has no cosmological constant).
-
-The "Robertson/Walker" model has an extra argument  rama .
-Alas, Mitica neglected to document what it means :( :( :(,
-and so far I (Jonathan) haven't found any higher-level routine which
-uses it.
 
 
 
