@@ -16,57 +16,52 @@ if (CCTK_Equals(initial_data,"schwarzschild") ||
 if (CCTK_Equals(initial_data,"schwarzschild")) 
 { 
 	
-   schedule Schwarzschild at CCTK_INITIAL
+   schedule Schwarzschild in ADMBase_InitialData
    {
      LANG: C
    } "Construct initial data for a single Schwarzschild black hole"
-
 }
-
-if (CCTK_Equals(initial_data,"kerr")) 
+else if (CCTK_Equals(initial_data,"kerr")) 
 { 
 
 # The Kerr stuff uses the conformal factor internally, so
 # so make sure that the conformal factor has storage during
 # this routine
-   schedule KerrID at CCTK_INITIAL
+   schedule KerrID in ADMBase_InitialData
    {	
      STORAGE: confac
      LANG: C
    } "Construct initial data for a single Kerr black hole"
 
 }
-
-if (CCTK_Equals(initial_data,"bl_bh")) 
+else if (CCTK_Equals(initial_data,"bl_bh")) 
 { 
 # The Brill-Lindquist stuff uses the conformal factor internally, so
 # so make sure that the conformal factor has storage during
 # this routine
-   schedule BrillLindquist at CCTK_INITIAL
+   schedule BrillLindquist in ADMBase_InitialData
    {
      STORAGE: confac
      LANG: C
    } "Construct initial data for Brill Lindquist black holes"
 
 }
-
-if (CCTK_Equals(initial_data,"misner_bh")) 
+else if (CCTK_Equals(initial_data,"misner_bh")) 
 { 
 # The Misner stuff uses the conformal factor internally, so
 # so make sure that the conformal factor has storage during
 # this routine
-   schedule Misner_standard at CCTK_INITIAL
+   schedule Misner_standard in ADMBase_InitialData
    {
      STORAGE: confac
      LANG: C
    } "Construct initial data for two Misner black holes"
 
 }
- 
-if (CCTK_Equals(initial_data,"multiple_misner_bh")) 
+else if (CCTK_Equals(initial_data,"multiple_misner_bh")) 
 { 
    STORAGE: confac
-   schedule Misner_multiple at CCTK_INITIAL
+   schedule Misner_multiple in ADMBase_InitialData
    {
      LANG: C
    } "Construct initial data for multiple Misner black holes"
