@@ -6,7 +6,7 @@
 #
 #################################################################
 
-ActiveThorns = "iobasic ellbase ellsor IDBrillData pugh einstein cartgrid3d ioutil ioascii"
+ActiveThorns = "iobasic ellbase ellsor IDBrillData pugh pughslab pughreduce einstein cartgrid3d ioutil ioascii"
 
 # Brill wave initial data
 
@@ -17,11 +17,11 @@ Einstein::initial_data = "brilldata"
 idbrilldata::brill_q = 2                  # Form of function q [0,1,2]
 idbrilldata::brill_a = 1.0                # Amplitude (default 0)
 
-idbrilldata::savepsi = "yes"
+idbrilldata::outputpsi = "yes"
 
 # Elliptic solver.
 
-idbrilldata::solver = "sor"               #[petsc,sor,bam]
+#idbrilldata::solver = "sor"               #[petsc,sor,bam]
 
 # General
 
@@ -43,8 +43,8 @@ IO::out_every = 1
 
 IOASCII::out1D_vars = "einstein::gxx einstein::gyy einstein::gzz
                      einstein::gxy einstein::gxz einstein::gyz
-                     IDBrillData: brillpsi0"
+                     IDBrillData::brillpsi"
 
 IOBasic::outScalar_vars = "einstein::gxx einstein::gyy einstein::gzz
                      einstein::gxy einstein::gxz einstein::gyz
-                     IDBrillData: brillpsi0"
+                     IDBrillData::brillpsi"
