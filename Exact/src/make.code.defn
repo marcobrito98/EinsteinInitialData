@@ -1,0 +1,15 @@
+# Main make.code.defn file for thorn Exact
+# $Header$
+
+# Source files in this directory
+SRCS = exactinitialize.F exactgauge.F exactboundary.F \
+       exactdata.F exactmetric.F \
+       boostrotmetric.F finkelstein.F kerrschild.F flatschwarz.F \
+       starschwarz.F bowl.F novikov.F  minkowski.F fakebinary.F multiBH.F\
+       exactblendbound.F exactcartblendbound.F \
+       slice_initialize.F slice_evolve.F slice_data.F linextraponebound.F
+#      ComparisonSolutions.F Comparison.c
+
+# Subdirectories containing source files
+SUBDIRS = 
+
