@@ -47,9 +47,9 @@ c     -----------------------------
 
 C     Get value of psi pointwise from a C function
 c     --------------------------------------------
-      do k=1,sh(1)
-         do j=1,sh(2)
-            do i=1,sh(3)
+      do k=1,cctk_lsh(1)
+         do j=1,cctk_lsh(2)
+            do i=1,cctk_lsh(3)
  
                xval = x(i,j,k)
                yval = y(i,j,k)

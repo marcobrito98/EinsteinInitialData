@@ -3,7 +3,7 @@
 #include "declare_parameters.h"
 
 c Need include file from Einstein
-#include "../../packages/CactusEinstein/Einstein/src/Einstein.h"
+#include "CactusEinstein/Einstein/src/Einstein.h"
 
       subroutine Schwarzschild(CCTK_FARGUMENTS)
 
