@@ -47,7 +47,7 @@ c      c        \         z      rho                    phi          phi    /
 
       CCTK_REAL x1,y1,z1,rho1,rho2
       CCTK_REAL phi,phif,e2q
-      CCTK_REAL brillq,rhofudge,eps
+      CCTK_REAL brillq,eps
       CCTK_REAL zero,one,two,three
 
 c     Define numbers
@@ -56,10 +56,6 @@ c     Define numbers
       one   = 1.0D0
       two   = 2.0D0
       three = 3.0D0
-
-c     Parameters.
-
-      rhofudge = brill_rhofudge
 
 c     Epsilon for finite differencing.
 

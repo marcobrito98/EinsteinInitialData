@@ -75,7 +75,7 @@ c     Set up background metric and coefficients for linear solve.
 
 c     Tolerances for elliptic solve.
 
-      AbsTol(1)= brill_thresh
+      AbsTol(1)= thresh
       AbsTol(2)= -1.0D0
       AbsTol(3)= -1.0D0
  
@@ -94,14 +94,14 @@ c     Elliptic solver
 c     Just in case some solvers do not use the standard interface
       conformal_state = 0
 
-      if (CCTK_EQUALS(brill_solver,"sor")) then
+      if (CCTK_EQUALS(solver,"sor")) then
          call Ell_SetIntKey(ierr,sor_maxit,"Ell::SORmaxit")
          call Ell_LinMetricSolver(ierr,cctkGH, 
      .   metric_index,ipsi,iMcoeff,iNcoeff,AbsTol,RelTol,"sor")
-      else if (CCTK_EQUALS(brill_solver,"petsc")) then
+      else if (CCTK_EQUALS(solver,"petsc")) then
          call Ell_LinMetricSolver(ierr,cctkGH, 
      .   metric_index,ipsi,iMcoeff,iNcoeff,AbsTol,RelTol,"petsc")
-      else if (CCTK_EQUALS(brill_solver,"bam")) then
+      else if (CCTK_EQUALS(solver,"bam")) then
          call Ell_LinMetricSolver(ierr,cctkGH, 
      .   metric_index,ipsi,iMcoeff,iNcoeff,AbsTol,RelTol,"bam")
       end if

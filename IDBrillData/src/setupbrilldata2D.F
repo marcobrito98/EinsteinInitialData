@@ -103,7 +103,7 @@ c              will not be regular on the axis.
 c     Synchronization and boundaries.
 
 c      call CCTK_SyncGroup(ierr,cctkGH,'idbrilldata::brillelliptic')
-      call CartSymGN(ierr,cctkGH,'idbrilldata::brillelliptic')
+c      call CartSymGN(ierr,cctkGH,'idbrilldata::brillelliptic')
 
       return
       end

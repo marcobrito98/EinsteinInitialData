@@ -21,10 +21,9 @@
       DECLARE_CCTK_FUNCTIONS
 
       integer i,j,k
-      integer nx,ny,nz
 
       CCTK_REAL x1,y1,z1,rho1,rho2
-      CCTK_REAL phi,psi4,e2q,rhofudge
+      CCTK_REAL phi,psi4,e2q
       CCTK_REAL zero,one
 
       CCTK_REAL brillq,phif
@@ -34,22 +33,12 @@ c     Numbers.
       zero = 0.0D0
       one  = 1.0D0
 
-c     Set up grid size.
-
-      nx = cctk_lsh(1)
-      ny = cctk_lsh(2)
-      nz = cctk_lsh(3)
-
-c     Parameters.
-
-      rhofudge = brill_rhofudge
-      
 c     Replace flat metric left over from elliptic solve by
 c     Brill metric calculated from q and Psi.
 
-      do k=1,nz
-         do j=1,ny
-            do i=1,nx
+      do k=1,cctk_lsh(3)
+         do j=1,cctk_lsh(2)
+            do i=1,cctk_lsh(1)
 
                x1 = x(i,j,k)
                y1 = y(i,j,k)
@@ -84,12 +73,22 @@ c              The individual coefficients can be read off as
 c                 This fudge assumes that q = O(rho^2) near the axis. Which
 c                 it should be, or the data will be singular.
 
-                  gxx(i,j,k) = 0.0d0
-                  gyy(i,j,k) = 0.0d0
-                  gzz(i,j,k) = 0.0d0
-                  gxy(i,j,k) = 0.0d0
+                  gxx(i,j,k) = zero
+                  gyy(i,j,k) = zero
+                  gzz(i,j,k) = zero
+                  gxy(i,j,k) = zero
 
                end if
+
+               gxz(i,j,k) = zero
+               gyz(i,j,k) = zero
+
+               kxx(i,j,k) = zero
+               kyy(i,j,k) = zero
+               kzz(i,j,k) = zero
+               kxy(i,j,k) = zero
+               kxz(i,j,k) = zero
+               kyz(i,j,k) = zero
 
             end do
          end do
@@ -99,9 +98,9 @@ c                 it should be, or the data will be singular.
 
          conformal_state = 1
 
-         do k=1,nz
-            do j=1,ny
-               do i=1,nx
+         do k=1,cctk_lsh(3)
+            do j=1,cctk_lsh(2)
+               do i=1,cctk_lsh(1)
 
                   psi(i,j,k) = brillpsi(i,j,k)
                   
@@ -113,9 +112,9 @@ c                 it should be, or the data will be singular.
 
          conformal_state = 0
 
-         do k=1,nz
-            do j=1,ny
-               do i=1,nx
+         do k=1,cctk_lsh(3)
+            do j=1,cctk_lsh(2)
+               do i=1,cctk_lsh(1)
 
                   psi4  = brillpsi(i,j,k)**4
 
@@ -129,20 +128,6 @@ c                 it should be, or the data will be singular.
          end do
 
       end if
-
-c     In any case,
-
-      gxz = zero
-      gyz = zero
-
-c     Vanishing extrinsic curvature completes the Cauchy data.
-
-      kxx = zero
-      kyy = zero
-      kzz = zero
-      kxy = zero
-      kxz = zero
-      kyz = zero
 
       return
       end

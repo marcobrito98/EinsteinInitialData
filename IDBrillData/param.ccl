@@ -20,35 +20,35 @@ private:
 
 # Parameters for elliptic solve
 
-KEYWORD brill_solver "Which elliptic solver to use"
+KEYWORD solver "Which elliptic solver to use"
 {
   "sor"    ::  "Use SOR solver"
   "petsc"  ::  "Use PETSc solver"
   "bam"    ::  "Use bam solver"
 } "sor"
 
-KEYWORD brill_bound "Which boundary condition to use"
+KEYWORD bound "Which boundary condition to use"
 {
-  "const" :: "constant boundary: set brill_const_v0"
-  "robin" :: "Robin boundary: set brill_robin_falloff, brill_robin_inf"
-} "const"
+  "const" :: "constant boundary: set const_v0"
+  "robin" :: "Robin boundary: set robin_falloff, robin_inf"
+} "robin"
 
-INT brill_robin_falloff "Fall-off of Robin BC"
+INT robin_falloff "Fall-off of Robin BC"
 {
   0: :: "any positive integer value"
 } 1
 
-REAL brill_const_v0 "Value of constant BC"
+REAL const_v0 "Value of constant BC"
 {
   : :: "anything goes"
 } 1.0
 
-REAL brill_robin_inf "Value at infinity of Robin BC"
+REAL robin_inf "Value at infinity of Robin BC"
 {
   : :: "anything goes"
 } 1.0
 
-REAL brill_thresh "How far (absolute norm) to go"
+REAL thresh "How far (absolute norm) to go"
 {
   0.0: :: "Positive number please"
 } 0.00001
@@ -181,7 +181,7 @@ REAL brill3d_phi0 "3D Brill wave:  d rho^m cos^2(n (phi + phi0))"
 
 # Additional parameters
 
-REAL brill_rhofudge "delta rho for axis fudge"
+REAL rhofudge "delta rho for axis fudge"
 {
   0: :: "Positive please"
 } 0.00001
@@ -189,7 +189,7 @@ REAL brill_rhofudge "delta rho for axis fudge"
 INT sor_maxit "Maximum number of iterations"
 {
 0:* :: "Positive"
-} 100
+} 10000
 
 BOOLEAN output_coeffs "output coefficients for elliptic solve"
 {

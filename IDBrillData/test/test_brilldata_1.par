@@ -27,7 +27,7 @@ idbrilldata::gundlach_a 			= 5.0
 
 # Elliptic solver.
 
-idbrilldata::brill_solver 			= "bam"
+idbrilldata::solver 				= "bam"
 bam_elliptic::bam_bound                 	= "bamrobin"
 
 # Output.
