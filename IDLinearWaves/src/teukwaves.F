@@ -38,29 +38,29 @@ c Using macro definitions from Einstein
       DECLARE_PARAMETERS
       
       
-      REAL amp,m,ra,pi
-      REAL wave,wave2,wave3,wave4,wave5,wave6,wave7,wave8
+      CCTK_REAL amp,m,ra,pi
+      CCTK_REAL wave,wave2,wave3,wave4,wave5,wave6,wave7,wave8
       INTEGER ipacket,iparity
       INTEGER ingoing,outgoing
-      REAL kappa
+      CCTK_REAL kappa
 c     point values of x.y z,r
-      REAL xp,yp,zp,rp
+      CCTK_REAL xp,yp,zp,rp
       
 c     spherical metric
-      REAL teuk_grr,teuk_grt,teuk_grp,teuk_gtt,teuk_gtp,teuk_gpp
-      REAL teuk_hrr,teuk_hrt,teuk_hrp,teuk_htt,teuk_htp,teuk_hpp
+      CCTK_REAL teuk_grr,teuk_grt,teuk_grp,teuk_gtt,teuk_gtp,teuk_gpp
+      CCTK_REAL teuk_hrr,teuk_hrt,teuk_hrp,teuk_htt,teuk_htp,teuk_hpp
       
 c     special coefficeints needed for teukolsky waves
 c     All these were 3d arrays in old versions of Newage,G,etc..
 c     uffff....
-      REAL teuk_tp,teuk_tn
-      REAL tp2,tn2,fp,fn,fpa,fna,fpb,fnb,fpc,fnc,fpd,fnd,fpe,fne
-      REAL ca,cb,cc,ck,cl,frr,frt,frp,ftt1,ftt2,ftp,fpp1,fpp2
-      REAL cadot,cbdot,ccdot,ckdot,cldot
-      REAL drt,drp,dtt,dtp,dpp,sint,cost,sinp,cosp,tmp
+      CCTK_REAL teuk_tp,teuk_tn
+      CCTK_REAL tp2,tn2,fp,fn,fpa,fna,fpb,fnb,fpc,fnc,fpd,fnd,fpe,fne
+      CCTK_REAL ca,cb,cc,ck,cl,frr,frt,frp,ftt1,ftt2,ftp,fpp1,fpp2
+      CCTK_REAL cadot,cbdot,ccdot,ckdot,cldot
+      CCTK_REAL drt,drp,dtt,dtp,dpp,sint,cost,sinp,cosp,tmp
 
 c     from old spheretocart
-      REAL drx,dry,drz,dtx,dty,dtz,dpx,dpy,dpz
+      CCTK_REAL drx,dry,drz,dtx,dty,dtz,dpx,dpy,dpz
       
       INTEGER i,j,k
       
