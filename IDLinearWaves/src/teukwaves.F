@@ -1,6 +1,9 @@
 #include "cctk.h"
 #include "declare_arguments.h"
 #include "declare_parameters.h"
+c Using macro definitions from Einstein
+#include "../../packages/CactusEinstein/Einstein/src/Einstein.h"
+
 
 /*@@
   @file     teukwaves.F
@@ -563,6 +566,24 @@ c     time symmetry
             enddo
          enddo
       enddo
+
+c     initialize the conformal factor
+      if (use_conformal == 1) then
+         conformal_state = CONFORMAL_METRIC
+         psi   = 1d0
+         psix  = 0d0
+         psiy  = 0d0
+         psiz  = 0d0    
+         psixy = 0d0
+         psixz = 0d0
+         psiyz = 0d0  
+         psixx = 0d0
+         psiyy = 0d0
+         psizz = 0d0
+      else
+         conformal_state = NOCONFORMAL_METRIC
+      end if
+
       
       return
       end 
