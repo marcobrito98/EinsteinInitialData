@@ -33,10 +33,7 @@ c output arguments
       LOGICAL   Tmunu_flag
 
 c local static variables
-      logical firstcall
       CCTK_REAL eps, m
-      data firstcall /.true./
-      save firstcall, eps, m
 
 c local variables
       CCTK_REAL r
@@ -46,11 +43,8 @@ C This is a vacuum spacetime with no cosmological constant
 
 C     Get parameters of the exact solution.
 
-      if (firstcall) then
-         eps = Schwarzschild_EF__epsilon
-         m   = Schwarzschild_EF__mass
-         firstcall = .false.
-      end if
+      eps = Schwarzschild_EF__epsilon
+      m   = Schwarzschild_EF__mass
 
       r = max(sqrt(x**2 + y**2 + z**2), eps)
 
