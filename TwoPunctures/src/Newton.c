@@ -197,7 +197,8 @@ TestRelax (int nvar, int n1, int n2, int n3, derivs v,
   for (j = 0; j < ntotal; j++)
     dv[j] = 0;
   resid (res, ntotal, dv, F, ncols, cols, JFD);
-  printf ("Davor: |F|=%20.15e\n", norm1 (res, ntotal));
+  printf ("Before: |F|=%20.15e\n", norm1 (res, ntotal));
+  fflush(stdout);
   for (j = 0; j < NRELAX; j++)
   {
     relax (dv, nvar, n1, n2, n3, F, ncols, cols, JFD);	// solves JFD*sh = s
@@ -205,11 +206,13 @@ TestRelax (int nvar, int n1, int n2, int n3, derivs v,
     {
       resid (res, ntotal, dv, F, ncols, cols, JFD);
       printf ("j=%d\t |F|=%20.15e\n", j, norm1 (res, ntotal));
+      fflush(stdout);
     }
   }
 
   resid (res, ntotal, dv, F, ncols, cols, JFD);
-  printf ("Danach: |F|=%20.15e\n", norm1 (res, ntotal));
+  printf ("After: |F|=%20.15e\n", norm1 (res, ntotal));
+  fflush(stdout);
 
   free_dvector (F, 0, ntotal - 1);
   free_dvector (res, 0, ntotal - 1);
@@ -259,8 +262,10 @@ bicgstab (int nvar, int n1, int n2, int n3, derivs v,
   vv = dvector (0, ntotal - 1);
 
   /* check */
-  if (output == 1)
+  if (output == 1) {
     printf ("bicgstab:  itmax %d, tol %e\n", itmax, tol);
+    fflush(stdout);
+  }
 
   /* compute initial residual rt = r = F - J*dv */
   J_times_dv (nvar, n1, n2, n3, dv, r, u);
@@ -268,8 +273,10 @@ bicgstab (int nvar, int n1, int n2, int n3, derivs v,
     rt[j] = r[j] = F[j] - r[j];
 
   *normres = norm2 (r, ntotal);
-  if (output == 1)
+  if (output == 1) {
     printf ("bicgstab: %5d  %10.3e\n", 0, *normres);
+    fflush(stdout);
+  }
 
   if (*normres <= tol)
     return 0;
@@ -309,9 +316,11 @@ bicgstab (int nvar, int n1, int n2, int n3, derivs v,
     {
       for (j = 0; j < ntotal; j++)
 	dv.d0[j] += alpha * ph.d0[j];
-      if (output == 1)
+      if (output == 1) {
 	printf ("bicgstab: %5d  %10.3e  %10.3e  %10.3e  %10.3e\n",
 		ii + 1, *normres, alpha, beta, omega);
+        fflush(stdout);
+      }
       break;
     }
 
@@ -332,9 +341,11 @@ bicgstab (int nvar, int n1, int n2, int n3, derivs v,
     }
     /* are we done? */
     *normres = norm2 (r, ntotal);
-    if (output == 1)
+    if (output == 1) {
       printf ("bicgstab: %5d  %10.3e  %10.3e  %10.3e  %10.3e\n",
 	      ii + 1, *normres, alpha, beta, omega);
+      fflush(stdout);
+    }
     if (*normres <= tol)
       break;
     rho1 = rho;
@@ -409,9 +420,10 @@ Newton (int nvar, int n1, int n2, int n3,
 	dv.d0[j] = 0;
       }
     }
-    printf ("Newton: it=%d \t |F|=%e \n", it, dmax);
+    printf ("Newton: it=%d \t |F|=%e\n", it, dmax);
+    fflush(stdout);
     ii =
-      bicgstab (nvar, n1, n2, n3, v, dv, 1, 100, dmax * 1.e-3, &normres);
+      bicgstab (nvar, n1, n2, n3, v, dv, verbose, 100, dmax * 1.e-3, &normres);
     for (j = 0; j < ntotal; j++)
       v.d0[j] -= dv.d0[j];
     F_of_v (nvar, n1, n2, n3, v, F, u);
@@ -426,6 +438,7 @@ Newton (int nvar, int n1, int n2, int n3,
     it += 1;
   }
   printf ("Newton: it=%d \t |F|=%e \n", it, dmax);
+  fflush(stdout);
 
   free_dvector (F, 0, ntotal - 1);
   free_derivs (&dv, ntotal);
