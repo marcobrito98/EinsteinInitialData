@@ -20,4 +20,4 @@ EXTENDS KEYWORD initial_data
 
 shares: IO
 
-USES STRING filereader_ID_files
+USES STRING filereader_ID_vars

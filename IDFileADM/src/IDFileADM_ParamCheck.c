@@ -27,14 +27,14 @@ void IDFileADM_ParamCheck (CCTK_ARGUMENTS)
   }
   
   nvars = CCTK_TraverseString
-    (filereader_ID_files, callback, variable_is_read, CCTK_GROUP_OR_VAR);
+    (filereader_ID_vars, callback, variable_is_read, CCTK_GROUP_OR_VAR);
   assert (nvars >= 0);
   
   if (CCTK_EQUALS(initial_lapse, "read from file")) {
     int const ialp = CCTK_VarIndex ("ADMBase::alp");
     assert (ialp >= 0);
     if (! variable_is_read[ialp]) {
-      CCTK_PARAMWARN ("The lapse is initialised using the file reader, but the group ADMBase::lapse has not been scheduled to be read.  Please set the parameter \"IO::filereader_ID_files\" accordingly.");
+      CCTK_PARAMWARN ("The lapse is initialised using the file reader, but the group ADMBase::lapse has not been scheduled to be read.  Please set the parameter \"IO::filereader_ID_vars\" accordingly.");
     }
   }
   
@@ -48,7 +48,7 @@ void IDFileADM_ParamCheck (CCTK_ARGUMENTS)
     if (! variable_is_read[ibetax]
         || ! variable_is_read[ibetay]
         || ! variable_is_read[ibetaz]) {
-      CCTK_PARAMWARN ("The shift is initialised using the file reader, but the group ADMBase::shift has not been scheduled to be read.  Please set the parameter \"IO::filereader_ID_files\" accordingly.");
+      CCTK_PARAMWARN ("The shift is initialised using the file reader, but the group ADMBase::shift has not been scheduled to be read.  Please set the parameter \"IO::filereader_ID_vars\" accordingly.");
     }
   }
   
@@ -71,7 +71,7 @@ void IDFileADM_ParamCheck (CCTK_ARGUMENTS)
         || ! variable_is_read[igyy]
         || ! variable_is_read[igyz]
         || ! variable_is_read[igzz]) {
-      CCTK_PARAMWARN ("The metric is initialised using the file reader, but the group ADMBase::metric has not been scheduled to be read.  Please set the parameter \"IO::filereader_ID_files\" accordingly.");
+      CCTK_PARAMWARN ("The metric is initialised using the file reader, but the group ADMBase::metric has not been scheduled to be read.  Please set the parameter \"IO::filereader_ID_vars\" accordingly.");
     }
   }
   
