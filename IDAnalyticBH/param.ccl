@@ -18,19 +18,19 @@ REAL mu "Misner mu value"
 0: :: ""
 } 1.2
 
-INTEGER nmax "Number of terms to include for Misner series"
+INT nmax "Number of terms to include for Misner series"
 {
 0: :: ""
 } 30
 
-INTEGER misner_nbh "Number of Misner black holes"
+INT misner_nbh "Number of Misner black holes"
 {
  1:10 :: ""
 } 1
 
 # Brill Lindquist Parameters
 # --------------------------
-INTEGER bl_nbh "Number of Brill Lindquist black holes"
+INT bl_nbh "Number of Brill Lindquist black holes"
 {
  1:4 :: "Between one and four holes implemented"
 } 1
