@@ -2,6 +2,10 @@ c $Header$
 
 C     Author: Frank Loeffler (frank.loeffler@aei.mpg.de)
 C     Licence: GPL 2 or later
+C
+C Note that this model explicitly sets the conformal factor  psi ,
+C and thus does *NOT* work with the "arbitrary slice evolver" option
+C of this thorn.
 
 #include "cctk.h"
 #include "cctk_Arguments.h"
