@@ -124,8 +124,6 @@ c     Holz et al.
          brillq = a*(rho/srho)**b
      .          / dexp(((rho**2 + z**2 - r0**2)/sr**2)**(c/2))
 
-         print *,a,b,c,r0,sr,srho,z,rho,brillq
-
       else
 
 c     Unknown type for q function.
