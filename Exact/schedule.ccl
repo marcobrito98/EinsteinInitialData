@@ -11,7 +11,7 @@ if (CCTK_Equals(initial_data,"exact"))
   schedule exactinitialize at CCTK_INITIAL
   {
     LANG: Fortran
-  } "Set initial data and/or gauge from exact solution on a trivial slice"
+  } "Set initial data from exact solution on a trivial slice"
 }
 
 # Initial data from an arbitrary slice through an exact solution, 
@@ -24,7 +24,7 @@ if ( (CCTK_Equals(initial_data,"slice")) && ! (CCTK_Equals(evolution_system,"sli
   {
     STORAGE: Exact_slice
     LANG: Fortran
-  } "Set initial data from exact solution on arbitrary slice"
+  } "Set initial data from exact solution on an arbitrary slice"
 }
 
 #######################################################################
@@ -39,7 +39,7 @@ if ( (CCTK_Equals(initial_lapse,"exact")) || (CCTK_Equals(initial_shift,"exact")
   schedule exactgauge at CCTK_POSTINITIAL
   {
     LANG: Fortran
-  } "Set initial lapse and/or shift from exact solution"
+  } "Set initial lapse and/or shift from exact solution on a trivial slice"
 }
 
 # During the evolution:
@@ -54,7 +54,7 @@ if ( (CCTK_Equals(slicing,"exact")) || (CCTK_Equals(shift,"exact")) )
   schedule exactgauge at CCTK_PRESTEP
   {
     LANG: Fortran
-  } "Set evolution lapse and/or shift from exact solution"
+  } "Set evolution lapse and/or shift from exact solution on a trivial slice"
 }
 
 #######################################################################
