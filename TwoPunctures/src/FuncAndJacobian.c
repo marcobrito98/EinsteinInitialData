@@ -120,7 +120,7 @@ Derivatives_AB3 (int nvar, int n1, int n2, int n3, derivs v)
       }
     }
     for (k = 0; k < n3; k++)
-    {				// Calculation of Derivatives w.r.t. A-Dir. 
+    {				// Calculation of Derivatives w.r.t. B-Dir. 
       for (i = 0; i < n1; i++)
       {				// (Chebyshev_Zeros)
 	for (j = 0; j < n2; j++)
@@ -312,6 +312,8 @@ F_of_v (CCTK_POINTER_TO_CONST cctkGH,
         {
           indx = Index (ivar, i, j, k, nvar, n1, n2, n3);
           F[indx] = values[ivar] * FAC;
+          // if ((i<5) && ((j<5) || (j>n2-5)))
+          //     F[indx] = 0.0;
           u.d0[indx] = U.d0[ivar];        //  U
           u.d1[indx] = U.d1[ivar];        //      U_x
           u.d2[indx] = U.d2[ivar];        //      U_y
@@ -323,31 +325,33 @@ F_of_v (CCTK_POINTER_TO_CONST cctkGH,
           u.d23[indx] = U.d23[ivar];        //      U_yz
           u.d33[indx] = U.d33[ivar];        //      U_zz
         }
-      }
-      if (do_residuum_debug_output)
-      {
-        indx = Index (0, i, j, 0, nvar, n1, n2, n3);
-        al = Pih * (2 * i + 1) / n1;
-        A = -cos (al);
-        be = Pih * (2 * j + 1) / n2;
-        B = -cos (be);
-        AB_To_XR (nvar, A, B, &X, &R, U);
-        C_To_c (nvar, X, R, &x, &r, U);
-        rx3_To_xyz (nvar, x, r, 0.0, &y, &z, U);
-        r_plus = sqrt ((x - par_b) * (x - par_b) + y * y + z * z);
-        r_minus = sqrt ((x + par_b) * (x + par_b) + y * y + z * z);
-        psi =
-          1.+ 0.5 * par_m_plus / r_plus + 0.5 * par_m_minus / r_minus + U.d0[0];
-        psi2 = psi * psi;
-        psi4 = psi2 * psi2;
-        psi7 = psi * psi2 * psi4;
-        fprintf(debugfile, "%.8g %.8g %.8g %.8g %.8g %.8g\n", x, y, A, B,
-           U.d11[0] +
-           U.d22[0] +
-           U.d33[0]
-           + 2.0 * Pi / psi2/psi * sources[indx],
-           U.d0[0]
-           );
+        if (do_residuum_debug_output && (k==0))
+        {
+          r_plus = sqrt ((x - par_b) * (x - par_b) + y * y + z * z);
+          r_minus = sqrt ((x + par_b) * (x + par_b) + y * y + z * z);
+          psi = 1.+
+                0.5 * par_m_plus  / r_plus +
+                0.5 * par_m_minus / r_minus +
+                U.d0[0];
+          psi2 = psi * psi;
+          psi4 = psi2 * psi2;
+          psi7 = psi * psi2 * psi4;
+          fprintf(debugfile,
+                  "%.16g %.16g %.16g %.16g %.16g %.16g %.16g %.16g\n",
+             x, y, A, B,
+             (U.d11[0] +
+              U.d22[0] +
+              U.d33[0] +
+//              0.125 * BY_KKofxyz (x, y, z) / psi7 +
+              2.0 * Pi / psi2/psi * sources[indx]) * FAC,
+             (U.d11[0] +
+              U.d22[0] +
+              U.d33[0])*FAC,
+             -(2.0 * Pi / psi2/psi * sources[indx]) * FAC,
+             sources[indx]
+             //F[indx]
+             );
+        }
       }
     }
   }
