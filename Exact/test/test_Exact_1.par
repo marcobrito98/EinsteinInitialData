@@ -2,7 +2,7 @@
 
 # Required thorns
 
-ActiveThorns = "time pugh cartgrid3d einstein adm exact ioascii ioutil iobasic PUGHReduce"
+ActiveThorns = "time pugh cartgrid3d einstein adm exact ioascii ioutil iobasic PughReduce"
 
 # Grid
 
