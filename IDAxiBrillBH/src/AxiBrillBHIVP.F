@@ -246,7 +246,7 @@ c               phi(i,j,k)= datan2(y(i,j,k),x(i,j,k))
          enddo
       enddo
 
-      call CCTK_GetInterpHandle (handle, "simple_local")
+      call CCTK_InterpHandle (handle, "simple_local")
       
       npoints = nx*ny*nz
 
