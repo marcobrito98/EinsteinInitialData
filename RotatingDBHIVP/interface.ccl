@@ -2,7 +2,7 @@
 # $Header$
 
 implements: rotatingdbhivp
-inherits: admbase staticconformal grid admanalysis
+inherits: ADMBase grid StaticConformal
 
 private:
 
