@@ -2,19 +2,15 @@
 
 shares:einstein
 
-EXTENDS KEYWORD initial_data ""
+EXTENDS KEYWORD initial_data 
 {
 "teukwaves"  :: "linear waves initial data- Teukolsky waves"
 "planewaves" :: "linear waves initial data- plane waves"
 }
 
-USES BOOLEAN use_conformal ""
-{
-}
+USES BOOLEAN use_conformal 
 
-USES BOOLEAN use_conformal_derivs ""
-{
-}
+USES BOOLEAN use_conformal_derivs 
 
 private:
 
