@@ -444,7 +444,7 @@ c     Interpolator handle.
      $     CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
      $     CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL)
       
-      psi = psi2d*exp(-0.5*eta)
+      psi = psi2d * exp(-0.5 * eta)
       detapsi2d = sign_eta * detapsi2d
       detaqpsi2d = sign_eta * detaqpsi2d
   
