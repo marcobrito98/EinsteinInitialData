@@ -61,7 +61,7 @@ c     Perhaps this and others should go into cctk.h
      $     o63,o64,o65,o66,o67
       real*8 rmax,adm
       real*8,parameter :: dbh_eps = 1.0d-9
-      real*8 r,pi
+      real*8 pi
       integer :: nx,ny,nz
       integer i,j,k,ier,nquads,nocts,order
       integer npoints,handle,ierror
