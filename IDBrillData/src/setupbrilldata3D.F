@@ -1,7 +1,9 @@
+
 #include "cctk.h" 
 #include "cctk_Parameters.h"
 #include "cctk_Arguments.h"
-#include "../../../CactusEinstein/Einstein/src/Einstein.h"
+
+#include "CactusEinstein/Einstein/src/Einstein.h"
 
       subroutine setupbrilldata3D(CCTK_FARGUMENTS)
 
@@ -124,7 +126,7 @@ c              Find M using centered differences over a small
 c              interval.
 
                if (rho1.gt.rhofudge) then
-                  Mlinear(i,j,k) = - 0.25D0/e2q
+                  brillMlinear(i,j,k) = - 0.25D0/e2q
      .                 *(brillq(rho1,z1+eps,phi) 
      .                 + brillq(rho1,z1-eps,phi) 
      .                 + brillq(rho1+eps,z1,phi) 
@@ -132,7 +134,7 @@ c              interval.
      .                 - 4.0D0*brillq(rho1,z1,phi))
      .                 / eps**2
                else
-                  Mlinear(i,j,k) = - 0.25D0/e2q
+                  brillMlinear(i,j,k) = - 0.25D0/e2q
      .                 *(brillq(rho1,z1+eps,phi) 
      .                 + brillq(rho1,z1-eps,phi) 
      .                 + two*brillq(eps,z1,phi) 
@@ -146,7 +148,7 @@ c              must always be true otherwise the function
 c              is not regular on the axis.
 
                if (rho1.gt.rhofudge) then
-                  Mlinear(i,j,k) = Mlinear(i,j,k) - 0.25D0/rho2
+                  brillMlinear(i,j,k) = brillMlinear(i,j,k) - 0.25D0/rho2
      .               *(three*0.25D0*(brillq(rho1,z1,phi+eps)
      .               - brillq(rho1,z1,phi-eps))**2
      .               + two*(brillq(rho1,z1,phi+eps)
@@ -160,7 +162,7 @@ c              is not regular on the axis.
 
 c     Set coefficient Nsource = 0.
 
-      Nsource = zero
+      brillNsource = zero
 
       return
       end
