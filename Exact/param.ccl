@@ -5,6 +5,12 @@ shares: grid
 
 shares: einstein
 
+EXTENDS KEYWORD initial_data ""
+{
+  "exact"   :: "Initial data from exact solution"
+  "slice"   :: "Initial data from exact solution on arbitrary slice"
+} ""
+
 EXTENDS KEYWORD slicing ""
 {
   "exact" :: Use lapse from exact solution
@@ -13,6 +19,11 @@ EXTENDS KEYWORD slicing ""
 EXTENDS KEYWORD shift ""
 {
   "exact" :: Use shift from exact solution
+} ""
+
+EXTENDS KEYWORD evolution_system ""
+{
+  "slice" :: "Evolve arbitrary slice and  extract Cauchy data"
 } ""
 
 
@@ -153,7 +164,7 @@ REAL bowl_c "Center of deformation"
 REAL bowl_s "Width of deformation"
 {
 0.0:  ::  "Positive please" 
-} 2.5
+} 1.0
 
 REAL bowl_dx "Scale factor in x direction"
 {
