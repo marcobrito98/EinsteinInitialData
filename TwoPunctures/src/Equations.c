@@ -156,7 +156,7 @@ NonLinEquations (CCTK_REAL rho_adm,
 
   values[0] =
     U.d11[0] + U.d22[0] + U.d33[0] + 0.125 * BY_KKofxyz (x, y, z) / psi7 +
-    2.0 * Pi * psi4*psi * rho_adm;
+    2.0 * Pi / psi2/psi * rho_adm;
 
 }
 
