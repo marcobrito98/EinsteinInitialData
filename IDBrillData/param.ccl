@@ -2,7 +2,7 @@
 
 shares:einstein
 
-EXTENDS KEYWORD initial_data ""
+EXTENDS KEYWORD initial_data 
 {
    "brilldata"   :: "Brill wave initial data"
 } ""
