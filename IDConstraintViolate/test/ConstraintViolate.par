@@ -1,7 +1,7 @@
 
 !DESC "Constraint violating Gaussian initial data"
 
-ActiveThorns = "SpaceMask Boundary ADMBase ADM ADMMacros ADMCoupling ADMConstraints CoordGauge StaticConformal CartGrid3D CoordBase IOBasic IOUtil IOASCII IDConstraintViolate Pugh PughReduce PughSlab Time"
+ActiveThorns = "SpaceMask Boundary ADMBase ADM ADMMacros ADMCoupling ADMConstraints CoordGauge StaticConformal CartGrid3D CoordBase SymBase IOBasic IOUtil IOASCII IDConstraintViolate Pugh PughReduce PughSlab Time"
  
 #------------------------------------------------------------------------------
 
