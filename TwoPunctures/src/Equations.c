@@ -63,8 +63,8 @@ BY_KKofxyz (double x, double y, double z)
     for (j = 0; j < 3; j++)
     {				// Bowen-York-Curvature :
       Aij =
-	+1.5 * (par_P_plus[i] * n_plus[j] + par_P_plus[j] * n_plus[i]
-		+ np_Pp * n_plus[i] * n_plus[j]) / r2_plus
+	+ 1.5 * (par_P_plus[i] * n_plus[j] + par_P_plus[j] * n_plus[i]
+                 + np_Pp * n_plus[i] * n_plus[j]) / r2_plus
 	+ 1.5 * (par_P_minus[i] * n_minus[j] + par_P_minus[j] * n_minus[i]
 		 + nm_Pm * n_minus[i] * n_minus[j]) / r2_minus
 	- 3.0 * (np_Sp[i] * n_plus[j] + np_Sp[j] * n_plus[j]) / r3_plus
@@ -81,7 +81,6 @@ BY_KKofxyz (double x, double y, double z)
 void
 BY_Aijofxyz (double x, double y, double z, double Aij[3][3])
 {
-  // Aij is a one-dimensional array with 9 elements
   DECLARE_CCTK_PARAMETERS;
   int i, j;
   double r_plus, r2_plus, r3_plus, r_minus, r2_minus, r3_minus, np_Pp, nm_Pm,
@@ -121,8 +120,8 @@ BY_Aijofxyz (double x, double y, double z, double Aij[3][3])
     for (j = 0; j < 3; j++)
     {				// Bowen-York-Curvature :
       Aij[i][j] =
-	+1.5 * (par_P_plus[i] * n_plus[j] + par_P_plus[j] * n_plus[i]
-		+ np_Pp * n_plus[i] * n_plus[j]) / r2_plus
+        + 1.5 * (par_P_plus[i] * n_plus[j] + par_P_plus[j] * n_plus[i]
+		 + np_Pp * n_plus[i] * n_plus[j]) / r2_plus
 	+ 1.5 * (par_P_minus[i] * n_minus[j] + par_P_minus[j] * n_minus[i]
 		 + nm_Pm * n_minus[i] * n_minus[j]) / r2_minus
 	- 3.0 * (np_Sp[i] * n_plus[j] + np_Sp[j] * n_plus[j]) / r3_plus
