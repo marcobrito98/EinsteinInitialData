@@ -73,6 +73,7 @@ C     How should the wave look like.
           H = one - a * sin((x-o*t)/d - fs)
         end if
       elseif (CCTK_Equals(Minkowski_gauge_wave__what_fn,"expsin").eq.1) then
+        d = Minkowski_gauge_wave__lambda * half / Pi
         H = exp(a*sin(x/d)*cos(t/d))
       elseif (CCTK_Equals(Minkowski_gauge_wave__what_fn,"Gaussian").eq.1) then
         H = one - a*dexp(-(x-t)**2/d**2)
