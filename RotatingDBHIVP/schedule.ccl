@@ -1,0 +1,11 @@
+# Schedule definitions for thorn RotatingDBHIVP
+# $Header$
+
+if (CCTK_Equals(initial_data,"rotatingdbh"))
+{
+  schedule RotatingDBHIVP at CCTK_INITIAL
+  {
+    LANG: Fortran
+  } "Construct RotatingDBHIVP"
+}
+
