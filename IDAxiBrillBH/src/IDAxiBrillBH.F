@@ -307,6 +307,8 @@ c               phi(i,j,k)= datan2(y(i,j,k),x(i,j,k))
      $                              6, in_array_dims, type_codes, in_arrays,
      $                              6, type_codes, out_arrays)
 
+      call Util_TableDestroy (ierror, param_table_handle)
+
       psi = psi2dv * exp (-0.5 * eta)
       detapsi2dv = sign_eta * detapsi2dv
       detaqpsi2dv = sign_eta * detaqpsi2dv
