@@ -37,7 +37,6 @@ c Using macro definitions from Einstein
       DECLARE_CCTK_FARGUMENTS
       DECLARE_CCTK_PARAMETERS
       
-      
       CCTK_REAL amp,m,ra,pi
       CCTK_REAL wave,wave2,wave3,wave4,wave5,wave6,wave7,wave8
       INTEGER ipacket,iparity
@@ -62,8 +61,8 @@ c     uffff....
 c     from old spheretocart
       CCTK_REAL drx,dry,drz,dtx,dty,dtz,dpx,dpy,dpz
       
+      CHARACTER*200 infoline
       INTEGER i,j,k
-      
       INTEGER CCTK_Equals
       
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
@@ -90,27 +89,31 @@ c     by kappa, because they use that in the packet and
 c     4/3 because they use I not Teuk. F  
       if (CCTK_Equals(packet,'eppley') == 1) then
          ipacket = 1
-         write(*,*)'Teuk.Packet= eppley' 
+         call CCTK_INFO('Teukolsky Packet = eppley') 
       elseif (CCTK_Equals(packet,'evans') == 1) then
          ipacket = 2
-         write(*,*)'Teuk.Packet= evans'
+         call CCTK_INFO('Teukolsky Packet = evans')
 c     to be consistent with Evans & Abrahams, rescale the amplitude
 c     by kappa, because they use that in the packet and
 c     4/3 because they use I not Teuk. F
          amp = amp*(4.0d0/3.0d0)*kappa
       elseif (CCTK_Equals(packet,'square') == 1) then
          ipacket = 3
-         write(*,*)'Teuk.Packet= square'
-      else
-         write(*,*)'Teukwaves: unsupported packet'
-         STOP
-      endif      
-
+         call CCTK_INFO('Teukolsky Packet = square')
+      end if
       
-      write(*,*)'amplitude  = ',amp
-      write(*,*)'     m     = ',m
-      write(*,*)'wavecenter = ',ra
-      write(*,*)'wavelength = ',wave
+      write(infoline,'(A13,G12.7)')
+     &    ' amplitude = ',amp
+      call CCTK_INFO(infoline)
+      write(infoline,'(A11,G12.7)')
+     &    ' m value = ',m
+      call CCTK_INFO(infoline)
+      write(infoline,'(A14,G12.7)')
+     &    ' wavecenter = ',ra
+      call CCTK_INFO(infoline)
+      write(infoline,'(A14,G12.7)')
+     &    ' wavelength = ',wave
+      call CCTK_INFO(infoline)
       
       if (CCTK_Equals(parity,'even') == 1) then    
          iparity = 0
@@ -133,9 +136,7 @@ c     4/3 because they use I not Teuk. F
       
       if (ipacket.eq.1) then
          if (ingoing.eq.0.or.outgoing.eq.0) then
-            write(*,*)'WARNING: Epply packet is only non-singular at'
-            write(*,*)'the origin for ingoing-outgoing combination'
-            write(*,*)'of waves.  Expect problems ;-) '
+            call CCTK_WARN(4,'Epply packet is only non-singular at the origin for ingoing-outgoing combination of waves')
          endif
       endif
       
@@ -303,8 +304,8 @@ c     evans package  --> w^4(1-x^2/w^2)^6
 c     square package --> (1-x^2/w^2)^2
                if(ipacket.eq.3) then 
                   
-                  write(*,*)'WARNING: need to calculate fpe,fne'
-                  write(*,*)'WARNING: need conditionals for in out waves'
+                  call CCTK_WARN(4,'Need to calculate fpe,fne')
+                  call CCTK_WARN(4,'Need conditionals for in out waves')
                   
                   if (abs(teuk_tp).lt.wave) then
                      fp = amp * (1-(tp2/wave2))**2
@@ -437,8 +438,7 @@ c     mvalue
                   dtp = (2-sint**2)*2*sinp*cosp
                   dpp = 2*cost*(1-2*sinp**2)
                else
-                  write(*,*) 'teukwaves: m should be one of -2,-1,0,1,2'
-                  STOP
+                  call CCTK_WARN(0,'m should be one of -2,-1,0,1,2')
                endif
                
 c     parity
