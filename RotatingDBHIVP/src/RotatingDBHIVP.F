@@ -28,11 +28,11 @@ c@@*/
 c     Need include file from Einstein
 #include "CactusEinstein/Einstein/src/Einstein.h"
 
-      subroutine RotatingDBHIVP(CCTK_FARGUMENTS)
+      subroutine RotatingDBHIVP(CCTK_ARGUMENTS)
       
       implicit none
       
-      DECLARE_CCTK_FARGUMENTS
+      DECLARE_CCTK_ARGUMENTS
       DECLARE_CCTK_PARAMETERS
       DECLARE_CCTK_FUNCTIONS
 
