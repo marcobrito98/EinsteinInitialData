@@ -1,7 +1,7 @@
 
 !DESC "Brill wave initial data (Physical, BAM)"
 
-ActiveThorns = "bam_elliptic admbase staticconformal ellbase boundary pugh pughslab pughreduce cartgrid3d idbrilldata ioascii iobasic ioutil time"
+ActiveThorns = "bam_elliptic admbase staticconformal ellbase boundary pugh pughslab pughreduce CartGrid3D CoordBase idbrilldata ioascii iobasic ioutil time"
 
 # General
 
