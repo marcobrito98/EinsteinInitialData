@@ -42,6 +42,9 @@ c@@*/
 	DECLARE_CCTK_PARAMETERS
 	DECLARE_CCTK_FUNCTIONS
 
+c local variables
+	character*100 warn_buffer
+
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
 c
@@ -117,7 +120,9 @@ c miscellaneous spacetimes
 	elseif (CCTK_Equals(exact_model, "constant density star") .ne. 0) then
 	     decoded_exact_model = EXACT__constant_density_star
 	else
-	     call CCTK_WARN(0, "invalid exact_model parameter!")
+	     write (warn_buffer, '(a,a,a)')
+     $		   'Unknown exact_model = "', exact_model, '"'
+	     call CCTK_WARN(0, warn_buffer)
 	endif
 
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
