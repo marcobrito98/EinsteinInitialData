@@ -1,40 +1,39 @@
 c/*@@
 c  @file      IDAxiBrillBH.F
-c  @date      
-c  @author    
-c  @desc 
-c  
-c  @enddesc 
+c  @date
+c  @author
+c  @desc
+c
+c  @enddesc
 c@@*/
 
-#include "cctk.h" 
+#include "cctk.h"
 #include "cctk_Parameters.h"
 #include "cctk_Arguments.h"
+#include "cctk_Functions.h"
 
 c/*@@
 c  @routine    IDAxiBrillBH
-c  @date       
-c  @author     
-c  @desc 
-c  
-c  @enddesc 
-c  @calls     
-c  @calledby   
-c  @history 
+c  @date
+c  @author
+c  @desc
 c
-c  @endhistory 
+c  @enddesc
+c  @calls
+c  @calledby
+c  @history
+c
+c  @endhistory
 c@@*/
-      
+
       subroutine IDAxiBrillBH(CCTK_ARGUMENTS)
-      
+
       implicit none
-      
+
       DECLARE_CCTK_ARGUMENTS
       DECLARE_CCTK_PARAMETERS
+      DECLARE_CCTK_FUNCTIONS
 
-c     Perhaps this and others should go into cctk.h
-      integer CCTK_Equals
-      
       real*8 axibheps, rmax, dq, deta
       integer levels,id5,id9,idi,idg,ier
       real*8, allocatable :: cc(:,:),ce(:,:),cw(:,:),cn(:,:),cs(:,:),
@@ -63,16 +62,25 @@ c     Perhaps this and others should go into cctk.h
       real*8 adm
       integer :: nx,ny,nz
       integer i,j,k,nquads
-      integer npoints,handle,ierror
+      integer npoints,ierror
       integer neb, nqb
-      
+
+      integer       param_table_handle, interp_handle
+      character(30) options_string
+      CCTK_REAL,    dimension(2) :: coord_origin, coord_delta
+      CCTK_POINTER, dimension(2) :: interp_coords
+      CCTK_POINTER, dimension(6) :: in_arrays, out_arrays
+      CCTK_INT,     dimension(2) :: in_array_dims
+      CCTK_INT,     dimension(6), parameter :: type_codes = CCTK_VARIABLE_REAL
+
+
       pi = 4.0d0*atan(1.0d0)
-      
+
 c     Set up the grid spacings
       nx = cctk_lsh(1)
       ny = cctk_lsh(2)
       nz = cctk_lsh(3)
-      
+
 c     Solve on this sized cartesian grid
 c     2D grid size NE x NQ
 c     Add 2 zones for boundaries...
@@ -101,27 +109,27 @@ c Initialize some arrays
       deta = etamax/(neb-3)
 
       do j=1,nqb
-	qgrd(j) = (j-1.5)*dq
-	do i=1,neb
-	  etagrd(i) = (i-2)*deta
+        qgrd(j) = (j-1.5)*dq
+        do i=1,neb
+          etagrd(i) = (i-2)*deta
 #include "CactusEinstein/IDAxiBrillBH/src/bhbrill.x"
-	enddo
+        enddo
       enddo
 c     Boundary conditions
       do j=1,nqb
-	ce(2,j)=ce(2,j)+cw(2,j)
-	cw(2,j)=0.0
+        ce(2,j)=ce(2,j)+cw(2,j)
+        cw(2,j)=0.0
 
-	cw(neb-1,j)=cw(neb-1,j)+ce(neb-1,j)
-	cc(neb-1,j)=cc(neb-1,j)-deta*ce(neb-1,j)
-	ce(neb-1,j)=0.0
+        cw(neb-1,j)=cw(neb-1,j)+ce(neb-1,j)
+        cc(neb-1,j)=cc(neb-1,j)-deta*ce(neb-1,j)
+        ce(neb-1,j)=0.0
 
       enddo
       do i=1,neb
-	cc(i,2)=cc(i,2)+cs(i,2)
-	cs(i,2)=0.0
-	cc(i,nqb-1)=cc(i,nqb-1)+cn(i,nqb-1)
-	cn(i,nqb-1)=0.0
+        cc(i,2)=cc(i,2)+cs(i,2)
+        cs(i,2)=0.0
+        cc(i,nqb-1)=cc(i,nqb-1)+cn(i,nqb-1)
+        cn(i,nqb-1)=0.0
       enddo
 
 c     Do the solve
@@ -224,7 +232,7 @@ c     be called if the IVP solve is not successful
         psi2d(:,j)=psi2d(:,j)+2.*cosh(0.5*etagrd)
       enddo
 
-c     Now evaluate each of the following at x(i,j,k), y(i,j,k) and 
+c     Now evaluate each of the following at x(i,j,k), y(i,j,k) and
 c     z(i,j,k) where i,j,k go from 1 to nx,ny,nz
 
 c     Conformal factor
@@ -255,37 +263,49 @@ c               phi(i,j,k)= datan2(y(i,j,k),x(i,j,k))
 
       npoints = nx*ny*nz
 
-!     Interpolator handle.
-
-      handle = -1
-
-      if (interpolation_order .eq. 1) then
-        call CCTK_InterpHandle (handle, "first-order uniform cartesian")
-      else if (interpolation_order .eq. 2) then
-        call CCTK_InterpHandle (handle, "second-order uniform cartesian")
-      else if (interpolation_order .eq. 3) then
-        call CCTK_InterpHandle (handle, "third-order uniform cartesian")
+!     Parameter table and interpolator handles.
+      options_string = "order = " // char(ichar('0') + interpolation_order)
+      call Util_TableCreateFromString (param_table_handle, options_string)
+      if (param_table_handle .lt. 0) then
+        call CCTK_WARN(0,"Cannot create parameter table for interpolator")
       endif
 
-      if (handle .lt. 0) then
-        call CCTK_WARN (0, "Couldn't get handle for interpolation operator")
+      call CCTK_InterpHandle (interp_handle, "uniform cartesian")
+      if (interp_handle .lt. 0) then
+        call CCTK_WARN(0,"Cannot get handle for interpolation ! Forgot to activate an implementation providing interpolation operators ??")
       endif
 
-      call CCTK_InterpLocal (ierror, cctkGH, handle, npoints, 2, 6, 6,
-     $                       neb, nqb, etagrd, qgrd,
-     $                       CCTK_VARIABLE_REAL, CCTK_VARIABLE_REAL,
-     $                       abseta, q,
-     $                       CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
-     $                       psi2d, detapsi2d, dqpsi2d, detaetapsi2d,
-     $                       detaqpsi2d, dqqpsi2d,
-     $                       CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
-     $                       CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
-     $                       CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
-     $                       psi2dv, detapsi2dv, dqpsi2dv, detaetapsi2dv,
-     $                       detaqpsi2dv, dqqpsi2dv,
-     $                       CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
-     $                       CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
-     $                       CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL)
+!     fill in the input/output arrays for the interpolator
+      coord_origin(1) = etagrd(1)
+      coord_origin(2) = qgrd(1)
+      coord_delta(1)  = etagrd(2) - etagrd(1)
+      coord_delta(2)  = qgrd(2) - qgrd(1)
+
+      interp_coords(1) = CCTK_PointerTo(abseta)
+      interp_coords(2) = CCTK_PointerTo(q)
+
+      in_array_dims(1) = neb; in_array_dims(2) = nqb
+
+      in_arrays(1) = CCTK_PointerTo(psi2d)
+      in_arrays(2) = CCTK_PointerTo(detapsi2d)
+      in_arrays(3) = CCTK_PointerTo(dqpsi2d)
+      in_arrays(4) = CCTK_PointerTo(detaetapsi2d)
+      in_arrays(5) = CCTK_PointerTo(detaqpsi2d)
+      in_arrays(6) = CCTK_PointerTo(dqqpsi2d)
+
+      out_arrays(1) = CCTK_PointerTo(psi2dv)
+      out_arrays(2) = CCTK_PointerTo(detapsi2dv)
+      out_arrays(3) = CCTK_PointerTo(dqpsi2dv)
+      out_arrays(4) = CCTK_PointerTo(detaetapsi2dv)
+      out_arrays(5) = CCTK_PointerTo(detaqpsi2dv)
+      out_arrays(6) = CCTK_PointerTo(dqqpsi2dv)
+
+      call CCTK_InterpLocalUniform (ierror, 2,
+     $                              interp_handle, param_table_handle,
+     $                              coord_origin, coord_delta,
+     $                              npoints, type_codes(1), interp_coords,
+     $                              6, in_array_dims, type_codes, in_arrays,
+     $                              6, type_codes, out_arrays)
 
       psi = psi2dv * exp (-0.5 * eta)
       detapsi2dv = sign_eta * detapsi2dv
@@ -294,24 +314,24 @@ c               phi(i,j,k)= datan2(y(i,j,k),x(i,j,k))
       do k=1,nz
          do j=1,ny
             do i=1,nx
-               
+
 c               psi(i,j,k) = psi2dv(i,j,k)*exp(-0.5*eta(i,j,k))
 c               detapsi2dv(i,j,k) = sign_eta(i,j,k)*detapsi2dv(i,j,k)
-               
+
 c     psix = \partial psi / \partial x / psi
 #include "CactusEinstein/IDAxiBrillBH/src/psi_1st_deriv.x"
-               
+
 c               detaqpsi2dv(i,j,k) = sign_eta(i,j,k)*detaqpsi2dv(i,j,k)
-               
+
 c     psixx = \partial^2\psi / \partial x^2 / psi
 #include "CactusEinstein/IDAxiBrillBH/src/psi_2nd_deriv.x"
             enddo
          enddo
       enddo
-      
+
 c     Conformal metric
 c     gxx = ...
-      
+
 c     Derivatives of the metric
 c     dxgxx = 1/2 \partial gxx / \partial x
 
@@ -319,7 +339,7 @@ c     dxgxx = 1/2 \partial gxx / \partial x
          do j=1,ny
             do i=1,nx
 c THESE WERE ALREADY CALCULATED ABOVE !!!
-c               eta(i,j,k) = 0.5d0*dlog(x(i,j,k)**2+y(i,j,k)**2+z(i,j,k)**2) 
+c               eta(i,j,k) = 0.5d0*dlog(x(i,j,k)**2+y(i,j,k)**2+z(i,j,k)**2)
 c               q(i,j,k) = datan2(sqrt(x(i,j,k)**2+y(i,j,k)**2),z(i,j,k))
 c               phi(i,j,k) = datan2(y(i,j,k),x(i,j,k))
 #include "CactusEinstein/IDAxiBrillBH/src/gij.x"
@@ -334,7 +354,7 @@ c     Curvature
       kyy = 0.0D0
       kyz = 0.0D0
       kzz = 0.0D0
-      
+
   111 continue
 c     Set ADM mass
       i = neb-15
@@ -345,16 +365,16 @@ c     Set ADM mass
       enddo
       adm=adm/(nqb-2)
       print *,'ADM mass: ',adm
-      if (CCTK_Equals(initial_lapse,"schwarz")==1) then
+      if (CCTK_EQUALS(initial_lapse,"schwarz")) then
          write (*,*)"Initial with schwarzschild-like lapse"
          write (*,*)"using alp = (2.*r - adm)/(2.*r+adm)."
          alp = (2.*r - adm)/(2.*r+adm)
       endif
-      
+
 c      conformal_state = CONFORMAL_METRIC (What is CONFORMAL_METRIC?)
       conformal_state = 3
 c     3 ==> 'all' derivatives were calculated
-      
+
       deallocate(cc,ce,cw,cn,cs,rhs,psi2d,detapsi2d,dqpsi2d,
      $     detaetapsi2d,detaqpsi2d,dqqpsi2d,
      $     etagrd,qgrd,
