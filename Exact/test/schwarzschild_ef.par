@@ -5,7 +5,7 @@
 # Author: Frank Loeffler (frank.loeffler@aei.mpg.de)
 
 # Required thorns
-ActiveThorns = "CartGrid3D Boundary Time PUGH PUGHReduce PUGHSlab IOAscii IOUtil IOBasic ADMBase ADMMacros ADMConstraints MoL BSSN_MoL ADMCoupling StaticConformal CoordGauge SpaceMask Exact NaNChecker"
+ActiveThorns = "CartGrid3D CoordBase Boundary Time PUGH PUGHReduce PUGHSlab IOAscii IOUtil IOBasic ADMBase ADMMacros ADMConstraints MoL BSSN_MoL ADMCoupling StaticConformal CoordGauge SpaceMask Exact NaNChecker"
 
 # Grid
 driver::global_nx = 33
