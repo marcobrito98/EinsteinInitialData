@@ -13,8 +13,17 @@ Later, the thorn developed as a reservoir for a variety of exact spacetimes,
 some of them in different coordinate systems, and even some non-Einstein
 spcetimes.  All od these exact spacetimes have been found useful for
 testing different aspect of the code.  Since mamy different people have
-contributed to this thorn by adding new exact solutions, you shoudl expect
+contributed to this thorn by adding new exact solutions, you should expect
 many different styles of coding here.
 
-For more details see the documentation in the directory doc.
+The current maintainer is Jonathan Thornburg <jthorn@aei.mpg.de> .
+Mitica Vulcanov <vulcan@aei.mpg.de> is the maintainer for the
+Schwarzschild-Lemaitre solution and all the cosmological solutions.
 
+For more details see the comments in the param.ccl file, and the
+documentation in the directory doc.
+
+Note that the June 2002 revisions to this thorn included renaming
+most of the parameters.  The perl script  par/convert-par.pl  will
+convert old parameter files to use the new names, renaming the old
+parameter files to ".par.bak" as backups.
