@@ -76,12 +76,14 @@ c     Tolerances for elliptic solve.
 
 c     Boundaries.
 
+      call Ell_SetStrKey(ierr,"yes","EllLinConfMetric::Bnd::Robin")
       call Ell_SetRealKey(ierr,1.0D0,"EllLinConfMetric::Bnd::Robin::inf")
       call Ell_SetIntKey(ierr,1,"EllLinConfMetric::Bnd::Robin::falloff")
 
 c     Elliptic solver.
 
       if (CCTK_EQUALS(brill_solver,"sor")) then
+         call Ell_SetIntKey(ierr,sor_maxit,"Ell::SORmaxit");
          call Ell_LinConfMetricSolver(ierr,cctkGH, 
      .   metpsi_index,ipsi,iMcoeff,iNcoeff,AbsTol,RelTol,"sor")
       else if (CCTK_EQUALS(brill_solver,"petsc")) then
