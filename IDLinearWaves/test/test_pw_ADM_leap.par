@@ -3,7 +3,7 @@
 #########################################################
 
 # Required thorns
-ActiveThorns = "Boundary time pugh pughslab pughreduce CartGrid3D CoordBase ADMBase ADM ADMMacros StaticConformal CoordGauge IDLinearWaves ioascii ioutil iobasic"
+ActiveThorns = "Boundary time pugh pughslab pughreduce CartGrid3D CoordBase SymBase ADMBase ADM ADMMacros StaticConformal CoordGauge IDLinearWaves ioascii ioutil iobasic"
 
 # GENERAL 
 
