@@ -65,6 +65,15 @@ c@@*/
       integer npoints,handle,ierror
       integer make_conformal_derivs
 
+      integer       param_table_handle, interp_handle
+      character(30) options_string
+      CCTK_REAL,    dimension(3)  :: coord_origin, coord_delta
+      CCTK_POINTER, dimension(3)  :: interp_coords
+      CCTK_INT,     dimension(3 ) :: in_array_dims
+      CCTK_POINTER, dimension(10) :: in_arrays, out_arrays
+      CCTK_INT,     dimension(10), parameter :: type_codes = CCTK_VARIABLE_REAL
+
+
 c Check if we should create and store conformal factor stuff 
 
       if (CCTK_EQUALS(metric_type, "static conformal")) then
@@ -664,39 +673,62 @@ c
       
       npoints = nx*ny*nz
 
-!     Interpolator handle.
-
-      handle = -1
-
-      if (interpolation_order .eq. 1) then
-        call CCTK_InterpHandle (handle, "first-order uniform cartesian")
-      else if (interpolation_order .eq. 2) then
-        call CCTK_InterpHandle (handle, "second-order uniform cartesian")
-      else if (interpolation_order .eq. 3) then
-        call CCTK_InterpHandle (handle, "third-order uniform cartesian")
+!     Parameter table and interpolator handles.
+      options_string = "order = " // char(ichar('0') + interpolation_order)
+      call Util_TableCreateFromString (param_table_handle, options_string)
+      if (param_table_handle .lt. 0) then
+        call CCTK_WARN(0,"Cannot create parameter table for interpolator")
       endif
 
-      if (handle .lt. 0) then
-        call CCTK_WARN (0, "Couldn't get handle for interpolation operator")
+      call CCTK_InterpHandle (interp_handle, "uniform cartesian")
+      if (interp_handle .lt. 0) then
+        call CCTK_WARN(0,"Cannot get handle for interpolation ! Forgot to activate an implementation providing interpolation operators ??")
       endif
 
-      call CCTK_InterpLocal (ierror,cctkGH,handle,npoints,3,10,10,
-     $     ne,nq,np,etagrd,qgrd,phigrd-pi,
-     $     CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
-     $     abseta,q,phi,
-     $     CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
-     $     psisph,detapsisph,dqpsisph,dphipsisph,detaetapsisph,
-     $     detaqpsisph,detaphipsisph,dqqpsisph,dqphipsisph,dphiphipsisph,
-     $     CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
-     $     CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
-     $     CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
-     $     CCTK_VARIABLE_REAL,
-     $     psi3d,detapsi3d,dqpsi3d,dphipsi3d,detaetapsi3d,detaqpsi3d,
-     $     detaphipsi3d,dqqpsi3d,dqphipsi3d,dphiphipsi3d,
-     $     CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
-     $     CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
-     $     CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
-     $     CCTK_VARIABLE_REAL)
+!     fill in the input/output arrays for the interpolator
+      coord_origin(1) = etagrd(1)
+      coord_origin(2) = qgrd(1)
+      coord_origin(3) = phigrd(1)-pi
+      coord_delta(1)  = etagrd(2) - etagrd(1)
+      coord_delta(2)  = qgrd(2) - qgrd(1)
+      coord_delta(3)  = phigrd(2) - phigrd(1)
+
+      interp_coords(1) = CCTK_PointerTo(abseta)
+      interp_coords(2) = CCTK_PointerTo(q)
+      interp_coords(2) = CCTK_PointerTo(phi)
+
+      in_array_dims(1) = ne
+      in_array_dims(2) = nq
+      in_array_dims(3) = np
+
+      in_arrays(1) = CCTK_PointerTo(psisph)
+      in_arrays(2) = CCTK_PointerTo(detapsisph)
+      in_arrays(3) = CCTK_PointerTo(dqpsisph)
+      in_arrays(4) = CCTK_PointerTo(dphipsisph)
+      in_arrays(5) = CCTK_PointerTo(detaetapsisph)
+      in_arrays(6) = CCTK_PointerTo(detaqpsisph)
+      in_arrays(6) = CCTK_PointerTo(detaphipsisph)
+      in_arrays(6) = CCTK_PointerTo(dqqpsisph)
+      in_arrays(6) = CCTK_PointerTo(dqphipsisph)
+      in_arrays(6) = CCTK_PointerTo(dphiphipsisph)
+
+      out_arrays(1) = CCTK_PointerTo(psi3d)
+      out_arrays(2) = CCTK_PointerTo(detapsi3d)
+      out_arrays(3) = CCTK_PointerTo(dqpsi3d)
+      out_arrays(4) = CCTK_PointerTo(dphipsi3d)
+      out_arrays(5) = CCTK_PointerTo(detaetapsi3d)
+      out_arrays(6) = CCTK_PointerTo(detaqpsi3d)
+      out_arrays(6) = CCTK_PointerTo(detaphipsi3d)
+      out_arrays(6) = CCTK_PointerTo(dqqpsi3d)
+      out_arrays(6) = CCTK_PointerTo(dqphipsi3d)
+      out_arrays(6) = CCTK_PointerTo(dphiphipsi3d)
+
+      call CCTK_InterpLocalUniform (ierror, 3,
+     $                              interp_handle, param_table_handle,
+     $                              coord_origin, coord_delta,
+     $                              npoints, type_codes(1), interp_coords,
+     $                              10, in_array_dims, type_codes, in_arrays,
+     $                              10, type_codes, out_arrays)
 
       psi = psi3d*exp(-0.5*eta)
       detapsi3d = sign_eta*detapsi3d
