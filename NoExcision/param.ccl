@@ -5,22 +5,32 @@ BOOLEAN verbose "Produce some screen output"
 {
 } "no"
 
-BOOLEAN overwrite_geometry "Set the geometry to Minkowski"
-{
-} "yes"
-
-BOOLEAN overwrite_lapse "Set the lapse to one"
-{
-} "yes"
-
-BOOLEAN overwrite_shift "Set the shift to zero"
-{
-} "yes"
-
 INT num_regions "Number of no-excision regions"
 {
   0:10 :: ""
 } 0
+
+BOOLEAN overwrite_geometry[10] "Set the geometry to Minkowski"
+{
+} "yes"
+
+REAL Minkowski_scale[10] "Scaling factor for Minkowski"
+{
+  (*:*) :: "Choose 1 for true Minkowski"
+} 1.0
+
+BOOLEAN overwrite_lapse[10] "Set the lapse to one"
+{
+} "yes"
+
+REAL lapse_scale[10] "Scaling factor for lapse"
+{
+  (*:*) :: "Choose 1 for geodesic slicing, 0 to halt evolution"
+} 1.0
+
+BOOLEAN overwrite_shift[10] "Set the shift to zero"
+{
+} "yes"
 
 REAL centre_x[10] "X-coordinate of the centre of the region"
 {

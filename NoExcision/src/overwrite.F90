@@ -21,7 +21,7 @@ subroutine NoExcision_Overwrite (CCTK_ARGUMENTS)
      cz = centre_z(n)
      rad = radius(n)
      
-     if (overwrite_geometry /= 0) then
+     if (overwrite_geometry(n) /= 0) then
         
         if (conformal_state >= 1) then
            where ((x - cx)**2 + (y - cy)**2 + (z - cz)**2 <= rad**2)
@@ -47,12 +47,12 @@ subroutine NoExcision_Overwrite (CCTK_ARGUMENTS)
         end if
         
         where ((x - cx)**2 + (y - cy)**2 + (z - cz)**2 <= rad**2)
-           gxx = 1
+           gxx = Minkowski_scale(n)
            gxy = 0
            gxz = 0
-           gyy = 1
+           gyy = Minkowski_scale(n)
            gyz = 0
-           gzz = 1
+           gzz = Minkowski_scale(n)
            kxx = 0
            kxy = 0
            kxz = 0
@@ -63,15 +63,15 @@ subroutine NoExcision_Overwrite (CCTK_ARGUMENTS)
         
      end if
      
-     if (overwrite_lapse /= 0) then
+     if (overwrite_lapse(n) /= 0) then
         
         where ((x - cx)**2 + (y - cy)**2 + (z - cz)**2 <= rad**2)
-           alp = 1
+           alp = lapse_scale(n)
         end where
         
      end if
         
-     if (overwrite_shift /= 0) then
+     if (overwrite_shift(n) /= 0) then
         
         if (shift_state /= 0) then
            where ((x - cx)**2 + (y - cy)**2 + (z - cz)**2 <= rad**2)
