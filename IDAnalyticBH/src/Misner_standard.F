@@ -166,12 +166,12 @@ c     ---------------------------------
 
 c     Time-symmetric data
 c     -------------------
-      hxx = zero
-      hyy = zero
-      hzz = zero
-      hxy = zero 
-      hxz = zero  
-      hyz = zero   
+      kxx = zero
+      kyy = zero
+      kzz = zero
+      kxy = zero 
+      kxz = zero  
+      kyz = zero   
 
       return
       end
