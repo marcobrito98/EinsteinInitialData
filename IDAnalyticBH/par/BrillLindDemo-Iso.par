@@ -17,7 +17,7 @@
 
 # These thorns must be compiled
 
-ActiveThorns = "Boundary ADM CartGrid3D CoordBase SymBase ADMBase StaticConformal CoordGauge ADMMacros IDanalyticBH IOBasic IOUtil IOASCII PsiKadelia IsoSurfacer httpd socket httpdextra Pugh Pughreduce Pughslab Time"
+ActiveThorns = "Boundary ADM CartGrid3D CoordBase SymBase ADMBase StaticConformal CoordGauge ADMAnalysis ADMMacros IDanalyticBH IOBasic IOUtil IOASCII PsiKadelia IsoSurfacer httpd socket httpdextra Pugh Pughreduce Pughslab Time"
  
 #------------------------------------------------------------------------------
 
@@ -33,7 +33,7 @@ cactus::cctk_final_time    = 30.0
 
 IOBasic::outInfo_vars      = "admbase::alp"
 IOBasic::outInfo_every     = 10
-IOASCII::out1D_vars        = "admbase::alp admbase::grr psikadelia::psi0re"
+IOASCII::out1D_vars        = "admbase::alp admanalysis::grr psikadelia::psi0re"
 IOASCII::out1D_every       = 10
 
 #------------------------------------------------------------------------------
