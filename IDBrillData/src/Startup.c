@@ -1,5 +1,5 @@
 #include "cctk.h"
-#include "cctk_arguments.h"
+#include "cctk_Arguments.h"
 
 #include "Symmetry.h"
 
