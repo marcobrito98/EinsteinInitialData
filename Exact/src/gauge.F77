@@ -18,7 +18,6 @@ C $Header$
       integer i,j,k
       integer nx,ny,nz
 
-      CCTK_REAL t_exact
       CCTK_REAL gxxjunk, gyyjunk, gzzjunk, 
      $     gxyjunk, gyzjunk, gxzjunk,
      $     hxxjunk, hyyjunk, hzzjunk, 
@@ -39,33 +38,46 @@ C $Header$
      $     exact_psix, exact_psiy, exact_psiz,
      $     exact_psixx, exact_psiyy, exact_psizz,
      $     exact_psixy, exact_psiyz, exact_psixz
+      LOGICAL is_initial_slice, is_later_slice
+
+C     are we on the initial slice or some later slice?
+C     n.b. the logical expressions later in this function involving
+C          these flags below would be *so* much nicer if Fortran
+C          grokked C-style conditional expressions... :) :)
+      is_initial_slice = cctk_iteration .eq. 0
+      is_later_slice   = cctk_iteration .ne. 0
 
 C     Grid parameters.
-
       nx = cctk_lsh(1)
       ny = cctk_lsh(2)
       nz = cctk_lsh(3)
 
 C     This code used to set  t = time + dt/2  to get 2nd order accuracy,
 C     but this leads to the initial data being set at the wrong time. :(
-C     In the context of MoL, we want to set the "exact" time anyway, because
-C     MoL takes care of calling us at each MoL iteration, and updating the
-C     field variables appropriately.
+C     In the context of MoL, we want to set variables at the standrd Cactus
+C     time (cctk_time), because MoL takes care of calling us at each MoL
+C     iteration, and updating the field variables appropriately.
 C
-C     Alas, the current version of this code probably gives O(dt) errors
-C     for non-MoL evoutions where Exact is used to set stuff at each time
-C     step.  Fixing this probably requires cleaning up our (++messy)
-C      schedule.ccl , which is why this remains a bug for now... :( :(
+C     Alas, setting at cctk_time probably gives O(dt) errors for non-MoL
+C     evoutions where Exact is used to set stuff at each time step.
+C     Fixing this [unless we just declare all non-MoL stuff obselete :) ]
+C     probably requires cleaning up our (++messy)  schedule.ccl , which
+C     is why this remains a bug for now... :( :(
 
-      t_exact = cctk_time
+CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 
-C     Set both lapse and shift.
-
-      if (( (CCTK_Equals(lapse_evolution_method,"exact").ne.0) .and.
-     $      (CCTK_Equals(shift_evolution_method,"exact").ne.0) )
-     $    .or.
-     $    ( (CCTK_Equals(initial_lapse,"exact").ne.0) .and.
-     $      (CCTK_Equals(initial_shift,"exact").ne.0) )) then
+C
+C     Set both lapse and shift?
+C
+      if (
+     $     ( is_initial_slice
+     $       .and. (CCTK_Equals(initial_lapse,         "exact").ne.0)
+     $       .and. (CCTK_Equals(initial_shift,         "exact").ne.0) )
+     $     .or.
+     $     ( is_later_slice
+     $       .and. (CCTK_Equals(lapse_evolution_method,"exact").ne.0)
+     $       .and. (CCTK_Equals(shift_evolution_method,"exact").ne.0) )
+     $   ) then
 
          do k=1,nz
             do j=1,ny
@@ -90,7 +102,7 @@ C     (also to tell the models about the conformal_state)
 
                   call Exact__Bona_Masso_data(
      $                 decoded_exact_model,
-     $                 x(i,j,k), y(i,j,k), z(i,j,k), t_exact,
+     $                 x(i,j,k), y(i,j,k), z(i,j,k), cctk_time,
      $                 gxxjunk, gyyjunk, gzzjunk, 
      $                 gxyjunk, gyzjunk, gxzjunk,
      $                 hxxjunk, hyyjunk, hzzjunk, 
@@ -114,10 +126,18 @@ C     (also to tell the models about the conformal_state)
             end do
          end do
 
-C     Set lapse only.
+CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 
-      else if ((CCTK_Equals(lapse_evolution_method,"exact").ne.0)
-     $        .or. (CCTK_Equals(initial_lapse,"exact").ne.0)) then
+C
+C     Set lapse only?
+C
+      elseif (
+     $         ( is_initial_slice
+     $           .and. (CCTK_Equals(initial_lapse,         "exact").ne.0) )
+     $         .or.
+     $         ( is_later_slice
+     $           .and. (CCTK_Equals(lapse_evolution_method,"exact").ne.0) )
+     $       ) then
 
          do k=1,nz
             do j=1,ny
@@ -142,7 +162,7 @@ C     (also to tell the models about the conformal_state)
 
                   call Exact__Bona_Masso_data(
      $                 decoded_exact_model,
-     $                 x(i,j,k), y(i,j,k), z(i,j,k), t_exact,
+     $                 x(i,j,k), y(i,j,k), z(i,j,k), cctk_time,
      $                 gxxjunk, gyyjunk, gzzjunk, 
      $                 gxyjunk, gyzjunk, gxzjunk,
      $                 hxxjunk, hyyjunk, hzzjunk, 
@@ -167,10 +187,18 @@ C     (also to tell the models about the conformal_state)
             end do
          end do
 
-C     Set shift only.
+CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 
-      else if ((CCTK_Equals(shift_evolution_method,"exact").ne.0) 
-     $        .or. (CCTK_Equals(initial_shift,"exact").ne.0)) then
+C
+C     Set shift only?
+C
+      elseif (
+     $         ( is_initial_slice
+     $           .and. (CCTK_Equals(initial_shift,"exact").ne.0) )
+     $         .or.
+     $         ( is_later_slice
+     $           .and. (CCTK_Equals(shift_evolution_method,"exact").ne.0) )
+     $       ) then
 
          do k=1,nz
             do j=1,ny
@@ -195,7 +223,7 @@ C     (also to tell the models about the conformal_state)
 
                   call Exact__Bona_Masso_data(
      $                 decoded_exact_model,
-     $                 x(i,j,k), y(i,j,k), z(i,j,k), t_exact,
+     $                 x(i,j,k), y(i,j,k), z(i,j,k), cctk_time,
      $                 gxxjunk, gyyjunk, gzzjunk, 
      $                 gxyjunk, gyzjunk, gxzjunk,
      $                 hxxjunk, hyyjunk, hzzjunk, 
@@ -219,6 +247,8 @@ C     (also to tell the models about the conformal_state)
                end do
             end do
          end do
+
+CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 
       else
          call CCTK_WARN(1,'Exact__gauge has been called without doing anything')
