@@ -1,0 +1,7 @@
+# Schedule definitions for thorn IDFileADM
+# $Header$
+
+schedule IDFileADM_ParamCheck at PARAMCHECK
+{
+  LANG: C
+} "Ensure that all ADMBase initial data are either initialised or read from a file"
