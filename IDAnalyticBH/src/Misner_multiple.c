@@ -3,17 +3,22 @@
    @date      
    @author    Carsten Gundlach
    @desc 
-      Set up initial data for multiple Misner black holes
+              Set up initial data for multiple Misner black holes
    @enddesc 
+   @version   $Id$
  @@*/
 
-#include <math.h>
+#include <string.h>
 
 #include "cctk.h"
 #include "cctk_Arguments.h"
 #include "cctk_Parameters.h"
 
 #include "CactusEinstein/Einstein/src/Einstein.h"
+
+static char *rcsid = "$Header$";
+CCTK_FILEVERSION(CactusEinstein_IDAnalyticBH_Misner_multiple_c)
+
 
 #define SQR(a) ((a)*(a))
 
@@ -26,13 +31,9 @@ void Misner_multiple(CCTK_ARGUMENTS);
    @date       
    @author     Carsten Gundlach
    @desc 
-      Set up initial data for multiple Misner black holes
+               Set up initial data for multiple Misner black holes
    @enddesc 
-   @calls     
-   @history 
- 
-   @endhistory 
-
+   @calls      MisnerEvalPsi
 @@*/
 void Misner_multiple(CCTK_ARGUMENTS)
 {
@@ -148,7 +149,7 @@ void Misner_multiple(CCTK_ARGUMENTS)
   {
     for(i = 0; i < npoints; i++)
     {
-      gxx[i] = pow(psi[i], 4);
+      gxx[i] = psi[i] * psi[i] * psi[i] * psi[i];
       gyy[i] = gxx[i];
       gzz[i] = gxx[i];
     }

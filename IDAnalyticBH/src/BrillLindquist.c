@@ -1,19 +1,25 @@
  /*@@
    @file      BrillLindquist.F
-   @date      
-   @author    
-   @desc 
-      Set up initial data for Brill Lindquist black holes
-   @enddesc 
+   @date
+   @author
+   @desc
+              Set up initial data for Brill Lindquist black holes
+   @enddesc
+   @version   $Id$
  @@*/
 
 #include <math.h>
+#include <string.h>
 
 #include "cctk.h"
 #include "cctk_Arguments.h"
 #include "cctk_Parameters.h"
 
 #include "CactusEinstein/Einstein/src/Einstein.h"
+
+static char *rcsid = "$Header$";
+CCTK_FILEVERSION(CactusEinstein_IDAnalyticBH_BrillLindquist_c)
+
 
 #define SQR(a) ((a)*(a))
 
@@ -23,19 +29,12 @@ void BrillLindquist(CCTK_ARGUMENTS);
 
  /*@@
    @routine    BrillLindquist
-   @date       
-   @author     
-   @desc 
-      Set up initial data for Brill Lindquist black holes
-   @enddesc 
-   @calls     
-   @calledby   
-   @history 
- 
-   @endhistory 
-
+   @date
+   @author
+   @desc
+               Set up initial data for Brill Lindquist black holes
+   @enddesc
 @@*/
-
 void BrillLindquist(CCTK_ARGUMENTS)
 {
   DECLARE_CCTK_ARGUMENTS
@@ -47,13 +46,10 @@ void BrillLindquist(CCTK_ARGUMENTS)
   CCTK_REAL tmp1, tmp2, tmp3;
   CCTK_REAL xval, yval, zval;
   CCTK_REAL x_2, y_2, z_2;
-  int i,j,k;
-  int nx,ny,nz;
-  int index;
+  int i, npoints;
 
-  nx = cctk_lsh[0];
-  ny = cctk_lsh[1];
-  nz = cctk_lsh[2];
+
+  npoints = cctk_lsh[0] * cctk_lsh[1] * cctk_lsh[2];
 
   /*     Put parameters into arrays for following calculations
    *     -----------------------------------------------------
@@ -79,84 +75,67 @@ void BrillLindquist(CCTK_ARGUMENTS)
   hole_mass[3] = bl_M_4;
 
 
-  for(k=0; k < nz; k++)
+  if (use_conformal_derivs == 1)
   {
-    for(j=0; j < ny; j++)
+    memset (psix, 0, npoints * sizeof (CCTK_REAL));
+    memset (psiy, 0, npoints * sizeof (CCTK_REAL));
+    memset (psiz, 0, npoints * sizeof (CCTK_REAL));
+    memset (psixx, 0, npoints * sizeof (CCTK_REAL));
+    memset (psixy, 0, npoints * sizeof (CCTK_REAL));
+    memset (psixz, 0, npoints * sizeof (CCTK_REAL));
+    memset (psiyy, 0, npoints * sizeof (CCTK_REAL));
+    memset (psiyz, 0, npoints * sizeof (CCTK_REAL));
+    memset (psizz, 0, npoints * sizeof (CCTK_REAL));
+  }
+
+  for (i = 0; i < npoints; i++)
+  {
+    /*     Initialize to zero and then use +=
+     *     ----------------------------------
+     */
+
+    psi[i] = 1.0;
+
+    x_2 = SQR(x[i]);
+    y_2 = SQR(y[i]);
+    z_2 = SQR(z[i]);
+
+    xval = x[i];
+    yval = y[i];
+    zval = z[i];
+
+    for(n = 0;  n < bl_nbh; n++)
     {
-      for(i=0; i < nx; i++)
+
+      /*     Maple Output
+       *     ------------
+       */
+
+      tmp1 = sqrt(x_2+2.0*xval*hole_x0[n]+SQR(hole_x0[n])
+                 +y_2+2.0*yval*hole_y0[n]+SQR(hole_y0[n])
+                 +z_2+2.0*zval*hole_z0[n]+SQR(hole_z0[n]));
+
+      psi[i] += hole_mass[n]/tmp1*0.5;
+
+      if (use_conformal_derivs == 1)
       {
-        index = CCTK_GFINDEX3D(cctkGH, i,j,k);
+        tmp2 = 1 / (tmp1 * tmp1 * tmp1);
+        tmp3 = 4 * (3.0 / 8.0) * hole_mass[n] * tmp2 / (tmp1 * tmp1);
+        tmp2 *= -0.5 * hole_mass[n];
 
-        /*     Initialize to zero and then use +=
-         *     ----------------------------------
-         */
+        psix[i] +=  tmp2 * (xval+hole_x0[n]);
+        psiy[i] +=  tmp2 * (yval+hole_y0[n]);
+        psiz[i] +=  tmp2 * (zval+hole_z0[n]);
 
-        psi[index] = 1.0;
+        psixx[i] += tmp3 * SQR(xval+hole_x0[n]) + tmp2;
 
+        psixy[i] += tmp3 * (xval+hole_x0[n]) * (yval+hole_y0[n]);
+        psixz[i] += tmp3 * (xval+hole_x0[n]) * (zval+hole_z0[n]);
 
-        if (use_conformal_derivs == 1)
-        {
-          psix[index]  = 0.0;
-          psiy[index]  = 0.0;
-          psiz[index]  = 0.0;
-          psixx[index] = 0.0;
-          psixy[index] = 0.0;
-          psixz[index] = 0.0;
-          psiyy[index] = 0.0;
-          psiyz[index] = 0.0;
-          psizz[index] = 0.0;
-        }
+        psiyy[i] += tmp3 * SQR(yval+hole_y0[n]) + tmp2;
+        psiyz[i] += tmp3 * (yval+hole_y0[n]) * (zval+hole_z0[n]);
 
-        x_2 = SQR(x[index]);
-        y_2 = SQR(y[index]);
-        z_2 = SQR(z[index]);
-
-        xval = x[index];
-        yval = y[index];
-        zval = z[index];
-
-        for(n = 0;  n < bl_nbh; n++)
-        {
-
-          /*     Maple Output
-           *     ------------
-           */
-
-          tmp1 = sqrt(x_2+2.0*xval*hole_x0[n]+SQR(hole_x0[n])
-                     +y_2+2.0*yval*hole_y0[n]+SQR(hole_y0[n])
-                     +z_2+2.0*zval*hole_z0[n]+SQR(hole_z0[n]));
-
-          psi[index] += hole_mass[n]/tmp1/2.0;
-
-          if (use_conformal_derivs == 1)
-          {
-            tmp2 = pow(tmp1, 3);
-
-            psix[index] +=  -hole_mass[n]/tmp2*(2.0*xval+2.0*hole_x0[n])/4.0;
-            psiy[index] +=  -hole_mass[n]/tmp2*(2.0*yval+2.0*hole_y0[n])/4.0;
-            psiz[index] +=  -hole_mass[n]/tmp2*(2.0*zval+2.0*hole_z0[n])/4.0;
-
-            tmp2 = pow(tmp1, 5.0);
-            tmp3 = pow(tmp1, 3.0);
-
-            psixx[index] += 3.0/8.0*hole_mass[n]/tmp2*
-	      SQR(2.0*xval+2.0*hole_x0[n])-hole_mass[n]/tmp3/2.0;
-        
-            psixy[index] += 3.0/8.0*hole_mass[n]/tmp2*
-	      (2.0*xval+2.0*hole_x0[n])*(2.0*yval+2.0*hole_y0[n]);
-            psixz[index] += 3.0/8.0*hole_mass[n]/tmp2*
-	      (2.0*xval+2.0*hole_x0[n])*(2.0*zval+2.0*hole_z0[n]);
-
-            psiyy[index] += 3.0/8.0*hole_mass[n]/tmp2*
-	      SQR(2.0*yval+2.0*hole_y0[n])-hole_mass[n]/tmp3/2.0;
-            psiyz[index] += 3.0/8.0*hole_mass[n]/tmp2*
-	      (2.0*yval+2.0*hole_y0[n])*(2.0*zval+2.0*hole_z0[n]);
-
-            psizz[index] += 3.0/8.0*hole_mass[n]/tmp2*
-	      SQR(2.0*zval+2.0*hole_z0[n])-hole_mass[n]/tmp3/2.0;
-
-          }
-        }
+        psizz[i] += tmp3 * SQR(zval+hole_z0[n]) + tmp2;
       }
     }
   }
@@ -167,25 +146,19 @@ void BrillLindquist(CCTK_ARGUMENTS)
 
   if (use_conformal_derivs == 1)
   {
-    for(k=0; k < nz; k++)
+    for (i = 0; i < npoints; i++)
     {
-      for(j=0; j < ny; j++)
-      {
-        for(i=0; i < nx; i++)
-        {
-          index = CCTK_GFINDEX3D(cctkGH, i,j,k);
-          
-          psix[index]  /= psi[index];
-          psiy[index]  /= psi[index];
-          psiz[index]  /= psi[index];
-          psixx[index] /= psi[index];
-          psixy[index] /= psi[index];
-          psixz[index] /= psi[index];
-          psiyy[index] /= psi[index];
-          psiyz[index] /= psi[index];
-          psizz[index] /= psi[index];
-        }
-      }
+      tmp1 = 1 / psi[i];
+
+      psix[i]  *= tmp1;
+      psiy[i]  *= tmp1;
+      psiz[i]  *= tmp1;
+      psixx[i] *= tmp1;
+      psixy[i] *= tmp1;
+      psixz[i] *= tmp1;
+      psiyy[i] *= tmp1;
+      psiyz[i] *= tmp1;
+      psizz[i] *= tmp1;
     }
   }
 
@@ -195,67 +168,37 @@ void BrillLindquist(CCTK_ARGUMENTS)
 
   if (*conformal_state == CONFORMAL_METRIC)
   {
-    for(k=0; k < nz; k++)
+    for (i = 0; i < npoints; i++)
     {
-      for(j=0; j < ny; j++)
-      {
-        for(i=0; i < nx; i++)
-        {
-          index = CCTK_GFINDEX3D(cctkGH, i,j,k);
-          
-          gxx[index] = 1.0;
-          gyy[index] = 1.0;
-          gzz[index] = 1.0;
-          gxy[index] = 0.0;
-          gxz[index] = 0.0;
-          gyz[index] = 0.0;
-        }
-      }
+      gxx[i] = 1.0;
+      gyy[i] = 1.0;
+      gzz[i] = 1.0;
+      gxy[i] = 0.0;
+      gxz[i] = 0.0;
+      gyz[i] = 0.0;
     }
   }
-  else 
+  else
   {
-    for(k=0; k < nz; k++)
+    for (i = 0; i < npoints; i++)
     {
-      for(j=0; j < ny; j++)
-      {
-        for(i=0; i < nx; i++)
-        {
-          index = CCTK_GFINDEX3D(cctkGH, i,j,k);
-          
-          gxx[index] = pow(psi[index],4);
-          gyy[index] = gxx[index];
-          gzz[index] = gxx[index];
-          gxy[index] = 0.0;
-          gxz[index] = 0.0;
-          gyz[index] = 0.0;
-        }
-      }
+      tmp1 = psi[i] * psi[i];
+      gxx[i] = tmp1 * tmp1;
+      gyy[i] = gxx[i];
+      gzz[i] = gxx[i];
+      gxy[i] = 0.0;
+      gxz[i] = 0.0;
+      gyz[i] = 0.0;
     }
   }
 
   /*     Time-symmetric data
    *     -------------------
    */
-
-  for(k=0; k < nz; k++)
-  {
-    for(j=0; j < ny; j++)
-    {
-      for(i=0; i < nx; i++)
-      {
-        index = CCTK_GFINDEX3D(cctkGH, i,j,k);
-          
-        kxx[index] = 0.0;
-        kyy[index] = 0.0;
-        kzz[index] = 0.0;
-        kxy[index] = 0.0;
-        kxz[index] = 0.0;
-        kyz[index] = 0.0;
-      }
-    }
-  }
-
-  return;
-
+  memset (kxx, 0, npoints * sizeof (CCTK_REAL));
+  memset (kyy, 0, npoints * sizeof (CCTK_REAL));
+  memset (kzz, 0, npoints * sizeof (CCTK_REAL));
+  memset (kxy, 0, npoints * sizeof (CCTK_REAL));
+  memset (kxz, 0, npoints * sizeof (CCTK_REAL));
+  memset (kyz, 0, npoints * sizeof (CCTK_REAL));
 }

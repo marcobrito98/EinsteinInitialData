@@ -2,20 +2,23 @@
    @file      Schwarzschild.c
    @date      Sun Oct 17 10:35:41 1999
    @author    Tom Goodale
-   @desc 
-   C version of Scwhwarzschild lapse routine
-   @enddesc 
+   @desc
+              C version of Scwhwarzschild lapse routine
+   @enddesc
+   @version   $Id$
  @@*/
 
-#include <math.h>
+#include <string.h>
 
 #include "cctk.h"
 #include "cctk_Arguments.h"
 #include "cctk_Parameters.h"
 
-
 /* Need include file from Einstein */
 #include "CactusEinstein/Einstein/src/Einstein.h"
+
+static char *rcsid = "$Header$";
+CCTK_FILEVERSION(CactusEinstein_IDAnalyticBH_Schwarzschild_c)
 
 void Schwarzschild(CCTK_ARGUMENTS);
 
@@ -25,134 +28,81 @@ void Schwarzschild(CCTK_ARGUMENTS)
   DECLARE_CCTK_ARGUMENTS
   DECLARE_CCTK_PARAMETERS
 
-  CCTK_REAL zero,one,two,three;
-  CCTK_REAL tmp;
-  CCTK_REAL r_squared;
+  const CCTK_REAL zero = 0.0, one = 1.0, two = 2.0, three = 3.0;
+  CCTK_REAL tmp, r_squared, r_cubed;
+  int i, npoints;
 
-  int i,j,k;
-  int nx,ny,nz;
-  int index;
 
-  zero = 0.0;
-  one = 1.0;
-  two = 2.0;
-  three = 3.0;
+  npoints = cctk_lsh[0] * cctk_lsh[1] * cctk_lsh[2];
 
-  nx = cctk_lsh[0];
-  ny = cctk_lsh[1];
-  nz = cctk_lsh[2];
-  
   /*     conformal metric flag */
   if(use_conformal == 1)
   {
-  
+
     *conformal_state = CONFORMAL_METRIC;
 
-
-    for(k=0; k < nz; k++)
+    for (i = 0; i < npoints; i++)
     {
-      for(j=0; j < ny; j++)
-      {
-        for(i=0; i < nx; i++)
-        {
-          index = CCTK_GFINDEX3D(cctkGH, i,j,k);
+      /*        Compute conformal factor */
+      psi[i] = ( one + mass/two/r[i]);
 
-          /*        Compute conformal factor */
-          psi[index] = ( one + mass/two/r[index]);
-         
+      /*        derivatives of psi / psi */
+      r_squared = r[i]*r[i];
+      r_cubed   = r[i]*r_squared;
+      tmp = mass/two/r_cubed/psi[i];
+      psix[i] = -x[i]*tmp;
+      psiy[i] = -y[i]*tmp;
+      psiz[i] = -z[i]*tmp;
 
-          /*        derivatives of psi / psi */
+      tmp = mass/two/(r_squared*r_cubed)/psi[i];
+      psixy[i] = three*x[i]*y[i]*tmp;
+      psixz[i] = three*x[i]*z[i]*tmp;
+      psiyz[i] = three*y[i]*z[i]*tmp;
 
-          tmp = mass/two/pow(r[index],3) / psi[index];
-          psix[index] = -x[index]*tmp;
-          psiy[index] = -y[index]*tmp;
-          psiz[index] = -z[index]*tmp;
-         
-          tmp = mass/two/pow(r[index],5)/psi[index];
-          psixy[index] = three*x[index]*y[index]*tmp;
-          psixz[index] = three*x[index]*z[index]*tmp;
-          psiyz[index] = three*y[index]*z[index]*tmp;
+      psixx[i]  = (three*x[i]*x[i] - r_squared)*tmp;
+      psiyy[i]  = (three*y[i]*y[i] - r_squared)*tmp;
+      psizz[i]  = (three*z[i]*z[i] - r_squared)*tmp;
 
-          r_squared = r[index]*r[index];
-          psixx[index]  = (three*x[index]*x[index] - r_squared)*tmp;
-          psiyy[index]  = (three*y[index]*y[index] - r_squared)*tmp;
-          psizz[index]  = (three*z[index]*z[index] - r_squared)*tmp;
-         
-          gxx[index] = one;
-          gyy[index] = one;
-          gzz[index] = one;
-          gxy[index] = zero; 
-          gxz[index] = zero;  
-          gyz[index] = zero;  
-        }
-      }
+      gxx[i] = one;
+      gyy[i] = one;
+      gzz[i] = one;
+      gxy[i] = zero;
+      gxz[i] = zero;
+      gyz[i] = zero;
     }
-  }     
+  }
   else
   {
     *conformal_state = NOCONFORMAL_METRIC;
 
-    for(k=0; k < nz; k++)
+    for (i = 0; i < npoints; i++)
     {
-      for(j=0; j < ny; j++)
-      {
-        for(i=0; i < nx; i++)
-        {
-          index = CCTK_GFINDEX3D(cctkGH, i,j,k);
-
-          gxx[index] = pow(( one + mass/two/r[index]), 4);
-          gyy[index] = gxx[index];
-          gzz[index] = gxx[index];
-          gxy[index] = zero;
-          gxz[index] = zero;
-          gyz[index] = zero;
-        }
-      }
+      r_squared = r[i] * r[i];
+      gxx[i] = one + mass/two/(r_squared * r_squared);
+      gyy[i] = gxx[i];
+      gzz[i] = gxx[i];
+      gxy[i] = zero;
+      gxz[i] = zero;
+      gyz[i] = zero;
     }
   }
 
   /*     If the initial lapse is not one ... */
   if (CCTK_Equals(initial_lapse,"schwarz"))
-  { 
+  {
     CCTK_INFO("Initialise with schwarzschild lapse");
 
-    for(k=0; k < nz; k++)
+    for (i = 0; i < npoints; i++)
     {
-      for(j=0; j < ny; j++)
-      {
-        for(i=0; i < nx; i++)
-        {
-          index = CCTK_GFINDEX3D(cctkGH, i,j,k);
-
-          alp[index] = (2.*r[index] - mass)/(2.*r[index]+mass);
-        }
-      }
+      alp[i] = (2.*r[i] - mass)/(2.*r[i]+mass);
     }
   }
-      
+
   /*     time symmetric initial slice */
-
-  for(k=0; k < nz; k++)
-  {
-    for(j=0; j < ny; j++)
-    {
-      for(i=0; i < nx; i++)
-      {
-        index = CCTK_GFINDEX3D(cctkGH, i,j,k);
-        
-        kxx[index] = zero;
-        kxy[index] = zero;
-        kxz[index] = zero;
-        kyy[index] = zero;
-        kyz[index] = zero;
-        kzz[index] = zero;
-      }
-    }
-  }
-    
-  return;
-
-  
-  
-
+  memset (kxx, 0, npoints * sizeof (CCTK_REAL));
+  memset (kxy, 0, npoints * sizeof (CCTK_REAL));
+  memset (kxz, 0, npoints * sizeof (CCTK_REAL));
+  memset (kyy, 0, npoints * sizeof (CCTK_REAL));
+  memset (kyz, 0, npoints * sizeof (CCTK_REAL));
+  memset (kzz, 0, npoints * sizeof (CCTK_REAL));
 }

@@ -2,18 +2,19 @@
    @file      Misner_standard.c
    @date      March 1997
    @author    Joan Masso
-   @desc 
-      Set up initial data for two Misner black holes
-   @enddesc 
+   @desc
+              Set up initial data for two Misner black holes
+   @enddesc
    @history
    @hdate Sun Oct 17 11:05:48 1999 @hauthor Tom Goodale
    @hdesc Converted to C
    @endhistory
+   @version   $Id$
  @@*/
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <math.h>
+#include <string.h>
+#include <stdlib.h>
 
 #include "cctk.h"
 #include "cctk_Arguments.h"
@@ -21,38 +22,38 @@
 
 #include "CactusEinstein/Einstein/src/Einstein.h"
 
-void Misner_standard(CCTK_ARGUMENTS);
+static char *rcsid = "$Header$";
+CCTK_FILEVERSION(CactusEinstein_IDAnalyticBH_Misner_standard_c)
+
 
 #define SQR(a) ((a)*(a))
 
+void Misner_standard(CCTK_ARGUMENTS);
+
  /*@@
    @routine    Misner_standard
-   @date       
+   @date
    @author     Joan Masso, Ed Seidel
-   @desc 
-            Initialize the metric with a time symmetrical 
+   @desc
+            Initialize the metric with a time symmetrical
             black hole spacetime containing
-            two axially symmetric misner black holes with a 
+            two axially symmetric misner black holes with a
             mass/length parameter mu. The mass is computed.
             The spacetime line element has the form:
                  $$ ds^2 = -dt^2 + \Psi^4 (dx^2+dy^2+dz^2) $$
             and only $\Psi$ differs.
             (Conformal factor from Karen Camarda)
-   @enddesc 
-   @calls     
-   @history 
- 
-   @endhistory 
+   @enddesc
 
    @par      mu
-   @pdesc    Misner parameter. 
+   @pdesc    Misner parameter.
    @ptype    real
-   @pcomment Values less than 1.8 do not really correspond to two 
-            black holes, as there is an initial single event horizon 
+   @pcomment Values less than 1.8 do not really correspond to two
+            black holes, as there is an initial single event horizon
             surrounding the throats. So, with low values of mu we also
             have distorted single black holes.
    @endpar
- 
+
    @par      nmax
    @pdesc    Summation limit for the misner series in the 'twobh' case.
    @ptype    integer
@@ -80,7 +81,7 @@ void Misner_standard(CCTK_ARGUMENTS)
 
 
   /*     Initialize so we can accumulate
-   *     ------------------------------- 
+   *     -------------------------------
    */
   if (use_conformal_derivs)
   {
@@ -99,7 +100,7 @@ void Misner_standard(CCTK_ARGUMENTS)
   coth = csch + nmax + 1;
 
   /*     compute the ADM mass
-   *     -------------------- 
+   *     --------------------
    */
   mass = zero;
   for(n = 1; n <= nmax; n++)
@@ -123,22 +124,22 @@ void Misner_standard(CCTK_ARGUMENTS)
     {
       inv_r1 = one / sqrt(xy_squared+SQR(z[i]+coth[n]));
       inv_r2 = one / sqrt(xy_squared+SQR(z[i]-coth[n]));
-          
+
       psi[i] += csch[n]*(inv_r1 + inv_r2);
-          
+
       if (use_conformal_derivs)
       {
         inv_r1_cubed = inv_r1 * inv_r1 * inv_r1;
         inv_r2_cubed = inv_r2 * inv_r2 * inv_r2;
-        inv_r1_5     = pow(inv_r1, 5);
-        inv_r2_5     = pow(inv_r2, 5);
+        inv_r1_5     = inv_r1 * inv_r1 * inv_r1_cubed;
+        inv_r2_5     = inv_r2 * inv_r2 * inv_r2_cubed;
         psix[i]  +=  -x[i] * (inv_r2_cubed + inv_r1_cubed) * csch[n];
         psiy[i]  +=  -y[i] * (inv_r2_cubed + inv_r1_cubed) * csch[n];
         psiz[i]  +=  (-(z[i]-coth[n])*inv_r2_cubed - (z[i]+coth[n])*inv_r1_cubed) * csch[n];
         psixx[i] +=  (three*x_squared*(inv_r1_5 + inv_r2_5)
                       - inv_r1_cubed - inv_r2_cubed) * csch[n];
         psixy[i] +=  three*x[i]*y[i]*(inv_r1_5 + inv_r2_5) * csch[n];
-        psixz[i] +=  (three*x[i]*(z[i] - coth[n])*inv_r2_5 
+        psixz[i] +=  (three*x[i]*(z[i] - coth[n])*inv_r2_5
                       + three*x[i]*(z[i] + coth[n])*inv_r1_5) * csch[n];
         psiyy[i] +=  (three*y_squared*(inv_r1_5 + inv_r2_5)
                       - inv_r1_cubed - inv_r2_cubed) * csch[n];
@@ -167,15 +168,15 @@ void Misner_standard(CCTK_ARGUMENTS)
       psizz[i] *= inv_psi;
     }
   }
-  
+
   /*     Should initialize lapse to Cadez value if possible
    *     --------------------------------------------------
    */
 
   if (CCTK_Equals(initial_lapse,"cadez"))
-  { 
+  {
     CCTK_INFO("Initialise with cadez lapse");
-    
+
     for(i = 0; i < npoints; i++)
     {
       xy_squared = SQR(x[i]) + SQR(y[i]);
@@ -196,7 +197,7 @@ void Misner_standard(CCTK_ARGUMENTS)
       alp[i] /= psi[i];
     }
   }
-  
+
   /*     Metric depends on conformal state
    *     ---------------------------------
    */
@@ -210,11 +211,11 @@ void Misner_standard(CCTK_ARGUMENTS)
       gzz[i] = one;
     }
   }
-  else 
+  else
   {
     for(i = 0; i < npoints; i++)
     {
-      gxx[i] = pow(psi[i],4);
+      gxx[i] = psi[i] * psi[i] * psi[i] * psi[i];
       gyy[i] = gxx[i];
       gzz[i] = gxx[i];
     }
