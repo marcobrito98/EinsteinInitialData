@@ -9,6 +9,7 @@
  @@*/
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "cctk.h"
 #include "cctk_arguments.h"
