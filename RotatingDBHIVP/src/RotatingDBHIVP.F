@@ -549,7 +549,6 @@ c
       do k = 1,np
          do j = 1,nq
             do i = 2,ne-1
-               eta = etagrd(i)
                detaetapsisph(i,j,k)=(psip(i+1,j,k)-2.*psip(i,j,k)+
      &              psip(i-1,j,k))/deta**2 + sqrt(0.25)*
      &              cosh(0.5*etagrd(i))
