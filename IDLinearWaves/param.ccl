@@ -15,7 +15,7 @@ REAL amplitude "Amplitdude of the wave: both for teuk and plane")
   0: :: "positive amplitude"
 } 0.001
 
-INTEGER mvalue "m value for teukwaves waves: integer from -2 to 2"
+INT mvalue "m value for teukwaves waves: integer from -2 to 2"
 {
   -2:2 :: "implemented : m = -2..2"
 } 0
