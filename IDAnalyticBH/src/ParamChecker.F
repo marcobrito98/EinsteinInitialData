@@ -12,7 +12,7 @@
 #include "declare_arguments.h"
 #include "declare_parameters.h"
 
-#include "../../../packages/CactusEinstein/Einstein/src/Einstein.h"
+#include "CactusEinstein/Einstein/src/Einstein.h"
 
  /*@@
    @routine    ParamChecker
