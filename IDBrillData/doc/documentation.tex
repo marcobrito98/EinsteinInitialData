@@ -32,19 +32,30 @@ solved numerically once the function $q$ has been specified. The
 initial data is also assumed to be time-symmetric, so the momentum
 constraints are trivially satisfied.
 
+% [[ DPR: The code does not use these two different initial_data
+% keywords, but the axisym parameter instead.  It should probably use
+% the two different initial_data values.  I have changed the doc below
+% to correspond with the current code: ]]
+
 The thorn is activated by choosing the CactusEinstein/ADMBase parameter
-``initial\_data'' in one of the following two ways:
+``initial\_data'' to be:
+%in one of the following two ways:
 
 \begin{itemize}
   
-\item initial\_data = ``brilldata'': Axisymmetric Brill wave initial data
-  (but calculated in a cartesian grid!).
+\item initial\_data = ``brilldata'': %Axisymmetric 
+Brill wave initial data
+%  (but calculated in a cartesian grid!).
   
-\item initial\_data = ``brilldata3D'': Brill wave initial data with an
-  angular dependency.
+%\item initial\_data = ``brilldata3D'': Brill wave initial data with an
+%  angular dependency.
 
 \end{itemize}
 
+To choose axisymmetric data, set the parameter {\tt axisym} to true
+(the default).  Note that the data is computed on a cartesian grid in
+any event.  {\tt axisym = "no"} adds an angular dependence factor,
+which is detailed below.
 
 \section{Parameters for the thorn}
 
