@@ -42,16 +42,8 @@ c     Need include file from Einstein
      $     psisph(:,:,:),psip(:,:,:),psipp(:,:,:),detapsisph(:,:,:),
      $     dqpsisph(:,:,:),dphipsisph(:,:,:),detaetapsisph(:,:,:),
      $     detaqpsisph(:,:,:),detaphipsisph(:,:,:),dqqpsisph(:,:,:),
-     $     dqphipsisph(:,:,:),dphiphipsisph(:,:,:),
-     $     psi3d(:,:,:),detapsi3d(:,:,:),dqpsi3d(:,:,:),
-     $     dphipsi3d(:,:,:),detaetapsi3d(:,:,:),detaqpsi3d(:,:,:),
-     $     detaphipsi3d(:,:,:),dqqpsi3d(:,:,:),dqphipsi3d(:,:,:),
-     $     dphiphipsi3d(:,:,:)
+     $     dqphipsisph(:,:,:),dphiphipsisph(:,:,:)
       real*8, allocatable :: etagrd(:),qgrd(:),phigrd(:)
-      real*8, allocatable :: eta(:,:,:),abseta(:,:,:),sign_eta(:,:,:),
-     $     q(:,:,:),phi(:,:,:)
-      real*8, allocatable ::r_BL(:,:,:),Delta(:,:,:),Rho(:,:,:),
-     $     beta_phi(:,:,:)
       real*8 o1,o2,o3,o4,o5,o6,o7,o8,o9,o10,o11,o12,o13,o14,o15,o16,o17,
      $     o18,o19,o20,o21,o22,o23,o24,o25,o26,o27,o28,o29,o30,o31,o32,
      $     o33,o34,o35,o36,o37,o38,o39,o40,o41,o42,o43,o44,o45,o46,o47,
@@ -111,17 +103,8 @@ c
      $     dphipsisph(ne,nq,np),detaetapsisph(ne,nq,np),
      $     detaqpsisph(ne,nq,np),detaphipsisph(ne,nq,np),
      $     dqqpsisph(ne,nq,np),dqphipsisph(ne,nq,np),
-     $     dphiphipsisph(ne,nq,np),
-     $     psi3d(nx,ny,nz),detapsi3d(nx,ny,nz),dqpsi3d(nx,ny,nz),
-     $     dphipsi3d(nx,ny,nz),detaetapsi3d(nx,ny,nz),
-     $     detaqpsi3d(nx,ny,nz),detaphipsi3d(nx,ny,nz),
-     $     dqqpsi3d(nx,ny,nz),dqphipsi3d(nx,ny,nz),
-     $     dphiphipsi3d(nx,ny,nz))
+     $     dphiphipsisph(ne,nq,np))
       allocate(etagrd(ne),qgrd(nq),phigrd(np))
-      allocate(eta(nx,ny,nz),abseta(nx,ny,nz),sign_eta(nx,ny,nz),
-     $     q(nx,ny,nz),phi(nx,ny,nz))
-      allocate(r_BL(nx,ny,nz),Delta(nx,ny,nz),Rho(nx,ny,nz))
-      allocate(beta_phi(nx,ny,nz))
 c     
 c     Initialize some array
 c     
@@ -749,49 +732,14 @@ c     kerr functions
 c     
 c     isotropic coordinate for schwarzschild
 c
-      eta = 0.5d0*dlog(x**2+y**2+z**2) 
-     $     - dlog(sqrt(adm**2-(byJ/adm)**2)/2.)
-
-      r_BL = sqrt(adm**2-(byJ/adm)**2)/2. * exp(eta) * (1 + 
-     $     sqrt((adm + byJ/adm)/(adm - byJ/adm)) * exp(- eta)) * (1 + 
-     $     sqrt((adm - byJ/adm)/(adm + byJ/adm)) * exp(- eta))
-
-      Delta = r_BL**2 -2 * adm * r_BL + (byJ/adm)**2
-      
-      Rho = sqrt(r_BL**2 + (byJ/adm)**2 * cos(q)**2)
-
-c     kerr lapse for cartesian coordinate
-      if (kerr_slice==1) then 
-         write (*,*) "Initial with kerr-like lapse"
-         alp = 1. / (1+2 * adm * r_BL * ((r_BL**2+(byJ/adm)**2)/(
-     $        Delta * Rho**2)))
-      endif
-
-c     kerr shift for cartesian coordinate
-      if (kerr_shift==1) then
-      beta_phi = -2 * adm * r_BL/((r_BL**2+(byJ/adm)**2)**2 - 
-     $     (byJ/adm)**2 * Delta * sin(q)**2)
-
-      betax = -y * beta_phi
-
-      betay = x * beta_phi
-
-      betaz = 0.0D0
-      endif
 
       deallocate(ac,ae,aw,an,as,aq,ab,rhs,Ksq,psisph,psip,psipp,
      $     detapsisph,dqpsisph,dphipsisph,detaetapsisph,detaqpsisph,
-     $     detaphipsisph,dqqpsisph,dqphipsisph,dphiphipsisph,
-     $     psi3d,detapsi3d,dqpsi3d,
-     $     dphipsi3d,detaetapsi3d,detaqpsi3d,
-     $     detaphipsi3d,dqqpsi3d,dqphipsi3d,
-     $     dphiphipsi3d)
+     $     detaphipsisph,dqqpsisph,dqphipsisph,dphiphipsisph)
       deallocate(etagrd,qgrd,phigrd)
-      deallocate(eta,abseta,sign_eta,q,phi)
-      deallocate(r_BL,Delta,Rho,beta_phi)
-
+      
       return
       end
 
-
-
+      
+      
