@@ -205,6 +205,7 @@ F_of_v (CCTK_POINTER_TO_CONST cctkGH,
   values = dvector (0, nvar - 1);
   allocate_derivs (&U, nvar);
 
+  sources=calloc(n1*n2*n3, sizeof(CCTK_REAL));
   if (par_use_sources)
   {
     CCTK_REAL *s_x, *s_y, *s_z;
@@ -212,7 +213,6 @@ F_of_v (CCTK_POINTER_TO_CONST cctkGH,
     s_x    =calloc(n1*n2*n3, sizeof(CCTK_REAL));
     s_y    =calloc(n1*n2*n3, sizeof(CCTK_REAL));
     s_z    =calloc(n1*n2*n3, sizeof(CCTK_REAL));
-    sources=calloc(n1*n2*n3, sizeof(CCTK_REAL));
     for (i = 0; i < n1; i++)
       for (j = 0; j < n2; j++)
         for (k = 0; k < n3; k++)
@@ -320,8 +320,7 @@ F_of_v (CCTK_POINTER_TO_CONST cctkGH,
       }
     }
   }
-  if (par_use_sources)
-    free(sources);
+  free(sources);
   free_dvector (values, 0, nvar - 1);
   free_derivs (&U, nvar);
 }
