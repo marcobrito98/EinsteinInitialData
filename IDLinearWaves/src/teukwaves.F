@@ -81,8 +81,9 @@ c     the parameter variables to the variables of CAC3.0, to allow for
 c     easy portation (wavepulse stays wavepulse btw). (GERD)
       
       amp  = amplitude
-      m   = mvalue
-      wave= wavelength
+      m    = mvalue
+      wave = wavelength
+      ra   = wavecenter
       
 c     to be consistent with Evans & Abrahams, rescale the amplitude
 c     by kappa, because they use that in the packet and
