@@ -12,7 +12,6 @@
 #include "cctk_Parameters.h"
 #include "cctk_Arguments.h"
 
-#include "CactusEinstein/Einstein/src/Einstein.h"
 #include "CactusElliptic/EllBase/src/EllBase.h"
 
       subroutine brilldata(CCTK_ARGUMENTS)
@@ -31,13 +30,13 @@
 
 c     Get indices for metric.
 
-      call CCTK_VarIndex(metpsi_index(1), "einstein::gxx")
-      call CCTK_VarIndex(metpsi_index(2), "einstein::gxy")
-      call CCTK_VarIndex(metpsi_index(3), "einstein::gxz")
-      call CCTK_VarIndex(metpsi_index(4), "einstein::gyy")
-      call CCTK_VarIndex(metpsi_index(5), "einstein::gyz")
-      call CCTK_VarIndex(metpsi_index(6), "einstein::gzz")
-      call CCTK_VarIndex(metpsi_index(7), "einstein::psi")
+      call CCTK_VarIndex(metpsi_index(1), "admbase::gxx")
+      call CCTK_VarIndex(metpsi_index(2), "admbase::gxy")
+      call CCTK_VarIndex(metpsi_index(3), "admbase::gxz")
+      call CCTK_VarIndex(metpsi_index(4), "admbase::gyy")
+      call CCTK_VarIndex(metpsi_index(5), "admbase::gyz")
+      call CCTK_VarIndex(metpsi_index(6), "admbase::gzz")
+      call CCTK_VarIndex(metpsi_index(7), "staticconformal::psi")
 
 c     Get indices for grid functions.
 
@@ -117,4 +116,3 @@ c     Reconstruct physical metric.
 
       return
       end
-

@@ -1,17 +1,14 @@
 # Parameter definitions for thorn IDBrillData
 # $Header$
 
-
-shares:einstein
+shares: ADMBase
 
 EXTENDS KEYWORD initial_data 
 {
    "brilldata"   :: "Brill wave initial data"
 } ""
 
-EXTENDS BOOLEAN use_conformal 
-{
-}
+USES KEYWORD metric_type
 
 
 private:
@@ -142,10 +139,3 @@ INT sor_maxit "Maximum number of iterations"
 {
 0:* :: "Positive"
 } 100
-
-
-
-
-
-
-

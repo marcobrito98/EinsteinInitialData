@@ -12,8 +12,6 @@
 #include "cctk_Parameters.h"
 #include "cctk_Arguments.h"
 
-#include "CactusEinstein/Einstein/src/Einstein.h"
-
       subroutine setupbrilldata2D(CCTK_ARGUMENTS)
 
 c     Set up axisymmetric Brill data for elliptic solve. The elliptic

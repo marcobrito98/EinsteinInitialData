@@ -1,7 +1,7 @@
 
 !DESC "Brill wave initial data (Holz type), amplitude 5, BAM, robin boundaries"
 
-ActiveThorns = "bam_elliptic einstein ellbase ellsor boundary pugh pughslab pughreduce cartgrid3d idbrilldata ioascii iobasic ioutil time"
+ActiveThorns = "bam_elliptic admbase staticconformal ellbase ellsor boundary pugh pughslab pughreduce cartgrid3d idbrilldata ioascii iobasic ioutil time"
 
 # General
 
@@ -17,7 +17,8 @@ cactus::cctk_itlast 				= 0
 
 # Brill wave initial data
 
-Einstein::initial_data 				= "brilldata"
+ADMBase::initial_data 				= "brilldata"
+ADMBase::metric_type				= "static conformal"
 
 # Brill wave parameters
 
@@ -39,7 +40,7 @@ IOBasic::outInfo_every = 1
 IOBasic::outInfo_vars  = "idbrilldata::brillpsi"
 
 IOBasic::outScalar_every = 1
-IOBasic::outScalar_vars = "einstein::gxx einstein::gyy einstein::gzz einstein::gxy idbrilldata::brillpsi"
+IOBasic::outScalar_vars = "admbase::gxx admbase::gyy admbase::gzz admbase::gxy idbrilldata::brillpsi"
 
 IOASCII::out1D_every = 1
-IOASCII::out1D_vars = "einstein::gxx einstein::gyy einstein::gzz einstein::gxy idbrilldata::brillpsi"
+IOASCII::out1D_vars = "admbase::gxx admbase::gyy admbase::gzz admbase::gxy idbrilldata::brillpsi"

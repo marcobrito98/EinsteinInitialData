@@ -141,6 +141,3 @@ c     If desired, multiply with a phi dependent factor.
 
       return
       end
-
-
-

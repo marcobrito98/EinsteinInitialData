@@ -12,8 +12,6 @@
 #include "cctk_Parameters.h"
 #include "cctk_Arguments.h"
 
-#include "CactusEinstein/Einstein/src/Einstein.h"
-
       subroutine finishbrilldata(CCTK_ARGUMENTS)
 
       implicit none
@@ -113,5 +111,3 @@ c     Vanishing extrinsic curvature completes the Cauchy data.
 
       return
       end
-
-
