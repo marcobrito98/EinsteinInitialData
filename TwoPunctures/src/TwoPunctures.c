@@ -30,7 +30,7 @@ void set_initial_guess(CCTK_POINTER_TO_CONST cctkGH,
   int nvar = 1, n1 = npoints_A, n2 = npoints_B, n3 = npoints_phi;
   CCTK_REAL *s_x, *s_y, *s_z;
   CCTK_REAL al, A, Am1, be, B, phi, R, r, X;
-  CCTK_INT i, j, k, i3D, ivar, indx;
+  CCTK_INT i, j, k, i3D, indx;
   derivs U;
   FILE *debug_file;
   CCTK_REAL tmp_r;
@@ -73,11 +73,104 @@ void set_initial_guess(CCTK_POINTER_TO_CONST cctkGH,
     for (i = 0; i < n1; i++)
       for (j = 0; j < n2; j++)
       {
-        fprintf(debug_file, "%.8g %.8g %.8g %.8g %.8g\n",
+        al = Pih * (2 * i + 1) / n1;
+        A = -cos (al);
+        Am1 = A -1.0;
+        be = Pih * (2 * j + 1) / n2;
+        B = -cos (be);
+        phi = 0.0;
+        indx = Index(0,i,j,0,1,n1,n2,n3);
+          U.d0[0] = Am1 * v.d0[indx];        // U
+          U.d1[0] = v.d0[indx] + Am1 * v.d1[indx];        // U_A
+          U.d2[0] = Am1 * v.d2[indx];        // U_B
+          U.d3[0] = Am1 * v.d3[indx];        // U_3
+          U.d11[0] = 2 * v.d1[indx] + Am1 * v.d11[indx];        // U_AA
+          U.d12[0] = v.d2[indx] + Am1 * v.d12[indx];        // U_AB
+          U.d13[0] = v.d3[indx] + Am1 * v.d13[indx];        // U_AB
+          U.d22[0] = Am1 * v.d22[indx];        // U_BB
+          U.d23[0] = Am1 * v.d23[indx];        // U_B3
+          U.d33[0] = Am1 * v.d33[indx];        // U_33
+        // Calculation of (X,R)
+        AB_To_XR (nvar, A, B, &X, &R, U);
+        // Calculation of (x,r)
+        C_To_c (nvar, X, R, &(s_x[indx]), &r, U);
+        // Calculation of (y,z)
+        rx3_To_xyz (nvar, s_x[i3D], r, phi, &(s_y[indx]), &(s_z[indx]), U);
+        fprintf(debug_file,
+                "%.16g %.16g %.16g %.16g %.16g %.16g %.16g %.16g %.16g %.16g "
+                "%.16g %.16g %.16g %.16g %.16g %.16g %.16g %.16g %.16g\n",
                 s_x[indx], s_y[indx],
-                v.d0[indx],
+                A,B,
+                U.d0[0],
                 (-cos(Pih * (2 * i + 1) / n1)-1.0),
-                v.d1[indx]);
+                U.d1[0],
+                U.d2[0],
+                U.d3[0],
+                U.d11[0],
+                U.d22[0],
+                U.d33[0],
+                v.d0[indx],
+                v.d1[indx],
+                v.d2[indx],
+                v.d3[indx],
+                v.d11[indx],
+                v.d22[indx],
+                v.d33[indx]
+                );
+      }
+    fprintf(debug_file, "\n\n");
+    for (int i=n2-10; i<n2; i++)
+    {
+      double d;
+      indx = Index(0,0,i,0,1,n1,n2,n3);
+      d = PunctIntPolAtArbitPosition_(0, nvar, n1, n2, n3, v.d11,
+              s_x[indx], 0.0, 0.0);
+      fprintf(debug_file, "%.16g %.16g\n",
+                s_x[indx], d);
+    }
+    fprintf(debug_file, "\n\n");
+    for (int i=n2-10; i<n2-1; i++)
+    {
+      double d;
+      int ip= Index(0,0,i+1,0,1,n1,n2,n3);
+      indx = Index(0,0,i,0,1,n1,n2,n3);
+      for (int j=-10; j<10; j++)
+      {
+        d = PunctIntPolAtArbitPosition_(0, nvar, n1, n2, n3, v.d11,
+                s_x[indx]+(s_x[ip]-s_x[indx])*j/10,
+                0.0, 0.0);
+        fprintf(debug_file, "%.16g %.16g\n",
+                s_x[indx]+(s_x[ip]-s_x[indx])*j/10, d);
+      }
+    }
+    fprintf(debug_file, "\n\n");
+    for (i = 0; i < n1; i++)
+      for (j = 0; j < n2; j++)
+      {
+        X = 2*(2.0*i/n1-1.0);
+        R = 2*(1.0*j/n2);
+        if (X*X+R*R > 1.0)
+        {
+          C_To_c (nvar, X, R, &(s_x[indx]), &r, U);
+          rx3_To_xyz (nvar, s_x[i3D], r, phi, &(s_y[indx]), &(s_z[indx]), U);
+          *U.d0  = s_x[indx]*s_x[indx];
+          *U.d1  = 2*s_x[indx];
+          *U.d2  = 0.0;
+          *U.d3 = 0.0;
+          *U.d11 = 2.0;
+          *U.d22 = 0.0;
+          *U.d33 = *U.d12 = *U.d23 = *U.d13 = 0.0;
+          C_To_c (nvar, X, R, &(s_x[indx]), &r, U);
+          fprintf(debug_file,
+                  "%.16g %.16g %.16g %.16g %.16g %.16g %.16g %.16g %.16g %.16g %.16g\n",
+                  s_x[indx], r, X, R, U.d0[0],
+                  U.d1[0],
+                  U.d2[0],
+                  U.d3[0],
+                  U.d11[0],
+                  U.d22[0],
+                  U.d33[0]);
+        }
       }
     fclose(debug_file);
   }
@@ -85,6 +178,7 @@ void set_initial_guess(CCTK_POINTER_TO_CONST cctkGH,
   free(s_y);
   free(s_x);
   free_derivs (&U, nvar);
+  //exit(0);
 }
 
 // -------------------------------------------------------------------
