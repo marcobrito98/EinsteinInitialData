@@ -47,7 +47,6 @@ C         q -> q [ 1 + d rho  cos  (n (phi)+phi0 ) / ( 1 + e rho ) ]
 
       logical firstcall
 
-      integer CCTK_Equals
       integer qtype
 
       real*8 brillq,rho,z,phi
