@@ -1,7 +1,6 @@
 #include "cctk.h"
 #include "cctk_Parameters.h"
 #include "cctk_Arguments.h"
-#include "CactusEinstein/Einstein/src/Einstein.h"
 
       subroutine exactcartblendboundary(CCTK_ARGUMENTS)
 
@@ -191,7 +190,7 @@ c     space thing...
                      intone(alp)
                   endif
 
-                  if (doShift.and.(shift_state.ne.SHIFT_INACTIVE)) then 
+                  if (doShift.and.(shift_state.ne.0)) then 
                      intone(betax)
                      intone(betay)
                      intone(betaz)

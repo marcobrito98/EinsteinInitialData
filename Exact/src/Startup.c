@@ -1,7 +1,7 @@
 
 #include "cctk.h"
 #include "cctk_Parameters.h"
-#include "CactusEinstein/Einstein/src/Slicing.h"
+#include "CactusEinstein2/CoordGauge/src/Slicing.h"
 
 void Exact_RegisterSlicing(void) 
 {

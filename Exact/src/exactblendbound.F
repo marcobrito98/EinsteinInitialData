@@ -1,7 +1,6 @@
 #include "cctk.h"
 #include "cctk_Parameters.h"
 #include "cctk_Arguments.h"
-#include "CactusEinstein/Einstein/src/Einstein.h"
 
       subroutine exactblendboundary(CCTK_ARGUMENTS)
 
@@ -138,7 +137,7 @@ c     Grody but effective!
                        exassign(alp)
                     endif
                     
-                    if (doShift.and.(shift_state.ne.SHIFT_INACTIVE)) then 
+                    if (doShift.and.(shift_state.ne.0)) then 
                        exassign(betax)
                        exassign(betay)
                        exassign(betaz)

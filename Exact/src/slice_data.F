@@ -318,7 +318,7 @@ C     Bound and synchronize the 3-metric and extrinsic curvature.
       call linextraponebound(CCTK_ARGUMENTS,gyz)
       call linextraponebound(CCTK_ARGUMENTS,gzz)
 
-      call CCTK_SyncGroup(ierr,cctkGH,"Einstein::metric")
+      call CCTK_SyncGroup(ierr,cctkGH,"admbase::metric")
 
       call linextraponebound(CCTK_ARGUMENTS,kxx)
       call linextraponebound(CCTK_ARGUMENTS,kxy)
@@ -327,7 +327,7 @@ C     Bound and synchronize the 3-metric and extrinsic curvature.
       call linextraponebound(CCTK_ARGUMENTS,kyz)
       call linextraponebound(CCTK_ARGUMENTS,kzz)
 
-      call CCTK_SyncGroup(ierr,cctkGH,"Einstein::curv")
+      call CCTK_SyncGroup(ierr,cctkGH,"admbase::curv")
 
       return
       end
