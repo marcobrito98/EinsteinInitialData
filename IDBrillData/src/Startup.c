@@ -1,6 +1,7 @@
 #include "cctk.h"
 #include "cctk_arguments.h"
 
+#include "Symmetry.h"
 
 void BrilData_InitSymBound(CCTK_CARGUMENTS)
 { 
