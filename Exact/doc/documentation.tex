@@ -80,7 +80,8 @@ parameter:
 	\item[{\tt "fakebinary"}]
 		Thorne's ``fake binary'' approximate spacetime
 	\item[{\tt "multiBH"}]
-		Kastor-Traschen Maximally charged multi BH solutions
+		Majumdar-Papapetrou or Kastor-Traschen
+		maximally-charged multi-BH solutions
 	\end{description}
 \item[Cosmological spacetimes]\mbox{}\\[-\baselineskip]
 	\begin{description}
@@ -395,23 +396,39 @@ black hole's center; the default setting should be ok for most purposes.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Kastor-Traschen Maximally Charged Multi-BH Solutions}
+\subsection{Majumdar-Papapetrou or Kastor-Traschen
+	    Maximally-Charged multi-BH Solutions}
 
-\verb|Exact::exactmodel = "multiBH"| specifies the Kastor-Traschen (KT)
-solution.  The file \verb|KTsol.tex| in the documentation directory
-of this thorn gives more details/references about this solution and
-the realated Majumdar-Papapetrou (MP) solution.
+\verb|Exact::exactmodel = "multiBH"| specifies the Majumdar-Papapetrou
+or Kastor-Traschen solution.  The file \verb|KTsol.tex| in the
+documentation directory of this thorn gives more details/references
+about these solutions.
 
-Basically, the Kastor-Traschen solution is a multi-black-hole solution
-to Einstein's equation with cosmological constant, containing arbitrarily
-many maximally charged ($Q=M$) quasi-Schwarzschild black holes that
-participate in an overall de Sitter expansion or contraction.  (It
-vaguely resembles a cosmological generalization of the Brill-Lindquist
-initial data.)  In the $\Lambda \rightarrow 0$ limit, the KT solutions
-reduce to the MP solution.
+The Majumdar-Papapetrou solution is a multi-black-hole static solution
+to Einstein's equation, containing $N$ maximally charged ($Q=M$) black
+holes.  The balance between gravitational attraction and electrostatic
+repulsion among the black holes causes each to maintain its position
+relative to the others eternally.  (The Majumdar-Papapetrou solution
+somewhat resembles Brill-Lindquist initial data, but with the black
+holes being charged to make the solution static.)  The line element is
+\begin{equation}
+ds^2=-\frac{1}{\Omega^2} dt^2+ \Omega^2(dx^2+dy^2+dz^2)
+\end{equation}
+where
+\begin{align}
+\Omega	&= 1+\sum_{i=1}^N \frac{M_i}{r_i}				\\
+r_i	&= \sqrt{(x-x_i)^2+(y-y_i)^2+(z-z_i)^2}				%%%\\
+\end{align}
+where $M_i$ and $(x_i, y_i, z_i) \in \Re^3$ are the masses and
+locations of the individual black holes.
 
-To write the KT metric, we first choose $(x_i, y_i, z_i) \in \Re^3$,
-$i=1,2,\cdots,N$ for locations of black holes.  Then the line element is
+The Kastor-Traschen solution is a cosmological generalization of the
+Majumdar-Papapetrou solution, where there is a cosmological constant
+and the black holes participate in an overall De~Sitter expansion or
+contraction.  For $\Lambda = 0$ the Kastor-Traschen solution reduces
+to the Majumdar-Papapetrou solution.
+
+The Kastor-Traschen line element is
 \begin{equation}
 ds^2=-\frac{1}{\Omega^2} dt^2+a(t)^2 \Omega^2(dx^2+dy^2+dz^2)
 \end{equation}
@@ -422,10 +439,11 @@ a	&= e^{Ht}							\\
 H	&= \pm \sqrt{\frac{\Lambda}{3}}					\\
 r_i	&= \sqrt{(x-x_i)^2 + (y-y_i)^2 + (z-z_i)^2}			%%%\\
 \end{align}
-We interpret $M_i$ as the mass of the $i{\rm th}$ black hole,
-although we have neither an asymptotically flat region nor event
-horizons available to convert this naive interpretation into a rigorous
-one.
+This solution represents ``incoming'' (``outgoing'') charged BHs
+if $H < 0$ ($H > 0$).  We interpret $M_i$ as the mass of the
+$i{\rm th}$ black hole, although we have neither an asymptotically
+flat region nor event horizons available to convert this naive
+interpretation into a rigorous one.
 
 This thorn supports up to 4~black holes; the physics parameters are
 \begin{align}
