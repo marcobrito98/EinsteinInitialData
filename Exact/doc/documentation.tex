@@ -25,7 +25,8 @@
 
 \begin{document}
 \title{Exact}
-\author{Many Different People}
+\author{Code by many different people,	\\
+	this documentation by Jonathan Thornburg}
 %
 % We want CVS to expand the Id keyword on the next line, but we don't
 % want TeX to go into math mode to typeset the expansion (because that
@@ -74,7 +75,7 @@ parameter:
 	\item[{\tt "KerrSchild"}]
 		Kerr spacetime in Kerr-Schild coordinates
 	\item[{\tt "fakebinary"}]
-		Non-Einstein fake-binary of Thorn~\etal{} (gr-qc/9808024)
+		Thorne's ``fake binary'' approximate spacetime
 	\item[{\tt "multiBH"}]
 		Maximally charged multi BH solutions
 	\end{description}
@@ -83,7 +84,7 @@ parameter:
 	\item[{\tt "BianchiI"}]
 		Bianchi type~I spacetime
 	\item[{\tt "Rob-Wal"}]
-		Robertson-Walker cosmology (near $t=0$,pure radiation case)
+		Robertson-Walker cosmology
 	\item[{\tt "Godel"}]
 		G\"{o}del spacetime%%%
 \footnote{%%%
@@ -124,7 +125,7 @@ types of coordinates:
 
 \subsection{Minkowski spacetime}
 
-\verb|Exact::exactmodel = "Minkowski"| specifies Minkowski coordinates
+\verb|Exact::exactmodel = "Minkowski"| specifies Minkowski spacetime
 in the usual Minkowski coordinates:
 \begin{equation}
 g_{ab} = \left[
@@ -142,9 +143,9 @@ g_{ab} = \left[
 \subsection{Minkowski spacetime in non-trivial spatial coordinates}
 
 \verb|Exact::exactmodel = "flatfunny"| specifies Minkowski spacetime
-with the usual Minkowski time slicing, but in the nontrivial spatial
-coordinates defined as follows:  First take the flat metric in
-polar spherical coordinates, then define a new radial coordinate by
+with the usual Minkowski time slicing, but using the nontrivial spatial
+coordinates defined as follows:  First take the flat metric in polar
+spherical coordinates, then define a new radial coordinate by
 \begin{equation}
 r = r_\new (1 - a \G(r_\new))
 \end{equation}
@@ -160,8 +161,8 @@ Cartesian coordinates.
 
 \verb|Exact::exactmodel = "flatshift"| specifies Minkowski spacetime
 with the nontrivial time slicing and spatial coordinates defined as
-follows:  Take the flat 4-metric in polar spherical coordinates, then
-define a new time coordinate by
+follows:  First take the flat 4-metric in polar spherical coordinates,
+then define a new time coordinate by
 \begin{equation}
 t_\new = t - a \G(r)
 \end{equation}
@@ -191,8 +192,11 @@ in FIXME coordinates.  These have $g_{ij}$ a {\em flat\/} metric.
 
 \subsection{Schwarzschild spacetime in Novikov coordinates}
 
-\verb|Exact::exactmodel = "Novikov"| specifies Schwarzschild spacetime
-in Novikov coordinates, as described in MTW section~31.4 and figure~31.2.
+\verb|Exact::exactmodel = "Novikov"| specifies the unit-mass Schwarzschild
+spacetime in Novikov coordinates, as described in gr-qc/9608050
+(see also MTW section~31.4 and figure~31.2), transformed to the
+usual Cactus $(t,x,y,z)$ Cartesian-topology coordinates.  There are
+no parameters.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -208,9 +212,9 @@ coordinates.  The only physics parameter is
 m = \verb|KerrSchild_m|
 \end{equation}
 (note the slightly counterintuitive name!)
-There is also a parameter \verb|KerrSchild_eps| (again note the name!)
-which is used internally in the code; you can probably ignore it for
-most purposes.
+There is also a numerical parameter \verb|KerrSchild_eps| (again note
+the name!) which is used internally in the code; you can probably ignore
+it for most purposes.
 
 In the Cactus $(t,x,y,z)$ Cartesian-topology coordinates the 4-metric is
 \begin{equation}
@@ -297,7 +301,7 @@ a & = \text{\tt KerrSchild\_a}						\\
 m & = \text{\tt KerrSchild\_m}						\\
 v & = \text{\tt KerrSchild\_boostv}					%%%\\
 \end{align}
-There is also a parameter \verb|KerrSchild_eps| which is used
+There is also a numerical parameter \verb|KerrSchild_eps| which is used
 internally in the code; you can probably ignore it for most purposes.
 
 Kerr-Schild coordinates use the same time slicing (\nb{} non-maximal!)
@@ -334,6 +338,25 @@ is a null vector.
 
 \verb|Exact::exactmodel = "Kerr"| specifies Kerr spacetime in
 FIXME-WHAT-IS-TIME-SLICING coordinates.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Thorne's ``fake binary'' approximate spacetime}
+
+\verb|Exact::exactmodel = "fakebinary"| specifies Thorne's ``fake binary''
+approximate spacetime, as described in gr-qc/9808024.  This is not an
+exact solution of the Einstein equations, but has qualitative features
+designed to mimic those of an inspiralling binary black hole spacetime.
+The physics parameters are
+\begin{align}
+m	& = \text{\tt fakebinary\_m}					\\
+a_0	& = \text{\tt fakebinary\_a0}					\\
+\Omega_0& = \text{\tt fakebinary\_Omega0}				%%%\\
+\end{align}
+as well as the algorithm parameters \verb|fakebinary_atype|,
+\verb|fakebinary_retarded|, and \verb|fakebinary_bround|.
+There is also a numerical parameter \verb|fakebinary_eps| which is used
+internally in the code; you can probably ignore it for most purposes.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -403,15 +426,11 @@ T_{tt} = \frac{1}{6 \pi t^2}
 
 \subsection{Non-Einstein bowl (bag-of-gold) spacetime}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Non-Einstein fake-binary of Thorn et al}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Acknowledgments}
 
-Many, many people have contributed code to this thorn.
+Many different people have contributed code to this thorn.
 Jonathan Thornburg wrote this documentation in May 2002 based on
 the comments in the code, some reverse-engineering, and querying
 various people about how the code works.
