@@ -57,6 +57,7 @@ void Misner_standard(CCTK_ARGUMENTS);
    @pdesc    Summation limit for the misner series in the 'twobh' case.
    @ptype    integer
    @endpar
+   @history
    @hdate Fri Apr 26 10:04:05 2002 @hauthor Tom Goodale
    @hdesc Changed to use new StaticConformal stuff
    @endhistory 

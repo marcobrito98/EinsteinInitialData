@@ -33,6 +33,7 @@ void BrillLindquist(CCTK_ARGUMENTS);
    @desc
                Set up initial data for Brill Lindquist black holes
    @enddesc
+   @history
    @hdate Fri Apr 26 10:04:05 2002 @hauthor Tom Goodale
    @hdesc Changed to use new StaticConformal stuff
    @endhistory 
