@@ -71,7 +71,10 @@ c     Define numbers
 c     Parameters.
 
       rhofudge = brill_rhofudge
-      eps      = brill_eps
+
+c     Epsilon for finite differencing.
+
+      eps = cctk_delta_space(1)
 
 c     Initialize psi.
 
@@ -148,6 +151,7 @@ c              Find M using centered differences over a small
 c              interval.
 
                if (rho1.gt.rhofudge) then
+
                   brillMlinear(i,j,k) = 0.25D0/e2q
      .                 *(brillq(rho1,z1+eps,phi) 
      .                 + brillq(rho1,z1-eps,phi) 
@@ -155,13 +159,16 @@ c              interval.
      .                 + brillq(rho1-eps,z1,phi) 
      .                 - 4.0D0*brillq(rho1,z1,phi))
      .                 / eps**2
+
                else
+
                   brillMlinear(i,j,k) = 0.25D0/e2q
      .                 *(brillq(rho1,z1+eps,phi) 
      .                 + brillq(rho1,z1-eps,phi) 
      .                 + two*brillq(eps,z1,phi) 
      .                 - two*brillq(rho1,z1,phi))
      .                 / eps**2
+
                end if
 
 c              Here I assume that for very small rho, the
