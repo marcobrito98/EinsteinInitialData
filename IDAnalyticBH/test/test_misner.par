@@ -1,0 +1,34 @@
+!DESC "1+log sliced Misner black holes, ADM, double leapfrog"
+
+#Required thorns
+ActiveThorns = "Einstein CartGrid3D pugh ADM IDanalyticBH IOASCII IOUtil iobasic"
+
+# GENERAL 
+
+einstein::evolution_system = "ADM"     
+ 
+driver::global_nx          = 20     
+driver::global_ny          = 20     
+driver::global_nz          = 20     
+
+grid::type                 = "byspacing"
+grid::dxyz                 =  0.8 
+grid::domain               = "full"
+
+einstein::dtfac            =  0.25   
+einstein::slicing          = "1+log"
+einstein::initial_data     = "misner_bh"
+
+idanalyticbh::mu           = 1.2
+
+cactus::cctk_itlast        = 10      
+
+adm::bound                 = "flat"      
+
+IO::outdir           = "test_misner"
+IOBasic::outInfo_every   = 1
+IOBasic::outInfo_vars  = "einstein::gxx einstein::kxx"
+IOBasic::outScalar_every = 2
+IOBasic::outScalar_vars  = "einstein::grr einstein::trk"
+
+##################################################################
