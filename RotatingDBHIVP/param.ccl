@@ -2,12 +2,12 @@
 # $Header$
 shares:einstein
 
-EXTENDS KEYWORD initial_lapse ""
+EXTENDS KEYWORD initial_lapse 
 {
   "schwarz" :: "Set lapse to Schwarzschild"
 }
 
-EXTENDS KEYWORD initial_data ""
+EXTENDS KEYWORD initial_data 
 {
   "rotatingdbh" :: "Non-Aix BH + Brill Wave IVP"
 }
