@@ -73,8 +73,7 @@ C     Spherical auxiliary coordinate r and angle theta in BH rest frame.
       r02 = 0.5d0 * (rho02 - a**2) 
      $     + sqrt(0.25d0 * (rho02 - a**2)**2 + a**2 * z0**2)
       if (r02 .lt. eps) then
-         call CCTK_WARN(R02_TOO_SMALL_WARN_LEVEL,
-     $        'Kerr/Kerr-Schild: r02 is too small at relative position')
+         call CCTK_WARN(R02_TOO_SMALL_WARN_LEVEL,'Kerr/Kerr-Schild: r02 is too small at relative position')
 
          write(warn_buffer, '(a,f8.3, a,f8.3, a,f8.3)')
      $        '                  x0=',x0, ' y0=',y0, ' z0=',z0
