@@ -1,0 +1,47 @@
+
+!DESC "Brill wave initial data (Holz type), amplitude 5, sor, robin boundaries"
+
+ActiveThorns = "iobasic ellbase ellsor idbrilldata pugh pughreduce einstein cartgrid3d ioutil ioascii"
+
+# General
+
+driver::global_nx 				= 32     
+driver::global_ny 				= 32     
+driver::global_nz 				= 32     
+
+grid::type 					= "byspacing"
+grid::dxyz 					= 0.2
+grid::domain 					= "octant" 
+
+cactus::cctk_itlast 				= 0
+
+# Brill wave initial data
+
+Einstein::initial_data 				= "brilldata"
+
+# Brill wave parameters
+
+idbrilldata::brill_q 				= 2
+idbrilldata::brill_a 				= 5.0
+
+# Elliptic solver.
+
+idbrilldata::brill_solver 			= "sor"
+idbrilldata::brill_thresh			= 0.001
+
+ellsor::maxit					= 1000
+ellsor::sor_bound				= "robin"
+
+# Output.
+
+IO::outdir = "test_brilldata_1"
+
+IOBasic::outInfo_every = 1
+IOBasic::outInfo_vars  = "idbrilldata::brillpsi"
+
+IOBasic::outScalar_every = 1
+IOBasic::outScalar_vars = "einstein::gxx einstein::gyy einstein::gzz einstein::gxy idbrilldata::brillpsi"
+
+IOASCII::out1D_every = 1
+IOASCII::out1D_vars = "einstein::gxx einstein::gyy einstein::gzz einstein::gxy idbrilldata::brillpsi"
+
