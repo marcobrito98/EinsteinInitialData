@@ -56,6 +56,15 @@ Here is a (incomplete) list of authors and their wishes:
 
 ----------------------------------------
 
+Many of the individual metrics (you can find them by grepping in the
+   header comments in the  src/metrics/  directory) are
+   copyright (C) 2000-2003 by Dumitru "Mitica" Vulcanov <vulcan@aei.mpg.de>
+
+This code is under the standard Cactus "GPL with exceptions for
+proprietory thorns" license.
+
+----------------------------------------
+
 The new code added in the June 2002 revisions to this thorn
    is copyright (C) 2001-2002 by Jonathan Thornburg <jthorn@aei.mpg.de>
 Minkowski_conf_wave and the conformal factor code added in January 2003
