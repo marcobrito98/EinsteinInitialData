@@ -1,6 +1,6 @@
 #include "cctk.h"
-#include "declare_arguments.h"
-#include "declare_parameters.h"
+#include "cctk_arguments.h"
+#include "cctk_parameters.h"
 
 c Need include file from Einstein
 #include "CactusEinstein/Einstein/src/Einstein.h"
@@ -10,7 +10,7 @@ c Need include file from Einstein
       implicit none
 
       DECLARE_CCTK_FARGUMENTS
-      DECLARE_PARAMETERS
+      DECLARE_CCTK_PARAMETERS
 
       CCTK_REAL zero,one,two,three
 
