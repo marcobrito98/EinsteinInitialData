@@ -10,4 +10,8 @@ Thorn Maintainer(s) : Marcus Ansorg <marcus.ansorg@aei.mpg.de>
 Purpose of the thorn:
 
 Create initial for two puncture black holes using a single domain
-spectral method.
+spectral method.  This method is described in
+
+Marcus Ansorg, Bernd Brügmann, Wolfgang Tichy: A single-domain
+spectral method for black hole puncture data, gr-qc/0404056
+
