@@ -421,9 +421,6 @@ Newton (CCTK_POINTER_TO_CONST cctkGH,
   allocate_derivs (&u, ntotal);
 
 /*         TestRelax(nvar, n1, n2, n3, v, dv.d0); */
-  for (j = 0; j < ntotal; j++)
-    v.d0[j] = 0;
-
   it = 0;
   dmax = 1;
   while (dmax > tol && it < itmax)
@@ -455,6 +452,14 @@ Newton (CCTK_POINTER_TO_CONST cctkGH,
       }
     }
     it += 1;
+  }
+  if (itmax==0)
+  {
+      F_of_v (cctkGH, nvar, n1, n2, n3, v, F, u);
+      dmax = -1;
+      for (j = 0; j < ntotal; j++)
+        if (fabs (F[j]) > dmax)
+          dmax = fabs (F[j]);
   }
   printf ("Newton: it=%d \t |F|=%e \n", it, dmax);
   fflush(stdout);

@@ -22,6 +22,75 @@ static inline double pow4 (const double x)
   return x*x*x*x;
 }
 
+void set_initial_guess(CCTK_POINTER_TO_CONST cctkGH,
+                       derivs v)
+{
+  DECLARE_CCTK_PARAMETERS;
+
+  int nvar = 1, n1 = npoints_A, n2 = npoints_B, n3 = npoints_phi;
+  CCTK_REAL *s_x, *s_y, *s_z;
+  CCTK_REAL al, A, Am1, be, B, phi, R, r, X;
+  CCTK_INT i, j, k, i3D, ivar, indx;
+  derivs U;
+  FILE *debug_file;
+  CCTK_REAL tmp_r;
+
+  s_x    =calloc(n1*n2*n3, sizeof(CCTK_REAL));
+  s_y    =calloc(n1*n2*n3, sizeof(CCTK_REAL));
+  s_z    =calloc(n1*n2*n3, sizeof(CCTK_REAL));
+  allocate_derivs (&U, nvar);
+  for (i = 0; i < n1; i++)
+    for (j = 0; j < n2; j++)
+      for (k = 0; k < n3; k++)
+      {
+        i3D = Index(0,i,j,k,1,n1,n2,n3);
+
+        al = Pih * (2 * i + 1) / n1;
+        A = -cos (al);
+        be = Pih * (2 * j + 1) / n2;
+        B = -cos (be);
+        phi = 2. * Pi * k / n3;
+
+        // Calculation of (X,R)
+        AB_To_XR (nvar, A, B, &X, &R, U);
+        // Calculation of (x,r)
+        C_To_c (nvar, X, R, &(s_x[i3D]), &r, U);
+        // Calculation of (y,z)
+        rx3_To_xyz (nvar, s_x[i3D], r, phi, &(s_y[i3D]), &(s_z[i3D]), U);
+      }
+  Set_Initial_Guess_for_u(cctkGH, n1*n2*n3, v.d0, s_x, s_y, s_z);
+  
+  if (do_initial_debug_output)
+    debug_file=fopen("initial.dat", "w");
+  for (i = 0; i < n1; i++)
+    for (j = 0; j < n2; j++)
+    {
+      for (k = 0; k < n3; k++)
+      {
+        indx=Index(0,i,j,k,1,n1,n2,n3);
+        tmp_r= s_x[indx]*s_x[indx]+
+               s_y[indx]*s_y[indx]+
+               s_z[indx]*s_z[indx];
+        v.d0[indx]/=-tmp_r/((sqrt(tmp_r)+10)*(sqrt(tmp_r)+10))+1;
+      }
+      indx=Index(0,i,j,0,1,n1,n2,n3);
+      if (do_initial_debug_output)
+      {
+        fprintf(debug_file, "%.8g %.8g %.8g %.8g %.8g\n", s_x[indx], s_y[indx],
+                v.d0[indx],
+                v.d0[indx]*(-cos(Pih * (2 * i + 1) / n1)-1.0),
+                (-cos(Pih * (2 * i + 1) / n1)-1.0));
+      }
+    }
+  if (do_initial_debug_output)
+    fclose(debug_file);
+  Derivatives_AB3 (nvar, n1, n2, n3, v);
+  free(s_z);
+  free(s_y);
+  free(s_x);
+  free_derivs (&U, nvar);
+}
+
 // -------------------------------------------------------------------
 void
 TwoPunctures (CCTK_ARGUMENTS)
@@ -48,6 +117,16 @@ TwoPunctures (CCTK_ARGUMENTS)
     allocate_derivs (&v, ntotal);
 
     CCTK_INFO ("Solving puncture equation");
+    /* initialise to 0 */
+    for (j = 0; j < ntotal; j++)
+      v.d0[j] = 0.0;
+    /* call for external initial guess */
+    if (use_external_initial_guess)
+    {
+      set_initial_guess(cctkGH, v);
+      F_of_v (cctkGH, nvar, n1, n2, n3, v, F, u);
+    }
+
     Newton (cctkGH, nvar, n1, n2, n3, v, Newton_tol, Newton_maxit);
 
     F_of_v (cctkGH, nvar, n1, n2, n3, v, F, u);
@@ -235,6 +314,16 @@ TwoPunctures (CCTK_ARGUMENTS)
 
       }
     }
+  }
+
+  if (use_sources && rescale_sources)
+  {
+    Rescale_Sources(cctkGH,
+                    cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2],
+                    x, y, z,
+                    psi,
+                    gxx, gyy, gzz,
+                    gxy, gxz, gyz);
   }
 
   if (0) {
