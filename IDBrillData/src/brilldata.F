@@ -4,6 +4,7 @@
 #include "cctk_Arguments.h"
 
 #include "CactusEinstein/Einstein/src/Einstein.h"
+#include "CactusElliptic/EllBase/src/EllBase.h"
 
       subroutine brilldata(CCTK_FARGUMENTS)
 
@@ -13,11 +14,27 @@
       DECLARE_CCTK_PARAMETERS
       DECLARE_CCTK_FUNCTIONS
 
-      integer Mlin_index,Nsrc_index,field_index
-      integer metpsi_index(7)
+      integer ipsi,iMcoeff,iNcoeff
       integer ierr
 
       CCTK_REAL AbsTol(3),RelTol(3)
+
+c     Get indices for grid functions.
+
+      call CCTK_VarIndex(ipsi   , "idbrilldata::brillpsi")
+      if (ipsi .lt. 0) then
+	call CCTK_WARN(0,"Grid variable index for iphi not found")
+      end if
+
+      call CCTK_VarIndex(iMcoeff, "idbrilldata::brillMlinear")
+      if (iMcoeff .lt. 0) then
+	call CCTK_WARN(0,"Grid variable index for Mcoeff not found")
+      end if
+
+      call CCTK_VarIndex(iNcoeff, "idbrilldata::brillNsource")
+      if (iNcoeff .lt. 0) then
+	call CCTK_WARN(0,"Grid variable index for Ncoeff not found")
+      end if
 
 c     Set up background metric and coefficients for linear solve.
 
@@ -27,64 +44,58 @@ c     Set up background metric and coefficients for linear solve.
          call setupbrilldata3D(CCTK_FARGUMENTS)
       end if
 
-c     Call the Linear Elliptic solver interface to find
-c     conformal factor.  First some preliminaries.
-
-      call CCTK_VarIndex(metpsi_index(1),"einstein::gxx")
-      call CCTK_VarIndex(metpsi_index(2),"einstein::gxy")
-      call CCTK_VarIndex(metpsi_index(3),"einstein::gxz")
-      call CCTK_VarIndex(metpsi_index(4),"einstein::gyy")
-      call CCTK_VarIndex(metpsi_index(5),"einstein::gyz")
-      call CCTK_VarIndex(metpsi_index(6),"einstein::gzz")
-      call CCTK_VarIndex(metpsi_index(7),"einstein::psi")
-
-      call CCTK_VarIndex(field_index,"IDBrillData::brillpsi")
-      call CCTK_VarIndex(Mlin_index, "IDBrillData::Mlinear")
-      call CCTK_VarIndex(Nsrc_index, "IDBrillData::Nsource")
+c     Tolerances for elliptic solve.
 
       AbsTol(1)= brill_thresh
-      AbsTol(2)= -1
-      AbsTol(3)= -1
+      AbsTol(2)= brill_thresh
+      AbsTol(3)= brill_thresh
  
       RelTol(1)= -1
       RelTol(2)= -1
       RelTol(3)= -1
 
-c     Boundaries.
-
-      if (CCTK_EQUALS(brill_bound,"const")) then
-         call Ell_SetRealKey(ierr,brill_const_v0,
-     .   "EllLinConfMetric::Bnd::Const::V0")
-      end if
-
-      if (CCTK_EQUALS(brill_bound,"robin")) then
-         call Ell_SetIntKey(ierr,brill_robin_falloff,
-     .   "EllLinConfMetric::Bnd::Robin::falloff")
-         call Ell_SetRealKey(ierr,brill_robin_inf,
-     .   "EllLinConfMetric::Bnd::Robin::inf")
-      end if
-
 c     Elliptic solver.
 
-      if (CCTK_EQUALS(brill_solver,"sor")) then
-         call Ell_LinConfMetricSolver(ierr,cctkGH,metpsi_index,
-     .   field_index,Mlin_index,Nsrc_index,AbsTol,RelTol,"sor")
+      if (axisym.eq.1) then
+
+         call Ell_SetRealKey(ierr, 1.0d0, "EllLinFlat::Bnd::Robin::inf")
+         call Ell_SetIntKey (ierr, 1,     "EllLinFlat::Bnd::Robin::falloff")
+
+         if (CCTK_EQUALS(brill_solver,"sor")) then
+            call Ell_LinFlatSolver(ierr,cctkGH,ipsi,
+     .      iMcoeff,iNcoeff,AbsTol,RelTol,"sor")
+         end if
+
+         if (CCTK_EQUALS(brill_solver,"petsc")) then
+            call Ell_LinFlatSolver(ierr,cctkGH,ipsi,
+     .      iMcoeff,iNcoeff,AbsTol,RelTol,"petsc")
+         end if
+
+         if (CCTK_EQUALS(brill_solver,"bam")) then
+            call Ell_LinFlatSolver(ierr,cctkGH,ipsi,
+     .      iMcoeff,iNcoeff,AbsTol,RelTol,"bam")
+         end if
+
+      else
+
       end if
 
-      if (CCTK_EQUALS(brill_solver,"petsc")) then
-         call Ell_LinConfMetricSolver(ierr,cctkGH,metpsi_index,
-     .   field_index,Mlin_index,Nsrc_index,AbsTol,RelTol,"petsc")
-      end if
+c     Check for errors.
 
-      if (CCTK_EQUALS(brill_solver,"bam")) then
-         call Ell_LinConfMetricSolver(ierr,cctkGH,metpsi_index,
-     .   field_index,Mlin_index,Nsrc_index,AbsTol,RelTol,"bam")
+      if (ierr .eq. ELL_SUCCESS) then
+        call CCTK_INFO("Leaving elliptic solver: solve successful")
+      else if (ierr .eq. ELL_NOCONVERGENCE) then
+	call CCTK_INFO("Leaving elliptic solver: solver failed to converge")
+      else if (ierr .eq. ELL_NOSOLVER) then
+	call CCTK_INFO("Elliptic solver not found")
+      else 
+        call CCTK_INFO("Leaving elliptic solver: solve failed")	
       end if
 
 c     Synchronization and symmetry boundaries.
 
-      call CCTK_SyncGroup(cctkGH,"IDBrillData::brillconf")
-      call CartSymGN(ierr,cctkGH,"IDBrillData::brillconf")
+      call CCTK_SyncGroup(cctkGH,"idbrilldata::brillconf")
+      call CartSymGN(ierr,cctkGH,"idbrilldata::brillconf")
 
 c     Reconstruct physical metric.
 

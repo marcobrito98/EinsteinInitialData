@@ -1,7 +1,9 @@
+
 #include "cctk.h" 
 #include "cctk_Parameters.h"
 #include "cctk_Arguments.h"
-#include "../../../CactusEinstein/Einstein/src/Einstein.h"
+
+#include "CactusEinstein/Einstein/src/Einstein.h"
 
       subroutine setupbrilldata2D(CCTK_FARGUMENTS)
 
@@ -53,14 +55,9 @@ C     Initialize psi.
 
       brillpsi = one
 
-C     Set up flat metric for the elliptic solve.
-C     [Delta(g) + Mlinear] psi = Nsource.
+C     Initialize metric.
 
       psi = one
-
-      psix = zero
-      psiy = zero
-      psiz = zero
 
       gxx = one
       gyy = one
@@ -87,7 +84,7 @@ C              with a small negative rho, but that should be ok as long as
 C              brillq is even in rho - physically it must be, or the data
 C              will not be regular on the axis.
 
-               Mlinear(i,j,k) = - 0.25d0 
+               brillMlinear(i,j,k) = - 0.25d0 
      $              *(brillq(rho1,z1+eps,zero) 
      $              + brillq(rho1,z1-eps,zero) 
      $              + brillq(rho1+eps,z1,zero) 
@@ -100,7 +97,7 @@ C              will not be regular on the axis.
 
 C     Set coefficient Nsource = 0.
 
-      Nsource = zero
+      brillNsource = zero
 
       return
       end
