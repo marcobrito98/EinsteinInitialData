@@ -1,0 +1,7 @@
+"Parameter file test_rdbh.par
+"Created Sep 15 2003 14:58:29
+"x-label time
+"y-label ADMCONSTRAINTS::ham
+"ham v time
+0.0000000000000	0.0063887644591
+0.0250000000000	0.0093121075196
