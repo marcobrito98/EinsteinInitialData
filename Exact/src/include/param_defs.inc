@@ -1,4 +1,4 @@
-c decoded_exact_model.inc -- integer constants for decoded_exact_model
+c param_defs.inc -- integer constants for decoded_exact_model
 c $Header$
 
 c
