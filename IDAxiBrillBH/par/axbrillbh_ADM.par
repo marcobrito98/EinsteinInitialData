@@ -3,7 +3,7 @@
 ######################################################################
 
 #Required thorns
-ActiveThorns = "time ADMconstraints pugh cartgrid3d einstein ADM AxiBrillBHIVP ioascii ioutil"
+ActiveThorns = "time ADMconstraints pugh pughreduce pughslab cartgrid3d einstein ADM AxiBrillBHIVP ioascii ioutil"
 
 pugh::enable_all_storage = "yes"
 
