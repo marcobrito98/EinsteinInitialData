@@ -151,7 +151,7 @@ KEYWORD overwrite_boundary "Overwrite g and K on the boundary"
 ##### exact_model ##############################################################
 ################################################################################
 
-private:
+restricted:
 
 #
 # see the file  doc/how_to_add_a_new_model  for instructions on adding
