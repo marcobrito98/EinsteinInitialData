@@ -17,13 +17,13 @@ cactus::cctk_itlast 				= 0
 
 # Brill wave initial data
 
-ADMBase::initial_data 				= "brilldata"
+ADMBase::initial_data 				= "brilldata2D"
 ADMBase::metric_type				= "physical"
 
 # Brill wave parameters
 
-idbrilldata::brill_q 				= 2
-idbrilldata::brill_a 				= 5.0
+idbrilldata::q_function 			= "gundlach"	
+idbrilldata::gundlach_a 			= 5.0
 
 # Elliptic solver.
 

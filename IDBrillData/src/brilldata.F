@@ -46,20 +46,31 @@ c     Get indices for grid functions.
 
       call CCTK_VarIndex(iMcoeff,"idbrilldata::brillMlinear")
       if (iMcoeff.lt.0) then
-	call CCTK_WARN(0,"Grid variable index for Mcoeff not found")
+	call CCTK_WARN(0,"Grid variable index for brillMlinear not found")
       end if
 
       call CCTK_VarIndex(iNcoeff,"idbrilldata::brillNsource")
       if (iNcoeff.lt.0) then
-	call CCTK_WARN(0,"Grid variable index for Ncoeff not found")
+	call CCTK_WARN(0,"Grid variable index for brillNsource not found")
       end if
 
 c     Set up background metric and coefficients for linear solve.
 
-      if (axisym.eq.1) then
+      if (CCTK_EQUALS(initial_data,"brilldata2D")) then
          call setupbrilldata2D(CCTK_ARGUMENTS)
       else
          call setupbrilldata3D(CCTK_ARGUMENTS)
+      end if
+
+      if (output_coeffs .eq. 1) then
+         call CCTK_OutputVarAs(ierr,cctkGH,"IDBrillData::brillMlinear","Debug_brillMlinear")
+         call CCTK_OutputVarAs(ierr,cctkGH,"IDBrillData::brillNsource","Debug_brillNsource")
+         call CCTK_OutputVarAs(ierr,cctkGH,"ADMBase::gxx","Debug_gxx")
+         call CCTK_OutputVarAs(ierr,cctkGH,"ADMBase::gxy","Debug_gxy")
+         call CCTK_OutputVarAs(ierr,cctkGH,"ADMBase::gxz","Debug_gxz")
+         call CCTK_OutputVarAs(ierr,cctkGH,"ADMBase::gyy","Debug_gyy")
+         call CCTK_OutputVarAs(ierr,cctkGH,"ADMBase::gyz","Debug_gyz")
+         call CCTK_OutputVarAs(ierr,cctkGH,"ADMBase::gzz","Debug_gzz")
       end if
 
 c     Tolerances for elliptic solve.
@@ -74,14 +85,17 @@ c     Tolerances for elliptic solve.
 
 c     Boundaries.
 
-      call Ell_SetStrKey(ierr,"yes","EllLinConfMetric::Bnd::Robin")
-      call Ell_SetRealKey(ierr,1.0D0,"EllLinConfMetric::Bnd::Robin::inf")
-      call Ell_SetIntKey(ierr,1,"EllLinConfMetric::Bnd::Robin::falloff")
+      call Ell_SetStrKey(ierr,"yes","EllLinMetric::Bnd::Robin")
+      call Ell_SetRealKey(ierr,1.0D0,"EllLinMetric::Bnd::Robin::inf")
+      call Ell_SetIntKey(ierr,1,"EllLinMetric::Bnd::Robin::falloff")
 
-c     Elliptic solver.
+c     Elliptic solver 
+
+c     Just in case some solvers do not use the standard interface
+      conformal_state = 0
 
       if (CCTK_EQUALS(brill_solver,"sor")) then
-         call Ell_SetIntKey(ierr,sor_maxit,"Ell::SORmaxit");
+         call Ell_SetIntKey(ierr,sor_maxit,"Ell::SORmaxit")
          call Ell_LinMetricSolver(ierr,cctkGH, 
      .   metric_index,ipsi,iMcoeff,iNcoeff,AbsTol,RelTol,"sor")
       else if (CCTK_EQUALS(brill_solver,"petsc")) then

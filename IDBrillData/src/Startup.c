@@ -18,7 +18,9 @@ void BrillData_InitSymBound(CCTK_ARGUMENTS)
   sym[1] = 1;
   sym[2] = 1;
   
-  SetCartSymVN(cctkGH, sym,"IDBrillData::brillpsi");
+  SetCartSymVN(cctkGH,sym,"IDBrillData::brillpsi");
+  SetCartSymVN(cctkGH,sym,"IDBrillData::brillMlinear");
+  SetCartSymVN(cctkGH,sym,"IDBrillData::brillNsource");
 
   return;
 } 
