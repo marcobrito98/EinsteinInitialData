@@ -125,7 +125,77 @@ C     Call the corresponding routine.
      $        gutt, gutx, guty, gutz, 
      $        guxx, guyy, guzz, guxy, guyz, guxz)
 
+       
+      elseif (CCTK_Equals(exactmodel,"bianchiI").eq.1) then
+
+         call bianchiI(
+     $        x, y, z, t,
+     $        gdtt, gdtx, gdty, gdtz, 
+     $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
+     $        gutt, gutx, guty, gutz, 
+     $        guxx, guyy, guzz, guxy, guyz, guxz)
+
+      elseif (CCTK_Equals(exactmodel,"rob-wal").eq.1) then
+
+         call rob_wal(
+     $        x, y, z, t,
+     $        gdtt, gdtx, gdty, gdtz, 
+     $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
+     $        gutt, gutx, guty, gutz, 
+     $        guxx, guyy, guzz, guxy, guyz, guxz)
+
+
+      elseif (CCTK_Equals(exactmodel,"godel").eq.1) then
+
+         call godel(
+     $        x, y, z, t,
+     $        gdtt, gdtx, gdty, gdtz, 
+     $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
+     $        gutt, gutx, guty, gutz, 
+     $        guxx, guyy, guzz, guxy, guyz, guxz)
+
+
+      elseif (CCTK_Equals(exactmodel,"kerr").eq.1) then
+
+         call kerr(
+     $        x, y, z, t,
+     $        gdtt, gdtx, gdty, gdtz, 
+     $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
+     $        gutt, gutx, guty, gutz, 
+     $        guxx, guyy, guzz, guxy, guyz, guxz)
+
+      elseif (CCTK_Equals(exactmodel,"desitter").eq.1) then
+
+         call desitter(
+     $        x, y, z, t,
+     $        gdtt, gdtx, gdty, gdtz, 
+     $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
+     $        gutt, gutx, guty, gutz, 
+     $        guxx, guyy, guzz, guxy, guyz, guxz)
+
+
+      elseif (CCTK_Equals(exactmodel,"kasner").eq.1) then
+
+         call kasner(
+     $        x, y, z, t,
+     $        gdtt, gdtx, gdty, gdtz, 
+     $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
+     $        gutt, gutx, guty, gutz, 
+     $        guxx, guyy, guzz, guxy, guyz, guxz)
+
+
+      elseif (CCTK_Equals(exactmodel,"milne").eq.1) then
+
+         call milne(
+     $        x, y, z, t,
+     $        gdtt, gdtx, gdty, gdtz, 
+     $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
+     $        gutt, gutx, guty, gutz, 
+     $        guxx, guyy, guzz, guxy, guyz, guxz)
+
+
       else
+
 
          call CCTK_WARN(0,"Unknown value of parameter exactmodel")
 
