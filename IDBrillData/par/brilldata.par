@@ -27,13 +27,13 @@ ADMBase::metric_type				= "physical"
 
 # Brill wave parameters
 
-idbrilldata::brill_q 				= 2
-idbrilldata::brill_a 				= 1.0
+idbrilldata::q_function				= "gundlach"
+idbrilldata::gundlach_a				= 1.0
 
 # Elliptic solver.
 
-idbrilldata::brill_solver 			= "sor"
-idbrilldata::brill_thresh			= 0.001
+idbrilldata::solver	 			= "sor"
+idbrilldata::thresh				= 0.001
 
 idbrilldata::sor_maxit				= 1000
 
