@@ -48,14 +48,14 @@ c Using macro definitions from Einstein
       DECLARE_PARAMETERS
       
       INTEGER iin,iout
-      REAL pi
-      REAL ra,the,phi
-      REAL wave,wavep
-      REAL kx,ky,kz,w
-      REAL kxp,kyp,kzp,wp
+      CCTK_REAL pi
+      CCTK_REAL ra,the,phi
+      CCTK_REAL wave,wavep
+      CCTK_REAL kx,ky,kz,w
+      CCTK_REAL kxp,kyp,kzp,wp
       
 c     local arrays (scalars! Man, what a sweat!)
-      REAL plus,minus,plusp,minusp,ain,aout
+      CCTK_REAL plus,minus,plusp,minusp,ain,aout
       
       INTEGER i,j,k
 
