@@ -512,7 +512,6 @@ c
       do k = 1,np
          do j = 1,nq
             do i = 2,ne-1
-               eta = etagrd(i)
                detapsisph(i,j,k)=0.5*(psip(i+1,j,k)-psip(i-1,j,k))/
      $              deta + sinh(0.5*etagrd(i))
             enddo
