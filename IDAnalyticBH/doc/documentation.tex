@@ -1,0 +1,43 @@
+\documentclass{article}
+\begin{document}
+
+\title{IDAnalyticBH}
+\author{Steve Brandt, Carsten Gundlach, Joan Masso, Ed Seidel, Paul Walker}
+\date{1997-1998}
+\maketitle
+
+\abstract{Analytic initial data for vacuum black hole spacetimes}
+
+\section{Purpose}
+  Initial data is provided for the 3-metric, extrinsic
+ curvature, and if appropriate the conformal factor and it's spatial
+ derivatives. The current initial data sets are:
+ \begin{enumerate}
+  \item single (Schwarzschild) black hole in isotropic coordinates 
+       $$ g_{ij} = $$
+  \item up to four Brill-Lindquist black holes, 
+  \item Any number of Misner-type black holes. 
+To be filled in very soon\ldots I promise.
+ \end{enumerate}
+
+
+\section{Comments}
+This thorn uses no special numerical methods, however two points
+are worth noting
+\begin{itemize}
+  \item The solution for Misner is obtained by summing a sequence
+  \item The spatial derivatives of the conformal metric (when required) 
+        are calculated accurately using finite differencing of the 
+        exact solution by a very small spacing </item>
+\end{itemize}
+
+It is still to be decided how initial data should be supplied to
+for systems of evolution equations which use more or different 
+variables to those in the einstein implementation
+
+% Automatically created from the ccl files by using gmake thorndoc
+\include{interface}
+\include{param}
+\include{schedule}
+
+\end{document}
