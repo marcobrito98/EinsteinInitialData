@@ -70,7 +70,9 @@ void Exact_ParamCheck(CCTK_ARGUMENTS)
     CCTK_PARAMWARN("Unknown ADMBase::metric_type - known types are \"physical\"");
   }
 */
-  if ( CCTK_EQUALS(shift_evolution_method, "exact")
+  if (    (CCTK_EQUALS(shift_evolution_method, "exact")
+	|| CCTK_EQUALS(shift_evolution_method, "slice")
+	|| CCTK_EQUALS(initial_data, "slice"))
        && CCTK_EQUALS(initial_shift, "none") )
   {
     CCTK_PARAMWARN(
