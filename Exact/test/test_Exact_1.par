@@ -28,7 +28,7 @@ exact::exactmodel = "bowl"
 
 # Output
 
-IO::outdir       = "test_Exact_1"
+IO::out_dir       = "test_Exact_1"
 IO::out_fileinfo = "none"
 
 IOBasic::outInfo_every = 1
@@ -39,3 +39,6 @@ IOBasic::outScalar_vars  = "admbase::gxx admbase::gyy admbase::gzz"
 
 IOASCII::out1D_every =  1
 IOASCII::out1D_vars  = "admbase::gxx admbase::gyy admbase::gzz"
+
+# do not use the new scheme for names of output files
+IO::new_filename_scheme = "no"
