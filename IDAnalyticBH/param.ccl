@@ -3,14 +3,16 @@
 
 private:
 
+# Schwarzschild parameters
+# ------------------------
 REAL mass "Mass of black hole"
 {
 : :: "Not sure if it can be negative or not"
 } 2.0
 
 
-# Misner Parameters
-# -----------------
+# Multiple Misner Parameters
+# --------------------------
 REAL mu "Misner mu value"
 {
 0: :: ""
@@ -100,15 +102,12 @@ REAL bl_M_4 "Mass of 4th BL hole"
 
 friend:einstein
 
-EXTENDS LOGICAL use_conformal ""
-{ 
-}
-
 EXTENDS KEYWORD initial_data ""
 {
-  "bl_bh"         :: "Brill Lindquist black holes"
-  "misner_bh"     :: "Misner black holes"
-  "schwarzschild" :: "One Schwarzshild black hole"
+  "schwarzschild"      :: "One Schwarzshild black hole"
+  "bl_bh"              :: "Brill Lindquist black holes"
+  "misner_bh"          :: "Misner black holes"
+  "multiple_misner_bh" :: "Multiple Misner black holes"
 } 
 
 EXTENDS KEYWORD lapseinit ""
