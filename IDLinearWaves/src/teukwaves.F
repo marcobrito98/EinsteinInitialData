@@ -31,10 +31,10 @@ c Using macro definitions from Einstein
   @enddesc
 @@*/
 
-      subroutine teukwaves(CCTK_FARGUMENTS)
+      subroutine teukwaves(CCTK_ARGUMENTS)
       implicit none
       
-      DECLARE_CCTK_FARGUMENTS
+      DECLARE_CCTK_ARGUMENTS
       DECLARE_CCTK_PARAMETERS
       
       CCTK_REAL amp,m,ra,pi

@@ -41,10 +41,10 @@ c Using macro definitions from Einstein
 #include "CactusEinstein/Einstein/src/Einstein.h"
 
 
-      subroutine planewaves(CCTK_FARGUMENTS)
+      subroutine planewaves(CCTK_ARGUMENTS)
       implicit none
       
-      DECLARE_CCTK_FARGUMENTS
+      DECLARE_CCTK_ARGUMENTS
       DECLARE_CCTK_PARAMETERS
       
       INTEGER iin,iout
