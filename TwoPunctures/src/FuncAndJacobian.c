@@ -333,11 +333,12 @@ F_of_v (CCTK_POINTER_TO_CONST cctkGH,
         psi2 = psi * psi;
         psi4 = psi2 * psi2;
         psi7 = psi * psi2 * psi4;
-        fprintf(debugfile, "%.8g %.8g %.8g\n", x, y,
+        fprintf(debugfile, "%.8g %.8g %.8g %.8g %.8g %.8g\n", x, y, A, B,
            U.d11[0] +
            U.d22[0] +
            U.d33[0]
-           + 2.0 * Pi / psi2/psi * sources[Index(0,i,j,k,1,n1,n2,n3)]
+           + 2.0 * Pi / psi2/psi * sources[Index(0,i,j,k,1,n1,n2,n3)],
+           U.d0[0]
            );
       }
     }
