@@ -1,7 +1,7 @@
 !DESC "1+log sliced Kerr black hole, ADM, double leapfrog"
 
 #Required thorns
-ActiveThorns = "Boundary Time CartGrid3D CoordBase pugh pughslab pughreduce IOUtil iobasic ioascii ADMBase ADM ADMMacros ADMAnalysis SpaceMask CoordGauge IDAnalyticBH StaticConformal"
+ActiveThorns = "Boundary Time CartGrid3D CoordBase SymBase pugh pughslab pughreduce IOUtil iobasic ioascii ADMBase ADM ADMMacros ADMAnalysis SpaceMask CoordGauge IDAnalyticBH StaticConformal"
 
 # GENERAL 
  

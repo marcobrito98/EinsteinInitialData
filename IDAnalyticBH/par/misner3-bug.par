@@ -10,7 +10,7 @@
 # ***** grid *****
 #
 
-ActiveThorns = "CartGrid3D CoordBase PUGH"
+ActiveThorns = "CartGrid3D CoordBase SymBase PUGH"
 
 Driver::global_nx   = 15
 Driver::global_ny   = 15
