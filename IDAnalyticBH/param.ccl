@@ -17,7 +17,6 @@ REAL a_Kerr "Angular momentum parameter of black hole"
 -1:1 :: "Between +1 and -1"
 } 0.1
 
-
 # Multiple Misner Parameters
 # --------------------------
 REAL mu "Misner mu value"
@@ -105,6 +104,13 @@ REAL bl_M_4 "Mass of 4th BL hole"
 {
 : :: "Anything"
 } 1.0
+
+# Common parameters
+# -----------------
+REAL epsilon "Fudge factor"
+{
+  0.0:* :: ""
+} 1.e-16
 
 
 shares: ADMBase

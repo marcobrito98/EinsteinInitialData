@@ -9,6 +9,7 @@
    @version   $Id$
  @@*/
 
+#include <math.h>
 #include <string.h>
 
 #include "cctk.h"
@@ -68,14 +69,16 @@ void Schwarzschild(CCTK_ARGUMENTS)
     for (i = 0; i < npoints; i++)
     {
       /*        Compute conformal factor */
-      psi[i] = ( one + mass/(two*r[i]+1e-20));
+      CCTK_REAL const rr = pow(pow(r[i], 4) + pow(epsilon, 4), 0.25);
+
+      psi[i] = (one + mass / (two*rr));
 
       if(make_conformal_derivs)
       {
         /*        derivatives of psi / psi */
-        r_squared = r[i]*r[i];
-        r_cubed   = r[i]*r_squared;
-        tmp = mass/(two*r_cubed*psi[i]+1e-20);
+        r_squared = rr*rr;
+        r_cubed   = rr*r_squared;
+        tmp = mass / (two*r_cubed*psi[i]);
 
 
         psix[i] = -x[i]*tmp;
@@ -84,7 +87,7 @@ void Schwarzschild(CCTK_ARGUMENTS)
 
         if(*conformal_state > 2)
         {
-          tmp = mass/(two*r_squared*r_cubed*psi[i]+1e-20);
+          tmp = mass/(two*r_squared*r_cubed*psi[i]);
           psixy[i] = three*x[i]*y[i]*tmp;
           psixz[i] = three*x[i]*z[i]*tmp;
           psiyz[i] = three*y[i]*z[i]*tmp;
@@ -106,7 +109,9 @@ void Schwarzschild(CCTK_ARGUMENTS)
   {
     for (i = 0; i < npoints; i++)
     {
-      tmp = one + mass/(two*r[i]+1e-20);
+      CCTK_REAL const rr = pow(pow(r[i], 4) + pow(epsilon, 4), 0.25);
+
+      tmp = one + mass / (two*rr);
       gxx[i] = tmp*tmp*tmp*tmp;
       gyy[i] = gxx[i];
       gzz[i] = gxx[i];
@@ -124,7 +129,7 @@ void Schwarzschild(CCTK_ARGUMENTS)
 
     for (i = 0; i < npoints; i++)
     {
-      alp[i] = (2.*r[i] - mass)/(2.*r[i]+mass);
+      alp[i] = (two*r[i] - mass) / (two*r[i] + mass);
     }
   }
 
