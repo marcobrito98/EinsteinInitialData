@@ -1,0 +1,160 @@
+% Thorn documentation template
+\documentclass{article}
+\begin{document}
+
+\title{IDAxiBrillBH}
+\author{Paul Walker, Steve Brand}
+\date{1 September 1999}
+\maketitle
+
+\abstract{Thorn IDAixBrillBH provides analytic initial data for vacuum
+  black hole spacetime:  a single Schwarzschild black hole in
+  isotropic coordinates plus Brill wave.  This initial data is
+  provided for the 3-conformal metric, it's spatial derivatives, and
+  extrinsic curvature.}
+
+\section{Purpose}
+
+The pioneer, Bernstein, studied single black hole which is
+non-rotating and distorted in azimuthal line symmetry of 2 dimensional 
+case \cite{Bernstein93a}. In this non-rotating case, one choose the
+condition, $K_{ij} = 0$,  and 
+\begin{equation}
+\gamma_{ab} = \psi^4 \hat \gamma_{ab},
+\end{equation}
+where $\gamma_{ab}$ is the physical three metric and
+$\hat{\gamma}_{ab}$ is some chosen conformal three metric.   
+
+The Hamiltonian constraint reduces to
+\begin{equation}
+\hat \Delta \psi = \frac{1}{8}\psi \hat R,
+\label{eqn:conformal_hamiltonian}
+\end{equation}
+where $\hat \Delta$ is the covariant Laplacian  and $\hat R$ is Ricci
+tensor for the conformal three metric. This form allows
+us to choose an arbitrary conformal three metric, and then solve an
+elliptic equation for the conformal factor, therefore, satisfying the
+constraint equations ($K_{ij} = 0$ trivially satisfies the momentum
+constraints in vacuum).  This approach was used to create
+``Brill wave'' in spacetime without black holes \cite{Brill59}.
+Bernstein extended to the black hole spacetime.  Using
+spherical-polar coordinates, one can write the 3-metric,
+\begin{equation}
+\label{eqn:sph-cood}
+ds^2 = \psi^4 (e^{2q} (dr^2 + r^2 d \theta^2) + r^2 \sin \theta d
+\phi^2),
+\end{equation}
+where $q$ is the Brill ``packet'' which takes some functional form.
+Using this ansatz with (\ref{eqn:conformal_hamiltonian}) leads to
+an elliptic equation for $\psi$ which must be solved
+numerically. Applying the isometry condition on $\psi$ at a finite
+radius, and applying $M/2r$ falloff conditions on $\psi$ at the
+outer boundary (the ``Robin'' condition), along with a packet which
+obeys the appropriate symmetries (including being invariant under the
+isometry operator), will make this solution describe a black hole with
+an incident gravitational wave.  The choice of $q=0$ produces
+Schwarzschild solution.   The typical $q$ function used in
+axisymmetry, and considered here in the non-rotating case is 
+\begin{equation}
+q = Q_0 \sin \theta^n \left [ \exp\left(\frac{\eta -
+      \eta_0^2}{\sigma^2}\right ) + \exp\left(\frac{\eta +
+      \eta_0^2}{\sigma^2}\right ) \right ].
+\end{equation}
+Note regularity along the axis requires that the exponent $n$ must be
+even.  Choosing a logarithmic radial coordinate $\eta$, which related
+asymptotic flat coordinate $r$ by $\eta = ln (2r/m)$, where m is a
+scale parameter.  One can rewrite (\ref{eqn:sph-cood}) as
+\begin{equation}
+ds^2 = \psi(\eta)^4 [ e^{2 q} (d \eta^2 +  d\theta^2) +  \sin^2
+\theta d\phi^2].
+\end{equation}
+
+In the previous Breinstein work, the above $r$ are transformed to a
+logarithmic radial coordinate
+
+\begin{equation}
+\label{eta_coord}
+\eta = \mbox{ln} (\frac{2r}{m}).
+\end{equation}
+
+The scale parameter $m$ is equal to the mass of the Schwarzschild
+black hole, if $q=0$.  In this coordinate, the 3-metric is
+\begin{equation}
+\label{eqn:metric_brill_eta}
+ds^2 = \tilde{\psi}^4 (e^{2q} (d\eta^2+d\theta^2)+\sin^2 \theta
+d\phi^2),
+\end{equation}
+and the Schwarzschild solution is 
+\begin{equation}
+\label{eqn:psi}
+\tilde{\psi} = \sqrt{2M} \cosh (\frac{\eta}{2}).
+\end{equation}
+We also change the notation of $\psi$ for the conformal factor is same 
+as $\tilde{\psi}$ \cite{Camarda97a}, for the $\eta$ coordinate has the
+factor $r^{1/2}$ in the conformal factor.  Clearly $\psi(\eta)$ and
+$\psi$ differ by a factor of $\sqrt{r}$.  The Hamiltonian 
+constraint is
+\begin{equation}
+\label{eqn:ham}
+\frac{\partial^2 \tilde{\psi}}{\partial \eta^2} + \frac{\partial^2
+  \tilde{\psi}}{\partial \theta^2} + \cot \theta \frac{\partial
+  \tilde{\psi}}{\partial \theta} = - \frac{1}{4} \tilde{\psi}
+(\frac{\partial^2 q}{\partial \eta^2} + \frac{\partial^2 q}{\partial
+  \theta^2} -1).
+\end{equation}
+
+For solving this Hamiltonian constraint numerically.  At first
+we substitute
+\begin{eqnarray}
+\delta \tilde{\psi} & = & \tilde{\psi}+\tilde{\psi}_0 \\
+                    & = & \tilde{\psi}-\sqrt{2m} \cosh(\frac{\eta}{2}).
+\end{eqnarray}
+to the equation~(\ref{eqn:ham}), then we can linearize it as
+\begin{equation}
+\frac{\partial^2 \delta\tilde{\psi}}{\partial \eta^2} + \frac{\partial^2
+  \delta\tilde{\psi}}{\partial \theta^2} + \cot \theta \frac{\partial
+  \delta\tilde{\psi}}{\partial \theta} = - \frac{1}{4}
+(\delta\tilde{\psi} + \tilde{\psi}_0) (\frac{\partial^2 q}{\partial
+  \eta^2} + \frac{\partial^2 q}{\partial \theta^2} -1).
+\label{eqn:ham_linear}
+\end{equation}
+For the boundary conditions, we use for inner boundary condition,
+which is isometry condition:
+\begin{equation}
+\frac{\partial \tilde{\psi}}{\partial \eta}|_{\eta = 0} = 0,
+\end{equation}
+and outer boundary condition, which is Robin condition:
+\begin{equation}
+(\frac{\partial \tilde{\psi}}{\partial \eta} + \frac{1}{2}
+\tilde{\psi})|_{\eta=\eta_{max}} = 0.
+\end{equation}
+
+
+This thorn provides
+ \begin{enumerate}
+  \item CactusEinstein
+ \end{enumerate}
+
+\section{Comments}
+
+We calculate equation~(\ref{eqn:ham_linear}) with spherical
+coordinate.  However, Cactus needs Cartesian coordinate.  Then, we
+interpolate $\psi$ to the Cartesian grid by using interpolator.  Note
+interpolator has linear, quadratic, and cubic interpolation.  
+
+% Automatically created from the ccl files 
+% Do not worry for now.
+\include{interface}
+\include{param}
+\include{schedule}
+\bibliographystyle{prsty}
+\begin{thebibliography}{10}
+\bibitem{Bernstein93a}
+  D. Bernstein, Ph.D thesis University of Illinois Urbana-Champaign,
+  (1993)
+\bibitem{Brill59}
+  D. S. Brill,Ann. Phys.{\bf 7}, 466 (1959)
+\bibitem{Camarda97a}
+  K. Camarda, Ph.D thesis University of Illinois Urbana-Champaign, (1998)
+\end{thebibliography}
+\end{document}

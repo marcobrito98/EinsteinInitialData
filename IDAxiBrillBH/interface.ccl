@@ -1,0 +1,9 @@
+# Interface definition for thorn AxiBrillBHIVP
+# $Header$
+
+implements: idaxibrillbh
+inherits: einstein
+
+public:
+
+
