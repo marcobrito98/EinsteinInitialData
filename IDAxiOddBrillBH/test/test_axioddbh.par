@@ -35,8 +35,8 @@ axiodd::sigma    = 1.0
 axiodd::byJ      = 0.0
 axiodd::n        = 3
 axiodd::etamax   = 6.0
-axiodd::ne       = 302
-axiodd::nq       = 54
+axiodd::neta     = 102
+axiodd::ntheta   = 27
 interp::order    = 1
 
 # GAUGE
@@ -50,7 +50,7 @@ IOBasic::outScalar_vars  = "einstein::metric einstein::curv admconstraints::ADMc
 IOBasic::outInfo_every   = 1
 
 IOASCII::out1d_every     = 1
-IOASCII::out1D_vars      = "einstein::shift einstein::metric einstein::curv einstein::lapse admconstraints::ADMconstraints einstein::spherical_metric einstein::spherical_curv einstein::psi einstein::confac_1derivs einstein::confac_2derivs"
+IOASCII::out1D_vars      = "einstein::shift einstein::metric einstein::curv einstein::lapse admconstraints::ADMconstraints einstein::psi einstein::confac_1derivs einstein::confac_2derivs"
 
 ##################################################################
 
