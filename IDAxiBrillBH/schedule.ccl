@@ -1,0 +1,10 @@
+# Schedule definitions for thorn AxiBrillBHIVP
+# $Header$
+
+if (CCTK_Equals(initial_data,"axibrillbh")) 
+{
+  schedule IDAxiBrillBH at CCTK_INITIAL
+  {
+    LANG: Fortran
+  } "Construct IDAxiBrillBH"  
+}
