@@ -54,12 +54,12 @@ INT ntheta "Theta resolution for solve"
   *:* :: "No restriction"
 } 50
 
-LOGICAL brandt_seidel "Brand-Seidel initial data"
+BOOLEAN brandt_seidel "Brand-Seidel initial data"
 {
 } "no"
 
 
-LOGICAL verbose ""
+BOOLEAN verbose ""
 {
 } "yes"
 
