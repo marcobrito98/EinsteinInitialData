@@ -16,7 +16,7 @@
 
 # These thorns must be compiled
 
-ActiveThorns = "Boundary EvolGRC CartGrid3D CoordBase Einstein IDanalyticBH IOBasic IOUtil IOASCII Pugh PughReduce PughSlab Time"
+ActiveThorns = "Boundary EvolGRC CartGrid3D CoordBase SymBase Einstein IDanalyticBH IOBasic IOUtil IOASCII Pugh PughReduce PughSlab Time"
  
 #------------------------------------------------------------------------------
 
