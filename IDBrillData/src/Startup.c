@@ -3,6 +3,10 @@
 
 #include "Symmetry.h"
 
+static const char *rcsid = "$Header$";
+
+CCTK_FILEVERSION(CactusEinstein_IDBrillData_Startup_c)
+
 void BrilData_InitSymBound(CCTK_ARGUMENTS);
 
 void BrilData_InitSymBound(CCTK_ARGUMENTS)
