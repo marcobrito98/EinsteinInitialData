@@ -40,8 +40,8 @@ c      c        \         z      rho                    phi          phi    /
 
       DECLARE_CCTK_ARGUMENTS
       DECLARE_CCTK_PARAMETERS
+      DECLARE_CCTK_FUNCTIONS
 
-      integer CCTK_Equals
       integer i,j,k
       integer nx,ny,nz
       integer ierr
@@ -87,8 +87,8 @@ c     Set up conformal metric.
             do j=1,ny
                do i=1,nx
                   psi(i,j,k) = one
-                  if (CCTK_Equals(conformal_storage,"factor").ne.1) then
-c     (.not. CCTK_EQUALS gives a parse error, I have no idea why)
+                  if (CCTK_EQUALS(conformal_storage,"factor+derivs") .or. 
+     &                 CCTK_EQUALS(conformal_storage,"factor+derivs+2nd derivs")) then
                      psix(i,j,k) = zero
                      psiy(i,j,k) = zero
                      psiz(i,j,k) = zero
@@ -101,15 +101,11 @@ c     (.not. CCTK_EQUALS gives a parse error, I have no idea why)
                      psixy(i,j,k) = zero
                      psixz(i,j,k) = zero
                      psiyz(i,j,k) = zero
-                     conformal_state=3
+                     conformal_state = 3
                   end if
                end do
             end do
          end do
-
-      else
-
-c     conformal_state = 0 -- metric_type "physical" does not allocate storage for conformal_state!
 
       end if
          
