@@ -5,7 +5,7 @@ c     $Header$
 #include "cctk_Arguments.h"
 #include "cctk_Parameters.h"
       
-      subroutine IDLinearWaves_Standing_PlaneWaves (CCTK_ARGUMENTS)
+      subroutine IDLinearWaves_StandWaves (CCTK_ARGUMENTS)
       
       implicit none
       
