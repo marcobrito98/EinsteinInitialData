@@ -28,7 +28,7 @@
 \textheight = 24 cm
 
 \begin{document}
-\title{Using \texttt{IDAnalyticBH} (OLD EINSTEIN!!)}
+\title{Using \texttt{IDAnalyticBH}}
 \author{Denis Pollney}
 \date{April 2002}
 
@@ -146,7 +146,7 @@ could modify your parameter file as follows:
 \section{Kerr}
 
 Kerr initial data for an isolated rotating black hole is specified
-using the ``quasi-isotropic'' coordinates:
+using the ``quasi-isotropic'' coordinates \cite{brandt-seidel:1996}:
 \begin{equation}
   ds^2 = \psi^4 (dr^2 + r^2(d\theta^2 + \chi^2\sin^2\theta d\phi^2)),
 \end{equation}
@@ -244,6 +244,7 @@ where the conformal factor $\psi$ is given by
   \frac{1}{\sinh(\mu_0 n)}
   \frac{1}{\sqrt{x^2 + y^2 + (z + \coth(\mu_0 n))^2}}.
 \end{equation}
+The extrinsic curvature for the Misner data is zero.
 
 The parameter $\mu_0$ is a measure of the ration of mass to separation
 of the throats, and is set using the parameter
@@ -386,6 +387,11 @@ parameters such as the following could be used:
     See, for instance, p. 840 of:
     Misner, C. W., Thorne, K. S., and Wheeler, J. A. (1973)
     \emph{Gravitation}, W. H. Freeman, San Francisco.
+  \bibitem{brandt-seidel:1996}
+    Brandt, Steven R. and Seidel, Edward (1996)
+    \emph{Evolution of distorted rotating black holes. III. Initial
+    data},
+    Phys. Rev., \textbf{D54}, 1403--1416.
   \bibitem{misner:1960}
     Misner, Charles W. (1960)
     \emph{Wormhole Initial Conditions},
