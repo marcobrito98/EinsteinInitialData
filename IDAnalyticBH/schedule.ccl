@@ -38,7 +38,7 @@ if (CCTK_Equals(initial_data,"misner_bh"))
    schedule Misner_standard at CCTK_INITIAL
    {
      LANG: C
-   } "Construct initial data for multiple Misner black holes"
+   } "Construct initial data for two Misner black holes"
 
 }
  
@@ -48,6 +48,6 @@ if (CCTK_Equals(initial_data,"multiple_misner_bh"))
    schedule Misner_multiple at CCTK_INITIAL
    {
      LANG: C
-   } "Construct initial data for two Misner black holes"
+   } "Construct initial data for multiple Misner black holes"
 
 }
