@@ -58,17 +58,26 @@ void Misner_multiple(CCTK_ARGUMENTS)
   /* Check if we should create and store conformal factor stuff */
   if(CCTK_EQUALS(metric_type, "static conformal"))
   {
-    *conformal_state = 1;
-
-    if(CCTK_EQUALS(conformal_storage,"factor+derivs"))
+    if      (CCTK_EQUALS(conformal_storage,"factor"))
+    {
+      *conformal_state = 1;
+      make_conformal_derivs = 0;
+    }
+    else if (CCTK_EQUALS(conformal_storage,"factor+derivs"))
     {
       *conformal_state = 2;
       make_conformal_derivs = 1;
     }
-    else if(CCTK_EQUALS(conformal_storage,"factor+derivs+2nd derivs"))
+    else if (CCTK_EQUALS(conformal_storage,"factor+derivs+2nd derivs"))
     {
       *conformal_state = 3;
       make_conformal_derivs = 1;
+    }
+    else
+    {
+      CCTK_VWarn(0, __LINE__, __FILE__, CCTK_THORNSTRING,
+"Misner_multiple(): impossible value for conformal_storage=\"%s\"!");
+								/*NOTREACHED*/
     }
   }      
   else
