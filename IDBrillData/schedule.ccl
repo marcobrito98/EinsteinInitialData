@@ -12,7 +12,7 @@ if (CCTK_Equals(initial_data,"brilldata"))
     LANG: C
   } "Check that the metric_type is recognised"
 
-  schedule BrilData_InitSymBound at CCTK_BASEGRID
+  schedule BrillData_InitSymBound at CCTK_BASEGRID
   {
     LANG: C
   } "Set up symmetries for brillpsi"
