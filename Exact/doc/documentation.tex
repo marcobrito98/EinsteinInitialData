@@ -351,6 +351,38 @@ documentation for the \thorn{ADMCoupling} thorn for details.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\subsection{Accuracy}
+
+\begingroup
+\bf\mathversion{bold}
+This thorn has been found to set up its initial data less accurately
+than you might think.  In particular, \dots
+
+Denis Pollney has found that if this thorn is used to set up a
+Schwarzschild or Kerr solution
+(\verb|Schwarzschild/EF| or \verb|Kerr/Kerr-Schild| model),
+there are low-level ($\sim 10^{-12}$) asymmetries between the
+field variables in the supposedly-symmetric octants.
+
+Jonathan Thornburg has found that for at least the \verb|Schwarzschild/EF|
+and \verb|Kerr/Kerr-Schild| models (and quite likely for all models),
+this thorn's values of the extrinsic curvature $K_{ij}$ have random
+point-to-point errors of about $\sim {\textstyle\frac{1}{2}} \times 10^{-10}$
+(in regions where the metric is $O(1)$.
+\endgroup
+
+We suspect that these problems may be due to this thorn's internally
+first setting up the 4-metric, then computing the Bona-Masso variables
+by numerically finite differencing the 4-metric%%%
+\footnote{%%%
+	 This seems to be done using centered
+	 2nd~order finite differencing with a
+	 hard-wired $10^{-6}$ grid spacing.
+	 }%%%
+, then computing the ADM variables from this.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsection{Further Sources of Information}
 
 This documentation is at best a secondary source of information about
