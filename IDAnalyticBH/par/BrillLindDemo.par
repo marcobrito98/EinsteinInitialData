@@ -44,7 +44,7 @@ IOASCII::out1D_every       = 10
 #------------------------------------------------------------------------------
 
 
-IO::outdir                 = "BrillLindDemo-Iso"
+IO::out_dir                 = "BrillLindDemo-Iso"
 
 grid::domain               = "full"
 grid::type                 = "byrange"
