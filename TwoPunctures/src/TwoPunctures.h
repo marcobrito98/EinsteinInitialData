@@ -71,19 +71,8 @@ void LinEquations (double A, double B, double X, double R,
 		   double y, double z, derivs dU, derivs U, double *values);
 
 // Routines in  "Newton.c"
-void resid (double *res, int ntotal, double *dv, double *rhs,
-	    int *ncols, int **cols, double **JFD);
-void LineRelax_al (double *dv, int j, int k, int nvar, int n1, int n2, int n3,
-		   double *rhs, int *ncols, int **cols, double **JFD);
-void LineRelax_be (double *dv, int i, int k, int nvar, int n1, int n2, int n3,
-		   double *rhs, int *ncols, int **cols, double **JFD);
-void relax (double *dv, int nvar, int n1, int n2, int n3, double *rhs,
-	    int *ncols, int **cols, double **JFD);
 void TestRelax (CCTK_POINTER_TO_CONST cctkGH,
                 int nvar, int n1, int n2, int n3, derivs v, double *dv);
-int bicgstab (CCTK_POINTER_TO_CONST cctkGH,
-              int nvar, int n1, int n2, int n3, derivs v,
-	      derivs dv, int output, int itmax, double tol, double *normres);
 void Newton (CCTK_POINTER_TO_CONST cctkGH,
              int nvar, int n1, int n2, int n3, derivs v,
 	           double tol, int itmax);

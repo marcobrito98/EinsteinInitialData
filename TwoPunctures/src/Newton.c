@@ -9,11 +9,24 @@
 #include "TP_utilities.h"
 #include "TwoPunctures.h"
 
-static void relax (double *dv, int nvar, int n1, int n2, int n3, double *rhs,
-	    int *ncols, int **cols, double **JFD);
-
+static int
+bicgstab (CCTK_POINTER_TO_CONST cctkGH,
+          int nvar, int n1, int n2, int n3, derivs v,
+          derivs dv, int output, int itmax, double tol, double *normres);
+static void
+relax (double *dv, int nvar, int n1, int n2, int n3,
+       double *rhs, int *ncols, int **cols, double **JFD);
+static void
+resid (double *res, int ntotal, double *dv, double *rhs,
+       int *ncols, int **cols, double **JFD);
+static void
+LineRelax_al (double *dv, int j, int k, int nvar, int n1, int n2, int n3,
+	      double *rhs, int *ncols, int **cols, double **JFD);
+static void
+LineRelax_be (double *dv, int i, int k, int nvar, int n1, int n2, int n3,
+	      double *rhs, int *ncols, int **cols, double **JFD);
 // -----------------------------------------------------------------------------------
-void
+static void
 resid (double *res, int ntotal, double *dv, double *rhs,
        int *ncols, int **cols, double **JFD)
 {
@@ -30,7 +43,7 @@ resid (double *res, int ntotal, double *dv, double *rhs,
 }
 
 // -----------------------------------------------------------------------------------
-void
+static void
 LineRelax_al (double *dv, int j, int k, int nvar, int n1, int n2, int n3,
 	      double *rhs, int *ncols, int **cols, double **JFD)
 {
@@ -84,7 +97,7 @@ LineRelax_al (double *dv, int j, int k, int nvar, int n1, int n2, int n3,
 }
 
 // -----------------------------------------------------------------------------------
-void
+static void
 LineRelax_be (double *dv, int i, int k, int nvar, int n1, int n2, int n3,
 	      double *rhs, int *ncols, int **cols, double **JFD)
 {
@@ -228,7 +241,7 @@ TestRelax (CCTK_POINTER_TO_CONST cctkGH,
 }
 
 // -----------------------------------------------------------------------------------
-int
+static int
 bicgstab (CCTK_POINTER_TO_CONST cctkGH,
           int nvar, int n1, int n2, int n3, derivs v,
 	        derivs dv, int output, int itmax, double tol, double *normres)
