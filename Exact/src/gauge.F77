@@ -18,7 +18,7 @@ C $Header$
       integer i,j,k
       integer nx,ny,nz
 
-      CCTK_REAL tplushalf
+      CCTK_REAL t_exact
       CCTK_REAL gxxjunk, gyyjunk, gzzjunk, 
      $     gxyjunk, gyzjunk, gxzjunk,
      $     hxxjunk, hyyjunk, hzzjunk, 
@@ -46,10 +46,18 @@ C     Grid parameters.
       ny = cctk_lsh(2)
       nz = cctk_lsh(3)
 
-C     Set t = time + dt/2.  This is for consistency with a second
-C     order numerical scheme.
+C     This code used to set  t = time + dt/2  to get 2nd order accuracy,
+C     but this leads to the initial data being set at the wrong time. :(
+C     In the context of MoL, we want to set the "exact" time anyway, because
+C     MoL takes care of calling us at each MoL iteration, and updating the
+C     field variables appropriately.
+C
+C     Alas, the current version of this code probably gives O(dt) errors
+C     for non-MoL evoutions where Exact is used to set stuff at each time
+C     step.  Fixing this probably requires cleaning up our (++messy)
+C      schedule.ccl , which is why this remains a bug for now... :( :(
 
-      tplushalf = cctk_time + 0.5D0*cctk_delta_time
+      t_exact = cctk_time
 
 C     Set both lapse and shift.
 
@@ -82,7 +90,7 @@ C     (also to tell the models about the conformal_state)
 
                   call Exact__Bona_Masso_data(
      $                 decoded_exact_model,
-     $                 x(i,j,k), y(i,j,k), z(i,j,k), tplushalf,
+     $                 x(i,j,k), y(i,j,k), z(i,j,k), t_exact,
      $                 gxxjunk, gyyjunk, gzzjunk, 
      $                 gxyjunk, gyzjunk, gxzjunk,
      $                 hxxjunk, hyyjunk, hzzjunk, 
@@ -134,7 +142,7 @@ C     (also to tell the models about the conformal_state)
 
                   call Exact__Bona_Masso_data(
      $                 decoded_exact_model,
-     $                 x(i,j,k), y(i,j,k), z(i,j,k), tplushalf,
+     $                 x(i,j,k), y(i,j,k), z(i,j,k), t_exact,
      $                 gxxjunk, gyyjunk, gzzjunk, 
      $                 gxyjunk, gyzjunk, gxzjunk,
      $                 hxxjunk, hyyjunk, hzzjunk, 
@@ -187,7 +195,7 @@ C     (also to tell the models about the conformal_state)
 
                   call Exact__Bona_Masso_data(
      $                 decoded_exact_model,
-     $                 x(i,j,k), y(i,j,k), z(i,j,k), tplushalf,
+     $                 x(i,j,k), y(i,j,k), z(i,j,k), t_exact,
      $                 gxxjunk, gyyjunk, gzzjunk, 
      $                 gxyjunk, gyzjunk, gxzjunk,
      $                 hxxjunk, hyyjunk, hzzjunk, 
