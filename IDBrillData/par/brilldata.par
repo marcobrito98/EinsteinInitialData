@@ -1,10 +1,10 @@
-################################################
+##############################################################################
 #
 # brilldata.par
 #
 # Simple Brill wave data of the Holz et.al. type
 #
-################################################
+##############################################################################
 
 ActiveThorns = "iobasic ellbase ellsor idbrilldata pugh pughreduce einstein cartgrid3d ioutil ioascii"
 
@@ -24,14 +24,18 @@ cactus::cctk_itlast 				= 0
 
 Einstein::initial_data 				= "brilldata"
 
-# Brill wave parameters [Holz et.al. type data]
+# Brill wave parameters
 
-idbrilldata::brill_q 				= 2	# Form of function q [0,1,2]
-idbrilldata::brill_a 				= 1.0	# Amplitude (default 0)
+idbrilldata::brill_q 				= 2
+idbrilldata::brill_a 				= 1.0
 
 # Elliptic solver.
 
-idbrilldata::brill_solver 			= "sor" #[petsc,sor,bam]
+idbrilldata::brill_solver 			= "sor"
+idbrilldata::brill_thresh			= 0.001
+
+ellsor::maxit					= 1000
+ellsor::sor_bound				= "robin"
 
 # Output.
 
