@@ -1,14 +1,25 @@
-% Thorn documentation template
 \documentclass{article}
+
+% Use the Cactus ThornGuide style file
+% (Automatically used from Cactus distribution, if you have a 
+%  thorn without the Cactus Flesh download this from the Cactus
+%  homepage at www.cactuscode.org)
+\usepackage{../../../../doc/ThornGuide/cactus}
+
 \begin{document}
 
 \title{IDLinearWaves}
-\author{Gabrielle Allen, Tom Goodale, Gerd Lanfermann, Joan Masso, \\
-Mark Miller, Malcolm Tobias, Paul Walker}
-\date{1997-present}
+\author{Gabrielle Allen, Tom Goodale, Gerd Lanfermann, Joan Masso, \\ Mark Miller, Malcolm Tobias, Paul Walker}
+\date{$ $Date$ $}
+
 \maketitle
 
-\abstract{Provides gravitational wave solutions to the linearized Einstein equations}
+% Do not delete next line
+% START CACTUS THORNGUIDE
+
+\begin{abstract}
+Provides gravitational wave solutions to the linearized Einstein equations
+\end{abstract}
 
 \section{Purpose}
 
@@ -68,11 +79,7 @@ Einstein equations.  For a full description, see: PRD 26:745 (1982).
 \section{Comments}
 The extrinsic curvature is initialized assuming the initial lapse is one.
 
-
-% Automatically created from the ccl files 
-% Do not worry for now.
-\include{interface}
-\include{param}
-\include{schedule}
+% Do not delete next line
+% END CACTUS THORNGUIDE
 
 \end{document}
