@@ -1,0 +1,55 @@
+######################################################################
+#!DESC "Initial data for axisymmetric distored black hole"
+######################################################################
+
+ActiveThorns = "time boundary iobasic ADMconstraints pugh pughreduce pughslab pughinterp cartgrid3d einstein ADM DistortedBHIVP ioascii ioutil"
+
+# GENERAL 
+
+einstein::evolution_system = "ADM"     
+
+driver::global_nx =  32
+driver::global_ny =  32
+driver::global_nz =  32
+
+grid::type = "byspacing"
+grid::dxyz = 0.4
+grid::domain = "full"
+
+time::dtfac = 0.25   
+
+cactus::cctk_initial_time = 0.   
+cactus::cctk_itlast       = 1
+
+adm::method           = "stagleap" 
+adm::bound            = "static"
+admconstraints::bound = "static"
+
+# MODEL 
+
+einstein::initial_data = "distortedbh"
+distortedbhivp::amp      = -0.1
+distortedbhivp::eta0     = 0.0
+distortedbhivp::c        = 0.5
+distortedbhivp::sigma    = 1.0
+distortedbhivp::etamax   = 6.0
+distortedbhivp::n        = 4
+distortedbhivp::neta     = 102
+distortedbhivp::ntheta   = 27
+distortedbhivp::nphi     = 5
+distortedbhivp::interpolation_order = 1
+
+
+# GAUGE
+einstein::slicing    = "geodesic"  
+
+# OUTPUT ########################################################
+IO::outdir         = "test_dbh"
+IOASCII::out1d_every     =  1
+IOBasic::outScalar_vars  = "einstein::metric einstein::curv admconstraints::ham"
+IOASCII::out1D_vars      = "einstein::metric einstein::curv einstein::lapse admconstraints::ham einstein::grr einstein::psi einstein::psix einstein::psiy einstein::psiz einstein::psixx einstein::psixy einstein::psixz einstein::psiyy einstein::psiyz einstein::psizz"
+IOBasic::outInfo_every   = 1
+IOBasic::outInfo_vars    = "admconstraints::ham einstein::gxx"
+
+##################################################################
+
