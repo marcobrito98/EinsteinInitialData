@@ -41,7 +41,7 @@ IOASCII::out1D_every       = 1
 #
 #------------------------------------------------------------------------------
 
-IO::outdir                 = "MisnerDemo-Simple"
+IO::out_dir                 = "MisnerDemo-Simple"
 
 grid::domain               = "full"
 grid::type                 = "byrange"

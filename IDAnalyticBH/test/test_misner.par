@@ -27,10 +27,13 @@ cactus::cctk_itlast        = 10
 adm::bound                 = "flat"      
 adm::method                = "leapfrog"
 
-IO::outdir               = "test_misner"
+IO::out_dir               = "test_misner"
 IO::out_fileinfo         = "none"
 IOBasic::outInfo_every   = 1
 IOBasic::outInfo_vars    = "admbase::gxx admbase::kxx"
 IOBasic::outScalar_every = 2
 IOBasic::outScalar_vars  = "admanalysis::grr admanalysis::trk"
 
+
+# do not use the new scheme for names of output files
+IO::new_filename_scheme = "no"
