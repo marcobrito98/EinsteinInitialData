@@ -1,17 +1,17 @@
 
-!DESC "Brill wave initial data (Holz type), amplitude 5, sor, robin boundaries"
+!DESC "Brill wave initial data (Holz type), amplitude 5, BAM, robin boundaries"
 
-ActiveThorns = "iobasic ellbase ellsor idbrilldata pugh pughreduce einstein cartgrid3d ioutil ioascii"
+ActiveThorns = "bam_elliptic einstein ellbase ellsor pugh pughreduce cartgrid3d idbrilldata ioascii iobasic ioutil"
 
 # General
 
-driver::global_nx 				= 32     
-driver::global_ny 				= 32     
-driver::global_nz 				= 32     
+driver::global_nx 				= 35
+driver::global_ny 				= 35
+driver::global_nz 				= 35
 
 grid::type 					= "byspacing"
 grid::dxyz 					= 0.2
-grid::domain 					= "octant" 
+grid::domain 					= "octant"
 
 cactus::cctk_itlast 				= 0
 
@@ -26,11 +26,9 @@ idbrilldata::brill_a 				= 5.0
 
 # Elliptic solver.
 
-idbrilldata::brill_solver 			= "sor"
-idbrilldata::brill_thresh			= 0.001
+idbrilldata::brill_solver 			= "bam"
 
-ellsor::maxit					= 1000
-ellsor::sor_bound				= "robin"
+bam_elliptic::bam_bound                 	= "bamrobin"
 
 # Output.
 
