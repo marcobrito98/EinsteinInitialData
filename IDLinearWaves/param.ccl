@@ -7,6 +7,7 @@ EXTENDS KEYWORD initial_data
 "teukwaves"           :: "linear waves initial data- Teukolsky waves"
 "planewaves"          :: "linear waves initial data- plane waves"
 "standing_planewaves" :: "linear waves initial data- standing plane waves"
+"sine_planewaves"     :: "linear waves initial data- sine shaped plane waves"
 }
 
 USES KEYWORD metric_type 
