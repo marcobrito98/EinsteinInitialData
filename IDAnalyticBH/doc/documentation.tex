@@ -62,7 +62,7 @@ initial dataset for black hole evolution that can be specified
 analytically in terms of the metric, $g_{ab}$, and extrinsic
 curvature, $K_{ab}$.
 
-The thorn extends the \texttt{einstein::initial\_data} parameter by
+The thorn extends the \texttt{admbase::initial\_data} parameter by
 adding the following datasets:
 \begin{description}
   \item[\texttt{schwarzschild}] Schwarzschild, in isotropic
@@ -75,10 +75,10 @@ Initial data for lapse and shift can also be specified in
 this thorn.\\
 
 The Cactus grid-functions corresponding to the initial data are
-inherited from the thorn \texttt{CactusEinstein/Einstein}, along with
-the conformal factor grid-function, \texttt{psi}, and its derivatives
-which are optionally set based on the value of the parameter
-\texttt{einstein::use\_conformal}.\\
+inherited from the thorn \texttt{CactusEinstein/ADMBase}, along with
+the conformal factor grid-function, \texttt{psi} from \texttt{CactusEinstein/StaticConformal}, and its derivatives
+which are optionally set based on the value of the parameters
+\texttt{admbase::metric\_type} and \texttt{staticconformal::conformal\_storage}.\\
 
 The \texttt{IDAnalyticBH} has been written and augmented over an number of
 years by many Cactus authors. These include John Baker, Steve Brandt,
@@ -90,7 +90,7 @@ associated parameters in turn.
 
 The Schwarzschild metric corresponds to a single, static, black hole.
 If the Cactus metric is specified as a conformal metric (by setting
-\texttt{einstein::use\_conformal="yes"}), then the metric is
+\texttt{admbase::metric\_type="yes"}), then the metric is
 set using isotropic coordinates \cite{mtw-isotropic}:
 \begin{equation}
   ds^2 = -\left(\frac{2r - M}{2r + M}\right)^2
@@ -109,19 +109,19 @@ The mass is specified using the parameter
 \texttt{idanalyticbh::mass}. The black hole is assumed to reside at
 the origin of the grid, corresponding to the location $x=y=z=0$.\\
 
-If the \texttt{einstein::use\_conformal} parameter has been set, then
-the metric grid-functions (\texttt{einstein::gxx}, $\ldots$,
-\texttt{einstein::gzz}) are given as $\delta_{ab}$, and the conformal
-factor \texttt{einstein::psi} is set to the value specified
+If the \texttt{admbase::metric\_type} parameter has been set to {\tt static conformal}, then
+the metric grid-functions (\texttt{admbase::gxx}, $\ldots$,
+\texttt{admbase::gzz}) are given as $\delta_{ab}$, and the conformal
+factor \texttt{staticconformal::psi} is set to the value specified
 above. The derivatives of the conformal factor
-(\texttt{einstein::psix}, etc.) are determined analytically.
+(\texttt{staticconformal::psix}, etc.) are determined analytically.
 
 In order to give the lapse an initial profile which corresponds to
 isotropic lapse of the $4$-metric specified above, use the parameter
 \begin{verbatim}
   idanalyticbh::initial_lapse = "schwarz"
 \end{verbatim}
-This will cause the \texttt{einstein::alp} grid-function to be
+This will cause the \texttt{admbase::alp} grid-function to be
 initialised to the value:
 \begin{equation}
   \alpha = \frac{2r - M}{2r + M}.
@@ -129,9 +129,9 @@ initialised to the value:
 
 
 Note that the Schwarzschild data has the following non-standard
-behaviour in response to the \texttt{einstein::use\_conformal}
+behaviour in response to the \texttt{admbase::metric\_type}
 parameter. If the \emph{physical} metric is requested
-(ie. \texttt{use\_conformal} is set to \texttt{"no"}) then a
+(ie. \texttt{metric\_type} is set to \texttt{"physical"}) then a
 \emph{different} form of the Schwarzschild metric is set:
 Schwarzschild coordinates are set instead of the isotropic
 coordinates:
@@ -145,12 +145,12 @@ black hole of mass $m=1$, using an initial lapse of $\alpha=1$, you
 could modify your parameter file as follows:
 
 \begin{verbatim}
-  ActiveThorns = "... Einstein IDAnalyticBH ..."
+  ActiveThorns = "... ADMBase StaticConformal IDAnalyticBH ..."
 
-  einstein::use_conformal = "yes"
+  admbase::metric_type = "static conformal"
 
-  einstein::initial_data = "schwarzschild"
-  einstein::initial_lapse = "one"            # or "schwarz" for isotropic lapse
+  admbase::initial_data = "schwarzschild"
+  admbase::initial_lapse = "one"            # or "schwarz" for isotropic lapse
 
   idanalyticbh::mass = 1.0
 \end{verbatim}
@@ -179,13 +179,13 @@ respectively. \emph{(Note that the default values for these parameters
 are $M=2$ and $a=0.1$.)} The black hole is assumed to reside at the
 centre of the coordinate system, at $x=y=z=0$.
 
-The \texttt{einstein::use\_conformal} parameter can be used to specify
+The \texttt{admbase::metric\_type} parameter can be used to specify
 whether the metric should be conformal or not. If the metric is
 conformal, then $\psi$ is initialised as a separate grid function, and
 it's first and second derivatives are calculated analytically and also
 stored as grid functions. Otherwise, the conformal factor is
 multiplied through in the expression for the 3-metric before the
-values of the \texttt{einstein::metric} variables are set. The
+values of the \texttt{admbase::metric} variables are set. The
 extrinsic curvature is also determined analytically.
 
 The gauge can be set to the Kerr lapse and shift with the parameters
@@ -206,13 +206,13 @@ where
 A set of parameters which initialise an evolution to use the Kerr
 intial data with mass $M=1$ and angular momentum $a=0.3$ are:
 \begin{verbatim}
-  ActiveThorns = "... Einstein IDAnalyticBH ..."
+  ActiveThorns = "... ADMBase StaticConformal IDAnalyticBH ..."
 
-  einstein::use_conformal = "yes"
+  admbase::metric_type = "static conformal"
 
-  einstein::initial_data = "kerr"
-  einstein::initial_lapse = "kerr"
-  einstein::initial_shift = "kerr"
+  admbase::initial_data = "kerr"
+  admbase::initial_lapse = "kerr"
+  admbase::initial_shift = "kerr"
 
   idanalyticbh::mass = 1.0
   idanalyticbh::a_kerr = 0.3
@@ -283,18 +283,18 @@ This quantity is determined automatically and written to standard
 output.
 
 If the conformal form of the metric is used (via the
-\texttt{einstein::use\_conformal} parameter), then derivatives of the
+\texttt{admbase::metric\_type} parameter), then derivatives of the
 conformal factor are computed analytically from the derivatives of the
 above expression for $\psi$.
 
 To make use of the two black hole initial data, a variation of the
 following set of parameters can be used:
 \begin{verbatim}
-  ActiveThorns = "... Einstein IDAnalyticBH ..."
+  ActiveThorns = "... ADMBase StaticConformal IDAnalyticBH ..."
 
-  einstein::use_conformal = "yes"
+  admbase::metric_type = "static conformal"
 
-  einstein::initial_data = "misner_bh"
+  admbase::initial_data = "misner_bh"
   idanalyticbh::mu = 2.2
 \end{verbatim}
 
@@ -337,11 +337,11 @@ stencil is hardcoded at $dx=10^-6$.
 As an example, a parameter file implementing 3 Misner black holes on a
 circle of radius $\cosh 4$ would use the following parameters:
 \begin{verbatim}
-  ActiveThorns = "... Einstein IDAnalyticBH ..."
+  ActiveThorns = "... ADMBase StaticConformal IDAnalyticBH ..."
 
-  einstein::use_conformal = "yes"
+  admbase::metric_type = "static conformal"
 
-  einstein::initial_data = "multiple_misner_bh"
+  admbase::initial_data = "multiple_misner_bh"
 
   idanalyticbh::misner_nbh = 3
   idanalyticbh::mu = 4
@@ -389,11 +389,11 @@ To initialise a run with a pair of Brill-Lindquist black holes with
 masses $1$ and $2$ and located at $\pm 1$ on the $y$-axis, a set of
 parameters such as the following could be used:
 \begin{verbatim}
-  ActiveThorns = "... Einstein IDAnalyticBH ..."
+  ActiveThorns = "... ADMBase StaticConformal IDAnalyticBH ..."
 
-  einstein::use_conformal = "yes"
+  admbase::metric_type = "static conformal"
 
-  einstein::initial_data = "bl_bh"
+  admbase::initial_data = "bl_bh"
 
   idanalyticbh::bl_nbh = 2
 
