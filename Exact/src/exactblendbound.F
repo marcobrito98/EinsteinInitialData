@@ -123,7 +123,7 @@ c     it in so let the computer do it
         exassign(p yz) &&\
         exassign(p zz)
 
-c     Note this plays on the nasty trick that fortran doesn't give a
+c     Note this plays on the nasty trick that fortran doesnt give a
 c     damn about spaces so gxx e is the same as gxxe for the parser...
 c     Grody but effective!
 
@@ -144,7 +144,7 @@ c     Grody but effective!
                        exassign(betaz)
                     endif
 
-c     OK so we don't want to blend so use a goto to jump.
+c     OK so we dont want to blend so use a goto to jump.
                  else
 
 c     Evaluate the linear weighting fraction. Obvious...

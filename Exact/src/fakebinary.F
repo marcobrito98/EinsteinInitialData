@@ -1,7 +1,7 @@
 C     fakebinary.F
 C     Bernd Bruegmann, 6/98
 C
-C     Compute Thorne's four metric that, although not a solution to the 
+C     Compute Thorne s four metric that, although not a solution to the 
 C     Einstein equations, has several characteristic features of a binary
 C     star system. See gr-qc/98......
 

@@ -28,7 +28,7 @@ C     Extrapolate g, K, etc. to the boundary, where slice_data cannot
 C     calculate them, because it cannot take derivatives there. At all
 C     other timesteps cactus will do this automatically.
 
-C     CARSTEN:  I can't find this "boundaries" routine anywhere, so in
+C     CARSTEN:  I can t find this "boundaries" routine anywhere, so in
 C     order to allow the code to compile I commented this line! (MIGUEL)
 
 C     call boundaries(CCTK_FARGUMENTS)

@@ -9,7 +9,7 @@
      $     guxx, guyy, guzz, guxy, guyz, guzx)
 
 c     The metric given here corresponds to a constant
-c     density star, also known as a `Schwarzschild' star.
+c     density star, also known as a "Schwarzschild" star.
 c     It is obviously not a vacuum solution, so if someone
 c     wants to evolve it, we will need to add here the
 c     matter variables.  For the moment, only the metric

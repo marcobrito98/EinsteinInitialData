@@ -9,7 +9,7 @@
      $     guxx, guyy, guzz, guxy, guyz, guzx)
 
 c     The metric given here is not a solution of
-c     Einstein's equations!  It is nevertheless
+c     Einsteins equations!  It is nevertheless
 c     useful for tests since it has a particularly
 c     nice geometry.  It is a static, spherically
 c     symmetric metric with no shift.
@@ -30,7 +30,7 @@ c
 c     So close in, and far away we have a flat metric.
 c     In the middle region, I take R to be smaller than
 c     r, but still larger than zero.  This deficit in
-c     areal radius produces the geometry of a `bag of gold'.
+c     areal radius produces the geometry of a "bag of gold".
 c
 c     The size of the deviation from a flat geometry
 c     is controled by the parameter "bowl_a".
@@ -137,7 +137,7 @@ c     Get parameters of the metric.
 
       end if
 
-c     Multiply the bowl strength `a' with a time evolution factor.
+c     Multiply the bowl strength "a" with a time evolution factor.
 c     The time evolution factor is taken to be a Fermi step centered
 c     in `t0' and with a width `st'.  The size of this step is always
 c     1 so that far in the past we will always have flat space, and
@@ -186,7 +186,7 @@ c        Fermi bowl:
 c                                                  2
 c        rr2 = [ 1 - 1 / ( 1 + exp(-s(r-c)) ) / r ]
 c
-c        Again, this doesn't really go to 1 at the origin, so
+c        Again, this doesnt really go to 1 at the origin, so
 c        I use the same trick as above.
 
          fac = one - two/(dexp(4.0d0*r) + dexp(-4.0d0*r))
