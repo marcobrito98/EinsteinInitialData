@@ -46,11 +46,11 @@ einstein::slicing    = "geodesic"
 IO::outdir         = "test_axioddbh"
 
 IOBasic::outInfo_vars    = "admconstraints::ham einstein::gxx"
-IOBasic::outScalar_vars  = "einstein::metric einstein::curv admconstraints::ADMconstraints"
+IOBasic::outScalar_vars  = "einstein::metric dmconstraints::ham"
 IOBasic::outInfo_every   = 1
 
 IOASCII::out1d_every     = 1
-IOASCII::out1D_vars      = "einstein::shift einstein::metric einstein::curv einstein::lapse admconstraints::ADMconstraints einstein::psi einstein::confac_1derivs einstein::confac_2derivs"
+IOASCII::out1D_vars      = "einstein::shift einstein::metric einstein::lapse admconstraints::ham einstein::psi"
 
 ##################################################################
 
