@@ -107,25 +107,25 @@ void IDAnalyticBH_ParamChecker(CCTK_ARGUMENTS)
     if (bl_nbh > 0)
     {
       sprintf(message,  "  mass %f at (%f,%f,%f)",
-	      bl_M_1,bl_x0_1,bl_y0_1,bl_z0_1);
+              bl_M_1,bl_x0_1,bl_y0_1,bl_z0_1);
       CCTK_INFO(message);
     }
     if (bl_nbh > 1)
     {
       sprintf(message,  "  mass %f at (%f,%f,%f)",
-	      bl_M_2,bl_x0_2,bl_y0_2,bl_z0_2);
+              bl_M_2,bl_x0_2,bl_y0_2,bl_z0_2);
       CCTK_INFO(message);
     }
     if (bl_nbh > 2)
     {
       sprintf(message,  "  mass %f at (%f,%f,%f)",
-	      bl_M_3,bl_x0_3,bl_y0_3,bl_z0_3);
+              bl_M_3,bl_x0_3,bl_y0_3,bl_z0_3);
       CCTK_INFO(message);
     }
     if (bl_nbh > 3)
     {
       sprintf(message,  "  mass %f at (%f,%f,%f)",
-	      bl_M_4,bl_x0_4,bl_y0_4,bl_z0_4);
+              bl_M_4,bl_x0_4,bl_y0_4,bl_z0_4);
       CCTK_INFO(message);
     }
     free(message);

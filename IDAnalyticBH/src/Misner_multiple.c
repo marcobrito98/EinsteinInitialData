@@ -74,7 +74,7 @@ void Misner_multiple(CCTK_ARGUMENTS)
     {
       CCTK_VWarn(0, __LINE__, __FILE__, CCTK_THORNSTRING,
 "Misner_multiple(): impossible value for conformal_storage=\"%s\"!",
-		 conformal_storage);				/*NOTREACHED*/
+                 conformal_storage);                            /*NOTREACHED*/
     }
   }
 

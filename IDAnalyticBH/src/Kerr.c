@@ -100,7 +100,7 @@ void KerrID(CCTK_ARGUMENTS)
     {
       CCTK_VWarn(0, __LINE__, __FILE__, CCTK_THORNSTRING,
 "KerrID(): impossible value for conformal_storage=\"%s\"!",
-		 conformal_storage);				/*NOTREACHED*/
+                 conformal_storage);                            /*NOTREACHED*/
     }
   }      
 
@@ -272,14 +272,14 @@ void KerrID(CCTK_ARGUMENTS)
     kzz[i] = 0;
 
     /*    probable convention to define conformal extrinsic curvature:
-	  if (*conformal_state == CONFORMAL_METRIC)
-	  {
-	  tmp=Psi*Psi;
-	  kxx[i] *=tmp;
-	  kxy[i] *=tmp;
-	  kxz[i] *=tmp;
-	  kyy[i] *=tmp;
-	  kyz[i] *=tmp;
+          if (*conformal_state == CONFORMAL_METRIC)
+          {
+          tmp=Psi*Psi;
+          kxx[i] *=tmp;
+          kxy[i] *=tmp;
+          kxz[i] *=tmp;
+          kyy[i] *=tmp;
+          kyz[i] *=tmp;
       }*/
 
     /* shift */
