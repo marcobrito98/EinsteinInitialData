@@ -15,6 +15,8 @@
 #include "cctk_Arguments.h"
 #include "cctk_Parameters.h"
 
+#include "IDAnalyticBH.h"
+
 static const char *rcsid = "$Header$";
 
 CCTK_FILEVERSION(CactusEinstein_IDAnalyticBH_Misner_multiple_c)
@@ -198,19 +200,19 @@ void Misner_multiple(CCTK_ARGUMENTS)
       gzz[i] = gxx[i];
     }
   }
-  memset (gxy, 0, npoints * sizeof (gxy [0]));
-  memset (gxz, 0, npoints * sizeof (gxz [0]));
-  memset (gyz, 0, npoints * sizeof (gyz [0]));
+  IDAnalyticBH_zero_CCTK_REAL_array(npoints, gxy);
+  IDAnalyticBH_zero_CCTK_REAL_array(npoints, gxz);
+  IDAnalyticBH_zero_CCTK_REAL_array(npoints, gyz);
 
   /*     Time-symmetric data
    *     -------------------
    */
 
-  memset (kxx, 0, npoints * sizeof (kxx [0]));
-  memset (kyy, 0, npoints * sizeof (kyy [0]));
-  memset (kzz, 0, npoints * sizeof (kzz [0]));
-  memset (kxy, 0, npoints * sizeof (kxy [0]));
-  memset (kxz, 0, npoints * sizeof (kxz [0]));
-  memset (kyz, 0, npoints * sizeof (kyz [0]));
+  IDAnalyticBH_zero_CCTK_REAL_array(npoints, kxx);
+  IDAnalyticBH_zero_CCTK_REAL_array(npoints, kxy);
+  IDAnalyticBH_zero_CCTK_REAL_array(npoints, kxz);
+  IDAnalyticBH_zero_CCTK_REAL_array(npoints, kyy);
+  IDAnalyticBH_zero_CCTK_REAL_array(npoints, kyz);
+  IDAnalyticBH_zero_CCTK_REAL_array(npoints, kzz);
 
 }

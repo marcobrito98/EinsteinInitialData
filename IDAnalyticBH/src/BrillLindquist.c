@@ -16,6 +16,8 @@
 #include "cctk_Arguments.h"
 #include "cctk_Parameters.h"
 
+#include "IDAnalyticBH.h"
+
 static const char *rcsid = "$Header$";
 CCTK_FILEVERSION(CactusEinstein_IDAnalyticBH_BrillLindquist_c)
 
@@ -102,18 +104,18 @@ void BrillLindquist(CCTK_ARGUMENTS)
   
   if (make_conformal_derivs == 1)
   {
-    memset (psix, 0, npoints * sizeof (CCTK_REAL));
-    memset (psiy, 0, npoints * sizeof (CCTK_REAL));
-    memset (psiz, 0, npoints * sizeof (CCTK_REAL));
+    IDAnalyticBH_zero_CCTK_REAL_array(npoints, psix);
+    IDAnalyticBH_zero_CCTK_REAL_array(npoints, psiy);
+    IDAnalyticBH_zero_CCTK_REAL_array(npoints, psiz);
 
     if(*conformal_state > 2)
     {
-      memset (psixx, 0, npoints * sizeof (CCTK_REAL));
-      memset (psixy, 0, npoints * sizeof (CCTK_REAL));
-      memset (psixz, 0, npoints * sizeof (CCTK_REAL));
-      memset (psiyy, 0, npoints * sizeof (CCTK_REAL));
-      memset (psiyz, 0, npoints * sizeof (CCTK_REAL));
-      memset (psizz, 0, npoints * sizeof (CCTK_REAL));
+      IDAnalyticBH_zero_CCTK_REAL_array(npoints, psixx);
+      IDAnalyticBH_zero_CCTK_REAL_array(npoints, psixy);
+      IDAnalyticBH_zero_CCTK_REAL_array(npoints, psixz);
+      IDAnalyticBH_zero_CCTK_REAL_array(npoints, psiyy);
+      IDAnalyticBH_zero_CCTK_REAL_array(npoints, psiyz);
+      IDAnalyticBH_zero_CCTK_REAL_array(npoints, psizz);
     }
   }
 
@@ -231,10 +233,10 @@ void BrillLindquist(CCTK_ARGUMENTS)
   /*     Time-symmetric data
    *     -------------------
    */
-  memset (kxx, 0, npoints * sizeof (CCTK_REAL));
-  memset (kyy, 0, npoints * sizeof (CCTK_REAL));
-  memset (kzz, 0, npoints * sizeof (CCTK_REAL));
-  memset (kxy, 0, npoints * sizeof (CCTK_REAL));
-  memset (kxz, 0, npoints * sizeof (CCTK_REAL));
-  memset (kyz, 0, npoints * sizeof (CCTK_REAL));
+  IDAnalyticBH_zero_CCTK_REAL_array(npoints, kxx);
+  IDAnalyticBH_zero_CCTK_REAL_array(npoints, kxy);
+  IDAnalyticBH_zero_CCTK_REAL_array(npoints, kxz);
+  IDAnalyticBH_zero_CCTK_REAL_array(npoints, kyy);
+  IDAnalyticBH_zero_CCTK_REAL_array(npoints, kyz);
+  IDAnalyticBH_zero_CCTK_REAL_array(npoints, kzz);
 }
