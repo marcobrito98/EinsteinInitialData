@@ -22,7 +22,7 @@ KEYWORD brill_solver "Which elliptic solver to use"
 KEYWORD brill_bound "Which boundary condition to use"
 {
   "const" :: "constant boundary: set brill_const_v0"
-  "robin" :: "Robin boundary: set brill_robin_falloff, brill_robin_inf
+  "robin" :: "Robin boundary: set brill_robin_falloff, brill_robin_inf"
 } "const"
 
 CCTK_REAL brill_const_v0 "Value of constant BC"
