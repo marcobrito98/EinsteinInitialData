@@ -97,18 +97,21 @@ REAL bl_M_4 "Mass of 4th BL hole"
 : ::
 } 1.0
 
-#friend:einstein
 
-#EXTENDS LOGICAL use_conformal ""
-#{ 
-#}
+friend:einstein
 
-#EXTENDS KEYWORD initial_data ""
-#{
-#  "schwarzschild" :: "One Schwarzshild black hole"
-#} 
+EXTENDS LOGICAL use_conformal ""
+{ 
+}
 
-#EXTENDS KEYWORD lapseinit ""
-#{
-#  "schwarz" :: "Set lapse to Schwarzschild"
-#}
+EXTENDS KEYWORD initial_data ""
+{
+  "bl_bh"         :: "Brill Lindquist black holes"
+  "misner_bh"     :: "Misner black holes"
+  "schwarzschild" :: "One Schwarzshild black hole"
+} 
+
+EXTENDS KEYWORD lapseinit ""
+{
+  "schwarz" :: "Set lapse to Schwarzschild"
+}
