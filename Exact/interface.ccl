@@ -1,0 +1,27 @@
+# Interface definition for thorn Exact
+# $Header$
+
+implements: exact
+inherits: einstein
+
+private:
+
+real Exact_slice type=GF
+{
+  slicex,
+  slicey,
+  slicez,
+  slicet
+} "position of an arbitrary slice in exact solution spacetime"
+
+real Exact_slicetemp type=GF
+{
+  slicetmp1x,
+  slicetmp1y,
+  slicetmp1z,
+  slicetmp1t,
+  slicetmp2x,
+  slicetmp2y,
+  slicetmp2z,
+  slicetmp2t
+} "Temporary grid functions"

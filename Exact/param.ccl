@@ -1,0 +1,315 @@
+# Parameter definitions for thorn Exact
+# $Header$
+
+shares: grid
+
+shares: einstein
+
+EXTENDS KEYWORD slicing ""
+{
+  "exact" :: Use lapse from exact solution
+} ""
+
+EXTENDS KEYWORD shift ""
+{
+  "exact" :: Use shift from exact solution
+} ""
+
+
+restricted:
+
+# General parameters
+
+KEYWORD exactmodel "The exact solution used in thorn exact"
+{
+  "minkowski"   :: Minkowski spacetime
+  "boostrot"    :: Boost rotation symmetric spacetime
+  "finkelstein" :: Black hole in Eddington-Finkelstein coordinates
+  "kerrschild"  :: Kerr-Schild form of boosted rotating black hole
+  "flatschwarz" :: Schwazschild black-hole with flat spatial metric
+  "starschwarz" :: Schwazschild (constant density) star
+  "novikov"     :: Black hole in Novikov coordinates
+  "multiBH"     :: Maximally charged multi BH solutions
+  "bowl"        :: Non-Einstein bowl (bag-of-gold) spacetime
+  "fakebinary"  :: Non-Einstein fake-binary of Thorn et al
+} "minkowski"
+
+
+# Parameters for the blended boundaries.
+
+BOOLEAN exblend_Ks "Blend the K variables with the exact solution?"
+{
+} "yes"
+
+BOOLEAN exblend_gs "Blend the g variables with the exact solution?"
+{
+} "yes"
+
+BOOLEAN exblend_gauge "Blend the lapse and shift with the exact solution?"
+{
+} "yes"
+
+REAL exblend_rout "Outer boundary of blending region"
+{
+: :: "Positive means radial value, negative means use outer bound of grid"
+} -1.0
+
+REAL exblend_width "Width of blending zone"
+{
+: :: Positive means width in radius, negative means width = exbeldn_width*dx"
+} -3.0
+
+
+# Parameters for slice
+
+REAL slice_gauss_ampl "Amplitude of Gauss slice in exact"
+{
+0.0:  ::  "Positive please"
+} 0.0
+
+REAL slice_gauss_width "Width of Gauss slice in exact"
+{
+0.0:  ::  "Positive please"
+} 1.0
+
+
+# Parameters for boostrot
+
+REAL boostrotscale "Length scale of boost rotation data"
+{
+0.0:  ::  "Positive please"
+} 1.0
+
+REAL boostrotstrength "Dimensionless strength parameter"
+{
+0.0:  ::  "Positive please"
+} 0.1
+
+REAL boostrotsafedistance "Dimensionless safety distance"
+{
+0.0:  ::  "Positive please"
+} 0.01
+
+
+# Parameters for finkelstein and kerrschild.
+
+REAL kerrschild_boostv "Boost speed of black hole"
+{
+:  ::  "Positive or negative"
+} 0.0
+
+REAL kerrschild_eps "Fudge parameter"
+{
+:  ::  "Positive or negative"
+} 1.e-16
+
+REAL kerrschild_m "Black hole mass"
+{
+0.0:  ::  "Positive please"
+} 1.0
+
+REAL kerrschild_a "Black hole a = J/m"
+{
+0.0:  ::  "Positive or negative"
+} 0.0
+
+
+# Parameters for Schwarzschild star.
+
+REAL starschwarz_m "Mass of Schwarzschild star"
+{
+0.0:  ::  "Positive please"
+} 1.0
+
+
+REAL  starschwarz_r "Radius of Schwarzschild star"
+{
+0.0:  ::  "Positive please"
+} 1.0
+
+
+# Parameters for bowl metric.
+
+KEYWORD bowl_type "Type of bowl metric"
+{
+  gauss :: "Gaussian bowl"
+  fermi :: "Fermi bowl"
+} "gauss"
+
+BOOLEAN bowl_evolve "Evolving bowl metric?"
+{
+} "no"
+
+REAL bowl_a "Bowl strength"
+{
+0.0:  ::  "Positive please" 
+} 0.5
+
+REAL bowl_c "Center of deformation"
+{
+0.0:  ::  "Positive please" 
+} 2.5
+
+REAL bowl_s "Width of deformation"
+{
+0.0:  ::  "Positive please" 
+} 2.5
+
+REAL bowl_dx "Scale factor in x direction"
+{
+0.0:  ::  "Positive please" 
+} 1.0
+
+REAL bowl_dy "Scale factor in y direction"
+{
+0.0:  ::  "Positive please" 
+} 1.0
+
+REAL bowl_dz "Scale factor in z direction"
+{
+0.0:  ::  "Positive please" 
+} 1.0
+
+REAL bowl_t0 "Center of Fermi step in time"
+{
+0.0:  ::  "Positive please" 
+} 1.0
+
+REAL bowl_st "Width of Fermi step in time"
+{
+0.0:  ::  "Positive please" 
+} 1.0
+
+
+# Parameters for Thorne's fake finary.
+
+KEYWORD fakebinary_atype "Thorne's binary type"
+{
+  "constant"  ::
+  "quadrupole ::
+} "constant"
+
+BOOLEAN fakebinary_retarded "Use retarded time?"
+{
+} "no"
+
+REAL fakebinary_eps "Thorne's binary: fudge parameter"
+{
+0.0: :: "Positive please"
+} 1.e-16
+
+REAL fakebinary_a0 "Thorne's binary: initial separation"
+{
+0.0: :: "Positive please"
+} 5.0
+
+REAL fakebinary_omega0 "Thorne's binary: initial angular frequency"
+{
+: :: "Positive or negative"
+} 1.0
+
+REAL fakebinary_m "Thorne's binary: mass"
+{
+0.0: :: "Positive please"
+} 0.1
+
+REAL fakebinary_bround "Thorne's binary: smoothing for Newtonian potential"
+{
+: :: "Positive or negative"
+} 0.0
+
+
+# Parameters for multiBH.
+
+INT kt_nBH "number of black holes 0-4"
+{
+0: :: "Positive please"
+} 0
+
+REAL kt_hubble "Hubble constant= pm sqrt{Lambda/3}"
+{
+: :: "Positive or negative"
+} 0.0
+
+REAL m_bh1 "mass of black hole 1"
+{
+0.0: :: "Positive please"
+} 0.0
+
+REAL m_bh2 "mass of black hole 2"
+{
+0.0: :: "Positive please"
+} 0.0
+
+REAL m_bh3 "mass of black hole 3"
+{
+0.0: :: "Positive please"
+} 0.0
+
+REAL m_bh4 "mass of black hole 4"
+{
+0.0: :: "Positive please"
+} 0.0
+
+REAL co_bh1x "x coord of black hole 1"
+{
+: :: "Positive or negative"
+} 0.0
+
+REAL co_bh1y "y coord of black hole 1"
+{
+: :: "Positive or negative"
+} 0.0
+
+REAL co_bh1z "z coord of black hole 1"
+{
+: :: "Positive or negative"
+} 0.0
+
+REAL co_bh2x "x coord of black hole 2"
+{
+: :: "Positive or negative"
+} 0.0
+
+REAL co_bh2y "y coord of black hole 2"
+{
+: :: "Positive or negative"
+} 0.0
+
+REAL co_bh2z "z coord of black hole 2"
+{
+: :: "Positive or negative"
+} 0.0
+
+REAL co_bh3x "x coord of black hole 3"
+{
+: :: "Positive or negative"
+} 0.0
+
+REAL co_bh3y "y coord of black hole 3"
+{
+: :: "Positive or negative"
+} 0.0
+
+REAL co_bh3z "z coord of black hole 3"
+{
+: :: "Positive or negative"
+} 0.0
+
+REAL co_bh4x "x coord of black hole 4"
+{
+: :: "Positive or negative"
+} 0.0
+
+REAL co_bh4y "y coord of black hole 4"
+{
+: :: "Positive or negative"
+} 0.0
+
+REAL co_bh4z "z coord of black hole 4"
+{
+: :: "Positive or negative"
+} 0.0
+
+
+
