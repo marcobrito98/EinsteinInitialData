@@ -82,27 +82,34 @@ c     Set up conformal metric.
 
       if (CCTK_EQUALS(metric_type,"static conformal")) then
       
-         conformal_state = 3
+         conformal_state = 1
          do k=1,nz
             do j=1,ny
                do i=1,nx
                   psi(i,j,k) = one
-                  psix(i,j,k) = zero
-                  psiy(i,j,k) = zero
-                  psiz(i,j,k) = zero
-                  psixx(i,j,k) = zero
-                  psiyy(i,j,k) = zero
-                  psizz(i,j,k) = zero
-                  psixy(i,j,k) = zero
-                  psixz(i,j,k) = zero
-                  psiyz(i,j,k) = zero
+                  if (CCTK_Equals(conformal_storage,"factor").ne.1) then
+c     (.not. CCTK_EQUALS gives a parse error, I have no idea why)
+                     psix(i,j,k) = zero
+                     psiy(i,j,k) = zero
+                     psiz(i,j,k) = zero
+                     conformal_state = 2
+                  end if
+                  if (CCTK_EQUALS(conformal_storage,"factor+derivs+2nd derivs")) then
+                     psixx(i,j,k) = zero
+                     psiyy(i,j,k) = zero
+                     psizz(i,j,k) = zero
+                     psixy(i,j,k) = zero
+                     psixz(i,j,k) = zero
+                     psiyz(i,j,k) = zero
+                     conformal_state=3
+                  end if
                end do
             end do
          end do
 
       else
 
-         conformal_state = 0
+c     conformal_state = 0 -- metric_type "physical" does not allocate storage for conformal_state!
 
       end if
          

@@ -10,6 +10,10 @@ EXTENDS KEYWORD initial_data
 
 USES KEYWORD metric_type
 
+shares: StaticConformal
+
+USES KEYWORD conformal_storage
+
 
 private:
 
