@@ -41,7 +41,7 @@ cactus::cctk_final_time    = 4.0
 #  - the output format
 #  - frequency , first iteration, resolution of output, uniq_vertices flag
 
-IsoSurfacer::isosurfacer = "{(einstein::grr) (0.9,0.8,0.7,0.5) (SOCK) (1, 1, 1, 1)}"
+IsoSurfacer::isosurfacer = "{(einstein::gzz) (0.999,1.001) (SOCK) (1, 1, 1, 1)}"
 
 IsoSurfacer::allow_empty_sends = "yes"
 
