@@ -1,9 +1,12 @@
 # Parameter definitions for thorn Exact
 # $Header$
 
+
+
 shares: grid
 
 shares: einstein
+
 
 EXTENDS KEYWORD initial_data ""
 {
@@ -37,7 +40,10 @@ EXTENDS KEYWORD evolution_system ""
 } ""
 
 
-restricted:
+# In view of using this thorn in conjunction with other thorns
+# his parameters are declared global
+
+global:
 
 # General parameters
 
@@ -54,6 +60,13 @@ KEYWORD exactmodel "The exact solution used in thorn exact"
   "bowl"        :: Non-Einstein bowl (bag-of-gold) spacetime
   "fakebinary"  :: Non-Einstein fake-binary of Thorn et al
   "flatfunny"   :: Minkowski spacetime in non-trivial spatial coordinates
+  "bianchiI"    :: Bianchi I spacetime
+  "rob-wal"     :: Robertson-Walker cosmology (near t= 0,pure radiation case)
+  "godel"       :: Godel spacetime
+  "kerr"        :: Kerr spacetime in cartesian coordinates
+  "desitter"    :: DeSitter spacetime (R-W cosmology, near t=0, p=0)
+  "kasner"      :: Kasner like spacetime
+  "milne"       :: De Milne spacetime for pre-big-bang cosmology
 } "minkowski"
 
 
@@ -345,3 +358,48 @@ REAL flatfunny_s "Width of gaussian"
 {
 0.0: :: "Positive please"
 } 1.0
+
+
+# Parameters for Kasner_like metric
+REAL kasner_q "...  "
+{
+0.0:100 :: "Can be also negativ, but here is ...     "
+} 0.66666
+
+
+# Parameters for bianchiI
+REAL bia "Parameter for bianchi I space-time"
+{
+0.0:1.7 :: "Positive please"
+} 0.1
+
+# Parameters for godel
+
+REAL godel_a "Parameter for Godel space-time "
+{
+0.0:1.7 :: "Positive please"
+} 0.1
+
+# Parameters for kerr
+
+REAL kerrc_a "Paramater for Kerr space-time in cartezian coord"
+{
+0.0:7.0 :: "Positive please"
+} 1.0
+
+REAL kerrc_m "Kerr mass"
+{
+0.0:7.0   :: "Positive please"
+} 1.0
+
+# Paramaters for DeSitter
+
+REAL desitt_a "Parameter for DeSitter space-time"
+{
+0.0:1000.0 :: "Positive please"
+} 0.1
+
+REAL desitt_b "Parameter for DeSitter space-time"
+{
+0.0:1000.0 :: "Positive please"
+} 0.1
