@@ -23,12 +23,12 @@
  * prototypes for routines called directly by the Cactus scheduler
  */
 
-void IDAnalyticBH_ParamChecker(CCTK_ARGUMENTS);		/* ParamChecker.c */
-void Schwarzschild(CCTK_ARGUMENTS);			/* Schwarzschild.c */
-void KerrID(CCTK_ARGUMENTS);				/* Kerr.c */
-void BrillLindquist(CCTK_ARGUMENTS);			/* BrillLindquist.c */
-void Misner_standard(CCTK_ARGUMENTS);			/* Misner_standard.c */
-void Misner_multiple(CCTK_ARGUMENTS);			/* Misner_multiple.c */
+void IDAnalyticBH_ParamChecker(CCTK_ARGUMENTS);         /* ParamChecker.c */
+void Schwarzschild(CCTK_ARGUMENTS);                     /* Schwarzschild.c */
+void KerrID(CCTK_ARGUMENTS);                            /* Kerr.c */
+void BrillLindquist(CCTK_ARGUMENTS);                    /* BrillLindquist.c */
+void Misner_standard(CCTK_ARGUMENTS);                   /* Misner_standard.c */
+void Misner_multiple(CCTK_ARGUMENTS);                   /* Misner_multiple.c */
 
 /******************************************************************************/
 
