@@ -106,7 +106,7 @@ c     Check for errors.
 
 c     Synchronization and symmetry boundaries.
 
-      call CCTK_SyncGroup(cctkGH,"idbrilldata::brillconf")
+      call CCTK_SyncGroup(ierr,cctkGH,"idbrilldata::brillconf")
       call CartSymGN(ierr,cctkGH,"idbrilldata::brillconf")
 
 c     Reconstruct physical metric.
