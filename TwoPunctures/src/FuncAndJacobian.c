@@ -7,6 +7,7 @@
 #include <math.h>
 #include <ctype.h>
 #include <time.h>
+#include "cctk.h"
 #include "cctk_Parameters.h"
 #include "TP_utilities.h"
 #include "TwoPunctures.h"
@@ -188,18 +189,77 @@ Derivatives_AB3 (int nvar, int n1, int n2, int n3, derivs v)
 
 // -------------------------------------------------------------------------------
 void
-F_of_v (int nvar, int n1, int n2, int n3, derivs v, double *F,
-	derivs u)
+F_of_v (CCTK_POINTER_TO_CONST cctkGH,
+        int nvar, int n1, int n2, int n3, derivs v, double *F,
+        derivs u)
 {				//      Calculates the left hand sides of the non-linear equations F_m(v_n)=0
   //      and the function u (u.d0[]) as well as its derivatives
   //      (u.d1[], u.d2[], u.d3[], u.d11[], u.d12[], u.d13[], u.d22[], u.d23[], u.d33[])
   //      at interior points and at the boundaries "+/-"
+  DECLARE_CCTK_PARAMETERS;
   int i, j, k, ivar, indx;
   double al, be, A, B, X, R, x, r, phi, y, z, Am1, *values;
   derivs U;
+  CCTK_REAL *sources;
 
   values = dvector (0, nvar - 1);
   allocate_derivs (&U, nvar);
+
+  if (par_use_sources)
+  {
+    CCTK_REAL *s_x, *s_y, *s_z;
+    CCTK_INT i3D;
+    s_x    =calloc(n1*n2*n3, sizeof(CCTK_REAL));
+    s_y    =calloc(n1*n2*n3, sizeof(CCTK_REAL));
+    s_z    =calloc(n1*n2*n3, sizeof(CCTK_REAL));
+    sources=calloc(n1*n2*n3, sizeof(CCTK_REAL));
+    for (i = 0; i < n1; i++)
+      for (j = 0; j < n2; j++)
+        for (k = 0; k < n3; k++)
+        {
+          i3D = i*n2*n3 + j*n3 + k;
+
+          al = Pih * (2 * i + 1) / n1;
+          A = -cos (al);
+          be = Pih * (2 * j + 1) / n2;
+          B = -cos (be);
+          phi = 2. * Pi * k / n3;
+
+          Am1 = A - 1;
+          for (ivar = 0; ivar < nvar; ivar++)
+          {
+            indx = Index (ivar, i, j, k, nvar, n1, n2, n3);
+            U.d0[ivar] = Am1 * v.d0[indx];        // U
+            U.d1[ivar] = v.d0[indx] + Am1 * v.d1[indx];        // U_A
+            U.d2[ivar] = Am1 * v.d2[indx];        // U_B
+            U.d3[ivar] = Am1 * v.d3[indx];        // U_3
+            U.d11[ivar] = 2 * v.d1[indx] + Am1 * v.d11[indx];        // U_AA
+            U.d12[ivar] = v.d2[indx] + Am1 * v.d12[indx];        // U_AB
+            U.d13[ivar] = v.d3[indx] + Am1 * v.d13[indx];        // U_AB
+            U.d22[ivar] = Am1 * v.d22[indx];        // U_BB
+            U.d23[ivar] = Am1 * v.d23[indx];        // U_B3
+            U.d33[ivar] = Am1 * v.d33[indx];        // U_33
+          }
+          // Calculation of (X,R) and
+          // (U_X, U_R, U_3, U_XX, U_XR, U_X3, U_RR, U_R3, U_33)
+          AB_To_XR (nvar, A, B, &X, &R, U);
+          // Calculation of (x,r) and
+          // (U, U_x, U_r, U_3, U_xx, U_xr, U_x3, U_rr, U_r3, U_33)
+          C_To_c (nvar, X, R, &(s_x[i3D]), &r, U);
+          // Calculation of (y,z) and
+          // (U, U_x, U_y, U_z, U_xx, U_xy, U_xz, U_yy, U_yz, U_zz)
+          rx3_To_xyz (nvar, s_x[i3D], r, phi, &(s_y[i3D]), &(s_z[i3D]), U);
+        }
+    Rho_ADM(cctkGH, n1*n2*n3, sources, s_x, s_y, s_z);
+    free(s_z);
+    free(s_y);
+    free(s_x);
+  }
+  else
+    for (i = 0; i < n1; i++)
+      for (j = 0; j < n2; j++)
+        for (k = 0; k < n3; k++)
+          sources[i*n1*n2 + j*n2 + k]=0.0;
 
   Derivatives_AB3 (nvar, n1, n2, n3, v);
 
@@ -210,55 +270,58 @@ F_of_v (int nvar, int n1, int n2, int n3, derivs v, double *F,
       for (k = 0; k < n3; k++)
       {
 
-	al = Pih * (2 * i + 1) / n1;
-	A = -cos (al);
-	be = Pih * (2 * j + 1) / n2;
-	B = -cos (be);
-	phi = 2. * Pi * k / n3;
+        al = Pih * (2 * i + 1) / n1;
+        A = -cos (al);
+        be = Pih * (2 * j + 1) / n2;
+        B = -cos (be);
+        phi = 2. * Pi * k / n3;
 
-	Am1 = A - 1;
-	for (ivar = 0; ivar < nvar; ivar++)
-	{
-	  indx = Index (ivar, i, j, k, nvar, n1, n2, n3);
-	  U.d0[ivar] = Am1 * v.d0[indx];	// U
-	  U.d1[ivar] = v.d0[indx] + Am1 * v.d1[indx];	// U_A
-	  U.d2[ivar] = Am1 * v.d2[indx];	// U_B
-	  U.d3[ivar] = Am1 * v.d3[indx];	// U_3
-	  U.d11[ivar] = 2 * v.d1[indx] + Am1 * v.d11[indx];	// U_AA
-	  U.d12[ivar] = v.d2[indx] + Am1 * v.d12[indx];	// U_AB
-	  U.d13[ivar] = v.d3[indx] + Am1 * v.d13[indx];	// U_AB
-	  U.d22[ivar] = Am1 * v.d22[indx];	// U_BB
-	  U.d23[ivar] = Am1 * v.d23[indx];	// U_B3
-	  U.d33[ivar] = Am1 * v.d33[indx];	// U_33
-	}
-	// Calculation of (X,R) and
-	// (U_X, U_R, U_3, U_XX, U_XR, U_X3, U_RR, U_R3, U_33)
-	AB_To_XR (nvar, A, B, &X, &R, U);
-	// Calculation of (x,r) and
-	// (U, U_x, U_r, U_3, U_xx, U_xr, U_x3, U_rr, U_r3, U_33)
-	C_To_c (nvar, X, R, &x, &r, U);
-	// Calculation of (y,z) and
-	// (U, U_x, U_y, U_z, U_xx, U_xy, U_xz, U_yy, U_yz, U_zz)
-	rx3_To_xyz (nvar, x, r, phi, &y, &z, U);
-	NonLinEquations (A, B, X, R, x, r, phi, y, z, U, values);
-	for (ivar = 0; ivar < nvar; ivar++)
-	{
-	  indx = Index (ivar, i, j, k, nvar, n1, n2, n3);
-	  F[indx] = values[ivar] * FAC;
-	  u.d0[indx] = U.d0[ivar];	//  U
-	  u.d1[indx] = U.d1[ivar];	//      U_x
-	  u.d2[indx] = U.d2[ivar];	//      U_y
-	  u.d3[indx] = U.d3[ivar];	//      U_z
-	  u.d11[indx] = U.d11[ivar];	//      U_xx
-	  u.d12[indx] = U.d12[ivar];	//      U_xy
-	  u.d13[indx] = U.d13[ivar];	//      U_xz
-	  u.d22[indx] = U.d22[ivar];	//      U_yy
-	  u.d23[indx] = U.d23[ivar];	//      U_yz
-	  u.d33[indx] = U.d33[ivar];	//      U_zz
-	}
+        Am1 = A - 1;
+        for (ivar = 0; ivar < nvar; ivar++)
+        {
+          indx = Index (ivar, i, j, k, nvar, n1, n2, n3);
+          U.d0[ivar] = Am1 * v.d0[indx];        // U
+          U.d1[ivar] = v.d0[indx] + Am1 * v.d1[indx];        // U_A
+          U.d2[ivar] = Am1 * v.d2[indx];        // U_B
+          U.d3[ivar] = Am1 * v.d3[indx];        // U_3
+          U.d11[ivar] = 2 * v.d1[indx] + Am1 * v.d11[indx];        // U_AA
+          U.d12[ivar] = v.d2[indx] + Am1 * v.d12[indx];        // U_AB
+          U.d13[ivar] = v.d3[indx] + Am1 * v.d13[indx];        // U_AB
+          U.d22[ivar] = Am1 * v.d22[indx];        // U_BB
+          U.d23[ivar] = Am1 * v.d23[indx];        // U_B3
+          U.d33[ivar] = Am1 * v.d33[indx];        // U_33
+        }
+        // Calculation of (X,R) and
+        // (U_X, U_R, U_3, U_XX, U_XR, U_X3, U_RR, U_R3, U_33)
+        AB_To_XR (nvar, A, B, &X, &R, U);
+        // Calculation of (x,r) and
+        // (U, U_x, U_r, U_3, U_xx, U_xr, U_x3, U_rr, U_r3, U_33)
+        C_To_c (nvar, X, R, &x, &r, U);
+        // Calculation of (y,z) and
+        // (U, U_x, U_y, U_z, U_xx, U_xy, U_xz, U_yy, U_yz, U_zz)
+        rx3_To_xyz (nvar, x, r, phi, &y, &z, U);
+        NonLinEquations (sources[i*n2*n3 + j*n3 + k],
+                         A, B, X, R, x, r, phi, y, z, U, values);
+        for (ivar = 0; ivar < nvar; ivar++)
+        {
+          indx = Index (ivar, i, j, k, nvar, n1, n2, n3);
+          F[indx] = values[ivar] * FAC;
+          u.d0[indx] = U.d0[ivar];        //  U
+          u.d1[indx] = U.d1[ivar];        //      U_x
+          u.d2[indx] = U.d2[ivar];        //      U_y
+          u.d3[indx] = U.d3[ivar];        //      U_z
+          u.d11[indx] = U.d11[ivar];        //      U_xx
+          u.d12[indx] = U.d12[ivar];        //      U_xy
+          u.d13[indx] = U.d13[ivar];        //      U_xz
+          u.d22[indx] = U.d22[ivar];        //      U_yy
+          u.d23[indx] = U.d23[ivar];        //      U_yz
+          u.d33[indx] = U.d33[ivar];        //      U_zz
+        }
       }
     }
   }
+  if (par_use_sources)
+    free(sources);
   free_dvector (values, 0, nvar - 1);
   free_derivs (&U, nvar);
 }

@@ -46,9 +46,9 @@ TwoPunctures (CCTK_ARGUMENTS)
     allocate_derivs (&v, ntotal);
 
     CCTK_INFO ("Solving puncture equation");
-    Newton (nvar, n1, n2, n3, v, Newton_tol, Newton_maxit);
+    Newton (cctkGH, nvar, n1, n2, n3, v, Newton_tol, Newton_maxit);
 
-    F_of_v (nvar, n1, n2, n3, v, F, u);
+    F_of_v (cctkGH, nvar, n1, n2, n3, v, F, u);
     
     /* print out ADM mass, eq.: \Delta M_ADM=2*r*u=4*b*V for A=1,B=0,phi=0 */
     admMass = (par_m_plus + par_m_minus

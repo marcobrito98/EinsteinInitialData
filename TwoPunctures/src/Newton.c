@@ -173,7 +173,8 @@ relax (double *dv, int nvar, int n1, int n2, int n3,
 
 // -----------------------------------------------------------------------------------
 void
-TestRelax (int nvar, int n1, int n2, int n3, derivs v,
+TestRelax (CCTK_POINTER_TO_CONST cctkGH,
+     int nvar, int n1, int n2, int n3, derivs v,
 	   double *dv)
 {
   DECLARE_CCTK_PARAMETERS;
@@ -190,7 +191,7 @@ TestRelax (int nvar, int n1, int n2, int n3, derivs v,
   cols = imatrix (0, ntotal - 1, 0, maxcol - 1);
   ncols = ivector (0, ntotal - 1);
 
-  F_of_v (nvar, n1, n2, n3, v, F, u);
+  F_of_v (cctkGH, nvar, n1, n2, n3, v, F, u);
 
   SetMatrix_JFD (nvar, n1, n2, n3, u, ncols, cols, JFD);
 
@@ -225,8 +226,9 @@ TestRelax (int nvar, int n1, int n2, int n3, derivs v,
 
 // -----------------------------------------------------------------------------------
 int
-bicgstab (int nvar, int n1, int n2, int n3, derivs v,
-	  derivs dv, int output, int itmax, double tol, double *normres)
+bicgstab (CCTK_POINTER_TO_CONST cctkGH,
+          int nvar, int n1, int n2, int n3, derivs v,
+	        derivs dv, int output, int itmax, double tol, double *normres)
 {
   DECLARE_CCTK_PARAMETERS;
   int ntotal = n1 * n2 * n3 * nvar, ii, j;
@@ -246,7 +248,7 @@ bicgstab (int nvar, int n1, int n2, int n3, derivs v,
   cols = imatrix (0, ntotal - 1, 0, maxcol - 1);
   ncols = ivector (0, ntotal - 1);
 
-  F_of_v (nvar, n1, n2, n3, v, F, u);
+  F_of_v (cctkGH, nvar, n1, n2, n3, v, F, u);
   SetMatrix_JFD (nvar, n1, n2, n3, u, ncols, cols, JFD);
 
   /* temporary storage */
@@ -389,7 +391,8 @@ bicgstab (int nvar, int n1, int n2, int n3, derivs v,
 
 // -------------------------------------------------------------------
 void
-Newton (int nvar, int n1, int n2, int n3,
+Newton (CCTK_POINTER_TO_CONST cctkGH,
+  int nvar, int n1, int n2, int n3,
 	derivs v, double tol, int itmax)
 {
   DECLARE_CCTK_PARAMETERS;
@@ -401,7 +404,7 @@ Newton (int nvar, int n1, int n2, int n3,
   allocate_derivs (&dv, ntotal);
   allocate_derivs (&u, ntotal);
 
-/* 	TestRelax(nvar, n1, n2, n3, v, dv.d0); */
+/*         TestRelax(nvar, n1, n2, n3, v, dv.d0); */
   for (j = 0; j < ntotal; j++)
     v.d0[j] = 0;
 
@@ -411,28 +414,28 @@ Newton (int nvar, int n1, int n2, int n3,
   {
     if (it == 0)
     {
-      F_of_v (nvar, n1, n2, n3, v, F, u);
+      F_of_v (cctkGH, nvar, n1, n2, n3, v, F, u);
       dmax = -1;
       for (j = 0; j < ntotal; j++)
-      {
-	if (fabs (F[j]) > dmax)
-	  dmax = fabs (F[j]);
-	dv.d0[j] = 0;
-      }
+        if (fabs (F[j]) > dmax)
+          dmax = fabs (F[j]);
     }
+    for (j = 0; j < ntotal; j++)
+      dv.d0[j] = 0;
     printf ("Newton: it=%d \t |F|=%e\n", it, dmax);
     fflush(stdout);
     ii =
-      bicgstab (nvar, n1, n2, n3, v, dv, verbose, 100, dmax * 1.e-3, &normres);
+      bicgstab (cctkGH,
+                nvar, n1, n2, n3, v, dv, verbose, 100, dmax * 1.e-3, &normres);
     for (j = 0; j < ntotal; j++)
       v.d0[j] -= dv.d0[j];
-    F_of_v (nvar, n1, n2, n3, v, F, u);
+    F_of_v (cctkGH, nvar, n1, n2, n3, v, F, u);
     dmax = -1;
     for (j = 0; j < ntotal; j++)
     {
       if (fabs (F[j]) > dmax)
       {
-	dmax = fabs (F[j]);
+        dmax = fabs (F[j]);
       }
     }
     it += 1;

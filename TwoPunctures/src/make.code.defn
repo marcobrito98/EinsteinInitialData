@@ -2,7 +2,7 @@
 # $Header$
 
 # Source files in this directory
-SRCS = CoordTransf.c Equations.c FuncAndJacobian.c Newton.c TwoPunctures.c TP_utilities.c
+SRCS = CoordTransf.c Equations.c FuncAndJacobian.c Newton.c TwoPunctures.c TP_utilities.c ParamCheck.c
 
 # Subdirectories containing source files
 SUBDIRS = 

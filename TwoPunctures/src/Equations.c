@@ -136,7 +136,8 @@ BY_Aijofxyz (double x, double y, double z, double Aij[3][3])
 //*******           Nonlinear Equations                **********
 //---------------------------------------------------------------
 void
-NonLinEquations (double A, double B, double X, double R,
+NonLinEquations (CCTK_REAL rho_adm,
+     double A, double B, double X, double R,
 		 double x, double r, double phi,
 		 double y, double z, derivs U, double *values)
 {
@@ -154,7 +155,8 @@ NonLinEquations (double A, double B, double X, double R,
   psi7 = psi * psi2 * psi4;
 
   values[0] =
-    U.d11[0] + U.d22[0] + U.d33[0] + 0.125 * BY_KKofxyz (x, y, z) / psi7;
+    U.d11[0] + U.d22[0] + U.d33[0] + 0.125 * BY_KKofxyz (x, y, z) / psi7 +
+    2.0 * Pi * psi4*psi * rho_adm;
 
 }
 

@@ -30,7 +30,8 @@ int Index (int ivar, int i, int j, int k, int nvar, int n1, int n2, int n3);
 void allocate_derivs (derivs * v, int n);
 void free_derivs (derivs * v, int n);
 void Derivatives_AB3 (int nvar, int n1, int n2, int n3, derivs v);
-void F_of_v (int nvar, int n1, int n2, int n3, derivs v,
+void F_of_v (CCTK_POINTER_TO_CONST cctkGH,
+       int nvar, int n1, int n2, int n3, derivs v,
 	     double *F, derivs u);
 void J_times_dv (int nvar, int n1, int n2, int n3, derivs dv,
 		 double *Jdv, derivs u);
@@ -61,7 +62,8 @@ void rx3_To_xyz (int nvar, double x, double r, double phi, double *y,
 // Routines in  "Equations.c"
 double BY_KKofxyz (double x, double y, double z);
 void BY_Aijofxyz (double x, double y, double z, double Aij[3][3]);
-void NonLinEquations (double A, double B, double X, double R,
+void NonLinEquations (CCTK_REAL rho_adm,
+          double A, double B, double X, double R,
 		      double x, double r, double phi,
 		      double y, double z, derivs U, double *values);
 void LinEquations (double A, double B, double X, double R,
@@ -77,12 +79,14 @@ void LineRelax_be (double *dv, int i, int k, int nvar, int n1, int n2, int n3,
 		   double *rhs, int *ncols, int **cols, double **JFD);
 void relax (double *dv, int nvar, int n1, int n2, int n3, double *rhs,
 	    int *ncols, int **cols, double **JFD);
-void TestRelax (int nvar, int n1, int n2, int n3, derivs v,
-		double *dv);
-int bicgstab (int nvar, int n1, int n2, int n3, derivs v,
+void TestRelax (CCTK_POINTER_TO_CONST cctkGH,
+                int nvar, int n1, int n2, int n3, derivs v, double *dv);
+int bicgstab (CCTK_POINTER_TO_CONST cctkGH,
+              int nvar, int n1, int n2, int n3, derivs v,
 	      derivs dv, int output, int itmax, double tol, double *normres);
-void Newton (int nvar, int n1, int n2, int n3, derivs v,
-	     double tol, int itmax);
+void Newton (CCTK_POINTER_TO_CONST cctkGH,
+             int nvar, int n1, int n2, int n3, derivs v,
+	           double tol, int itmax);
 
 
 /* 

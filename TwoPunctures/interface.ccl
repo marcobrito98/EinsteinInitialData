@@ -5,6 +5,14 @@ IMPLEMENTS: TwoPunctures
 
 INHERITS: ADMBase StaticConformal grid
 
-
-
 REAL puncture_u TYPE=gf
+
+CCTK_INT FUNCTION Rho_ADM(                 \
+    CCTK_POINTER_TO_CONST IN cctkGH,       \
+    CCTK_INT              IN size,         \
+    CCTK_POINTER          IN source,       \
+    CCTK_POINTER          IN x,            \
+    CCTK_POINTER          IN y,            \
+    CCTK_POINTER          IN z             \
+    )
+USES FUNCTION Rho_ADM

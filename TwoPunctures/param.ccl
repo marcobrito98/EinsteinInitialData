@@ -101,3 +101,10 @@ REAL par_S_minus[3] "spin of the m- puncture"
 {
   (*:*) :: ""
 } 0.0
+
+
+INT par_use_sources "Use sources?"
+{
+  0:1 :: "0 for no (default), 1 for yes"
+} 0
+

@@ -5,7 +5,10 @@ if (keep_u_around) {
   STORAGE: puncture_u
 }
 
-
+SCHEDULE TwoPunctures_ParamCheck AT PARAMCHECK
+{
+  LANG: C
+} "Check parameters and thorn needs"
 
 SCHEDULE TwoPunctures IN ADMBase_InitialData
 {
