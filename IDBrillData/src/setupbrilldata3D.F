@@ -82,7 +82,32 @@ c     Initialize psi.
 
 c     Set up conformal metric.
 
-      psi = one
+      if (use_conformal == 1) then
+      
+         conformal_state = CONFORMAL_METRIC
+         do k=1,nz
+            do j=1,ny
+               do i=1,nx
+                  psi(i,j,k) = one
+                  psix(i,j,k) = zero
+                  psiy(i,j,k) = zero
+                  psiz(i,j,k) = zero
+                  psixx(i,j,k) = zero
+                  psiyy(i,j,k) = zero
+                  psizz(i,j,k) = zero
+                  psixy(i,j,k) = zero
+                  psixz(i,j,k) = zero
+                  psiyz(i,j,k) = zero
+               end do
+            end do
+         end do
+
+      else
+
+         conformal_state = NOCONFORMAL_METRIC
+
+      end if
+         
 
       do k=1,nz
          do j=1,ny
