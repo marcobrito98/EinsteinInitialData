@@ -97,7 +97,7 @@ C     Synchronize and bound slicetmp2, which contains dx^A/dt.
       call linextraponebound(CCTK_ARGUMENTS,slicetmp2z)
       call linextraponebound(CCTK_ARGUMENTS,slicetmp2t)
 
-      call CCTK_SyncGroup(cctkGH,"Exact::Exact_slicetemp2")
+      call CCTK_SyncGroup(ierr,cctkGH,"Exact::Exact_slicetemp2")
 
 C Leapfrog step.
 
@@ -113,7 +113,7 @@ C     Synchronize and bound slice.
       call linextraponebound(CCTK_ARGUMENTS,slicez)
       call linextraponebound(CCTK_ARGUMENTS,slicet)
 
-      call CCTK_SyncGroup(cctkGH,"Exact::Exact_slice")
+      call CCTK_SyncGroup(ierr,cctkGH,"Exact::Exact_slice")
 
 C     Extract Cauchy data at the new position, and store dxA/dt 
 C     for use in the next Lax step.
