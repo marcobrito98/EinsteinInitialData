@@ -18,7 +18,6 @@ time::dtfac                =  0.25
 admbase::metric_type      = "static conformal"
 admbase::evolution_method = "ADM"     
 admbase::lapse_evolution_method = "1+log"
-admbase::initial_data     = "kerr" 
 admbase::initial_data     = "misner_bh" 
 
 idanalyticbh::mu           = 1.2
