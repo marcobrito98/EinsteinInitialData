@@ -1,2 +1,2 @@
-"gxy minimum v time
+"gxy v time
 0.0000000000000	-0.9885865069960

@@ -1,2 +1,2 @@
-"gyy maximum v time
+"gyy v time
 0.0000000000000	11.1934254896366
