@@ -8,10 +8,9 @@
    @version   $Header$
  @@*/
 
-#include "cctk.h"
-
 #include <string.h>
 
+#include "cctk.h"
 #include "cctk_Arguments.h"
 #include "cctk_Parameters.h"
 
@@ -20,12 +19,6 @@
 static const char *rcsid = "$Header$";
 
 CCTK_FILEVERSION(CactusEinstein_IDAnalyticBH_Misner_multiple_c)
-
-#define SQR(a) ((a)*(a))
-
-void Misner_init(int n, CCTK_REAL mu, int terms);
-void MisnerEvalPsi(CCTK_REAL x, CCTK_REAL y, CCTK_REAL z, CCTK_REAL *res); 
-void Misner_multiple(CCTK_ARGUMENTS);
 
  /*@@
    @routine    Misner_multiple
@@ -38,6 +31,8 @@ void Misner_multiple(CCTK_ARGUMENTS);
    @history
    @hdate Fri Apr 26 10:04:05 2002 @hauthor Tom Goodale
    @hdesc Changed to use new StaticConformal stuff
+   @hdate 6.May.2003   @hauthor Jonathan Thornburg
+   @hdesc code cleanups
    @endhistory 
 @@*/
 void Misner_multiple(CCTK_ARGUMENTS)
@@ -48,10 +43,9 @@ void Misner_multiple(CCTK_ARGUMENTS)
   int i, npoints;
   CCTK_REAL xval, yval, zval;
   CCTK_REAL inv_psi, tmp0, tmp1, tmp2, tmp3, tmp4;
-  const CCTK_REAL nm_eps             = 1e-6,   /* finite differencing step*/
-                  halved_inv_nm_eps  = 5e+5,
-                  inv_nm_eps_squared = 1e+12;
-  const CCTK_REAL one = 1.0;
+  const CCTK_REAL nm_eps             = 1e-6;   /* finite differencing step*/
+  const CCTK_REAL halved_inv_nm_eps  = 0.5 / nm_eps;
+  const CCTK_REAL inv_nm_eps_squared = 1.0 / SQR(nm_eps);
   int make_conformal_derivs;
 
 
@@ -104,7 +98,7 @@ void Misner_multiple(CCTK_ARGUMENTS)
     yval = y[i];
     zval = z[i];
 
-    MisnerEvalPsi(xval, yval, zval, &tmp0);
+    tmp0 = MisnerEvalPsi(xval, yval, zval);
     psi[i] = tmp0;
            
     /*              Only calculate derivatives of psi if required
@@ -112,8 +106,8 @@ void Misner_multiple(CCTK_ARGUMENTS)
      */
     if (make_conformal_derivs)
     {
-      MisnerEvalPsi(xval+nm_eps,yval,zval,&tmp1);
-      MisnerEvalPsi(xval-nm_eps,yval,zval,&tmp2);
+      tmp1 = MisnerEvalPsi(xval+nm_eps,yval,zval);
+      tmp2 = MisnerEvalPsi(xval-nm_eps,yval,zval);
       psix[i] = (tmp1-tmp2) * halved_inv_nm_eps;
 
       if(*conformal_state > 2)
@@ -121,8 +115,8 @@ void Misner_multiple(CCTK_ARGUMENTS)
         psixx[i] = (tmp1+tmp2-2.0*tmp0) * inv_nm_eps_squared;
       }
 
-      MisnerEvalPsi(xval,yval+nm_eps,zval,&tmp1);
-      MisnerEvalPsi(xval,yval-nm_eps,zval,&tmp2);
+      tmp1 = MisnerEvalPsi(xval,yval+nm_eps,zval);
+      tmp2 = MisnerEvalPsi(xval,yval-nm_eps,zval);
       psiy[i]  = (tmp1-tmp2) * halved_inv_nm_eps;
 
       if(*conformal_state > 2)
@@ -130,8 +124,8 @@ void Misner_multiple(CCTK_ARGUMENTS)
         psiyy[i] = (tmp1+tmp2-2.0*tmp0) * inv_nm_eps_squared;
       }
 
-      MisnerEvalPsi(xval,yval,zval+nm_eps,&tmp1);
-      MisnerEvalPsi(xval,yval,zval-nm_eps,&tmp2);
+      tmp1 = MisnerEvalPsi(xval,yval,zval+nm_eps);
+      tmp2 = MisnerEvalPsi(xval,yval,zval-nm_eps);
       psiz[i] = (tmp1-tmp2) * halved_inv_nm_eps;
 
       if(*conformal_state > 2)
@@ -141,22 +135,22 @@ void Misner_multiple(CCTK_ARGUMENTS)
 
       if(*conformal_state > 2)
       {
-        MisnerEvalPsi(xval+nm_eps,yval+nm_eps,zval,&tmp1);
-        MisnerEvalPsi(xval+nm_eps,yval-nm_eps,zval,&tmp2);
-        MisnerEvalPsi(xval-nm_eps,yval+nm_eps,zval,&tmp3);
-        MisnerEvalPsi(xval-nm_eps,yval-nm_eps,zval,&tmp4);
+        tmp1 = MisnerEvalPsi(xval+nm_eps,yval+nm_eps,zval);
+        tmp2 = MisnerEvalPsi(xval+nm_eps,yval-nm_eps,zval);
+        tmp3 = MisnerEvalPsi(xval-nm_eps,yval+nm_eps,zval);
+        tmp4 = MisnerEvalPsi(xval-nm_eps,yval-nm_eps,zval);
         psixy[i] = 0.25*(tmp1-tmp2-tmp3+tmp4) * inv_nm_eps_squared;
 
-        MisnerEvalPsi(xval,yval+nm_eps,zval+nm_eps,&tmp1);
-        MisnerEvalPsi(xval,yval-nm_eps,zval+nm_eps,&tmp2);
-        MisnerEvalPsi(xval,yval+nm_eps,zval-nm_eps,&tmp3);
-        MisnerEvalPsi(xval,yval-nm_eps,zval-nm_eps,&tmp4);
+        tmp1 = MisnerEvalPsi(xval,yval+nm_eps,zval+nm_eps);
+        tmp2 = MisnerEvalPsi(xval,yval-nm_eps,zval+nm_eps);
+        tmp3 = MisnerEvalPsi(xval,yval+nm_eps,zval-nm_eps);
+        tmp4 = MisnerEvalPsi(xval,yval-nm_eps,zval-nm_eps);
         psiyz[i] = 0.25*(tmp1-tmp2-tmp3+tmp4) * inv_nm_eps_squared;
 
-        MisnerEvalPsi(xval+nm_eps,yval,zval+nm_eps,&tmp1);
-        MisnerEvalPsi(xval+nm_eps,yval,zval-nm_eps,&tmp2);
-        MisnerEvalPsi(xval-nm_eps,yval,zval+nm_eps,&tmp3);
-        MisnerEvalPsi(xval-nm_eps,yval,zval-nm_eps,&tmp4);
+        tmp1 = MisnerEvalPsi(xval+nm_eps,yval,zval+nm_eps);
+        tmp2 = MisnerEvalPsi(xval+nm_eps,yval,zval-nm_eps);
+        tmp3 = MisnerEvalPsi(xval-nm_eps,yval,zval+nm_eps);
+        tmp4 = MisnerEvalPsi(xval-nm_eps,yval,zval-nm_eps);
         psixz[i] = 0.25*(tmp1-tmp2-tmp3+tmp4) * inv_nm_eps_squared;
       }
     }
@@ -170,7 +164,7 @@ void Misner_multiple(CCTK_ARGUMENTS)
   {
     for(i = 0; i < npoints; i++)
     {
-      inv_psi = one / psi[i];
+      inv_psi = 1.0 / psi[i];
 
       psix[i]  *= inv_psi;
       psiy[i]  *= inv_psi;
@@ -195,9 +189,9 @@ void Misner_multiple(CCTK_ARGUMENTS)
   {
     for(i = 0; i < npoints; i++)
     {
-      gxx[i] = one;
-      gyy[i] = one;
-      gzz[i] = one;
+      gxx[i] = 1.0;
+      gyy[i] = 1.0;
+      gzz[i] = 1.0;
     }
   }
   else 
