@@ -16,12 +16,12 @@ EXTENDS KEYWORD initial_data ""
 
 EXTENDS KEYWORD slicing ""
 {
-  "exact" :: Use lapse from exact solution
+  "exact" :: "Use lapse from exact solution"
 } ""
 
 EXTENDS KEYWORD shift ""
 {
-  "exact" :: Use shift from exact solution
+  "exact" :: "Use shift from exact solution"
 } ""
 
 EXTENDS KEYWORD initial_lapse ""
@@ -59,24 +59,24 @@ private:
 
 KEYWORD exactmodel "The exact solution used in thorn exact"
 {
-  "minkowski"   :: Minkowski spacetime
-  "boostrot"    :: Boost rotation symmetric spacetime
-  "finkelstein" :: Black hole in Eddington-Finkelstein coordinates
-  "kerrschild"  :: Kerr-Schild form of boosted rotating black hole
-  "flatschwarz" :: Schwazschild black-hole with flat spatial metric
-  "starschwarz" :: Schwazschild (constant density) star
-  "novikov"     :: Black hole in Novikov coordinates
-  "multiBH"     :: Maximally charged multi BH solutions
-  "bowl"        :: Non-Einstein bowl (bag-of-gold) spacetime
-  "fakebinary"  :: Non-Einstein fake-binary of Thorn et al
-  "flatfunny"   :: Minkowski spacetime in non-trivial spatial coordinates
-  "bianchiI"    :: Bianchi I spacetime
-  "rob-wal"     :: Robertson-Walker cosmology (near t= 0,pure radiation case)
-  "godel"       :: Godel spacetime
-  "kerr"        :: Kerr spacetime in cartesian coordinates
-  "desitter"    :: DeSitter spacetime (R-W cosmology, near t=0, p=0)
-  "kasner"      :: Kasner like spacetime
-  "milne"       :: De Milne spacetime for pre-big-bang cosmology
+  "minkowski"   :: "Minkowski spacetime"
+  "boostrot"    :: "Boost rotation symmetric spacetime"
+  "finkelstein" :: "Black hole in Eddington-Finkelstein coordinates"
+  "kerrschild"  :: "Kerr-Schild form of boosted rotating black hole"
+  "flatschwarz" :: "Schwarzschild black-hole with flat spatial metric"
+  "starschwarz" :: "Schwarzschild (constant density) star"
+  "novikov"     :: "Black hole in Novikov coordinates"
+  "multiBH"     :: "Maximally charged multi BH solutions"
+  "bowl"        :: "Non-Einstein bowl (bag-of-gold) spacetime"
+  "fakebinary"  :: "Non-Einstein fake-binary of Thorn et al"
+  "flatfunny"   :: "Minkowski spacetime in non-trivial spatial coordinates"
+  "bianchiI"    :: "Bianchi I spacetime"
+  "rob-wal"     :: "Robertson-Walker cosmology (near t= 0,pure radiation case)"
+  "godel"       :: "Godel spacetime"
+  "kerr"        :: "Kerr spacetime in cartesian coordinates"
+  "desitter"    :: "DeSitter spacetime (R-W cosmology, near t=0, p=0)"
+  "kasner"      :: "Kasner like spacetime"
+  "milne"       :: "De Milne spacetime for pre-big-bang cosmology"
 } "minkowski"
 
 
@@ -230,8 +230,8 @@ REAL bowl_st "Width of Fermi step in time"
 
 KEYWORD fakebinary_atype "Thorne's binary type"
 {
-  "constant"  ::
-  "quadrupole ::
+  "constant"  :: ""
+  "quadrupole :: ""
 } "constant"
 
 BOOLEAN fakebinary_retarded "Use retarded time?"
