@@ -73,7 +73,16 @@ void Exact_ParamCheck(CCTK_ARGUMENTS)
   if ( CCTK_EQUALS(shift_evolution_method, "exact")
        && CCTK_EQUALS(initial_shift, "none") )
   {
-    CCTK_PARAMWARN("can't set the shift if there's no storage for it!");
+    CCTK_PARAMWARN(
+"\n"
+"   You set  ADMBase::shift_evolution_method = \"exact\" , which means\n"
+"   this thorn (Exact) should set the shift vector from the exact solution.\n"
+"   But you also set  ADMBase::initial_shift = \"none\" , which means\n"
+"   storage for the shift vector is turned off!  You need to either specify\n"
+"   a different  ADMBase::shift_evolution_method , and/or turn on storage\n"
+"   for the shift vector by setting  ADMBase::initial_shift  to something\n"
+"   other than \"none\".\n"
+		  );
   }
 }
 
