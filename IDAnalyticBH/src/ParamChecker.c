@@ -83,9 +83,9 @@ void ParamChecker(CCTK_CARGUMENTS)
   {
     CCTK_INFO("Setting up Misner solution for multiple holes");
   }
-  else if (CCTK_Equals(initial_data,"misner")==1)
+  else if (CCTK_Equals(initial_data,"misner_bh")==1)
   {
-    CCTK_INFO("Two Misner black holes");
+    CCTK_INFO("Two Misner black holes (on z-axis)");
     message = (char *)malloc(200*sizeof(char));
     sprintf(message,"  mu is %f",mu);
     CCTK_INFO(message);
@@ -105,13 +105,13 @@ void ParamChecker(CCTK_CARGUMENTS)
     }
     else
     {
-      printf("  ... but no conformal derivatives");
+      CCTK_INFO("  ... but no conformal derivatives");
     }
   }
   else
   { 
-    printf("Implements non-conformal metric\n");
-    printf("  (Not usually a good idea!)\n");
+    CCTK_INFO("Implements non-conformal metric");
+    CCTK_INFO("  (Not usually a good idea!)");
   }        
 }
 
