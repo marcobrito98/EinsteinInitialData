@@ -725,7 +725,7 @@ PunctIntPolAtArbitPosition (int ivar, int nvar, int n1,
   aux1 = 0.5 * (xs * xs + rs2 - 1);
   aux2 = sqrt (aux1 * aux1 + rs2);
   X = asinh (sqrt (aux1 + aux2));
-  R = asin (sqrt (-aux1 + aux2));
+  R = asin (min(1.0, sqrt (-aux1 + aux2)));
   if (x < 0)
     R = Pi - R;
 
