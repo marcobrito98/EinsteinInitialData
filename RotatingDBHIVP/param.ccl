@@ -1,6 +1,13 @@
 # Parameter definitions for thorn RotatingDBHIVP
 # $Header$
-shares:einstein
+
+shares: StaticConformal
+
+USES KEYWORD conformal_storage
+
+shares:ADMBase
+
+USES KEYWORD metric_type
 
 EXTENDS KEYWORD initial_lapse 
 {

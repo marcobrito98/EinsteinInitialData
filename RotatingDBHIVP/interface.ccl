@@ -2,7 +2,7 @@
 # $Header$
 
 implements: rotatingdbhivp
-inherits: einstein ellbase
+inherits: admbase staticconformal grid admanalysis
 
 private:
 
