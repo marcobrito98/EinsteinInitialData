@@ -58,6 +58,8 @@
       INTEGER :: CCTK_Equals
       CCTK_REAL :: zero, one, three
 
+      CHARACTER*200 :: infoline
+
       zero  = 0.d0
       one   = 1.d0
       three = 3.d0
@@ -125,7 +127,10 @@ c     --------------------
       do n = 1,nmax
          mass = mass + 4./sinh(n*mu)
       enddo
-      write(*,*) "   >>ADM mass",mass
+      call CCTK_INFO("Two misner black holes")
+      write(infoline,'(A17,G12.7)') 
+     &     'ADM mass of each ',mass/2d0
+      call CCTK_INFO(infoline)
 
 c     Should initialize lapse to Cadez value if possible
 c     --------------------------------------------------
