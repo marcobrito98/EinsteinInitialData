@@ -1,17 +1,20 @@
 # Schedule definitions for thorn TwoPunctures
 # $Header$
 
-if (keep_u_around) {
-  STORAGE: puncture_u
+if (CCTK_Equals(initial_data, "twopunctures"))
+{
+  if (keep_u_around) {
+    STORAGE: puncture_u
+  }
+
+  SCHEDULE TwoPunctures_ParamCheck AT PARAMCHECK
+  {
+    LANG: C
+  } "Check parameters and thorn needs"
+
+  SCHEDULE TwoPunctures IN ADMBase_InitialData
+  {
+    LANG: C
+    STORAGE: puncture_u
+  } "Create puncture black hole initial data"
 }
-
-SCHEDULE TwoPunctures_ParamCheck AT PARAMCHECK
-{
-  LANG: C
-} "Check parameters and thorn needs"
-
-SCHEDULE TwoPunctures IN ADMBase_InitialData
-{
-  LANG: C
-  STORAGE: puncture_u
-} "Create puncture black hole initial data"
