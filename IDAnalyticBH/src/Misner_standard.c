@@ -73,6 +73,7 @@ void Misner_standard(CCTK_ARGUMENTS)
   CCTK_REAL inv_r1_5, inv_r2_5;
   CCTK_REAL inv_psi;
   CCTK_INT powfac;
+  CCTK_INT adm_mass;
   const CCTK_REAL zero = 0.0, one = 1.0, three = 3.0;
 
 
@@ -102,14 +103,14 @@ void Misner_standard(CCTK_ARGUMENTS)
   /*     compute the ADM mass
    *     --------------------
    */
-  mass = zero;
+  adm_mass = zero;
   for(n = 1; n <= nmax; n++)
   {
     csch[n] = one / sinh(mu*n);
     coth[n] = one / tanh(mu*n);
-    mass   += 4.0 * csch[n];
+    adm_mass   += 4.0 * csch[n];
   }
-  CCTK_VInfo(CCTK_THORNSTRING, "ADM mass is %f", (double) mass);
+  CCTK_VInfo(CCTK_THORNSTRING, "ADM mass is %f", (double) adm_mass);
 
 
   for(i = 0; i < npoints; i++)
