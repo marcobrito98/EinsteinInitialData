@@ -1,0 +1,55 @@
+# Initial data and short evolution (ADM) for DeSitter spacetime
+# Author: Mitica Vulcanov <vulcan@aei.mpg.de>
+# $Header$
+
+# Required thorns
+ActiveThorns = "CartGrid3D Boundary Time   PUGH PUGHReduce PUGHSlab   IOAscii IOUtil IOBasic   ADMBase ADMMacros ADMConstraints ADM_BSSN ADMCoupling StaticConformal CoordGauge SpaceMask   Exact"
+
+# Grid
+driver::global_nx = 8
+driver::global_ny = 8
+driver::global_nz = 8
+grid::type    = "byrange"
+grid::domain  = "octant"
+
+grid::xmin = 0.0
+grid::xmax = 1.0
+grid::ymin = 0.0
+grid::ymax = 6.28
+grid::zmin = 0.0
+grid::zmax = 6.28
+
+cactus::cctk_initial_time = 1
+cactus::cctk_itlast       = 3
+time::dtfac = 0.25
+
+# Initial data
+ADMBase::initial_data  = "exact"
+ADMBase::initial_shift = "exact"
+Exact::exact_model = "de Sitter"
+Exact::de_Sitter__scale   = 1
+
+# Gauge
+ADMBase::lapse_evolution_method = "exact"
+ADMBase::shift_evolution_method = "exact"
+
+# Evolution
+ADMBase::evolution_method = "adm_bssn"
+ADM_BSSN::bound  = "flat"
+ADM_BSSN::method = "icn"
+
+# Output
+IO::out_dir = "de_Sitter"
+IO::out_fileinfo = "none"
+IO::parfile_write = "no"
+
+IOBasic::outInfo_every = 1
+IOBasic::outInfo_vars  = "admconstraints::ham"
+
+IOBasic::outScalar_every =  1 
+IOBasic::outScalar_vars  = "admbase::gxx admbase::gyy admbase::gzz admconstraints::ham admbase::lapse adm_bssn::ADM_BS_phi"
+
+IOASCII::out1D_every =  1
+IOASCII::out1D_vars  = "admbase::gxx admbase::gyy admbase::gzz admconstraints::ham admbase::lapse adm_bssn::ADM_BS_phi"
+
+
