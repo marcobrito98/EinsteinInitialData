@@ -34,10 +34,8 @@ c     Need include file from Einstein
       
       DECLARE_CCTK_FARGUMENTS
       DECLARE_CCTK_PARAMETERS
+      DECLARE_CCTK_FUNCTIONS
 
-c     Perhaps this and others should go into cctk.h
-      integer CCTK_Equals
-      
       real*8 deta,dq,dphi
       real*8, allocatable :: ac(:,:,:),ae(:,:,:),aw(:,:,:),an(:,:,:),
      $     as(:,:,:),aq(:,:,:),ab(:,:,:),rhs(:,:,:),Ksq(:,:,:),

@@ -246,7 +246,7 @@ c
 c This routine was lifted from stab.f. Minor modifications have
 c been made.
 c
-c Be careful that the c's are zero on their outer boundary!!
+c Be careful that the cs are zero on their outer boundary!!
 c
       implicit none
 c
