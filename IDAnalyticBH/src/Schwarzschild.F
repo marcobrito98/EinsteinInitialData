@@ -2,6 +2,9 @@
 #include "declare_arguments.h"
 #include "declare_parameters.h"
 
+c Need include file from Einstein
+#include "../../packages/CactusEinstein/Einstein/src/Einstein.h"
+
       subroutine Schwarzschild(CCTK_FARGUMENTS)
 
       implicit none
@@ -24,7 +27,9 @@
       three = 3.d0
             
 c     conformal metric flag
-      if (use_conformal==1) then
+      if (use_conformal == 1) then
+
+         conformal_state = CONFORMAL_METRIC
 
 c        Compute conformal factor
          psi = ( one + mass/two/r)
@@ -50,6 +55,8 @@ c        derivatives of psi / psi
          gyz = zero   
           
       else
+
+         conformal_state = NOCONFORMAL_METRIC
 
          gxx = ( one + mass/two/r)**4
          gyy = gxx

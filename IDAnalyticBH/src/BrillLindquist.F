@@ -2,6 +2,8 @@
 #include "declare_arguments.h"
 #include "declare_parameters.h"
 
+#include "../../Einstein/src/Einstein.h"
+
       subroutine BrillLindquist(CCTK_FARGUMENTS)
 
       implicit none
@@ -17,9 +19,9 @@
 
 c     Must use conformal metric
 c     -------------------------
-      if (conformal_state == 0) then
+      if (conformal_state == NOCONFORMAL_METRIC) then
          call CCTK_Warn(1,"Changing to conformal metric in BrillLindquist")
-         conformal_state = 1
+         conformal_state = CONFORMAL_METRIC
       end if
 
 c     Put parameters into arrays for following calculations
