@@ -2,16 +2,16 @@
 # $Header$
 
 implements: IDBrillData
-inherits: einstein ellbase
+inherits: grid einstein ellbase
 
 # Grid functions for linear elliptic equation.
 
 private: 
 
-CCTK_REAL linearelliptic TYPE=GF
+CCTK_REAL brillelliptic TYPE=GF
 {
-  Mlinear,
-  Nsource
+  brillMlinear,
+  brillNsource
 } "Coefficients for linear elliptic equation"
 
 CCTK_REAL brillconf TYPE=GF
