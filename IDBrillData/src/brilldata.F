@@ -29,20 +29,20 @@ c     Set up background metric and coefficients for linear solve.
          call setupbrilldata3D(CCTK_FARGUMENTS)
       end if
 
-c     Call the Linear Elliptic solver interface
-c     to find conformal factor.
+c     Call the Linear Elliptic solver interface to find
+c     conformal factor.  First some preliminaries.
 
-      call CCTK_VarIndex (metpsi_index(1), "einstein::gxx")
-      call CCTK_VarIndex (metpsi_index(2), "einstein::gxy")
-      call CCTK_VarIndex (metpsi_index(3), "einstein::gxz")
-      call CCTK_VarIndex (metpsi_index(4), "einstein::gyy")
-      call CCTK_VarIndex (metpsi_index(5), "einstein::gyz")
-      call CCTK_VarIndex (metpsi_index(6), "einstein::gzz")
-      call CCTK_VarIndex (metpsi_index(7), "einstein::psi")
+      call CCTK_VarIndex(metpsi_index(1),"einstein::gxx")
+      call CCTK_VarIndex(metpsi_index(2),"einstein::gxy")
+      call CCTK_VarIndex(metpsi_index(3),"einstein::gxz")
+      call CCTK_VarIndex(metpsi_index(4),"einstein::gyy")
+      call CCTK_VarIndex(metpsi_index(5),"einstein::gyz")
+      call CCTK_VarIndex(metpsi_index(6),"einstein::gzz")
+      call CCTK_VarIndex(metpsi_index(7),"einstein::psi")
 
-      call CCTK_VarIndex (field_index,     "IDBrillData::brillpsi")
-      call CCTK_VarIndex (Mlin_index,      "IDBrillData::Mlinear")
-      call CCTK_VarIndex (Nsrc_index,      "IDBrillData::Nsource")
+      call CCTK_VarIndex(field_index,"IDBrillData::brillpsi")
+      call CCTK_VarIndex(Mlin_index,"IDBrillData::Mlinear")
+      call CCTK_VarIndex(Nsrc_index,"IDBrillData::Nsource")
 
       AbsTol(1)= brill_thresh
       AbsTol(2)= -1
@@ -51,6 +51,8 @@ c     to find conformal factor.
       RelTol(1)= -1
       RelTol(2)= -1
       RelTol(3)= -1
+
+c     Boundaries.
 
       if (CCTK_EQUALS(brill_bound,"const")) then
          call Ell_SetRealKey(ierr,brill_const_v0,
@@ -64,6 +66,8 @@ c     to find conformal factor.
      .   "EllLinConfMetric::Bnd::Robin::inf")
       endif
 
+c     Elliptic solver.
+
       if (CCTK_EQUALS(brill_solver,"sor")) then
          call Ell_LinConfMetricSolver(ierr,cctkGH,metpsi_index,
      .   field_index,Mlin_index,Nsrc_index,AbsTol,RelTol,"sor")
@@ -72,6 +76,11 @@ c     to find conformal factor.
       if (CCTK_EQUALS(brill_solver,"petsc)) then
          call Ell_LinConfMetricSolver(ierr,cctkGH,metpsi_index,
      .   field_index,Mlin_index,Nsrc_index,AbsTol,RelTol,"petsc")
+      end if
+
+      if (CCTK_EQUALS(brill_solver,"bam")) then
+         call Ell_LinConfMetricSolver(ierr,cctkGH,metpsi_index,
+     .   field_index,Mlin_index,Nsrc_index,AbsTol,RelTol,"bam")
       end if
 
 c     Synchronize conformal factor.
