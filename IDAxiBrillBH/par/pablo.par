@@ -1,6 +1,6 @@
 !DESC "Demonstration file for Pablo/AutoPilot"
 
-ActiveThorns = "time psikadelia ADMconstraints pugh interp cartgrid3d einstein ADM IDAxiBrillBH iobasic ioflexio ioascii ioutil"
+ActiveThorns = "Time PsiKadelia ADMConstraints PUGH PUGHInterp PUGHReduce CartGrid3D Einstein ADM IDAxiBrillBH IOBasic IOFlexIO IOASCII IOUtil"
 
 
 # Parameters which will affect performance
