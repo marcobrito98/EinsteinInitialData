@@ -17,7 +17,7 @@ c #define-ing the symbol EXACT_NO_F90 will turn this subroutine into a no-op
 
       CCTK_REAL s1d(4,3), nd(4), nu(4), norm, gd(4,4), gu(4,4)
       CCTK_REAL dx,dy,dz,dt
-      CCTK_REAL psi
+      CCTK_REAL local_psi
 
 C     Grid parameters.
 
@@ -86,7 +86,7 @@ C     x^A.
      $              gu(4,4), gu(1,4), gu(2,4), gu(3,4),
      $              gu(1,1), gu(2,2), gu(3,3), 
      $              gu(1,2), gu(2,3), gu(1,3),
-     $              psi)
+     $              local_psi)
 
 C     Calculate n^A and dx^A/dt
 #include "include/slice_normal.inc"
