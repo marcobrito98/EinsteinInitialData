@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 #include "cctk.h"
 #include "cctk_Arguments.h"
@@ -44,6 +45,18 @@ void ParamChecker(CCTK_ARGUMENTS)
     CCTK_INFO("Schwarzschild black hole");
     message = (char *)malloc(200*sizeof(char));
     sprintf(message,"  throat at %f",mass/2.0);
+    CCTK_INFO(message);
+    free(message);
+  }
+  if (CCTK_Equals(initial_data,"kerr") == 1)
+  {
+    CCTK_REAL tmp;
+    CCTK_INFO("Kerr black hole");
+    message = (char *)malloc(200*sizeof(char));
+    sprintf(message,"  m = %f, a = %f",mass,a_Kerr);
+    CCTK_INFO(message);
+    tmp=pow((mass*mass-a_Kerr*a_Kerr)/4.0,.5);
+    sprintf(message,"  throat at %f",tmp);
     CCTK_INFO(message);
     free(message);
   }

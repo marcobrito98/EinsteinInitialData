@@ -10,6 +10,13 @@ REAL mass "Mass of black hole"
 : :: "Not sure if it can be negative or not"
 } 2.0
 
+# Kerr parameters
+# ------------------------
+REAL a_Kerr "Angular momentum parameter of black hole"
+{
+-1:1 :: ""
+} 0.1
+
 
 # Multiple Misner Parameters
 # --------------------------
@@ -108,12 +115,19 @@ EXTENDS KEYWORD initial_data ""
   "bl_bh"              :: "Brill Lindquist black holes"
   "misner_bh"          :: "Misner black holes"
   "multiple_misner_bh" :: "Multiple Misner black holes"
+  "kerr"	       :: "One Kerr black hole"	
 } 
 
 EXTENDS KEYWORD initial_lapse ""
 {
   "schwarz" :: "Set lapse to Schwarzschild"
   "cadez" :: "Set lapse to Misner"
+  "Kerr"  :: "Set lapse to Kerr"
+}
+
+EXTENDS KEYWORD initial_shift ""
+{
+  "Kerr"  :: "Set shift to Kerr"
 }
 
 EXTENDS BOOLEAN use_conformal ""
