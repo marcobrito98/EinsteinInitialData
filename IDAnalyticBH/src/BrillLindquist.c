@@ -5,17 +5,16 @@
    @desc
               Set up initial data for Brill Lindquist black holes
    @enddesc
-   @version   $Id$
+   @version   $Header$
  @@*/
+
+#include "cctk.h"
 
 #include <math.h>
 #include <string.h>
 
-#include "cctk.h"
 #include "cctk_Arguments.h"
 #include "cctk_Parameters.h"
-
-#include "CactusEinstein/Einstein/src/Einstein.h"
 
 static const char *rcsid = "$Header$";
 CCTK_FILEVERSION(CactusEinstein_IDAnalyticBH_BrillLindquist_c)
@@ -34,6 +33,9 @@ void BrillLindquist(CCTK_ARGUMENTS);
    @desc
                Set up initial data for Brill Lindquist black holes
    @enddesc
+   @hdate Fri Apr 26 10:04:05 2002 @hauthor Tom Goodale
+   @hdesc Changed to use new StaticConformal stuff
+   @endhistory 
 @@*/
 void BrillLindquist(CCTK_ARGUMENTS)
 {
@@ -47,6 +49,26 @@ void BrillLindquist(CCTK_ARGUMENTS)
   CCTK_REAL xval, yval, zval;
   CCTK_REAL x_2, y_2, z_2;
   int i, npoints;
+  int make_conformal_derivs;
+
+  /* Check if we should create and store conformal factor stuff */
+  if(CCTK_EQUALS(metric_type, "static conformal"))
+  {
+    if(CCTK_EQUALS(conformal_storage,"factor+derivs"))
+    {
+      *conformal_state = 2;
+      make_conformal_derivs = 1;
+    }
+    else if(CCTK_EQUALS(conformal_storage,"factor+derivs+2nd derivs"))
+    {
+      *conformal_state = 3;
+      make_conformal_derivs = 1;
+    }
+  }      
+  else
+  {
+    make_conformal_derivs = 0;
+  }
 
 
   npoints = cctk_lsh[0] * cctk_lsh[1] * cctk_lsh[2];
@@ -74,18 +96,22 @@ void BrillLindquist(CCTK_ARGUMENTS)
   hole_z0[3]   = -bl_z0_4;
   hole_mass[3] = bl_M_4;
 
-
-  if (use_conformal_derivs == 1)
+  
+  if (make_conformal_derivs == 1)
   {
     memset (psix, 0, npoints * sizeof (CCTK_REAL));
     memset (psiy, 0, npoints * sizeof (CCTK_REAL));
     memset (psiz, 0, npoints * sizeof (CCTK_REAL));
-    memset (psixx, 0, npoints * sizeof (CCTK_REAL));
-    memset (psixy, 0, npoints * sizeof (CCTK_REAL));
-    memset (psixz, 0, npoints * sizeof (CCTK_REAL));
-    memset (psiyy, 0, npoints * sizeof (CCTK_REAL));
-    memset (psiyz, 0, npoints * sizeof (CCTK_REAL));
-    memset (psizz, 0, npoints * sizeof (CCTK_REAL));
+
+    if(*conformal_state > 2)
+    {
+      memset (psixx, 0, npoints * sizeof (CCTK_REAL));
+      memset (psixy, 0, npoints * sizeof (CCTK_REAL));
+      memset (psixz, 0, npoints * sizeof (CCTK_REAL));
+      memset (psiyy, 0, npoints * sizeof (CCTK_REAL));
+      memset (psiyz, 0, npoints * sizeof (CCTK_REAL));
+      memset (psizz, 0, npoints * sizeof (CCTK_REAL));
+    }
   }
 
   for (i = 0; i < npoints; i++)
@@ -117,7 +143,7 @@ void BrillLindquist(CCTK_ARGUMENTS)
 
       psi[i] += hole_mass[n]/tmp1*0.5;
 
-      if (use_conformal_derivs == 1)
+      if (make_conformal_derivs == 1)
       {
         tmp2 = 1 / (tmp1 * tmp1 * tmp1);
         tmp3 = 4 * (3.0 / 8.0) * hole_mass[n] * tmp2 / (tmp1 * tmp1);
@@ -127,15 +153,18 @@ void BrillLindquist(CCTK_ARGUMENTS)
         psiy[i] +=  tmp2 * (yval+hole_y0[n]);
         psiz[i] +=  tmp2 * (zval+hole_z0[n]);
 
-        psixx[i] += tmp3 * SQR(xval+hole_x0[n]) + tmp2;
-
-        psixy[i] += tmp3 * (xval+hole_x0[n]) * (yval+hole_y0[n]);
-        psixz[i] += tmp3 * (xval+hole_x0[n]) * (zval+hole_z0[n]);
-
-        psiyy[i] += tmp3 * SQR(yval+hole_y0[n]) + tmp2;
-        psiyz[i] += tmp3 * (yval+hole_y0[n]) * (zval+hole_z0[n]);
-
-        psizz[i] += tmp3 * SQR(zval+hole_z0[n]) + tmp2;
+        if(*conformal_state > 2)
+        {
+          psixx[i] += tmp3 * SQR(xval+hole_x0[n]) + tmp2;
+          
+          psixy[i] += tmp3 * (xval+hole_x0[n]) * (yval+hole_y0[n]);
+          psixz[i] += tmp3 * (xval+hole_x0[n]) * (zval+hole_z0[n]);
+          
+          psiyy[i] += tmp3 * SQR(yval+hole_y0[n]) + tmp2;
+          psiyz[i] += tmp3 * (yval+hole_y0[n]) * (zval+hole_z0[n]);
+          
+          psizz[i] += tmp3 * SQR(zval+hole_z0[n]) + tmp2;
+        }
       }
     }
   }
@@ -144,7 +173,7 @@ void BrillLindquist(CCTK_ARGUMENTS)
    *     ------------------
    */
 
-  if (use_conformal_derivs == 1)
+  if (make_conformal_derivs == 1)
   {
     for (i = 0; i < npoints; i++)
     {
@@ -153,12 +182,16 @@ void BrillLindquist(CCTK_ARGUMENTS)
       psix[i]  *= tmp1;
       psiy[i]  *= tmp1;
       psiz[i]  *= tmp1;
-      psixx[i] *= tmp1;
-      psixy[i] *= tmp1;
-      psixz[i] *= tmp1;
-      psiyy[i] *= tmp1;
-      psiyz[i] *= tmp1;
-      psizz[i] *= tmp1;
+
+      if(*conformal_state > 2)
+      {
+        psixx[i] *= tmp1;
+        psixy[i] *= tmp1;
+        psixz[i] *= tmp1;
+        psiyy[i] *= tmp1;
+        psiyz[i] *= tmp1;
+        psizz[i] *= tmp1;
+      }
     }
   }
 
@@ -166,7 +199,7 @@ void BrillLindquist(CCTK_ARGUMENTS)
    *     ---------------------------------
    */
 
-  if (*conformal_state == CONFORMAL_METRIC)
+  if (CCTK_EQUALS(metric_type, "static conformal"))
   {
     for (i = 0; i < npoints; i++)
     {
