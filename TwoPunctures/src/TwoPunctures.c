@@ -160,6 +160,8 @@ TwoPunctures (CCTK_ARGUMENTS)
 
         } /* if conformal-state>0 */
           
+        puncture_u[ind] = U;
+
         gxx[ind] = pow4 (psi1 / static_psi);
         gxy[ind] = 0;
         gxz[ind] = 0;
