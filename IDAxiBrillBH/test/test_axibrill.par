@@ -2,14 +2,15 @@
 !DESC "Initial data for axisymmetric distored black hole"
 ######################################################################
 
-ActiveThorns = "Boundary time iobasic ADMconstraints pugh pughslab pughreduce pughinterp cartgrid3d einstein ADM IDAxiBrillBH ioascii ioutil"
+ActiveThorns = "Boundary time iobasic ADMconstraints pugh pughslab pughreduce pughinterp cartgrid3d ADMBase StaticConformal ADM admmacros coordgauge ADMAnalysis IDAxiBrillBH ioascii ioutil"
 
 #pugh::enable_all_storage = "yes"
 #cactus::cctk_show_banners = 0
 
-# GENERAL 
+# GENERAL
 
-einstein::evolution_system = "ADM"     
+ADMBase::evolution_method = "ADM"
+ADMBase::metric_type = "static conformal"
 
 driver::global_nx =  32
 driver::global_ny =  32
@@ -27,9 +28,8 @@ cactus::cctk_itlast       = 1
 adm::method       = "stagleap" 
 adm::bound        = "static"
 
-# MODEL 
-
-einstein::initial_data = "axibrillbh"
+# MODEL
+ADMBase::initial_data = "axibrillbh"
 idaxibrillbh::amp      = 0.5
 idaxibrillbh::eta0     = 0.0
 idaxibrillbh::sigma    = 1.0
@@ -41,16 +41,16 @@ idaxibrillbh::nq       = 27
 idaxibrillbh::interpolation_order          = 1
 
 # GAUGE
-einstein::slicing    = "geodesic"  
+ADMBase::lapse_evolution_method    = "geodesic"  
 
 
 # OUTPUT ########################################################
 IO::outdir               = "test_axibrill"
 IO::out_fileinfo         = "none"
 IOASCII::out1d_every     =  1
-IOASCII::out1D_vars      = "einstein::curv einstein::metric einstein::grr admconstraints::ham"
+IOASCII::out1D_vars      = "ADMBase::curv admbase::metric ADMAnalysis::grr admconstraints::ham"
 IOBasic::outInfo_every   = 1
-IOBasic::outInfo_vars    = "einstein::gxx"
+IOBasic::outInfo_vars    = "admbase::gxx"
 
 IOASCII::out1D_xline_y   = 0.2
 IOASCII::out1D_xline_z   = 0.2
@@ -62,4 +62,3 @@ IOASCII::out1D_zline_x   = 0.2
 IOASCII::out1D_zline_y   = 0.2
 
 ##################################################################
-

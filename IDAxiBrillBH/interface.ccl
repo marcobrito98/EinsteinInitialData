@@ -1,9 +1,7 @@
-# Interface definition for thorn AxiBrillBHIVP
+# Interface definition for thorn IDAxiBrillBH
 # $Header$
 
 implements: idaxibrillbh
-inherits: einstein
+inherits: ADMBase grid StaticConformal
 
 public:
-
-

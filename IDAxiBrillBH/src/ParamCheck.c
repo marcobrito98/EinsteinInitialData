@@ -1,0 +1,64 @@
+ /*@@
+   @file      ParamCheck.c
+   @date      Thu May  2 19:23:47 CEST 2002
+   @author    David Rideout
+   @desc 
+   Check the parameters for IDAxiBrillBH
+   @enddesc 
+   @version $Header$
+ @@*/
+
+#include "cctk.h"
+
+#include "cctk_Arguments.h"
+#include "cctk_Parameters.h"
+
+static const char *rcsid = "$Header$";
+
+CCTK_FILEVERSION(CactusEinstein_IDAxiBrillBH_ParamCheck_c)
+
+/********************************************************************
+ *********************     Local Data Types   ***********************
+ ********************************************************************/
+
+/********************************************************************
+ ********************* Local Routine Prototypes *********************
+ ********************************************************************/
+
+/********************************************************************
+ ***************** Scheduled Routine Prototypes *********************
+ ********************************************************************/
+
+void IDAxiBrillBH_ParamChecker(CCTK_ARGUMENTS);
+
+/********************************************************************
+ ********************* Other Routine Prototypes *********************
+ ********************************************************************/
+
+/********************************************************************
+ *********************     Local Data   *****************************
+ ********************************************************************/
+
+/********************************************************************
+ *********************     External Routines   **********************
+ ********************************************************************/
+
+void IDAxiBrillBH_ParamChecker(CCTK_ARGUMENTS)
+{
+  DECLARE_CCTK_ARGUMENTS
+  DECLARE_CCTK_PARAMETERS
+
+  /* Do we know how to deal with this type of metric ? */
+  if( ! CCTK_EQUALS(metric_type, "static conformal"))
+    if (CCTK_EQUALS(metric_type, "physical"))
+      {
+	CCTK_PARAMWARN("\n\tPlease add code into IDAxiBrillBH.F to compute\n\tthe physical metric from the conformal metric.");
+      } else 
+	{
+	  CCTK_PARAMWARN("Unknown ADMBase::metric_type - known types are \"physical\" and \"static conformal\"");
+	}
+}
+
+/********************************************************************
+ *********************     Local Routines   *************************
+ ********************************************************************/
