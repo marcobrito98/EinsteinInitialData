@@ -37,7 +37,7 @@ axiodd::n        = 5
 axiodd::etamax   = 6.0
 axiodd::neta     = 102
 axiodd::ntheta   = 27
-axiodd::interpolatioin_order = 1
+axiodd::interpolation_order = 1
 
 # GAUGE
 einstein::slicing    = "geodesic"  
