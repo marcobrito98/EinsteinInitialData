@@ -1,6 +1,6 @@
 # Parameter definitions for thorn IDLinearWaves
 
-friend:einstein
+shares:einstein
 
 EXTENDS KEYWORD initial_data ""
 {
