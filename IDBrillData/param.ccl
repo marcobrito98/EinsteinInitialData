@@ -25,12 +25,17 @@ KEYWORD brill_bound "Which boundary condition to use"
   "robin" :: "Robin boundary: set brill_robin_falloff, brill_robin_inf
 } "const"
 
+CCTK_REAL brill_const_v0 "Value of constant BC"
+{
+  : :: "anything goes"
+} 1.0
+
 CCTK_INT brill_robin_falloff "Fall-off of Robin BC"
 {
   0: :: "any positive integer value"
 } 1
 
-CCTK_REAL brill_robin_inf " inf-value of Robin BC"
+CCTK_REAL brill_robin_inf "Value at infinity of Robin BC"
 {
   : :: "anything goes"
 } 1.0
