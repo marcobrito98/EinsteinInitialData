@@ -1,0 +1,91 @@
+#------------------------------------------------------------------------------
+#
+# Parameter file for evolutions of colliding black holes (Misner)
+#
+# For use with Cactus 4.0 (Beta 4)
+#
+# For help on running Cactus, either run the Cactus exectuable with the 
+#   command line option -help, or consult the documentation at
+#   www.cactuscode.org
+#
+# Max Planck Institute for Gravitational Physics, Potsdam, Germany, 1999
+#
+#------------------------------------------------------------------------------
+
+!DESC "Evolution of Colliding Black Holes: Demo"
+
+# These thorns must be compiled
+
+ActiveThorns = "Boundary ADM CartGrid3D Einstein IDanalyticBH IOBasic IOUtil IOASCII PsiKadelia IsoSurfacer http netgeometry Pugh Time"
+ 
+#------------------------------------------------------------------------------
+
+# Number of grid points in each direction (must be around 100 or larger)
+ 
+driver::global_nsize       = 100
+
+# Hosts to announce the remote vizualisation to
+
+NetGeometry::amira_announce = ""
+
+# How many iterations 
+
+cactus::cctk_final_time    = 30.0
+
+# What output and how often
+
+IOBasic::outInfo_vars      = "einstein::alp"
+IOBasic::outInfo_every     = 10
+IOASCII::out1D_vars        = "einstein::alp einstein::grr psikadelia::psi0re"
+IOASCII::out1D_every       = 10
+
+#------------------------------------------------------------------------------
+# 
+# IsoSurfacer
+#
+#------------------------------------------------------------------------------
+
+# IsoSurfacer parameters:
+#  - the variable to compute the isosurface from
+#  - the isosurface level
+#  - the output format
+#  - frequency , first iteration, resolution of output, uniq_vertices flag
+
+IsoSurfacer::isosurfacer = "{(psikadelia::psi0re) (-0.001,0.001) (SOCK) (1, 1, 1, 1)}"
+IsoSurfacer::allow_empty_sends = "yes"
+
+http::port                 = 7050
+
+NetGeometry::port          = 7051
+NetGeometry::tcpwindowsize = 1048576
+
+#------------------------------------------------------------------------------
+# 
+# Evolution and initial data
+#
+#------------------------------------------------------------------------------
+
+IO::outdir                 = "MisnerDemo-Iso"
+
+grid::domain               = "full"
+grid::type                 = "byrange"
+grid::xyzmin               = -10.0
+grid::xyzmax               =  10.0
+
+cactus::cctk_initial_time  = 0.
+
+time::dtfac                = 0.25 
+ 
+einstein::initial_data     = "misner_bh"  
+einstein::evolution_system = "ADM"     
+einstein::slicing          = "1+log"
+einstein::initial_lapse	   = "one"
+
+idanalyticbh::mu           = 2.2
+
+adm::harmonic_f            = 2.0
+adm::bound                 = "radiative"      
+adm::method                = "stagleap"
+
+#------------------------------------------------------------------------------
+
