@@ -36,7 +36,7 @@ if ( (CCTK_Equals(initial_data,"slice")) && ! (CCTK_Equals(evolution_system,"sli
 
 if ( (CCTK_Equals(initial_lapse,"exact")) || (CCTK_Equals(initial_shift,"exact")) )
 {
-  schedule exactgauge at CCTK_POSTINITIAL
+  schedule exactgauge at CCTK_INITIAL
   {
     LANG: Fortran
   } "Set initial lapse and/or shift from exact solution on a trivial slice"
