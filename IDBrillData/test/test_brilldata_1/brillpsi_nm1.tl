@@ -1,2 +1,2 @@
-"brillpsi norm1 v time
+"brillpsi v time
 0.0000000000000	1.0570696312872

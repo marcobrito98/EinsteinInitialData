@@ -1,7 +1,7 @@
 
 !DESC "Brill wave initial data (Holz type), amplitude 5, BAM, robin boundaries"
 
-ActiveThorns = "bam_elliptic einstein ellbase ellsor boundary pugh pughslab pughreduce cartgrid3d idbrilldata ioascii iobasic ioutil"
+ActiveThorns = "bam_elliptic einstein ellbase ellsor boundary pugh pughslab pughreduce cartgrid3d idbrilldata ioascii iobasic ioutil time"
 
 # General
 

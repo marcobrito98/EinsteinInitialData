@@ -1,2 +1,2 @@
-"gxx maximum v time
+"gxx v time
 0.0000000000000	11.1934254896366

@@ -1,2 +1,2 @@
-"gyy minimum v time
+"gyy v time
 0.0000000000000	0.3420544328068

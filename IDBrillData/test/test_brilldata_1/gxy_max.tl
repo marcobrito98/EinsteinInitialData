@@ -1,2 +1,2 @@
-"gxy maximum v time
+"gxy v time
 0.0000000000000	5.3054170976315
