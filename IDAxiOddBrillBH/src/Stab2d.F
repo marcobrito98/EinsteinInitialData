@@ -81,10 +81,11 @@ c
 c     
       integer,intent(in) :: im,jm
       integer :: ncyc
-      real*8,intent(out) :: cc(im*jm),cn(im*jm)
-      real*8,intent(out) :: cs(im*jm),ce(im*jm)
-      real*8,intent(out) :: cw(im*jm)
-      real*8,intent(out) :: tol,rnorm
+      real*8,intent(in) :: cc(im*jm),cn(im*jm)
+      real*8,intent(in) :: cs(im*jm),ce(im*jm)
+      real*8,intent(in) :: cw(im*jm)
+      real*8,intent(in) :: tol
+      real*8,intent(out):: rnorm
       integer,intent(out) :: ier
       real*8 x(im*jm),r(im*jm)
 c     Local variables
@@ -244,9 +245,9 @@ c
       implicit none
 c
       integer,intent(in) :: im,jm
-      real*8,intent(out) :: cc(im*jm),cn(im*jm)
-      real*8,intent(out) :: cs(im*jm),ce(im*jm)
-      real*8,intent(out) :: cw(im*jm)
+      real*8,intent(in) :: cc(im*jm),cn(im*jm)
+      real*8,intent(in) :: cs(im*jm),ce(im*jm)
+      real*8,intent(in) :: cw(im*jm)
       real*8 :: x(im*jm), y(im*jm)
 c     Local variables
       integer :: i, j, k
