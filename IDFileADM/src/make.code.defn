@@ -2,7 +2,7 @@
 # $Header$
 
 # Source files in this directory
-SRCS = IDFileADM_ParamCheck.c
+SRCS = IDFileADM_ParamCheck.c IDFileADM_Init.c
 
 # Subdirectories containing source files
 SUBDIRS = 
