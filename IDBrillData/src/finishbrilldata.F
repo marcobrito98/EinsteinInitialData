@@ -74,9 +74,9 @@ c              The individual coefficients can be read off as
 c                 This fudge assumes that q = O(rho^2) near the axis. Which
 c                 it should be, or the data will be singular.
 
-                  gxx(i,j,k) = zero
-                  gyy(i,j,k) = zero
-                  gzz(i,j,k) = zero
+                  gxx(i,j,k) = one
+                  gyy(i,j,k) = one
+                  gzz(i,j,k) = one
                   gxy(i,j,k) = zero
 
                end if
