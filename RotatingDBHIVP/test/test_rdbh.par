@@ -31,12 +31,12 @@ einstein::initial_data = "rotatingdbh"
 rotatingdbhivp::amp      = 0.5
 rotatingdbhivp::eta0     = 0.0
 rotatingdbhivp::sigma    = 1.0
-rotatingdbhivp::byJ      = 0.0
+rotatingdbhivp::byJ      = 10.0
 rotatingdbhivp::mm       = 2.0
 rotatingdbhivp::etamax   = 6.0
-rotatingdbhivp::ne       = 102
-rotatingdbhivp::nq       = 27
-rotatingdbhivp::np       = 27
+rotatingdbhivp::neta     = 102
+rotatingdbhivp::ntheta   = 27
+rotatingdbhivp::nphi     = 5
 interp::order            = 1
 
 # GAUGE
