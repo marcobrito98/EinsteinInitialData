@@ -414,8 +414,8 @@ c      rewind(unit=lout)
       ase(n)=cse(i,j)
       q(n)=u(i,j)
       f(n)=rhs(i,j)
- 100  continue
- 110  continue
+  100 continue
+  110 continue
 
 
 *
@@ -430,8 +430,8 @@ c      rewind(unit=lout)
       if (ac(n) .eq. 0.) then
         iscale=0
       endif
- 205  continue
- 200  continue
+  205 continue
+  200 continue
 
 *
 *  Do the diagonal scaling if we can.
@@ -451,8 +451,8 @@ c      rewind(unit=lout)
         as(n)=as(n)/ac(n)
         an(n)=an(n)/ac(n)
         ac(n)=1.
- 215  continue
- 210  continue
+  215 continue
+  210 continue
 
       endif
 
@@ -486,8 +486,8 @@ c   Now call the multigrid routine
       do 500 i=ilower,iupper
       n=(j+1-jlower)*im + i+1-(ilower-1)
       u(i,j)=q(n)
- 500  continue
- 510  continue
+  500 continue
+  510 continue
 
       return
       end
@@ -820,8 +820,8 @@ c      rewind(unit=lout)
       ase(n)=0.
       q(n)=u(i,j)
       f(n)=rhs(i,j)
- 100  continue
- 110  continue
+  100 continue
+  110 continue
 
 
 *
@@ -836,8 +836,8 @@ c      rewind(unit=lout)
       if (ac(n) .eq. 0.) then
         iscale=0
       endif
- 205  continue
- 200  continue
+  205 continue
+  200 continue
 
 *
 *  Do the diagonal scaling if we can.
@@ -853,8 +853,8 @@ c      rewind(unit=lout)
         as(n)=as(n)/ac(n)
         an(n)=an(n)/ac(n)
         ac(n)=1.
- 215  continue
- 210  continue
+  215 continue
+  210 continue
 
       endif
 
@@ -889,8 +889,8 @@ c   Now call the multigrid routine
       do 500 i=ilower,iupper
       n=(j+1-jlower)*im + i+1-(ilower-1)
       u(i,j)=q(n)
- 500  continue
- 510  continue
+  500 continue
+  510 continue
 
       return
       end
