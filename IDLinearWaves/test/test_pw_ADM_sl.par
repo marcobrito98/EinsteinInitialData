@@ -3,7 +3,7 @@
 #########################################################
 
 # Required thorns
-ActiveThorns = "time pugh pughreduce cartgrid3d einstein ADM IDLinearWaves ioascii ioutil iobasic"
+ActiveThorns = "boundary time pugh pughslab pughreduce cartgrid3d einstein ADM IDLinearWaves ioascii ioutil iobasic"
 
 # GENERAL 
 
