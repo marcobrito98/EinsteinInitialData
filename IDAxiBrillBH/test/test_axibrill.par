@@ -45,7 +45,8 @@ einstein::slicing    = "geodesic"
 
 
 # OUTPUT ########################################################
-IO::outdir         = "test_axibrill"
+IO::outdir               = "test_axibrill"
+IO::out_fileinfo         = "none"
 IOASCII::out1d_every     =  1
 IOASCII::out1D_vars      = "einstein::curv einstein::metric einstein::grr admconstraints::ham"
 IOBasic::outInfo_every   = 1
