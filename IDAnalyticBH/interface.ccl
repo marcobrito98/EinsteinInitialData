@@ -4,6 +4,8 @@
 implements: idanalyticbh
 inherits: einstein
 
+private:
+
 real misner_workspace TYPE = GF
 {
   csch,
