@@ -2,11 +2,11 @@
 # $Header$
 shares:einstein
 
-EXTENDS KEYWORD initial_lapse ""
+EXTENDS KEYWORD initial_lapse 
 {
   "schwarz" :: "Set lapse to Schwarzschild"
 }
-EXTENDS KEYWORD initial_data ""
+EXTENDS KEYWORD initial_data 
 {
    "axioddbh" :: "Axisymmetry Initial data for Bradt-Seidel"
 }
