@@ -31,6 +31,8 @@ C $Header$
      $     dzgxxjunk, dzgyyjunk, dzgzzjunk, 
      $     dzgxyjunk, dzgyzjunk, dzgxzjunk
 
+      call CCTK_INFO('setting exact data on slice')
+
 C     Note I assume time has been initialized to physical time.
 C     Set data pointwise.
 
