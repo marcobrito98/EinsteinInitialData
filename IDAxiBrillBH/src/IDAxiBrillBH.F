@@ -252,21 +252,39 @@ c               phi(i,j,k)= datan2(y(i,j,k),x(i,j,k))
          enddo
       enddo
 
-      call CCTK_InterpHandle (handle, "simple_local")
-      
       npoints = nx*ny*nz
 
-      call CCTK_Interp (ierror,cctkGH,handle,npoints,2,6,6,
-     $     neb,nqb,abseta,q,
-     $     CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
-     $     etagrd(1),qgrd(1),deta,dq,
-     $     psi2d,detapsi2d,dqpsi2d,detaetapsi2d,detaqpsi2d,dqqpsi2d,
-     $     CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
-     $     CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
-     $     psi2dv,detapsi2dv,dqpsi2dv,detaetapsi2dv,detaqpsi2dv,
-     $     dqqpsi2dv,
-     $     CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
-     $     CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL)
+!     Interpolator handle.
+
+      handle = -1
+
+      if (interpolation_order .eq. 1) then
+        call CCTK_InterpHandle (handle, "first-order uniform cartesian")
+      else if (interpolation_order .eq. 2) then
+        call CCTK_InterpHandle (handle, "second-order uniform cartesian")
+      else if (interpolation_order .eq. 3) then
+        call CCTK_InterpHandle (handle, "third-order uniform cartesian")
+      endif
+
+      if (handle .lt. 0) then
+        call CCTK_WARN (0, "Couldn't get handle for interpolation operator")
+      endif
+
+      call CCTK_InterpLocal (ierror, cctkGH, handle, npoints, 2, 6, 6,
+     $                       neb, nqb, etagrd, qgrd,
+     $                       CCTK_VARIABLE_REAL, CCTK_VARIABLE_REAL,
+     $                       abseta, q,
+     $                       CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
+     $                       psi2d, detapsi2d, dqpsi2d, detaetapsi2d,
+     $                       detaqpsi2d, dqqpsi2d,
+     $                       CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
+     $                       CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
+     $                       CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
+     $                       psi2dv, detapsi2dv, dqpsi2dv, detaetapsi2dv,
+     $                       detaqpsi2dv, dqqpsi2dv,
+     $                       CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
+     $                       CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
+     $                       CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL)
 
       psi = psi2dv * exp (-0.5 * eta)
       detapsi2dv = sign_eta * detapsi2dv
