@@ -35,7 +35,6 @@ C $Header$
       CCTK_REAL bxxe,bxye,bxze,byxe,byye,byze,bzxe,bzye,bzze
 
       CCTK_REAL det, uxx, uxy, uxz, uyy, uyz, uzz
-      CCTK_REAL vxe,vye,vze,sav
 
       CCTK_REAL dx,dy,dz,time
       CCTK_REAL xmx,xmn,ymx,ymn,zmx,zmn,rmx
