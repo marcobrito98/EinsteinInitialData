@@ -1,0 +1,357 @@
+%version   $Header$
+\documentclass{article}
+\usepackage{amsmath}
+
+\def\eqref#1{$(\ref{#1})$}
+\def\cf{cf.\hbox{}}
+\def\ie{i.e.\hbox{}}
+\def\eg{e.g.\hbox{}}
+\def\etal{{\it et~al.\/}}
+\def\Nb{N.b.\hbox{}}
+
+\def\defn#1{{\bf #1}}
+
+\def\half{\frac{1}{2}}
+
+\def\new{\text{new}}
+\def\G{{\sf G}}
+\def\diag{\operatorname{diag}}
+
+% nicely typeset "C++" (adapted from a comp.lang.C++ FAQ entry)
+\def\Cplusplus{\hbox{C\hspace{-.05em}\raisebox{.4ex}{\tiny\bf ++}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\title{Exact}
+\author{Many Different People}
+%
+% We want CVS to expand the Id keyword on the next line, but we don't
+% want TeX to go into math mode to typeset the expansion (because that
+% wouldn't look as nice in the output), so we use the "$ $" construct
+% to get TeX out of math mode again when typesetting the expansion.
+%
+\date{$ $Id$ $}
+\maketitle
+
+\abstract{
+This thorn sets up the $3+1$ ADM field variables for any of a number
+of exact spacetimes/coordinates, and even some non-Einstein
+spcetimes/coordinates.  It's easy to add more spacetimes/coordinates:
+all you have to supply is the 4-metric $g_{ab}$ and the inverse 4-metric
+$g^{ab}$, this thorn automagically calculates all the ADM variables
+from these.
+	 }  
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Introduction}
+
+This thorn sets up the ADM field variables for any of the following
+spacetimes/coordinates, as specified by the \verb|exact::exactmodel|
+parameter:
+\begin{description}
+\item[Minkowski spacetime]\mbox{}\\[-\baselineskip]
+	\begin{description}
+	\item[{\tt "Minkowski"}]
+		Minkowski spacetime
+	\item[{\tt "flatfunny"}]
+		Minkowski spacetime in non-trivial spatial coordinates
+	\item[{\tt "flatshift"}]
+		Minkowski spacetime in non-trivial slices with shift
+	\end{description}
+\item[Black hole spacetimes]\mbox{}\\[-\baselineskip]
+	\begin{description}
+	\item[{\tt "flatSchwarz"}]
+		Schwarzschild spacetime with flat spatial metric
+	\item[{\tt "Novikov"}]
+		Schwarzschild spacetime in Novikov coordinates
+	\item[{\tt "Finkelstein"}]
+		Schwarzschild spacetime in Eddington-Finkelstein coordinates
+	\item[{\tt "Kerr"}]
+		Kerr spacetime in cartesian coordinates
+	\item[{\tt "KerrSchild"}]
+		Kerr spacetime in Kerr-Schild coordinates
+	\item[{\tt "fakebinary"}]
+		Non-Einstein fake-binary of Thorn et al
+	\item[{\tt "multiBH"}]
+		Maximally charged multi BH solutions
+	\end{description}
+\item[Cosmological spacetimes]\mbox{}\\[-\baselineskip]
+	\begin{description}
+	\item[{\tt "BianchiI"}]
+		Bianchi type~I spacetime
+	\item[{\tt "Rob-Wal"}]
+		Robertson-Walker cosmology (near $t=0$,pure radiation case)
+	\item[{\tt "Godel"}]
+		G\"{o}del spacetime%%%
+\footnote{%%%
+	 Note that the parameter is {\em not\/} "Goedel"!
+	 }%%%
+	\item[{\tt "DeSitter"}]
+		De~Sitter spacetime
+		(Robertson-Walker cosmology, near $t=0$, $p=0$)
+	\item[{\tt "Kasner"}]
+		Kasner like spacetime
+	\item[{\tt "Milne"}]
+		Milne spacetime for pre-big-bang cosmology
+	\end{description}
+\item[Miscellaneous spacetimes]\mbox{}\\[-\baselineskip]
+	\begin{description}
+	\item[{\tt "boostrot"}]
+		Boost rotation symmetric spacetime
+	\item[{\tt "starSchwarz"}]
+		Schwarzschild (constant density) star
+	\item[{\tt "bowl"}]
+		Non-Einstein bowl (bag-of-gold) spacetime
+	\end{description}
+\end{description}
+
+As a general policy, this thorn includes only cases where the full
+4-metric $g_{ab}$ (and its inverse, although we could probably dispense
+with that if needed) is known throughout the spacetime.  Cases where
+this is only known on one specific slice, should live in separate
+initial data thorns.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Minkowski Spacetime}
+
+This thorn can set up Minkowski spacetime using several different
+types of coordinates:
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Minkowski spacetime}
+
+\verb|Exact::exactmodel = "Minkowski"| specifies Minkowski coordinates
+in the usual Minkowski coordinates:
+\begin{equation}
+g_{ab} = \left[
+	 \begin{array}{cccc}
+	 1	& 0	& 0	& 0	\\
+	 0	& 1	& 0	& 0	\\
+	 0	& 0	& 1	& 0	\\
+	 0	& 0	& 0	& 1	%%%\\
+	 \end{array}
+	 \right]
+\end{equation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Minkowski spacetime in non-trivial spatial coordinates}
+
+\verb|Exact::exactmodel = "flatfunny"| specifies Minkowski spacetime
+with the usual Minkowski time slicing, but in the nontrivial spatial
+coordinates defined as follows:  First take the flat metric in
+polar spherical coordinates, then define a new radial coordinate by
+\begin{equation}
+r = r_\new (1 - a \G(r_\new))
+\end{equation}
+where $a = \verb|Exact::flatfunny_a|$ is a specified parameter with
+$a \in [0,1)$, and $\G(r) = \exp(-\half r^2/\sigma^2)$ is a Gaussian
+centered at $r=0$ with amplitude~1 and width
+$\sigma = \verb|Exact::flatfunny_s|$.  Finally, transform back to
+Cartesian coordinates.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Minkowski spacetime in non-trivial slices with shift}
+
+\verb|Exact::exactmodel = "flatshift"| specifies Minkowski spacetime
+with the nontrivial time slicing and spatial coordinates defined as
+follows:  Take the flat 4-metric in polar spherical coordinates, then
+define a new time coordinate by
+\begin{equation}
+t_\new = t - a \G(r)
+\end{equation}
+where $a = \verb|Exact::flatshift_a|$ is a specified parameter with
+$a \in (-1,1)$, and $\G(r) = \exp(-\half r^2/\sigma^2)$ is a Gaussian
+centered at $r=0$ with amplitude~1 and width
+$\sigma = \verb|Exact::flatshift_s|$.  Finally, transform back to
+Cartesian (4-)coordinates.  (\Nb{} this gives a time-independent
+4-metric.)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Black Hole Spacetimes}
+
+This thorn can set up Schwarzschild, Kerr, and even some other types
+of black hole or pseudo-black-hole spacetimes, using several different
+types of coordinates:
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Schwarzschild spacetime with flat spatial metric}
+
+\verb|Exact::exactmodel = "flatSchwarz"| specifies Schwarzschild spacetime
+in XXX coordinates.  These have $g_{ij}$ a {\em flat\/} metric.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Schwarzschild spacetime in Novikov coordinates}
+
+\verb|Exact::exactmodel = "Novikov"| specifies Schwarzschild spacetime
+in Novikov coordinates.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Schwarzschild spacetime in Eddington-Finkelstein coordinates}
+
+\verb|Exact::exactmodel = "Finkelstein"| specifies Schwarzschild spacetime
+in (ingoing) Eddington-Finkelstein coordinates, as described in MTW
+box~31.2 and figure~32.1 (\ie{} $r$ is the usual areal radial coordinate,
+and $t+r$ is an ingoing null coordinate):
+
+In Cartesian coordinates $(t,x,y,z)$,
+\begin{equation}
+g_{ab} = \left[
+	 \begin{array}{cccc}
+	 - \left( 1 - \frac{2m}{r} \right)
+			& \frac{2m}{r} \frac{x}{r}
+				& \frac{2m}{r} \frac{y}{r}
+					& \frac{2m}{r} \frac{z}{r}	\\
+	 \frac{2m}{r} \frac{x}{r}
+			& 1 + \frac{2m}{r} \frac{x^2}{r^2}
+				& \frac{2m}{r} \frac{xy}{r^2}
+					& \frac{2m}{r} \frac{xz}{r^2}	\\
+	 \frac{2m}{r} \frac{y}{r}
+			& \frac{2m}{r} \frac{xy}{r^2}
+				& 1 + \frac{2m}{r} \frac{y^2}{r^2}
+					& \frac{2m}{r} \frac{yz}{r^2}	\\
+	 \frac{2m}{r} \frac{z}{r}
+			& \frac{2m}{r} \frac{xz}{r^2}
+				& \frac{2m}{r} \frac{yz}{r^2}
+					& 1 + \frac{2m}{r} \frac{z^2}{r^2}
+									%%%\\
+	 \end{array}
+	 \right]
+\end{equation}
+
+In polar spherical coordinates $(t,r,\theta,\phi)$
+\begin{equation}
+g_{ab} = \left[
+	 \begin{array}{cccc}
+	 - \left( 1 - \frac{2m}{r} \right)
+			& \frac{2m}{r}	& 0		& 0		\\
+	 \frac{2m}{r}	& 1 + \frac{2m}{r}
+					& 0		& 0		\\
+	 0		& 0		& r^2		& 0		\\
+	 0		& 0		& 0		& r^2 \sin^2 \theta
+									%%%\\
+	 \end{array}
+	 \right]
+\end{equation}
+so that
+\begin{align}
+g_{ij} & = \diag
+	   \left[
+	   \begin{array}{ccc}
+	   1 + \frac{2m}{r}	& r^2	& r^2 \sin^2 \theta	%%%\\
+	   \end{array}
+	   \right]
+									\\
+K_{ij} & = \diag
+	   \left[
+	   \begin{array}{ccc}
+	   - \frac{2m^2}{r^2} \frac {1 + \frac{m}{r}} {\sqrt{1 + \frac{2m}{r}}}
+				& \frac{2m^2}{\sqrt{1 + \frac{2m}{r}}}
+					& \frac{2m^2}{\sqrt{1 + \frac{2m}{r}}}
+					  \sin^2 \theta		%%%\\
+	   \end{array}
+	   \right]
+									\\
+\alpha & = \frac{1}{\sqrt{1 + \frac{2m}{r}}}
+									\\
+\beta^i& = \left[
+	   \begin{array}{ccc}
+	   \frac{2m}{r} \frac{1}{\sqrt{1 + \frac{2m}{r}}}
+				& 0	& 0			%%%\\
+	   \end{array}
+	   \right]
+									%%%\\
+\end{align}
+(Various other $3+1$ variables for Schwarzschild spacetime in
+Eddington-Finkelstein coordinates are tabulated in appendix~2 of
+Jonathan Thornburg's Ph.D thesis,
+\verb|http://www.aei.mpg.de/~jthorn/phd/html/phd.html|.)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Kerr Kerr-Schild form of boosted rotating black hole}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Kerr spacetime in cartesian coordinates}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Maximally charged multi BH solutions}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Cosmological Spacetimes}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Bianchi type~I spacetime}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Robertson-Walker cosmology (near $t=0$,pure radiation case)}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{G\"{o}del spacetime}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{De~Sitter spacetime (Robertson-Walker cosmology, near $t=0$, $p=0$)}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Kasner like spacetime}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Milne spacetime for pre-big-bang cosmology}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Miscellaneous Spacetimes}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Boost rotation symmetric spacetime}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Schwarzschild (constant density) star}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Non-Einstein bowl (bag-of-gold) spacetime}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Non-Einstein fake-binary of Thorn et al}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Acknowledgments}
+
+Many, many people have contributed code to this thorn.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%
+% Automatically created from the ccl files 
+% Do not worry for now.
+%
+\include{interface}
+\include{param}
+\include{schedule}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}
