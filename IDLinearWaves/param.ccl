@@ -8,9 +8,17 @@ EXTENDS KEYWORD initial_data ""
 "planewaves" :: "linear waves initial data- plane waves"
 }
 
+EXTENDS BOOLEAN use_conformal ""
+{
+}
+
+EXTENDS BOOLEAN use_conformal_derivs ""
+{
+}
+
 private:
 
-REAL amplitude "Amplitdude of the wave: both for teuk and plane")
+REAL amplitude "Amplitude of the wave: both for teuk and plane")
 {
   0: :: "positive amplitude"
 } 0.001

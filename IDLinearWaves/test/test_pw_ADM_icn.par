@@ -1,5 +1,5 @@
 #########################################################
-# Linearized plane wave along y-line, ADM, ICN
+!DESC "Linearized plane wave along y-line, ADM, ICN"
 #########################################################
 
 # Required thorns

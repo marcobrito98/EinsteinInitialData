@@ -1,5 +1,5 @@
 #########################################################
-# Linearized plane wave along x-line, ADM, Leapfrog
+!DESC "Linearized plane wave along x-line, ADM, Leapfrog"
 #########################################################
 
 # Required thorns
