@@ -641,14 +641,29 @@ c
          enddo
       enddo
       
-      call CCTK_InterpHandle (handle, "simple_local")
-      
       npoints = nx*ny*nz
 
-      call CCTK_Interp (ierror,cctkGH,handle,npoints,3,10,10,
-     $     ne,nq,np,abseta,q,phi,
+!     Interpolator handle.
+
+      handle = -1
+
+      if (interpolation_order .eq. 1) then
+        call CCTK_InterpHandle (handle, "first-order uniform cartesian")
+      else if (interpolation_order .eq. 2) then
+        call CCTK_InterpHandle (handle, "second-order uniform cartesian")
+      else if (interpolation_order .eq. 3) then
+        call CCTK_InterpHandle (handle, "third-order uniform cartesian")
+      endif
+
+      if (handle .lt. 0) then
+        call CCTK_WARN (0, "Couldn't get handle for interpolation operator")
+      endif
+
+      call CCTK_InterpLocal (ierror,cctkGH,handle,npoints,3,10,10,
+     $     ne,nq,np,etagrd,qgrd,phigrd-pi,
      $     CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
-     $     etagrd(1),qgrd(1),phigrd(1)-pi,deta,dq,dphi,
+     $     abseta,q,phi,
+     $     CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
      $     psisph,detapsisph,dqpsisph,dphipsisph,detaetapsisph,
      $     detaqpsisph,detaphipsisph,dqqpsisph,dqphipsisph,dphiphipsisph,
      $     CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
