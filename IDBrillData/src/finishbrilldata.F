@@ -25,15 +25,15 @@
       integer nx,ny,nz
 
       CCTK_REAL x1,y1,z1,rho1,rho2
-      CCTK_REAL brillq,psi4,e2q,rhofudge
-      CCTK_REAL phi,phif
-      CCTK_REAL zero
+      CCTK_REAL phi,psi4,e2q,rhofudge
+      CCTK_REAL zero,one
 
-      external brillq
+      CCTK_REAL brillq,phif
 
 c     Numbers.
 
       zero = 0.0D0
+      one  = 1.0D0
 
 c     Set up grid size.
 
@@ -74,12 +74,12 @@ c              e^2q (dx^2 + dy^2 + dz^2) + (1-e^2q) (xdy-ydx)^2/rho^2
 c
 c              The individual coefficients can be read off as
 
-               if (rho1 .gt. rhofudge) then
+               if (rho1.gt.rhofudge) then
 
-                  gxx(i,j,k) = psi4*(e2q + (1.d0 - e2q)*y1**2/rho2)
-                  gyy(i,j,k) = psi4*(e2q + (1.d0 - e2q)*x1**2/rho2)
+                  gxx(i,j,k) = psi4*(e2q + (one - e2q)*y1**2/rho2)
+                  gyy(i,j,k) = psi4*(e2q + (one - e2q)*x1**2/rho2)
                   gzz(i,j,k) = psi4*e2q
-                  gxy(i,j,k) = - psi4*(1.d0 - e2q)*x1*y1/rho2
+                  gxy(i,j,k) = - psi4*(one - e2q)*x1*y1/rho2
 
                else
 
