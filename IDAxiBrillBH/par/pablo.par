@@ -1,6 +1,6 @@
 !DESC "Demonstration file for Pablo/AutoPilot"
 
-ActiveThorns = "Pughslab FlexIO Boundary Time PsiKadelia ADMConstraints PUGH PUGHInterp PUGHReduce CartGrid3D ADMBase ADM IDAxiBrillBH IOBasic IOFlexIO IOASCII IOUtil"
+ActiveThorns = "Pughslab FlexIO Boundary Time PsiKadelia ADMConstraints PUGH PUGHInterp PUGHReduce CartGrid3D ADMBase ADM admmacros coordgauge staticconformal IDAxiBrillBH IOBasic IOFlexIO IOASCII IOUtil"
 
 
 # Parameters which will affect performance
@@ -53,6 +53,7 @@ IO::checkpoint_dir         = "pablo"
 IO::checkpoint_keep        = 1
 IO::checkpoint_file        = "checkpoint"
 admbase::evolution_method  = "ADM"     
+admbase::metric_type       = "static conformal"
 grid::type                 = "byspacing"
 grid::dxyz                 = 0.1
 grid::domain               = "octant"
