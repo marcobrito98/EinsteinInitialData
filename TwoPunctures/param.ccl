@@ -33,7 +33,7 @@ BOOLEAN keep_u_around "Keep the variable u around after solving"
 KEYWORD grid_setup_method "How to fill the 3D grid from the spectral grid"
 {
   "Taylor expansion" :: "use a Taylor expansion about the nearest collocation point (fast, but might be inaccurate)"
-  "interpolation"    :: "interpolate using all spectral coefficients (slow)"
+  "evaluation"       :: "evaluate using all spectral coefficients (slow)"
 } "Taylor expansion"
 
 

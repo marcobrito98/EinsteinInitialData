@@ -29,7 +29,7 @@ TwoPunctures (CCTK_ARGUMENTS)
   DECLARE_CCTK_ARGUMENTS;
   DECLARE_CCTK_PARAMETERS;
 
-  enum GRID_SETUP_METHOD { GSM_Taylor_expansion, GSM_interpolation };
+  enum GRID_SETUP_METHOD { GSM_Taylor_expansion, GSM_evaluation };
   enum GRID_SETUP_METHOD gsm;
 
   int nvar = 1, n1 = npoints_A, n2 = npoints_B, n3 = npoints_phi;
@@ -54,9 +54,9 @@ TwoPunctures (CCTK_ARGUMENTS)
   {
     gsm = GSM_Taylor_expansion;
   }
-  else if (CCTK_EQUALS(grid_setup_method, "interpolation"))
+  else if (CCTK_EQUALS(grid_setup_method, "evaluation"))
   {
-    gsm = GSM_interpolation;
+    gsm = GSM_evaluation;
   }
   else
   {
@@ -97,7 +97,7 @@ TwoPunctures (CCTK_ARGUMENTS)
           U = PunctTaylorExpandAtArbitPosition
             (0, nvar, n1, n2, n3, v, x[ind], y[ind], z[ind]);
           break;
-        case GSM_interpolation:
+        case GSM_evaluation:
           U = PunctIntPolAtArbitPosition
             (0, nvar, n1, n2, n3, v, x[ind], y[ind], z[ind]);
           break;
