@@ -53,7 +53,7 @@ c     Perhaps this and others should go into cctk.h
       real*8 t1,t2,t3,t4
       real*8 gtil,dngtil,dnngtil,dnnngtil,dnnnngtil,dnnnnngtil,
      $     dnnnnnngtil,dnnnnnnngtil
-      real*8 rhsmax,rmax,odd_get2d,adm,Jmom,mass,a,R,rBL
+      real*8 rhsmax,rmax,odd_get2d,adm,Jmom,mass,a,r_iso,rBL
       real*8,parameter :: rbh_tol = 1.0d-7,rbh_eps = 1.0d-10
       integer,parameter :: itmax = 100 
       real*8 pi,zero,one,two
