@@ -1,6 +1,13 @@
 # Parameter definitions for thorn AxiOddBrillBHIVP
 # $Header$
-shares:einstein
+
+shares: StaticConformal
+
+USES KEYWORD conformal_storage
+
+shares:admbase
+
+USES KEYWORD metric_type
 
 EXTENDS KEYWORD initial_lapse 
 {

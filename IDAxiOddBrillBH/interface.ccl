@@ -2,8 +2,7 @@
 # $Header$
 
 implements: axiodd
-inherits: einstein driver
-
+inherits: admbase staticconformal grid admanalysis driver
 
 private:
 

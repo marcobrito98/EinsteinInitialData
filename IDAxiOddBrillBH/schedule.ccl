@@ -4,6 +4,12 @@
 if (CCTK_Equals(initial_data,"axioddbh")) 
 { 
   STORAGE: sph_to_car_coord, sph_to_car_psi
+
+  schedule IDAxiOddBrillBH_ParamCheck at PARAMCHECK
+  {
+    LANG: C
+  } "Check Parameters"
+
   schedule IDAxiOddBrillBH at CCTK_INITIAL
   {
     LANG: Fortran
