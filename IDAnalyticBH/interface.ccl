@@ -1,0 +1,6 @@
+# Interface definition for thorn IDAnalyticBH
+# $Header$
+
+implements: idanalyticbh
+inherits: einstein
+
