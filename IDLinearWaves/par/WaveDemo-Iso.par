@@ -16,7 +16,7 @@
 
 # These thorns must be compiled
 
-ActiveThorns = "admbase admmacros admanalysis coordgauge staticconformal time adm iobasic ioutil ioascii pugh pughreduce pughslab cartgrid3d boundary idlinearwaves IsoSurfacer httpd httpdextra Socket"
+ActiveThorns = "admbase admmacros admanalysis coordgauge staticconformal time adm iobasic ioutil ioascii pugh pughreduce pughslab CartGrid3D CoordBase boundary idlinearwaves IsoSurfacer httpd httpdextra Socket"
 
 #------------------------------------------------------------------------------
 
