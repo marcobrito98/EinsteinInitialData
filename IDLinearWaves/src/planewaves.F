@@ -38,7 +38,7 @@
 #include "declare_arguments.h"
 #include "declare_parameters.h"
 c Using macro definitions from Einstein
-#include "../../packages/CactusEinstein/Einstein/src/Einstein.h"
+#include "CactusEinstein/Einstein/src/Einstein.h"
 
 
       subroutine planewaves(CCTK_FARGUMENTS)
@@ -112,14 +112,14 @@ c     precalc
       wp = (kxp*kxp+kyp*kyp+kzp*kzp)**0.5
 
 c  *************** plane waves ********************
-      do k=1,sh(3)
-         do j=1,sh(2)
-            do i=1,sh(1)		 
-               plus = (kx*x(i,j,k)+ky*y(i,j,k)+kz*z(i,j,k)+w*time)
-               minus = (kx*x(i,j,k)+ky*y(i,j,k)+kz*z(i,j,k)-w*time)
+      do k=1,cctk_lsh(3)
+         do j=1,cctk_lsh(2)
+            do i=1,cctk_lsh(1)		 
+               plus = (kx*x(i,j,k)+ky*y(i,j,k)+kz*z(i,j,k)+w*cctk_time)
+               minus = (kx*x(i,j,k)+ky*y(i,j,k)+kz*z(i,j,k)-w*cctk_time)
                
-               plusp =(kxp*x(i,j,k)+kyp*y(i,j,k)+kzp*z(i,j,k)+wp*(time-ra))
-               minusp =(kxp*x(i,j,k)+kyp*y(i,j,k)+kzp*z(i,j,k)-wp*(time-ra))
+               plusp =(kxp*x(i,j,k)+kyp*y(i,j,k)+kzp*z(i,j,k)+wp*(cctk_time-ra))
+               minusp =(kxp*x(i,j,k)+kyp*y(i,j,k)+kzp*z(i,j,k)-wp*(cctk_time-ra))
                
                ain = iin*amplitude*cos(plus)*exp(-(plusp)**2)
                aout = iout*amplitude*cos(minus)*exp(-(minusp)**2)

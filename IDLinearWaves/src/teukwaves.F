@@ -2,7 +2,7 @@
 #include "declare_arguments.h"
 #include "declare_parameters.h"
 c Using macro definitions from Einstein
-#include "../../packages/CactusEinstein/Einstein/src/Einstein.h"
+#include "CactusEinstein/Einstein/src/Einstein.h"
 
 
 /*@@
@@ -150,17 +150,17 @@ c     4/3 because they use I not Teuk. F
 c  ****************************************   
 c     initial data for teukolsky waves
 c  ****************************************
-      do k=1,sh(3)
-         do j=1,sh(2)
-            do i=1,sh(1)
+      do k=1,cctk_lsh(3)
+         do j=1,cctk_lsh(2)
+            do i=1,cctk_lsh(1)
                
                xp = x(i,j,k)
                yp = y(i,j,k)
                zp = z(i,j,k)
                rp = r(i,j,k)
                
-               teuk_tp = (time+rp-ra)
-               teuk_tn = (time-rp+ra)
+               teuk_tp = (cctk_time+rp-ra)
+               teuk_tn = (cctk_time-rp+ra)
                
                tp2 = teuk_tp**2
                tn2 = teuk_tn**2
@@ -184,7 +184,7 @@ c     eppley package --> x exp(-x^2)
                if (ipacket.eq.1) then
 c     to keep the analytic solution valid for the eppley packet:   
                   if (ra.ne.0.and.ingoing.eq.1.and.outgoing.eq.1) then
-                     teuk_tn = (time-rp-ra)
+                     teuk_tn = (cctk_time-rp-ra)
                      tn2 = teuk_tn**2
                   endif
                   
