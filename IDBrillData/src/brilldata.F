@@ -64,7 +64,7 @@ c     Boundaries.
      .   "EllLinConfMetric::Bnd::Robin::falloff")
          call Ell_SetRealKey(ierr,brill_robin_inf,
      .   "EllLinConfMetric::Bnd::Robin::inf")
-      endif
+      end if
 
 c     Elliptic solver.
 
@@ -73,7 +73,7 @@ c     Elliptic solver.
      .   field_index,Mlin_index,Nsrc_index,AbsTol,RelTol,"sor")
       end if
 
-      if (CCTK_EQUALS(brill_solver,"petsc)) then
+      if (CCTK_EQUALS(brill_solver,"petsc")) then
          call Ell_LinConfMetricSolver(ierr,cctkGH,metpsi_index,
      .   field_index,Mlin_index,Nsrc_index,AbsTol,RelTol,"petsc")
       end if
