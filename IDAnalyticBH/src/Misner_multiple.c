@@ -82,7 +82,6 @@ void Misner_multiple(CCTK_CARGUMENTS)
          */
         if (use_conformal_derivs == 1)
         {
-	  printf("Hello\n");
           MisnerEvalPsi(xval+nm_eps,yval,zval,&tmp1);
           MisnerEvalPsi(xval-nm_eps,yval,zval,&tmp2);
           psix[index] = 0.5*(tmp1-tmp2)/nm_eps;
