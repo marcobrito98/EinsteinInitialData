@@ -12,8 +12,10 @@ driver::ghost_size = 1
 grid::type    = "byrange"
 grid::domain  = "full"
 
-grid::xyzmin = -3.0
-grid::xyzmax =  3.0
+# n.b. this does NOT put a grid point at the origin:
+#      the grid points are at -2.9, -2.7, ... -0.1, +0.1, 0.3, ..., 2.9
+grid::xyzmin = -2.9
+grid::xyzmax =  2.9
 
 cactus::cctk_itlast       = 0
 time::dtfac = 0.25
