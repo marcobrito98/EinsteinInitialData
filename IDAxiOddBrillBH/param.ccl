@@ -63,3 +63,7 @@ BOOLEAN verbose ""
 {
 } "yes"
 
+INT interpolation_order "Order for interpolation" STEERABLE = ALWAYS
+{
+  1:3 :: "Choose between first, second, and third-order"
+} 1

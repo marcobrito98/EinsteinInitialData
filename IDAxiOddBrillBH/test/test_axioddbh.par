@@ -2,7 +2,7 @@
 #!DESC "Initial data for axisymmetric distored black hole"
 ######################################################################
 
-ActiveThorns = "time ADMconstraints pugh pughreduce pughslab interp cartgrid3d einstein ADM IDAxiOddBrillBH ioascii iobasic ioutil"
+ActiveThorns = "time ADMconstraints pugh pughreduce pughslab pughinterp cartgrid3d einstein ADM IDAxiOddBrillBH ioascii iobasic ioutil"
 
 # GENERAL 
 
@@ -35,9 +35,9 @@ axiodd::sigma    = 1.0
 axiodd::byJ      = 0.0
 axiodd::n        = 5
 axiodd::etamax   = 6.0
-axiodd::neta     = 302
-axiodd::ntheta   = 54
-interp::order    = 2
+axiodd::neta     = 102
+axiodd::ntheta   = 27
+axiodd::interpolatioin_order = 1
 
 # GAUGE
 einstein::slicing    = "geodesic"  

@@ -382,17 +382,33 @@ c     Compute eta,q,phi at the each points of cartesian grid
          enddo
       enddo
 
-      call CCTK_InterpHandle (handle, "simple_local")
      
 c     Find the local origin of the spatial coordinates
 c     ------------------------------------------------
 
       npoints = nx*ny*nz
+
+c     Interpolator handle.
+
+      handle = -1
+
+      if (interpolation_order .eq. 1) then
+        call CCTK_InterpHandle (handle, "first-order uniform cartesian")
+      else if (interpolation_order .eq. 2) then
+        call CCTK_InterpHandle (handle, "second-order uniform cartesian")
+      else if (interpolation_order .eq. 3) then
+        call CCTK_InterpHandle (handle, "third-order uniform cartesian")
+      endif
+
+      if (handle .lt. 0) then
+        call CCTK_WARN (0, "Couldn't get handle for interpolation operator")
+      endif
       
-      call CCTK_Interp (ierror,cctkGH,handle,npoints,2,6,6,
-     $     ne,nq,abseta,q,
+      call CCTK_InterpLocal  (ierror,cctkGH,handle,npoints,2,6,6,
+     $     ne,nq,etagrd,qgrd,
      $     CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
-     $     etagrd(1),qgrd(1),deta,dq,
+     $     abseta,q,
+     $     CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
      $     psi2dv,detapsisph,dqpsisph,detaetapsisph,detaqpsisph,
      $     dqqpsisph,
      $     CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
