@@ -12,7 +12,8 @@ void BrilData_InitSymBound(CCTK_CARGUMENTS)
   sym[1] = 1;
   sym[2] = 1;
   
-
-
   SetCartSymmetry(cctkGH, sym,"IDBrillData::brillpsi");
+
+  USE_CCTK_CARGUMENTS
+
 }
