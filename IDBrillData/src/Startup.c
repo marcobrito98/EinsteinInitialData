@@ -3,6 +3,8 @@
 
 #include "Symmetry.h"
 
+void BrilData_InitSymBound(CCTK_ARGUMENTS);
+
 void BrilData_InitSymBound(CCTK_ARGUMENTS)
 { 
   DECLARE_CCTK_ARGUMENTS
