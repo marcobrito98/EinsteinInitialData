@@ -1,7 +1,7 @@
 !DESC "1+log sliced Misner black holes, ADM, double leapfrog"
 
 #Required thorns
-ActiveThorns = "Time Einstein CartGrid3D pugh pughreduce ADM IDanalyticBH IOUtil iobasic"
+ActiveThorns = "Boundary Time Einstein CartGrid3D pugh pughreduce ADM IDanalyticBH IOUtil iobasic"
 
 # GENERAL 
 
