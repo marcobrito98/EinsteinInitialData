@@ -61,6 +61,10 @@ adding the following datasets:
   \item[\texttt{kerr}] Kerr, in Boyer-Lindquist coordinates;
   \item[\texttt{misner\_bh}] 2~Misner black holes;
   \item[\texttt{multiple\_misner\_bh}] $N \ge 2$ Misner black holes;
+	(Alas this code is currently broken; see the level~1
+	\verb|CCTK_VWarn()| warning in \verb|src/Misner_points.c|,
+	function \verb|Misner_init()|.)
+
   \item[\texttt{bl\_bh}] Multiple Brill-Lindquist black holes.
 \end{description}
 Initial data for lapse and shift can also be specified in
