@@ -4,7 +4,7 @@
 
 # Required thorns
 ActiveThorns = "ADMconstraints pugh cartgrid3d einstein ADM IDLinearWaves
- ioascii ioutil"
+ ioascii ioutil iobasic"
 
 # GENERAL 
 
@@ -42,8 +42,8 @@ idlinearwaves::wavesgoing = "both"
 # Output
 
 IO::outdir         = "test_pw_ADM_leap"
-IOASCII::out0D_every =  10      
-IOASCII::out0D_vars  = "einstein::gzz einstein::kzz 
+IOBasic::outScalar_every =  10      
+IOBasic::outScalar_vars  = "einstein::gzz einstein::kzz 
 	admconstraints::ADMconstraints 
 	einstein::grr einstein::alp"
 IOASCII::out1D_every =  10      
@@ -53,7 +53,7 @@ IOASCII::out1D_vars  = "einstein::gxx einstein::gxy einstein::gxz
                         einstein::kyy einstein::kyz einstein::kzz"
 
 
-IOASCII::outinfo_every = 5
-IOASCII::outinfo_vars = "admconstraints::ham einstein::gzz"
+IOBasic::outInfo_every = 5
+IOBasic::outInfo_vars = "admconstraints::ham einstein::gzz"
 
 ##################################################################

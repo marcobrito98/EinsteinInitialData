@@ -42,8 +42,8 @@ idlinearwaves::wavesgoing = "both"
 # Output
 
 IO::outdir         = "test_pw_ADM_sl"
-IOASCII::out0D_every =  10      
-IOASCII::out0D_vars  = "einstein::gxx einstein::kxx 
+IOBasic::outScalar_every =  10      
+IOBasic::outScalar_vars  = "einstein::gxx einstein::kxx 
 	admconstraints::ADMconstraints 
 	einstein::grr einstein::alp"
 IOASCII::out1D_every =  10      
@@ -52,7 +52,7 @@ IOASCII::out1D_vars  = "einstein::gxx einstein::gxy einstein::gxz
                         einstein::kxx einstein::kxy einstein::kxz
                         einstein::kyy einstein::kyz einstein::kzz"
 
-IOASCII::outinfo_every = 5
-IOASCII::outinfo_vars = "admconstraints::ham einstein::gxx"
+IOBasic::outInfo_every = 5
+IOBasic::outInfo_vars = "admconstraints::ham einstein::gxx"
 
 ##################################################################
