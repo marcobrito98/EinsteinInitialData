@@ -1,0 +1,35 @@
+# Parameter definitions for thorn IDAnalyticBH
+# $Header$
+
+private:
+
+REAL mass "Mass of black hole"
+{
+: :: "Not sure if it can be negative or no"
+} 2.0
+
+REAL mu "Misner mu value"
+{
+: :: "Don't know allowed range"
+} 1.2
+
+INTEGER nmax "Number of terms to include for Misner series"
+{
+0: 
+} 30
+
+#friend:einstein
+
+#EXTENDS LOGICAL use_conformal ""
+#{ 
+#}
+
+#EXTENDS KEYWORD model ""
+#{
+#  "schwarzschild" :: "One Schwarzshild black hole"
+#} 
+
+#EXTENDS KEYWORD lapseinit ""
+#{
+#  "schwarz" :: "Set lapse to Schwarzschild"
+#}

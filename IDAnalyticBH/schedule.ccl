@@ -1,0 +1,12 @@
+# Schedule definitions for thorn IDAnalyticBH
+# $Header$
+
+if (CCTK_Equals(model,"schwarzschild")) 
+{ 
+   schedule Schwarzschild at CACTUS_INITIAL
+   {
+     LANG: Fortran
+   } "Construct initial data for a single Schwarzschild black hole"
+
+}
+ 
