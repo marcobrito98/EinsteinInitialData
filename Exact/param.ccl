@@ -36,10 +36,10 @@ EXTENDS KEYWORD initial_shift
 EXTENDS KEYWORD evolution_method
 {
   "exact" :: "Fake an evolution by setting exact data at every timestep"
-  "slice" :: "Evolve arbitrary slice and  extract Cauchy data"
+  "slice" :: "Evolve arbitrary slice and extract Cauchy data"
 }
 
-shares:StaticConformal
+shares: StaticConformal
 
 USES KEYWORD conformal_storage
 
@@ -109,6 +109,25 @@ REAL boost_vy "y component of boost velocity"
 *:* :: "any real number"
 } 0.0
 REAL boost_vz "z component of boost velocity"
+{
+*:* :: "any real number"
+} 0.0
+
+################################################################################
+##### parameters for adding to the shift of any model ##########################
+################################################################################
+
+private:
+
+REAL shift_add_x "x component of added shift"
+{
+*:* :: "any real number"
+} 0.0
+REAL shift_add_y "y component of added shift"
+{
+*:* :: "any real number"
+} 0.0
+REAL shift_add_z "z component of added shift"
 {
 *:* :: "any real number"
 } 0.0
@@ -274,22 +293,22 @@ REAL Minkowski_funny__sigma "Minkowski/funny: width of Gaussian"
 KEYWORD Minkowski_gauge_wave__what_fn \
   "Minkowski/gauge wave: what function to use"
 {
-"sin"     :: "1-a*sin(x)"
-"expsin"  :: "exp(a*sin(x)*cos(t))"
-"Gaussian":: "1-a*exp(-x**2)"
-}"sin"
+"sin"      :: "1-a*sin(x)"
+"expsin"   :: "exp(a*sin(x)*cos(t))"
+"Gaussian" :: "1-a*exp(-x**2)"
+} "sin"
  
 REAL Minkowski_gauge_wave__amplitude \
   "Minkowski/gauge wave: amplitude of the wave"
 {
-(-1:1)  ::  "any real number with absolute value < 1"
-}0.5
+*:* :: "any real number"
+} 0.5
   
 REAL Minkowski_gauge_wave__omega \
   "Minkowski/gauge wave: angular frequency of the wave in time"
 {
 *:* :: "any real number"
-}1.0
+} 1.0
     
 BOOLEAN Minkowski_gauge_wave__diagonal \
   "Minkowski/gauge wave: should the wave run diagonally across the grid?"
