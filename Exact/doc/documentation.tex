@@ -2,28 +2,6 @@
 \documentclass{article}
 \usepackage{amsmath}
 
-\def\eqref#1{$(\ref{#1})$}
-\def\cf{cf.\hbox{}}
-\def\ie{i.e.\hbox{}}
-\def\eg{e.g.\hbox{}}
-\def\etal{{\it et~al.\/}}
-\def\nb{n.b.\hbox{}}
-\def\Nb{N.b.\hbox{}}
-
-\def\tfrac#1#2{{\textstyle \frac{#1}{#2}}}
-\def\dfrac#1#2{{\displaystyle \frac{#1}{#2}}}
-
-\def\half{\tfrac{1}{2}}
-\def\third{\tfrac{1}{3}}
-
-\def\new{\text{new}}
-\def\G{{\sf G}}
-\def\diag{\operatorname{diag}}
-\def\sech{\operatorname{sech}}
-
-% nicely typeset "C++" (adapted from a comp.lang.C++ FAQ entry)
-\def\Cplusplus{\hbox{C\hspace{-.05em}\raisebox{.4ex}{\tiny\bf ++}}}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
@@ -132,7 +110,8 @@ types of coordinates:
 \verb|Exact::exactmodel = "Minkowski"| specifies Minkowski spacetime
 in the usual Minkowski coordinates:
 \begin{equation}
-g_{ab} = \diag \left[
+g_{ab} = \text{diag}
+	 \left[
 	 \begin{array}{cccc}
 	 -1	& 1	& 1	& 1	%%%\\
 	 \end{array}
@@ -148,11 +127,11 @@ with the usual Minkowski time slicing, but using the nontrivial spatial
 coordinates defined as follows:  First take the flat metric in polar
 spherical coordinates, then define a new radial coordinate by
 \begin{equation}
-r = r_\new (1 - a \G(r_\new))
+r = r_\text{new} (1 - a {\sf G}(r_\text{new}))
 \end{equation}
 where $a = \verb|Exact::flatfunny_a|$ is a specified parameter with
-$a \in [0,1)$, and $\G(r) = \exp(-\half r^2/\sigma^2)$ is a Gaussian
-centered at $r=0$ with amplitude~1 and width
+$a \in [0,1)$, and ${\sf G}(r) = \exp(-\frac{1}{2} r^2/\sigma^2)$
+is a Gaussian centered at $r=0$ with amplitude~1 and width
 $\sigma = \verb|Exact::flatfunny_s|$.  Finally, transform back to
 Cartesian coordinates.
 
@@ -165,13 +144,13 @@ with the nontrivial time slicing and spatial coordinates defined as
 follows:  First take the flat 4-metric in polar spherical coordinates,
 then define a new time coordinate by
 \begin{equation}
-t_\new = t - a \G(r)
+t_\text{new} = t - a {\sf G}(r)
 \end{equation}
 where $a = \verb|Exact::flatshift_a|$ is a specified parameter with
-$a \in (-1,1)$, and $\G(r) = \exp(-\half r^2/\sigma^2)$ is a Gaussian
-centered at $r=0$ with amplitude~1 and width
+$a \in (-1,1)$, and ${\sf G}(r) = \exp(-\frac{1}{2} r^2/\sigma^2)$
+is a Gaussian centered at $r=0$ with amplitude~1 and width
 $\sigma = \verb|Exact::flatshift_s|$.  Finally, transform back to
-Cartesian (4-)coordinates.  (\Nb{} this gives a time-independent
+Cartesian (4-)coordinates.  (N.b.\ this gives a time-independent
 4-metric.)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -261,14 +240,14 @@ g_{ab} & = \left[
 	   \end{array}
 	   \right]
 									\\
-g_{ij} & = \diag
+g_{ij} & = \text{diag}
 	   \left[
 	   \begin{array}{ccc}
 	   1 + \frac{2m}{r}	& r^2	& r^2 \sin^2 \theta	%%%\\
 	   \end{array}
 	   \right]
 									\\
-K_{ij} & = \diag
+K_{ij} & = \text{diag}
 	   \left[
 	   \begin{array}{ccc}
 	   - \frac{2m^2}{r^2} \frac {1 + \frac{m}{r}} {\sqrt{1 + \frac{2m}{r}}}
@@ -344,7 +323,7 @@ There is also a numerical parameter \verb|KerrSchild_eps| which is
 used to avoid division by zero if a grid point falls exactly at the
 black hole center; the default setting should be ok for most purposes.
 
-Kerr-Schild coordinates use the same time slicing (\nb{} non-maximal!)
+Kerr-Schild coordinates use the same time slicing (n.b.\ non-maximal!)
 and $z$~spatial coordinate as Kerr coordinates, but define new spatial
 coordinates $x$ and~$y$ by
 \begin{equation}
@@ -466,7 +445,7 @@ for each $i = 1$, $2$, $3$, $4$.
 \subsection{Pure-Radiation Robertson-Walker Cosmology}
 
 \verb|Exact::exactmodel = "Rob-Wal"| specifies a pure-radiation
-Robertson-Walker spacetime ($p = \third \rho$, $k=0$), as described in
+Robertson-Walker spacetime ($p = \frac{1}{3} \rho$, $k=0$), as described in
 Hawking and Ellis section~5.3 and MTW section~27.11 (see also gr-qc/0110031),
 transformed to the usual Cactus $(t,x,y,z)$ Cartesian-topology coordinates.
 The physics parameters are
@@ -563,7 +542,7 @@ as described in gr-qc/0110031, and in more detail in
 L. Pimentel,
 International Journal of Theoretical Physics {\bf 32}(6) [1993], 979,
 and
-S. Gotlober, \etal{},
+S. Gotlober, {\it et.~al.\/},
 ``Early Evolution of the Universe and Formation [of] Structure'',
 Akad. Verlag, 1990.
 There is one physics parameter,
@@ -574,7 +553,8 @@ q = \text{\tt Kasner\_q}						%%%\\
 In the usual Cactus $(t,x,y,z)$ Cartesian-topology coordinates, the
 4-metric is
 \begin{equation}
-g_{ab} = \diag \left[
+g_{ab} = \text{diag}
+	 \left[
 	 \begin{array}{cccc}
 	 -1	& t^{2q}	& t^{2q} 	& t^{2-4q}	%%%\\
 	 \end{array}
@@ -582,12 +562,13 @@ g_{ab} = \diag \left[
 \end{equation}
 and the stress-energy tensor is
 \begin{equation}
-T_{ab} = \diag \left[
+T_{ab} = \text{diag}
+	 \left[
 	 \begin{array}{cccc}
-	 q \dfrac{2 - 3q}{8\pi t^2}
-		& q \dfrac{(2 - 3q) t^{2q}}{8\pi t^2}
-			& q \dfrac{(2 - 3q) t^{2q}}{8\pi t^2}
-				& q \dfrac{(2 - 3q) t^{2-4q}}{8\pi t^2}
+	 q \displaystyle\frac{2 - 3q}{8\pi t^2}
+	     & q \displaystyle\frac{(2 - 3q) t^{2q}}{8\pi t^2}
+	         & q \displaystyle\frac{(2 - 3q) t^{2q}}{8\pi t^2}
+		     & q \displaystyle\frac{(2 - 3q) t^{2-4q}}{8\pi t^2}
 								%%%\\
 	 \end{array}
 	 \right]
@@ -688,20 +669,21 @@ R(r) = r - A f(r) g(r)
 Here $A = a$ if \verb|bowl_evolve = "false"|, but is multiplied by
 a Fermi factor
 \begin{equation}
-A = \dfrac{a}{1 + \exp(-\sigma_t(t-t_0))}
+A = \frac{a}{1 + \exp(-\sigma_t(t-t_0))}
 \end{equation}
 if \verb|bowl_evolve = "true"|.  For this latter case we have
 flat spacetime far in the past, and a static bowl far in the future.
 $f(r)$ is either a Gaussian or a Fermi function,
 \begin{equation}
 f(r) = \begin{cases}
-       \exp \left( -\half (r-c)^2/\sigma^2 \right)
+       \exp \left( -\frac{1}{2} (r-c)^2/\sigma^2 \right)
 			& \text{if {\tt bowl\_type = "Gauss"}}		\\[1ex]
-       \dfrac{1}{1 + \exp(-\sigma(r-c))}
+       \displaystyle
+       \frac{1}{1 + \exp(-\sigma(r-c))}
 			& \text{if {\tt bowl\_type = "Fermi"}}		%%%\\
        \end{cases}
 \end{equation}
-$g(r) = 1 - \sech 4r$ is a fixup factor to ensure that
+$g(r) = 1 - \text{sech}(4r)$ is a fixup factor to ensure that
 $\displaystyle \lim_{r \to 0} R(r) = r$.
 
 The three extra paramters $(\delta x, \delta y, \delta z)$
