@@ -22,12 +22,17 @@
 
       logical firstcall
 
-      CCTK_REAL a, o, H, half, d
+      CCTK_REAL a, o, H, d
+      CCTK_REAL zero,half,one
 
       data firstcall /.true./
       save firstcall, a, o, half, d
 
-      
+C     Numbers.
+
+      zero = 0.0d0
+      half = 0.5d0
+      one  = 1.0d0
 
 C     Get parameters of the exact solution.
 
@@ -35,25 +40,30 @@ C     Get parameters of the exact solution.
 
          a = GW_a
          o = GW_omega
-         half = 1/2d0
          d = GW_del
 
          firstcall = .false.
 
       end if
 
-C     How should the wave look like
+C     How should the wave look like.
+
       if (CCTK_Equals(GW_H,"sin").eq.1) then
         
-        H = 1-a*sin((x-t)/d)
+        H = one - a*sin((x-t)/d)
 
       elseif (CCTK_Equals(GW_H,"exp").eq.1) then
 
         H = exp(a*(x/d-o*t))
 
+      elseif (CCTK_Equals(GW_H,"gau").eq.1) then
+
+        H = one - a*dexp(-(x-t)**2/d**2)
+
       end if
 
-C     write metric      
+C     write metric.
+
       if (GW_diagonal .eq. 1) then
 
         gdxx = half * H + half
@@ -67,35 +77,34 @@ C     write metric
       else
 
         gdxx = H
-        gdxy = 0
-        gdyy = 1
+        gdxy = zero
+        gdyy = one
 
-        guxx = 1 / H
-        guxy = 0 
-        guyy = 1
+        guxx = one/H
+        guxy = zero
+        guyy = one
 
       end if
-
       
       gdtt = - H
-      gdtx = 0
-      gdty = 0
-      gdtz = 0
+      gdtx = zero
+      gdty = zero
+      gdtz = zero
 
-      gdzx = 0
-      gdyz = 0
-      gdzz = 1
-      
-      
-C     and upper metric      
-      gutt = - 1/H
-      gutx = 0
-      guty = 0
-      gutz = 0
+      gdzx = zero
+      gdyz = zero
+      gdzz = one
 
-      guyz = 0
-      guzx = 0
-      guzz = 1
+C     and upper metric.
+
+      gutt = - one/H
+      gutx = zero
+      guty = zero
+      gutz = zero
+
+      guyz = zero
+      guzx = zero
+      guzz = one
 
       return
       end

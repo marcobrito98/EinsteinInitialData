@@ -435,6 +435,7 @@ KEYWORD GW_H "what function to use"
 {
 "sin" :: "1-a*sin(x)"
 "exp" :: "1-exp(x)"
+"gau" :: "1-a*exp(-x**2)"
 }"sin"
  
 REAL GW_a "amplitude of the wave"
