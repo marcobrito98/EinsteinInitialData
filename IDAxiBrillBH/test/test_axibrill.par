@@ -2,7 +2,7 @@
 !DESC "Initial data for axisymmetric distored black hole"
 ######################################################################
 
-ActiveThorns = "time iobasic ADMconstraints pugh pughreduce interp cartgrid3d einstein ADM IDAxiBrillBH ioascii ioutil"
+ActiveThorns = "time iobasic ADMconstraints pugh pughreduce pughinterp cartgrid3d einstein ADM IDAxiBrillBH ioascii ioutil"
 
 #pugh::enable_all_storage = "yes"
 #cactus::cctk_show_banners = 0
@@ -37,8 +37,8 @@ idaxibrillbh::etamax   = 6.0
 idaxibrillbh::n        = 2
 idaxibrillbh::ne       = 102
 idaxibrillbh::nq       = 27
-interp::order          = 1
 
+idaxibrillbh::interpolation_order          = 1
 
 # GAUGE
 einstein::slicing    = "geodesic"  
