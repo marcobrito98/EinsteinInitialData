@@ -100,7 +100,7 @@ REAL bl_M_4 "Mass of 4th BL hole"
 } 1.0
 
 
-friend:einstein
+shares:einstein
 
 EXTENDS KEYWORD initial_data ""
 {
