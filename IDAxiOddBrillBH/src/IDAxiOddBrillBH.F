@@ -382,13 +382,10 @@ c     Compute eta,q,phi at the each points of cartesian grid
          enddo
       enddo
 
-      call CCTK_GetInterpHandle (handle, "simple_local")
+      call CCTK_InterpHandle (handle, "simple_local")
      
 c     Find the local origin of the spatial coordinates
 c     ------------------------------------------------
-      call CCTK_CoordLocalRange(ierror,cctkGH,xmin,xmax,"x")
-      call CCTK_CoordLocalRange(ierror,cctkGH,ymin,ymax,"y")
-      call CCTK_CoordLocalRange(ierror,cctkGH,zmin,zmax,"z")
 
       npoints = nx*ny*nz
       
