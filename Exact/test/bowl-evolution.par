@@ -19,7 +19,7 @@ cactus::cctk_itlast       = 0
 time::dtfac = 0.25
 
 # Initial data 
-Einstein::initial_data = "exact"
+ADMBase::initial_data = "exact"
 Exact::exact_model = "bowl"
 Exact::bowl__shape = "Gaussian"
 Exact::bowl__evolve = "false"
