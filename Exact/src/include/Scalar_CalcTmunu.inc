@@ -122,7 +122,7 @@ c
 
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 ccc
-ccc this metric doesn't work and has been moved to ../../archive/
+ccc this metric doesnt work and has been moved to ../../archive/
 ccc
 ccc Robertson-Walker spacetime
 ccc
