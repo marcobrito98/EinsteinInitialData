@@ -2,7 +2,7 @@
 #!DESC "Initial data for axisymmetric distored black hole"
 ######################################################################
 
-ActiveThorns = "time ADMconstraints pugh pughinterp pughreduce pughslab cartgrid3d einstein ADM RotatingDBHIVP ioascii iobasic ioutil"
+ActiveThorns = "time boundary ellbase ADMconstraints pugh pughinterp pughreduce pughslab cartgrid3d einstein ADM RotatingDBHIVP ioascii iobasic ioutil"
 
 # GENERAL 
 
@@ -45,8 +45,8 @@ einstein::slicing    = "geodesic"
 # OUTPUT ########################################################
 IO::outdir         = "test_rdbh"
 IOASCII::out1d_every     =  1
-IOBasic::outScalar_vars  = "einstein::metric einstein::curv admconstraints::ADMconstraints"
-IOASCII::out1D_vars      = "einstein::metric einstein::curv einstein::lapse admconstraints::ADMconstraints einstein::spherical_metric einstein::spherical_curv einstein::psi einstein::confac_1derivs einstein::confac_2derivs"
+IOBasic::outScalar_vars  = "einstein::metric einstein::curv admconstraints::ham"
+IOASCII::out1D_vars      = "einstein::metric einstein::curv einstein::lapse admconstraints::ham einstein::spherical_metric einstein::spherical_curv einstein::psi einstein::confac_1derivs einstein::confac_2derivs"
 IOBasic::outInfo_every   = 1
 IOBasic::outInfo_vars    = "admconstraints::ham einstein::gxx"
 
