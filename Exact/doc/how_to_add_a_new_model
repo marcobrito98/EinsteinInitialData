@@ -1,7 +1,7 @@
 ************************************************
 ***** How to Add a New Model to this Thorn *****
 ************************************************
-$Header: /usr/local/svn/cvs-repositories/numrelcvs/AEIThorns/Exact/doc/how_to_add_a_new_model,v 1.1 2002-06-16 17:22:51 jthorn Exp $
+$Header: /usr/local/svn/cvs-repositories/numrelcvs/AEIThorns/Exact/doc/how_to_add_a_new_model,v 1.2 2002-11-17 15:44:32 jthorn Exp $
 
 A general note:  Please keep the sections for various models in the
 same order in all the files.  This makes it _much_ easier for people
@@ -35,16 +35,16 @@ Then you need to modify...
  	you do, make sure you do a make your-configuration-name-realclean
  	and recompile not just this thorn, but also all the evolution
  	thorns.)
-  src/decode_pars.F:
+  src/decode_pars.F77:
 	Add a case for your new model to the decode of the character-string
 	model name into the integer decoded_exact_model.
-  src/metric.F:
+  src/metric.F77:
 	Add a case for your new model to the decode of decoded_exact_model,
 	calling a (new) subroutine named for your new model.
-  src/metrics/your_model_name.F
+  src/metrics/your_model_name.F77 (or .F90 or .F)
 	Create a new file in this directory with a Fortran 77/90 subroutine
 	to compute the metric and the inverse metric for your new model
-	(this is the subroutine you just added a call to, in src/metric.F).
+	(this is the subroutine you just added a call to, in src/metric.F77).
 	It's probably easiest to start with a copy of an existing file and
 	modify it to compute your new metric -- that will help you get all
 	the "boilerplate" code right.
@@ -62,7 +62,7 @@ files:
 	If you have CCTK_COMPLEX parameters, add a corresponding variable
 	group and do the same thing.  If you have KEYWORD or STRING
 	parameters, see below.
-  src/decode_pars.F:
+  src/decode_pars.F77:
 	Add a block of code for your new model to copy all the model's
 	parameters to the corresponding "___" grid scalars.
   src/include/Scalar_CalcTmunu.inc:
@@ -83,7 +83,7 @@ of these data types, you need to decode these parameter(s) into integers:
   src/include/param_defs.inc:
 	Add a new set of #defines giving all the possible values
 	of the decoded integer(s) for your keyword/string parameter(s).
-  src/decode_pars.F
+  src/decode_pars.F77
 	Add a block of code for your new model to decode the KEYWORD
 	and/or STRING parameters into integers.  Don't forget to
 	include a CCTK_WARN(0, "...") if the code doesn't recognize
