@@ -2,7 +2,7 @@
 # $Header$
 
 implements: axiodd
-inherits: admbase staticconformal grid admanalysis driver
+inherits: ADMBase grid StaticConformal
 
 private:
 

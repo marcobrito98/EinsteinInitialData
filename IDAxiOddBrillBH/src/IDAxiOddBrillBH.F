@@ -36,7 +36,8 @@ c@@*/
 
       real*8 deta,dq
       real*8, allocatable :: ac(:,:),ae(:,:),aw(:,:),an(:,:),as(:,:),
-     $     rhs(:,:),ksq(:,:), psi2dv(:,:),dpsi2dv(:,:),ddpsi2dv(:,:),
+     $     rhs(:,:),qfetaeta(:,:),qfqq(:,:),ksq(:,:), 
+     $     psi2dv(:,:),dpsi2dv(:,:),ddpsi2dv(:,:),
      $     detapsisph(:,:),dqpsisph(:,:),detaetapsisph(:,:),
      $     detaqpsisph(:,:),dqqpsisph(:,:),
      $     etagrd(:),qgrd(:)
@@ -85,11 +86,17 @@ c     --------------
          write(*,*) '"Solve Bradt-Seidel Initial Data Sets"'
       endif
 
-      write(*,*) 'Brill Wave: amplitude :',amp
-      write(*,*) 'Brill Wave: center :',eta0
-      write(*,*) 'Brill Wave: sigma :',sigma
+      write(*,*) 'Brill Wave: amplitude for K :',amp
+      write(*,*) 'Brill Wave: center for K:',eta0
+      write(*,*) 'Brill Wave: sigma for K:',sigma
       write(*,*) 'Bowen & York Momenta:  :',byJ
-      write(*,*) 'Brill Wave: sin^n theta :',n
+      write(*,*) 'Brill Wave: sin^n theta for K:',n
+
+      write(*,*) 'Brill Wave: amplitude for g :',amp_me
+      write(*,*) 'Brill Wave: center for g:',eta0_me
+      write(*,*) 'Brill Wave: sigma for g:',sigma_me
+      write(*,*) 'Brill Wave: sin^n theta for g:',n_me
+
 
 c Check if we should create and store conformal factor stuff
       
@@ -124,7 +131,8 @@ c     Add 2 zones for eta coordinate and 4 for theta
       nq = nq+2
 c     
       allocate(ac(ne,nq),ae(ne,nq),aw(ne,nq),an(ne,nq),as(ne,nq),
-     $     rhs(ne,nq),ksq(ne,nq),psi2dv(ne,nq),dpsi2dv(ne,nq),
+     $     rhs(ne,nq),qfetaeta(ne,nq),qfqq(ne,nq),ksq(ne,nq),
+     $     psi2dv(ne,nq),dpsi2dv(ne,nq),
      $     ddpsi2dv(ne,nq),detapsisph(ne,nq),dqpsisph(ne,nq),
      $     detaetapsisph(ne,nq),detaqpsisph(ne,nq),dqqpsisph(ne,nq),
      $     etagrd(ne),qgrd(nq))
@@ -141,7 +149,16 @@ c
       do i=1,ne
          etagrd(i) = (i-2)*deta
       enddo
-      
+c     
+c Initialize q-function and its derivatives: should be generalized
+c     
+       do j = 1,nq
+          do i = 1,ne
+#include "qfunc_even.x"
+          enddo
+       enddo
+
+
 c     
 c     Specify the initial guess for the conformal factor:
 c     
@@ -190,7 +207,9 @@ c
      $              (dpsi2dv(i+1,j)-2.*dpsi2dv(i,j)+dpsi2dv(i-1,j))/
      $              deta**2+(dpsi2dv(i,j+1)-2.*dpsi2dv(i,j)+
      $              dpsi2dv(i,j-1))/dq**2+0.5*(dpsi2dv(i,j+1)-
-     $              dpsi2dv(i,j-1))/(dq*tan(qgrd(j)))-0.25*dpsi2dv(i,j)+
+     $              dpsi2dv(i,j-1))/(dq*tan(qgrd(j)))
+     $              +0.25*dpsi2dv(i,j)*
+     $              (qfetaeta(i,j)+qfqq(i,j)-1.0d0)+
      $              0.125*ksq(i,j)/(psi2dv(i,j)+dpsi2dv(i,j))**7
             enddo
          enddo
@@ -220,8 +239,9 @@ c     Compute stencil coefficients:
 c     
          do j = 2,nq-1
             do i = 2,ne-1
-               ac(i,j) = -2./deta**2-2./dq**2-sin(qgrd(j))**2-0.25-
-     $              0.875*ksq(i,j)/(psi2dv(i,j)+ 
+               ac(i,j) = -2./deta**2-2./dq**2-sin(qgrd(j))**2+0.25
+     $              *(qfetaeta(i,j)+qfqq(i,j) - 1.0d0)
+     $              -0.875*ksq(i,j)/(psi2dv(i,j)+ 
      $              dpsi2dv(i,j))**8
 c     
                ae(i,j) = 1./deta**2
@@ -549,7 +569,8 @@ c      print *,'Angular momentum: ',Jmom
          alp = (2.*r - adm)/(2.*r+adm)
       endif
       
-      deallocate(ac,ae,aw,an,as,rhs,ksq,psi2dv,dpsi2dv,ddpsi2dv,
+      deallocate(ac,ae,aw,an,as,rhs,qfetaeta,qfqq,
+     $     ksq,psi2dv,dpsi2dv,ddpsi2dv,
      $     detapsisph,dqpsisph,detaetapsisph,detaqpsisph,dqqpsisph,
      $     etagrd,qgrd)
       

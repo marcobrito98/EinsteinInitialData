@@ -20,17 +20,37 @@ EXTENDS KEYWORD initial_data
 
 private:
 
-REAL amp "Brill wave amplitude"
+REAL amp "Brill wave amplitude for extrinsic curveture"
 {
   *:* :: "No restriction"
 } 0.1
 
-REAL eta0 "Brill wave center (in eta coords)"
+REAL amp_me "Brill wave amplitude for metric"
 {
   *:* :: "No restriction"
 } 0.0
 
-REAL sigma "Brill wave width (in eta)"
+REAL xi "for recoil"
+{
+  *:* :: "No restriction"
+} 0.0
+
+REAL eta0 "Brill wave center (in eta coords) for extrisic curvature"
+{
+  *:* :: "No restriction"
+} 0.0
+
+REAL eta0_me "Brill wave center (in eta coords) for metric"
+{
+  *:* :: "No restriction"
+} 0.0
+
+REAL sigma "Brill wave width (in eta) for extrinsic curveture"
+{
+  *:* :: "No restriction"
+} 1.0
+
+REAL sigma_me "Brill wave width (in eta) for metric"
 {
   *:* :: "No restriction"
 } 1.0
@@ -46,7 +66,12 @@ REAL etamax "Eta value for outer edge of grid"
 } 5.0
 
 
-INT n "sin**n theta in brill wave"
+INT n "sin**n theta in brill wave for extrinsic curveture"
+{
+  *:* :: "No restriction"
+} 3
+
+INT n_me "sin**n theta in brill wave for metric"
 {
   *:* :: "No restriction"
 } 3
