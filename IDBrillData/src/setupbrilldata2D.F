@@ -124,7 +124,7 @@ c     Set coefficient Nsource = 0.
 c     Synchronization and boundaries.
 
       call CCTK_SyncGroup(cctkGH,'idbrilldata::brillelliptic')
-      call ADM_Boundary(cctkGH,'idbrilldata::brillelliptic')
+      call CartSymGN(ierr,cctkGH,'idbrilldata::brillelliptic')
 
       return
       end
