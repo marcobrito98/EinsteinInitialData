@@ -46,7 +46,7 @@ ADMBase::lapse_evolution_method = "geodesic"
 
 # OUTPUT ########################################################
 
-IO::outdir = "IDAxiBrillBH"
+IO::out_dir = "IDAxiBrillBH"
 
 IOBasic::outInfo_every = 1
 IOASCII::out1d_every   = 1

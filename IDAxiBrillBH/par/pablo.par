@@ -44,7 +44,7 @@ IO::checkpoint_every       = 10
 cactus::cctk_itlast        = 100      
 
 # NAME OF OUTPUT DIRECTORY
-IO::outdir                 = "pablo"
+IO::out_dir                 = "pablo"
 IO::checkpoint_dir         = "pablo"
 
 

@@ -45,7 +45,7 @@ ADMBase::lapse_evolution_method    = "geodesic"
 
 
 # OUTPUT ########################################################
-IO::outdir               = "test_axibrill"
+IO::out_dir               = "test_axibrill"
 IO::out_fileinfo         = "none"
 IOASCII::out1d_every     =  1
 IOASCII::out1D_vars      = "ADMBase::curv admbase::metric ADMAnalysis::grr admconstraints::ham"
@@ -62,3 +62,6 @@ IOASCII::out1D_zline_x   = 0.2
 IOASCII::out1D_zline_y   = 0.2
 
 ##################################################################
+
+# do not use the new scheme for names of output files
+IO::new_filename_scheme = "no"
