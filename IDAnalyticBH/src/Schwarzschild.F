@@ -68,7 +68,7 @@ c        derivatives of psi / psi
       endif
 
 c     If the initial lapse is not one ...
-      if (CCTK_Equals(lapseinit,"schwarz")==1) then 
+      if (CCTK_Equals(initial_lapse,"schwarz")==1) then 
          print *,"Initialise with schwarzschild lapse"
          alp = (2.*r - mass)/(2.*r+mass)
       endif

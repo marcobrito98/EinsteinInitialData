@@ -110,7 +110,7 @@ EXTENDS KEYWORD initial_data ""
   "multiple_misner_bh" :: "Multiple Misner black holes"
 } 
 
-EXTENDS KEYWORD lapseinit ""
+EXTENDS KEYWORD initial_lapse ""
 {
   "schwarz" :: "Set lapse to Schwarzschild"
 }

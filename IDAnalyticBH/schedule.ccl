@@ -15,7 +15,7 @@ if (CCTK_Equals(initial_data,"schwarzschild") ||
 if (CCTK_Equals(initial_data,"schwarzschild")) 
 { 
 	
-   schedule Schwarzschild at CCTK_INITIAL
+   schedule Schwarzschild at CCTK_INITIAL after InitialEinstein
    {
      LANG: Fortran
    } "Construct initial data for a single Schwarzschild black hole"
