@@ -33,7 +33,7 @@ bam_elliptic::bam_bound                 	= "bamrobin"
 
 # Output.
 
-IO::outdir       = "test_brilldata_1"
+IO::out_dir       = "test_brilldata_1"
 IO::out_fileinfo = "none"
 
 IOBasic::outInfo_every = 1
@@ -44,3 +44,6 @@ IOBasic::outScalar_vars = "admbase::gxx admbase::gyy admbase::gzz admbase::gxy i
 
 IOASCII::out1D_every = 1
 IOASCII::out1D_vars = "admbase::gxx admbase::gyy admbase::gzz admbase::gxy idbrilldata::brillpsi"
+
+# do not use the new scheme for names of output files
+IO::new_filename_scheme = "no"
