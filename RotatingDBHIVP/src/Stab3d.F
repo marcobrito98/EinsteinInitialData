@@ -11,7 +11,7 @@ c
      $     ce(im,jm,km),cw(im,jm,km),ct(im,jm,km),cb(im,jm,km)
       real*8,intent(out) :: eps
       real*8,intent(out) :: rmax
-      real*8 :: u(im,jm,km),rhs(im,jm,km)
+      real*8,intent(inout) :: u(im,jm,km),rhs(im,jm,km)
 c     Local variable
       integer ncyc
       integer iscale,i,j,k,ier
@@ -95,14 +95,15 @@ c
       real*8,intent(in)  :: tol
       real*8,intent(out) :: rnorm
       integer,intent(out) :: ier
-      real*8 x(im*jm*km),r(im*jm*km)
+      real*8,intent(inout) :: x(im*jm*km),r(im*jm*km)
 c     Local variables
       integer :: i,j,k,kk
-      real*8 :: p(im*jm*km),Ap(im*jm*km),w(im*jm*km),As(im*jm*km)
+      real*8, allocatable :: p(:),Ap(:),w(:),As(:)
       real*8 :: omega, chi,chi1,chi2, delta, deltap, pp
 *
 ***********************************************************************
 *
+      allocate(p(im*jm*km),Ap(im*jm*km),w(im*jm*km),As(im*jm*km))
 
       do i = 1,im*jm*km
          p(i) = 0.
@@ -237,6 +238,9 @@ c      rnorm = sum(r**2)
       rnorm=sqrt(rnorm)
 
       if (rnorm .gt. tol) goto 1
+c
+      deallocate(p,Ap,w,As)
+c
       return
       end
 c
@@ -256,7 +260,7 @@ c
       real*8,intent(in)  :: cs(im*jm*km),ce(im*jm*km)
       real*8,intent(in)  :: cw(im*jm*km),ct(im*jm*km)
       real*8,intent(in)  :: cb(im*jm*km)
-      real*8 :: x(im*jm*km), y(im*jm*km)
+      real*8,intent(inout) :: x(im*jm*km), y(im*jm*km)
 c     Local variables
       integer :: i, j, k
 *
