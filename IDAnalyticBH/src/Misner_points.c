@@ -47,6 +47,11 @@ struct bhole {
      the number of the seed black hole that
      was used to isometrize this term. */
   int i;
+
+  /* isos points to an array of nbhole (or is it nbhole-1??)
+     structures, malloc()-ed in  fill_iso() .
+     At present this array is never freed, and in fact the pointers may
+     be overwritten with other malloc()s in fill_iso() recursive calls! :( */
   struct bhole *isos;
 };
 
@@ -109,6 +114,12 @@ void Misner_init(int n, CCTK_REAL mu, int terms)
     bholes[i].i = i;
     bholes[i].isos = 0;
   }
+
+  CCTK_VWarn(1, __LINE__, __FILE__, CCTK_THORNSTRING,
+"\n"
+"   Misner_init(): warning: about to call  fill_iso() ; at present\n"
+"                  this routine seems to leak quasi-infinite amounts of\n"
+"                  memory at the rate of O(100 megabytes/second) :( :( :(\n");
 
   for(i=0;i<n;i++)
     fill_iso(&bholes[i],terms);
