@@ -56,8 +56,8 @@ along with this thorn (see the file COPYING in this directory);
 if not, write to the Free Software Foundation, Inc., 59 Temple
 Place, Suite 330, Boston, MA  02111-1307  USA
 
-Frank Loeffler
---------------
+Frank Loeffler (frank.loeffler@aei.mpg.de)
+------------------------------------------
 
 Code added by myself (which is mainly Minkowski_conf_wave and the
 code using the conformal factor added in January 2003) is free
