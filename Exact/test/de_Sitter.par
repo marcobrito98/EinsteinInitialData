@@ -3,7 +3,7 @@
 # $Header$
 
 # Required thorns
-ActiveThorns = "CartGrid3D CoordBase Boundary Time   PUGH PUGHReduce PUGHSlab   IOAscii IOUtil IOBasic   ADMBase ADMMacros ADMConstraints ADM_BSSN ADMCoupling StaticConformal CoordGauge SpaceMask   Exact"
+ActiveThorns = "CartGrid3D CoordBase SymBase Boundary Time   PUGH PUGHReduce PUGHSlab   IOAscii IOUtil IOBasic   ADMBase ADMMacros ADMConstraints ADM_BSSN ADMCoupling StaticConformal CoordGauge SpaceMask   Exact"
 
 # Grid
 driver::global_nx = 8
