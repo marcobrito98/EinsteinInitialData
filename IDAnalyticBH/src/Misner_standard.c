@@ -73,7 +73,7 @@ void Misner_standard(CCTK_ARGUMENTS)
   CCTK_REAL inv_r1_5, inv_r2_5;
   CCTK_REAL inv_psi;
   CCTK_INT powfac;
-  CCTK_INT adm_mass;
+  CCTK_REAL adm_mass;
   const CCTK_REAL zero = 0.0, one = 1.0, three = 3.0;
   int make_conformal_derivs = 0;
 
