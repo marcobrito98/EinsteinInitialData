@@ -58,9 +58,9 @@ REAL brill_thresh "How far (absolute norm) to go"
 
 KEYWORD q_function  "Form of function q [0,1,2]"
 {
-  "exp" :: ""
-  "eppley" ::
-  "gundlach" ::
+  "exp" :: "contains e^{-z^2} factor"
+  "eppley" :: "contains 1/(1+r^2) factor"
+  "gundlach" :: "contains e^{-r^2} factor"
 } "gundlach"
 
 # -------------------------------------------------------------
