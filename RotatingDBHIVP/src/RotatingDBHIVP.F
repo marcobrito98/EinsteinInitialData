@@ -158,8 +158,8 @@ c
       do k = 1,np
          do j = 1,nq
             do i = 1,ne
-#include "CactusEinstein/RotatingDBHIVP/src/gauss.x"
-#include "CactusEinstein/RotatingDBHIVP/src/ksq_odd.x"
+#include "Development/RotatingDBHIVP/src/gauss.x"
+#include "Development/RotatingDBHIVP/src/ksq_odd.x"
             enddo
          enddo
       enddo
@@ -689,10 +689,10 @@ c
          do j=1,ny
             do i=1,nx
 c     psix = \partial psi / \partial x / psi
-#include "CactusEinstein/RotatingDBHIVP/src/psi_1st_deriv.x"
+#include "Development/RotatingDBHIVP/src/psi_1st_deriv.x"
                
 c     psixx = \partial^2\psi / \partial x^2 / psi
-#include "CactusEinstein/RotatingDBHIVP/src/psi_2nd_deriv.x"
+#include "Development/RotatingDBHIVP/src/psi_2nd_deriv.x"
             enddo
          enddo
       enddo
@@ -706,7 +706,7 @@ c
       do k= 1,nz
          do j= 1,ny
             do i= 1,nx
-#include "CactusEinstein/RotatingDBHIVP/src/gij.x"
+#include "Development/RotatingDBHIVP/src/gij.x"
             enddo
          enddo
       enddo
@@ -714,8 +714,8 @@ c     Extrinsic Curvture:Cactus only needs physical extrinsic curvature
       do k= 1,nz
          do j= 1,ny
             do i= 1,nx 
-#include "CactusEinstein/RotatingDBHIVP/src/cgauss.x"
-#include "CactusEinstein/RotatingDBHIVP/src/kij_odd.x"
+#include "Development/RotatingDBHIVP/src/cgauss.x"
+#include "Development/RotatingDBHIVP/src/kij_odd.x"
             enddo
          enddo
       enddo
