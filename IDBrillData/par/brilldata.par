@@ -40,7 +40,7 @@ idbrilldata::sor_maxit				= 1000
 # Output.
 
 IO::out_every = 1
-IO::outdir = "brilldata"
+IO::out_dir = "brilldata"
 
 IOASCII::out1D_vars = "ADMBase::gxx ADMBase::gyy ADMBase::gzz ADMBase::gxy ADMBase::gxz ADMBase::gyz idbrilldata::brillpsi"
 
