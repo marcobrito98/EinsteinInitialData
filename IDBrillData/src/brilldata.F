@@ -13,7 +13,7 @@
       DECLARE_CCTK_PARAMETERS
       DECLARE_CCTK_FUNCTIONS
 
-      integer Mlin_index,Nsrc_index,field_index,ierr
+      integer Mlin_index,Nsrc_index,field_index
       integer metpsi_index(7)
       integer ierr
 
