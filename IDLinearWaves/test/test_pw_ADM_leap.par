@@ -3,7 +3,7 @@
 #########################################################
 
 # Required thorns
-ActiveThorns = "ADMconstraints pugh cartgrid3d einstein ADM IDLinearWaves
+ActiveThorns = "time ADMconstraints pugh cartgrid3d einstein ADM IDLinearWaves
  ioascii ioutil iobasic"
 
 # GENERAL 
@@ -11,6 +11,7 @@ ActiveThorns = "ADMconstraints pugh cartgrid3d einstein ADM IDLinearWaves
 driver::global_nx  =  200     
 driver::global_ny  =  3     
 driver::global_nz  =  3     
+time::dtfac = 0.25
 
 grid::type         =  "byspacing"
 grid::dxyz         =  0.01
@@ -24,7 +25,6 @@ cactus::cctk_itlast        =  100
 
 einstein::initial_data     = "planewaves"
 einstein::evolution_system = "ADM"     
-einstein::dtfac    =  0.25   
 
 adm::method        =  "leapfrog" 
 adm::bound         =  "flat"
