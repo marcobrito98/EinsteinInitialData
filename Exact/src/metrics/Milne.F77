@@ -12,7 +12,8 @@ C $Header$
      $     gdtt, gdtx, gdty, gdtz, 
      $     gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $     gutt, gutx, guty, gutz, 
-     $     guxx, guyy, guzz, guxy, guyz, guzx)
+     $     guxx, guyy, guzz, guxy, guyz, guzx,
+     $     psi)
 
       implicit none
 
@@ -26,6 +27,7 @@ c     Output.
      $       gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $       gutt, gutx, guty, gutz, 
      $       guxx, guyy, guzz, guxy, guyz, guzx,
+     $       psi,
      $       coef, x2,y2,z2,t2
 
       x2= x*x

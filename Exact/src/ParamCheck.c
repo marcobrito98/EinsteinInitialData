@@ -64,12 +64,12 @@ void Exact_ParamCheck(CCTK_ARGUMENTS);
 void Exact_ParamCheck(CCTK_ARGUMENTS)
 {
   DECLARE_CCTK_PARAMETERS;
-
+/*
   if(! CCTK_EQUALS(metric_type, "physical"))
   {
     CCTK_PARAMWARN("Unknown ADMBase::metric_type - known types are \"physical\"");
   }
-
+*/
   if ( CCTK_EQUALS(shift_evolution_method, "exact")
        && CCTK_EQUALS(initial_shift, "none") )
   {

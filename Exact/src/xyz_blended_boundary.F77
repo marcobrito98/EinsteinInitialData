@@ -33,6 +33,11 @@ C $Header$
       CCTK_REAL bxxe,bxye,bxze,byxe,byye,byze,bzxe,bzye,bzze
       CCTK_REAL det, uxx, uxy, uxz, uyy, uyz, uzz
       CCTK_REAL vxe,vye,vze,sav
+      CCTK_REAL
+     $     exact_psi,
+     $     exact_psix, exact_psiy, exact_psiz,
+     $     exact_psixx, exact_psiyy, exact_psizz,
+     $     exact_psixy, exact_psiyz, exact_psixz
 
       CCTK_REAL dx,dy,dz,time
       integer ierr
@@ -86,11 +91,32 @@ c     We only do anything if in the blending region
      $             z(i,j,k) .ge. zmax - zblend .or.
      $             z(i,j,k) .le. zmin + zblend) then
 
+C     Initialize the psi of exact
+C     (also to tell the models about the conformal_state)
+                  if (conformal_state .ne. 0) then
+                    exact_psi = 1.0D0
+                  else
+                    exact_psi = 0.0D0
+                  end if
+                  exact_psix = 0.0D0
+                  exact_psiy = 0.0D0
+                  exact_psiz = 0.0D0
+                  exact_psixx = 0.0D0
+                  exact_psixx = 0.0D0
+                  exact_psizz = 0.0D0
+                  exact_psixy = 0.0D0
+                  exact_psiyz = 0.0D0
+                  exact_psixz = 0.0D0
+
                   call Exact__Bona_Masso_data(
      $                 decoded_exact_model,
      $                 x(i,j,k), y(i,j,k), z(i,j,k), time,
      $                 gxxe, gyye, gzze, gxye, gyze, gxze,
      $                 kxxe, kyye, kzze, kxye, kyze, kxze,
+     $                 exact_psi,
+     $                 exact_psix, exact_psiy, exact_psiz,
+     $                 exact_psixx, exact_psiyy, exact_psizz,
+     $                 exact_psixy, exact_psiyz, exact_psixz,
      $                 dxgxxe, dxgyye, dxgzze, dxgxye, dxgyze, dxgxze,
      $                 dygxxe, dygyye, dygzze, dygxye, dygyze, dygxze,
      $                 dzgxxe, dzgyye, dzgzze, dzgxye, dzgyze, dzgxze,

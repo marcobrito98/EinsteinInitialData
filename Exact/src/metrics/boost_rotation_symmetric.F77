@@ -10,7 +10,8 @@ c $Header$
      $     gdtt, gdtx, gdty, gdtz, 
      $     gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $     gutt, gutx, guty, gutz, 
-     $     guxx, guyy, guzz, guxy, guyz, guzx)
+     $     guxx, guyy, guzz, guxy, guyz, guzx,
+     $     psi)
 
       implicit none
 
@@ -20,7 +21,8 @@ c $Header$
      $    gdtt, gdtx, gdty, gdtz, 
      $    gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $    gutt, gutx, guty, gutz, 
-     $    guxx, guyy, guzz, guxy, guyz, guzx
+     $    guxx, guyy, guzz, guxy, guyz, guzx,
+     $    psi
       CCTK_REAL a, b, mu0, mu1, lam1, mu2, lam2,
      $    lam3, mu4, lam4, mu5, lam5, num, div, f,
      $    elam, emu0, delta, gfunc, tmp

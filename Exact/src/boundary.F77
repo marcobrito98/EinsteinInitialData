@@ -25,12 +25,34 @@ C $Header$
      $     bxxjunk, bxyjunk, bxzjunk, 
      $     byxjunk, byyjunk, byzjunk, 
      $     bzxjunk, bzyjunk, bzzjunk
+      CCTK_REAL
+     $     exact_psi,
+     $     exact_psix, exact_psiy, exact_psiz,
+     $     exact_psixx, exact_psiyy, exact_psizz,
+     $     exact_psixy, exact_psiyz, exact_psixz
 
 C     Grid parameters.
 
       nx = cctk_lsh(1)
       ny = cctk_lsh(2)
       nz = cctk_lsh(3)
+
+C     Initialize the psi of exact
+C     (also to tell the models about the conformal_state)
+                  if (conformal_state .ne. 0) then
+                    exact_psi = 1.0D0
+                  else
+                    exact_psi = 0.0D0
+                  end if
+                  exact_psix = 0.0D0
+                  exact_psiy = 0.0D0
+                  exact_psiz = 0.0D0
+                  exact_psixx = 0.0D0
+                  exact_psixx = 0.0D0
+                  exact_psizz = 0.0D0
+                  exact_psixy = 0.0D0
+                  exact_psiyz = 0.0D0
+                  exact_psixz = 0.0D0
 
 C     Set all initial data including dijk and vi on all points which 
 C     are on the boundary of the domain if it really is the boundary
@@ -55,6 +77,10 @@ C     overwritten by Exact__gauge.
                    gxy(i,j,k), gyz(i,j,k), gxz(i,j,k),          \
                    kxx(i,j,k), kyy(i,j,k), kzz(i,j,k),          \
                    kxy(i,j,k), kyz(i,j,k), kxz(i,j,k),          \
+                   exact_psi,                                   \
+                   exact_psix, exact_psiy, exact_psiz,          \
+                   exact_psixx, exact_psiyy, exact_psizz,       \
+                   exact_psixy, exact_psiyz, exact_psixz,       \
                    dxgxxjunk, dxgyyjunk, dxgzzjunk,             \
                    dxgxyjunk, dxgyzjunk, dxgxzjunk,             \
                    dygxxjunk, dygyyjunk, dygzzjunk,             \

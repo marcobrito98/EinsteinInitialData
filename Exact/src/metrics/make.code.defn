@@ -10,6 +10,7 @@ SRCS = Minkowski.F77			\
        Minkowski_funny.F77		\
        Minkowski_shift.F77		\
        Minkowski_gauge_wave.F77		\
+       Minkowski_conf_wave.F77		\
 					\
        Schwarzschild_EF.F77		\
        Schwarzschild_PG.F77		\

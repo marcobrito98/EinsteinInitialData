@@ -24,6 +24,12 @@ C $Header$
       CCTK_REAL dygxxe, dygyye, dygzze, dygxye, dygyze, dygxze
       CCTK_REAL dzgxxe, dzgyye, dzgzze, dzgxye, dzgyze, dzgxze
 
+      CCTK_REAL
+     $     exact_psi,
+     $     exact_psix, exact_psiy, exact_psiz,
+     $     exact_psixx, exact_psiyy, exact_psizz,
+     $     exact_psixy, exact_psiyz, exact_psixz
+
       CCTK_REAL alpe, axe, aye, aze
       CCTK_REAL betaxe,betaye,betaze
       CCTK_REAL bxxe,bxye,bxze,byxe,byye,byze,bzxe,bzye,bzze
@@ -84,11 +90,32 @@ c     there.
 
                if (r(i,j,k) .ge. rinner) then
 
+C     Initialize the psi of exact
+C     (also to tell the models about the conformal_state)
+                  if (conformal_state .ne. 0) then
+                    exact_psi = 1.0D0
+                  else
+                    exact_psi = 0.0D0
+                  end if
+                  exact_psix = 0.0D0
+                  exact_psiy = 0.0D0
+                  exact_psiz = 0.0D0
+                  exact_psixx = 0.0D0
+                  exact_psixx = 0.0D0
+                  exact_psizz = 0.0D0
+                  exact_psixy = 0.0D0
+                  exact_psiyz = 0.0D0
+                  exact_psixz = 0.0D0
+
                   call Exact__Bona_Masso_data(
      $                 decoded_exact_model,
      $                 x(i,j,k), y(i,j,k), z(i,j,k), time,
      $                 gxxe, gyye, gzze, gxye, gyze, gxze,
      $                 kxxe, kyye, kzze, kxye, kyze, kxze,
+     $                 exact_psi,
+     $                 exact_psix, exact_psiy, exact_psiz,
+     $                 exact_psixx, exact_psiyy, exact_psizz,
+     $                 exact_psixy, exact_psiyz, exact_psixz,
      $                 dxgxxe, dxgyye, dxgzze, dxgxye, dxgyze, dxgxze,
      $                 dygxxe, dygyye, dygzze, dygxye, dygyze, dygxze,
      $                 dzgxxe, dzgyye, dzgzze, dzgxye, dzgyze, dzgxze,

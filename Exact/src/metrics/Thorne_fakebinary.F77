@@ -15,7 +15,8 @@ C $Header$
      $     gdtt, gdtx, gdty, gdtz, 
      $     gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $     gutt, gutx, guty, gutz, 
-     $     guxx, guyy, guzz, guxy, guyz, guxz)
+     $     guxx, guyy, guzz, guxy, guyz, guxz,
+     $     psi)
 
       implicit none
       DECLARE_CCTK_PARAMETERS
@@ -28,7 +29,8 @@ C     output
       CCTK_REAL gdtt, gdtx, gdty, gdtz, 
      $       gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $       gutt, gutx, guty, gutz, 
-     $       guxx, guyy, guzz, guxy, guyz, guxz
+     $       guxx, guyy, guzz, guxy, guyz, guxz,
+     $       psi
 
 C     static
 

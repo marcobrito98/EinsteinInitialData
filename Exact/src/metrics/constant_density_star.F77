@@ -15,7 +15,8 @@ c $Header$
      $     gdtt, gdtx, gdty, gdtz, 
      $     gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $     gutt, gutx, guty, gutz, 
-     $     guxx, guyy, guzz, guxy, guyz, guzx)
+     $     guxx, guyy, guzz, guxy, guyz, guzx,
+     $     psi)
 
 c
 c     The metric is given as a conformally flat metric.
@@ -39,7 +40,8 @@ c     Output.
       CCTK_REAL gdtt, gdtx, gdty, gdtz, 
      $       gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $       gutt, gutx, guty, gutz, 
-     $       guxx, guyy, guzz, guxy, guyz, guzx
+     $       guxx, guyy, guzz, guxy, guyz, guzx,
+     $       psi
 
 c     Internal.
 

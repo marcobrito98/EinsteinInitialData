@@ -40,6 +40,8 @@ c        no stress-energy tensor in this model
 c        no stress-energy tensor in this model
        elseif (decoded_exact_model .eq. EXACT__Minkowski_gauge_wave) then
 c        no stress-energy tensor in this model
+       elseif (decoded_exact_model .eq. EXACT__Minkowski_conf_wave) then
+c        no stress-energy tensor in this model
 
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 ccccc black hole spacetimes cccccccccccccccccccccccccccccccccccccccccccccccccccc

@@ -2,7 +2,7 @@
 # $Header$
 
 implements: exact
-inherits: admbase grid coordgauge
+inherits: admbase grid coordgauge staticconformal
 friend: ADMCoupling
 
 # evolution thorns need to include these files

@@ -1,0 +1,54 @@
+# Initial data and short evolution (ADM) for DeSitter spacetime
+# Author: Mitica Vulcanov <vulcan@aei.mpg.de>
+# $Header$
+
+# Author: Frank Loeffler (frank.loeffler@aei.mpg.de)
+
+# Required thorns
+ActiveThorns = "CartGrid3D Boundary Time PUGH PUGHReduce PUGHSlab IOAscii IOUtil IOBasic ADMBase ADMMacros ADMConstraints MoL BSSN_MoL ADMCoupling StaticConformal CoordGauge SpaceMask Exact NaNChecker"
+
+# Grid
+driver::global_nx = 33
+driver::global_ny = 33
+driver::global_nz = 33
+grid::type    = "byrange"
+grid::domain  = "full"
+
+grid::xmin = -5.0
+grid::xmax =  5.1
+grid::ymin = -5.0
+grid::ymax =  5.1
+grid::zmin = -5.0
+grid::zmax =  5.1
+
+cactus::cctk_itlast       = 0
+time::dtfac = 0.25
+
+# Initial data
+ADMBase::initial_data  = "exact"
+ADMBase::initial_shift = "exact"
+Exact::exact_model = "Schwarzschild/EF"
+
+# Gauge
+ADMBase::lapse_evolution_method = "exact"
+ADMBase::shift_evolution_method = "exact"
+
+# Evolution
+ADMBase::evolution_method = "adm_bssn"
+ADM_BSSN::bound    = "radiative"
+boundary::radpower = 2
+
+methodoflines::ode_method               =       "icn"
+
+# Output
+IO::out_dir = "schwarzschild_ef"
+
+IOBasic::outInfo_every = 1
+IOBasic::outInfo_vars  = "admconstraints::ham"
+
+IOBasic::outScalar_every =  1 
+IOBasic::outScalar_vars  = "admbase::gxx admbase::gyy admbase::gzz admbase::gxy admconstraints::ham admbase::lapse"
+
+IOASCII::out1D_every =  1
+IOASCII::out1D_vars  = "admbase::gxx admbase::gyy admbase::gzz admbase::gxy admconstraints::ham admbase::lapse"
+

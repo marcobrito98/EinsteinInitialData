@@ -18,7 +18,7 @@ c #define-ing the symbol EXACT_NO_F90 will turn this subroutine into a no-op
 
       CCTK_REAL s1d(4,3), nd(4), nu(4), norm, gd(4,4), gu(4,4), g3(3,3),
      $   gd_p(4,4), gd_m(4,4), gd1d(4,4,4), s2d(4,3,3), k3(3,3), 
-     $   ex_eps, d3(3,3,3), dx, dy, dz
+     $   ex_eps, d3(3,3,3), dx, dy, dz, exact_psi
       parameter (ex_eps=1.d-6)
 
 C     Grid parameters.
@@ -55,6 +55,13 @@ C     Calculate first derivatives of slice coordinates.
                s1d(4,2) = 0.5d0 * (slicet(i,j+1,k) - slicet(i,j-1,k))/dy
                s1d(4,3) = 0.5d0 * (slicet(i,j,k+1) - slicet(i,j,k-1))/dz
 
+C     Preset the conformal factor
+               if (conformal_state .ne. 0) then
+                 exact_psi=1.0d0
+               else
+                 exact_psi=0.0d0
+               end if
+               
 C     Now we need the exact solution metric in the preferred coordinates x^A.
 
                call Exact__metric(
@@ -66,7 +73,7 @@ C     Now we need the exact solution metric in the preferred coordinates x^A.
      $              gd(1,2), gd(2,3), gd(1,3),
      $              gu(4,4), gu(1,4), gu(2,4), gu(3,4),
      $              gu(1,1), gu(2,2), gu(3,3), 
-     $              gu(1,2), gu(2,3), gu(1,3))
+     $              gu(1,2), gu(2,3), gu(1,3), exact_psi)
 
 C     Calculate n^A and dx^A/dt
 
@@ -165,6 +172,12 @@ C     with an editor (hint for proofreading).
 C     Calculate g_AB,C. Need to sum explicitly over C. Do this with 
 C     the editor.
 
+C     Preset the conformal factor
+               if (conformal_state .ne. 0) then
+                 exact_psi=1.0d0
+               else
+                 exact_psi=0.0d0
+               end if
                call Exact__metric(
      $              decoded_exact_model,
      $              slicex(i,j,k)+ex_eps, slicey(i,j,k), slicez(i,j,k), 
@@ -174,7 +187,14 @@ C     the editor.
      $              gd_p(1,2), gd_p(2,3), gd_p(1,3),
      $              gu(4,4), gu(1,4), gu(2,4), gu(3,4),
      $              gu(1,1), gu(2,2), gu(3,3), 
-     $              gu(1,2), gu(2,3), gu(1,3))
+     $              gu(1,2), gu(2,3), gu(1,3), exact_psi)
+
+C     Preset the conformal factor
+               if (conformal_state .ne. 0) then
+                 exact_psi=1.0d0
+               else
+                 exact_psi=0.0d0
+               end if
                call Exact__metric(
      $              decoded_exact_model,
      $              slicex(i,j,k)-ex_eps, slicey(i,j,k), slicez(i,j,k), 
@@ -184,13 +204,19 @@ C     the editor.
      $              gd_m(1,2), gd_m(2,3), gd_m(1,3),
      $              gu(4,4), gu(1,4), gu(2,4), gu(3,4),
      $              gu(1,1), gu(2,2), gu(3,3), 
-     $              gu(1,2), gu(2,3), gu(1,3))
+     $              gu(1,2), gu(2,3), gu(1,3), exact_psi)
                do m=1,4
                   do n=m,4
                      gd1d(m,n,1) = (gd_p(m,n) - gd_m(m,n)) / (2.*ex_eps)
                   end do
                end do
 
+C     Preset the conformal factor
+               if (conformal_state .ne. 0) then
+                 exact_psi=1.0d0
+               else
+                 exact_psi=0.0d0
+               end if
                call Exact__metric(
      $              decoded_exact_model,
      $              slicex(i,j,k), slicey(i,j,k)+ex_eps, slicez(i,j,k), 
@@ -200,7 +226,14 @@ C     the editor.
      $              gd_p(1,2), gd_p(2,3), gd_p(1,3),
      $              gu(4,4), gu(1,4), gu(2,4), gu(3,4),
      $              gu(1,1), gu(2,2), gu(3,3), 
-     $              gu(1,2), gu(2,3), gu(1,3))
+     $              gu(1,2), gu(2,3), gu(1,3), exact_psi)
+               
+C     Preset the conformal factor
+               if (conformal_state .ne. 0) then
+                 exact_psi=1.0d0
+               else
+                 exact_psi=0.0d0
+               end if
                call Exact__metric(
      $              decoded_exact_model,
      $              slicex(i,j,k), slicey(i,j,k)-ex_eps, slicez(i,j,k), 
@@ -210,13 +243,20 @@ C     the editor.
      $              gd_m(1,2), gd_m(2,3), gd_m(1,3),
      $              gu(4,4), gu(1,4), gu(2,4), gu(3,4),
      $              gu(1,1), gu(2,2), gu(3,3), 
-     $              gu(1,2), gu(2,3), gu(1,3))
+     $              gu(1,2), gu(2,3), gu(1,3), exact_psi)
                do m=1,4
                   do n=m,4
                      gd1d(m,n,2) = (gd_p(m,n) - gd_m(m,n)) / (2.*ex_eps)
                   end do
                end do
 
+               
+C     Preset the conformal factor
+               if (conformal_state .ne. 0) then
+                 exact_psi=1.0d0
+               else
+                 exact_psi=0.0d0
+               end if
                call Exact__metric(
      $              decoded_exact_model,
      $              slicex(i,j,k), slicey(i,j,k), slicez(i,j,k)+ex_eps, 
@@ -226,7 +266,14 @@ C     the editor.
      $              gd_p(1,2), gd_p(2,3), gd_p(1,3),
      $              gu(4,4), gu(1,4), gu(2,4), gu(3,4),
      $              gu(1,1), gu(2,2), gu(3,3), 
-     $              gu(1,2), gu(2,3), gu(1,3))
+     $              gu(1,2), gu(2,3), gu(1,3), exact_psi)
+               
+C     Preset the conformal factor
+               if (conformal_state .ne. 0) then
+                 exact_psi=1.0d0
+               else
+                 exact_psi=0.0d0
+               end if
                call Exact__metric(
      $              decoded_exact_model,
      $              slicex(i,j,k), slicey(i,j,k), slicez(i,j,k)-ex_eps, 
@@ -236,13 +283,20 @@ C     the editor.
      $              gd_m(1,2), gd_m(2,3), gd_m(1,3),
      $              gu(4,4), gu(1,4), gu(2,4), gu(3,4),
      $              gu(1,1), gu(2,2), gu(3,3), 
-     $              gu(1,2), gu(2,3), gu(1,3))
+     $              gu(1,2), gu(2,3), gu(1,3), exact_psi)
                do m=1,4
                   do n=m,4
                      gd1d(m,n,3) = (gd_p(m,n) - gd_m(m,n)) / (2.*ex_eps)
                   end do
                end do
 
+               
+C     Preset the conformal factor
+               if (conformal_state .ne. 0) then
+                 exact_psi=1.0d0
+               else
+                 exact_psi=0.0d0
+               end if
                call Exact__metric(
      $              decoded_exact_model,
      $              slicex(i,j,k), slicey(i,j,k), slicez(i,j,k), 
@@ -252,7 +306,14 @@ C     the editor.
      $              gd_p(1,2), gd_p(2,3), gd_p(1,3),
      $              gu(4,4), gu(1,4), gu(2,4), gu(3,4),
      $              gu(1,1), gu(2,2), gu(3,3), 
-     $              gu(1,2), gu(2,3), gu(1,3))
+     $              gu(1,2), gu(2,3), gu(1,3), exact_psi)
+               
+C     Preset the conformal factor
+               if (conformal_state .ne. 0) then
+                 exact_psi=1.0d0
+               else
+                 exact_psi=0.0d0
+               end if
                call Exact__metric(
      $              decoded_exact_model,
      $              slicex(i,j,k), slicey(i,j,k), slicez(i,j,k), 
@@ -262,7 +323,7 @@ C     the editor.
      $              gd_m(1,2), gd_m(2,3), gd_m(1,3),
      $              gu(4,4), gu(1,4), gu(2,4), gu(3,4),
      $              gu(1,1), gu(2,2), gu(3,3), 
-     $              gu(1,2), gu(2,3), gu(1,3))
+     $              gu(1,2), gu(2,3), gu(1,3), exact_psi)
                do m=1,4
                   do n=m,4
                      gd1d(m,n,4) = (gd_p(m,n) - gd_m(m,n)) / (2.*ex_eps)

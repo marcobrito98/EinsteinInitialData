@@ -34,6 +34,11 @@ C $Header$
      $     bxxjunk, bxyjunk, bxzjunk, 
      $     byxjunk, byyjunk, byzjunk, 
      $     bzxjunk, bzyjunk, bzzjunk
+      CCTK_REAL
+     $     exact_psi,
+     $     exact_psix, exact_psiy, exact_psiz,
+     $     exact_psixx, exact_psiyy, exact_psizz,
+     $     exact_psixy, exact_psiyz, exact_psixz
 
 C     Grid parameters.
 
@@ -58,6 +63,23 @@ C     Set both lapse and shift.
             do j=1,ny
                do i=1,nx
 
+C     Initialize the psi of exact
+C     (also to tell the models about the conformal_state)
+                  if (conformal_state .ne. 0) then
+                    exact_psi = 1.0D0
+                  else
+                    exact_psi = 0.0D0
+                  end if
+                  exact_psix = 0.0D0
+                  exact_psiy = 0.0D0
+                  exact_psiz = 0.0D0
+                  exact_psixx = 0.0D0
+                  exact_psixx = 0.0D0
+                  exact_psizz = 0.0D0
+                  exact_psixy = 0.0D0
+                  exact_psiyz = 0.0D0
+                  exact_psixz = 0.0D0
+
                   call Exact__Bona_Masso_data(
      $                 decoded_exact_model,
      $                 x(i,j,k), y(i,j,k), z(i,j,k), tplushalf,
@@ -65,6 +87,10 @@ C     Set both lapse and shift.
      $                 gxyjunk, gyzjunk, gxzjunk,
      $                 hxxjunk, hyyjunk, hzzjunk, 
      $                 hxyjunk, hyzjunk, hxzjunk,
+     $                 exact_psi,
+     $                 exact_psix, exact_psiy, exact_psiz,
+     $                 exact_psixx, exact_psiyy, exact_psizz,
+     $                 exact_psixy, exact_psiyz, exact_psixz,
      $                 dxgxxjunk, dxgyyjunk, dxgzzjunk, 
      $                 dxgxyjunk, dxgyzjunk, dxgxzjunk,
      $                 dygxxjunk, dygyyjunk, dygzzjunk, 
@@ -89,6 +115,23 @@ C     Set lapse only.
             do j=1,ny
                do i=1,nx
 
+C     Initialize the psi of exact
+C     (also to tell the models about the conformal_state)
+                  if (conformal_state .ne. 0) then
+                    exact_psi = 1.0D0
+                  else
+                    exact_psi = 0.0D0
+                  end if
+                  exact_psix = 0.0D0
+                  exact_psiy = 0.0D0
+                  exact_psiz = 0.0D0
+                  exact_psixx = 0.0D0
+                  exact_psixx = 0.0D0
+                  exact_psizz = 0.0D0
+                  exact_psixy = 0.0D0
+                  exact_psiyz = 0.0D0
+                  exact_psixz = 0.0D0
+
                   call Exact__Bona_Masso_data(
      $                 decoded_exact_model,
      $                 x(i,j,k), y(i,j,k), z(i,j,k), tplushalf,
@@ -96,6 +139,10 @@ C     Set lapse only.
      $                 gxyjunk, gyzjunk, gxzjunk,
      $                 hxxjunk, hyyjunk, hzzjunk, 
      $                 hxyjunk, hyzjunk, hxzjunk,
+     $                 exact_psi,
+     $                 exact_psix, exact_psiy, exact_psiz,
+     $                 exact_psixx, exact_psiyy, exact_psizz,
+     $                 exact_psixy, exact_psiyz, exact_psixz,
      $                 dxgxxjunk, dxgyyjunk, dxgzzjunk, 
      $                 dxgxyjunk, dxgyzjunk, dxgxzjunk,
      $                 dygxxjunk, dygyyjunk, dygzzjunk, 
@@ -121,6 +168,23 @@ C     Set shift only.
             do j=1,ny
                do i=1,nx
 
+C     Initialize the psi of exact
+C     (also to tell the models about the conformal_state)
+                  if (conformal_state .ne. 0) then
+                    exact_psi = 1.0D0
+                  else
+                    exact_psi = 0.0D0
+                  end if
+                  exact_psix = 0.0D0
+                  exact_psiy = 0.0D0
+                  exact_psiz = 0.0D0
+                  exact_psixx = 0.0D0
+                  exact_psixx = 0.0D0
+                  exact_psizz = 0.0D0
+                  exact_psixy = 0.0D0
+                  exact_psiyz = 0.0D0
+                  exact_psixz = 0.0D0
+
                   call Exact__Bona_Masso_data(
      $                 decoded_exact_model,
      $                 x(i,j,k), y(i,j,k), z(i,j,k), tplushalf,
@@ -128,6 +192,10 @@ C     Set shift only.
      $                 gxyjunk, gyzjunk, gxzjunk,
      $                 hxxjunk, hyyjunk, hzzjunk, 
      $                 hxyjunk, hyzjunk, hxzjunk,
+     $                 exact_psi,
+     $                 exact_psix, exact_psiy, exact_psiz,
+     $                 exact_psixx, exact_psiyy, exact_psizz,
+     $                 exact_psixy, exact_psiyz, exact_psixz,
      $                 dxgxxjunk, dxgyyjunk, dxgzzjunk, 
      $                 dxgxyjunk, dxgyzjunk, dxgxzjunk,
      $                 dygxxjunk, dygyyjunk, dygzzjunk, 

@@ -13,6 +13,8 @@ c $Header$
      $     x, y, z, t,
      $     gxx, gyy, gzz, gxy, gyz, gxz,
      $     hxx, hyy, hzz, hxy, hyz, hxz,
+     $     psi, psix, psiy, psiz,
+     $     psixx, psiyy, psizz, psixy, psiyz, psixz,
      $     dxgxx, dxgyy, dxgzz, dxgxy, dxgyz, dxgxz,
      $     dygxx, dygyy, dygzz, dygxy, dygyz, dygxz,
      $     dzgxx, dzgyy, dzgzz, dzgxy, dzgyz, dzgxz,
@@ -21,9 +23,12 @@ c $Header$
 
       implicit none
       CCTK_INT decoded_exact_model
+      CCTK_INT psi_on
       CCTK_REAL x, y, z, t,
      $       gxx, gyy, gzz, gxy, gyz, gxz,
      $       hxx, hyy, hzz, hxy, hyz, hxz,
+     $       psi, psix, psiy, psiz,
+     $       psixx, psiyy, psizz, psixy, psiyz, psixz,
      $       dxgxx, dxgyy, dxgzz, dxgxy, dxgyz, dxgxz,
      $       dygxx, dygyy, dygzz, dygxy, dygyz, dygxz,
      $       dzgxx, dzgyy, dzgzz, dzgxy, dzgyz, dzgxz,
@@ -37,7 +42,7 @@ C     alp is N, betax is N^x etc.
 C     bxy is (/2) dN^y / dx (sic and sic!)
 C     ax is dN / dx / N (sic!)
 
-      CCTK_REAL eps, 
+      CCTK_REAL eps, four_eps2,
      $       gdtt, gdtx, gdty, gdtz, 
      $       gutt, gutx, guty, gutz, 
      $       guxx, guyy, guzz, guxy, guyz, guxz,
@@ -45,12 +50,35 @@ C     ax is dN / dx / N (sic!)
      $       gdxx_p, gdyy_p, gdzz_p, gdxy_p, gdyz_p, gdxz_p,
      $       gutt_p, gutx_p, guty_p, gutz_p, 
      $       guxx_p, guyy_p, guzz_p, guxy_p, guyz_p, guxz_p,
+     $       psix_p, psiy_p, psiz_p,
      $       gdtt_m, gdtx_m, gdty_m, gdtz_m, 
      $       gdxx_m, gdyy_m, gdzz_m, gdxy_m, gdyz_m, gdxz_m,
      $       gutt_m, gutx_m, guty_m, gutz_m, 
-     $       guxx_m, guyy_m, guzz_m, guxy_m, guyz_m, guxz_m
+     $       guxx_m, guyy_m, guzz_m, guxy_m, guyz_m, guxz_m,
+     $       psix_m, psiy_m, psiz_m,
+     $       psix_px_p, psix_py_p, psix_pz_p,
+     $                  psiy_py_p, psiy_pz_p,
+     $                             psiz_pz_p,
+     $
+     $       psix_mx_m, psix_my_m, psix_mz_m,
+     $                  psiy_my_m, psiy_mz_m,
+     $                             psiz_mz_m,
+     $
+     $                  psix_py_m, psix_pz_m,
+     $                             psiy_pz_m,
+     $
+     $                  psix_my_p, psix_mz_p,
+     $                             psiy_mz_p
 
       parameter (eps=1.d-6)
+
+C     Save, if we have to provide the conformal factor
+
+      if (psi .gt. 0.0d0) then
+        psi_on=1
+      else
+        psi_on=0
+      end if
 
 C     Get the spacetime metric and its inverse at the base point.
 
@@ -60,7 +88,7 @@ C     Get the spacetime metric and its inverse at the base point.
      $     gdtt, gdtx, gdty, gdtz, 
      $     gxx, gyy, gzz, gxy, gyz, gxz,
      $     gutt, gutx, guty, gutz, 
-     $     guxx, guyy, guzz, guxy, guyz, guxz)
+     $     guxx, guyy, guzz, guxy, guyz, guxz, psi)
 
 C     Calculate lapse and shift from the upper metric.
 
@@ -82,14 +110,14 @@ C     Calculate x-derivatives.
      $     gdtt_p, gdtx_p, gdty_p, gdtz_p,
      $     gdxx_p, gdyy_p, gdzz_p, gdxy_p, gdyz_p, gdxz_p,
      $     gutt_p, gutx_p, guty_p, gutz_p,
-     $     guxx_p, guyy_p, guzz_p, guxy_p, guyz_p, guxz_p)
+     $     guxx_p, guyy_p, guzz_p, guxy_p, guyz_p, guxz_p, psix_p)
       call Exact__metric(
      $     decoded_exact_model,
      $     x-eps, y, z, t,
      $     gdtt_m, gdtx_m, gdty_m, gdtz_m,
      $     gdxx_m, gdyy_m, gdzz_m, gdxy_m, gdyz_m, gdxz_m,
      $     gutt_m, gutx_m, guty_m, gutz_m,
-     $     guxx_m, guyy_m, guzz_m, guxy_m, guyz_m, guxz_m)
+     $     guxx_m, guyy_m, guzz_m, guxy_m, guyz_m, guxz_m, psix_m)
 
       dxgxx = (gdxx_p  - gdxx_m)  / 4.d0 / eps
       dxgyy = (gdyy_p  - gdyy_m)  / 4.d0 / eps
@@ -104,6 +132,7 @@ C     Calculate x-derivatives.
       bxy = ((- guty_p / gutt_p) - (- guty_m / gutt_m)) / 4.d0 / eps
       bxz = ((- gutz_p / gutt_p) - (- gutz_m / gutt_m)) / 4.d0 / eps
 
+      psix = (psix_p - psix_m) / 2.0d0 / eps
 C     Calculate y-derivatives.
 
       call Exact__metric(
@@ -112,14 +141,14 @@ C     Calculate y-derivatives.
      $     gdtt_p, gdtx_p, gdty_p, gdtz_p,
      $     gdxx_p, gdyy_p, gdzz_p, gdxy_p, gdyz_p, gdxz_p,
      $     gutt_p, gutx_p, guty_p, gutz_p,
-     $     guxx_p, guyy_p, guzz_p, guxy_p, guyz_p, guxz_p)
+     $     guxx_p, guyy_p, guzz_p, guxy_p, guyz_p, guxz_p, psiy_p)
       call Exact__metric(
      $     decoded_exact_model,
      $     x, y-eps, z, t,
      $     gdtt_m, gdtx_m, gdty_m, gdtz_m,
      $     gdxx_m, gdyy_m, gdzz_m, gdxy_m, gdyz_m, gdxz_m,
      $     gutt_m, gutx_m, guty_m, gutz_m,
-     $     guxx_m, guyy_m, guzz_m, guxy_m, guyz_m, guxz_m)
+     $     guxx_m, guyy_m, guzz_m, guxy_m, guyz_m, guxz_m, psiy_m)
 
       dygxx = (gdxx_p  - gdxx_m)  / 4.d0 / eps
       dygyy = (gdyy_p  - gdyy_m)  / 4.d0 / eps
@@ -134,6 +163,7 @@ C     Calculate y-derivatives.
       byy = ((- guty_p / gutt_p) - (- guty_m / gutt_m)) / 4.d0 / eps
       byz = ((- gutz_p / gutt_p) - (- gutz_m / gutt_m)) / 4.d0 / eps
 
+      psiy = (psiy_p - psiy_m) / 2.0d0 / eps
 C     Calculate z-derivatives.
 
       call Exact__metric(
@@ -142,14 +172,14 @@ C     Calculate z-derivatives.
      $     gdtt_p, gdtx_p, gdty_p, gdtz_p,
      $     gdxx_p, gdyy_p, gdzz_p, gdxy_p, gdyz_p, gdxz_p,
      $     gutt_p, gutx_p, guty_p, gutz_p,
-     $     guxx_p, guyy_p, guzz_p, guxy_p, guyz_p, guxz_p)
+     $     guxx_p, guyy_p, guzz_p, guxy_p, guyz_p, guxz_p, psiz_p)
       call Exact__metric(
      $     decoded_exact_model,
      $     x, y, z-eps, t,
      $     gdtt_m, gdtx_m, gdty_m, gdtz_m,
      $     gdxx_m, gdyy_m, gdzz_m, gdxy_m, gdyz_m, gdxz_m,
      $     gutt_m, gutx_m, guty_m, gutz_m,
-     $     guxx_m, guyy_m, guzz_m, guxy_m, guyz_m, guxz_m)
+     $     guxx_m, guyy_m, guzz_m, guxy_m, guyz_m, guxz_m, psiz_m)
 
       dzgxx = (gdxx_p  - gdxx_m)  / 4.d0 / eps
       dzgyy = (gdyy_p  - gdyy_m)  / 4.d0 / eps
@@ -164,6 +194,7 @@ C     Calculate z-derivatives.
       bzy = ((- guty_p / gutt_p) - (- guty_m / gutt_m)) / 4.d0 / eps
       bzz = ((- gutz_p / gutt_p) - (- gutz_m / gutt_m)) / 4.d0 / eps
 
+      psiz = (psiz_p - psiz_m) / 2.0d0 / eps
 C     Calculate t-derivatives, and extrinsic curvature.
 
       call Exact__metric(
@@ -172,14 +203,14 @@ C     Calculate t-derivatives, and extrinsic curvature.
      $     gdtt_p, gdtx_p, gdty_p, gdtz_p,
      $     gdxx_p, gdyy_p, gdzz_p, gdxy_p, gdyz_p, gdxz_p,
      $     gutt_p, gutx_p, guty_p, gutz_p,
-     $     guxx_p, guyy_p, guzz_p, guxy_p, guyz_p, guxz_p)
+     $     guxx_p, guyy_p, guzz_p, guxy_p, guyz_p, guxz_p, psi)
       call Exact__metric(
      $     decoded_exact_model,
      $     x, y, z, t-eps,
      $     gdtt_m, gdtx_m, gdty_m, gdtz_m,
      $     gdxx_m, gdyy_m, gdzz_m, gdxy_m, gdyz_m, gdxz_m,
      $     gutt_m, gutx_m, guty_m, gutz_m,
-     $     guxx_m, guyy_m, guzz_m, guxy_m, guyz_m, guxz_m)
+     $     guxx_m, guyy_m, guzz_m, guxy_m, guyz_m, guxz_m, psi)
 
       hxx = - (gdxx_p - gdxx_m) / 4.d0 / eps / alp
      $     + (dxgxx * betax + dygxx * betay + dzgxx * betaz
@@ -208,6 +239,145 @@ C     Calculate t-derivatives, and extrinsic curvature.
      $     + bxx * gxz + bxy * gyz + bxz * gzz
      $     + bzx * gxx + bzy * gxy + bzz * gxz) / alp
 
+C     Calculate second derivatives of the conformal factor 
+      if (psi_on .eq. 1) then
+        call Exact__metric(
+     $     decoded_exact_model,
+     $     x+eps+eps, y, z, t,
+     $     gdtt_m, gdtx_m, gdty_m, gdtz_m,
+     $     gdxx_m, gdyy_m, gdzz_m, gdxy_m, gdyz_m, gdxz_m,
+     $     gutt_m, gutx_m, guty_m, gutz_m,
+     $     guxx_m, guyy_m, guzz_m, guxy_m, guyz_m, guxz_m, psix_px_p)
+        call Exact__metric(
+     $     decoded_exact_model,
+     $     x, y+eps+eps, z, t,
+     $     gdtt_m, gdtx_m, gdty_m, gdtz_m,
+     $     gdxx_m, gdyy_m, gdzz_m, gdxy_m, gdyz_m, gdxz_m,
+     $     gutt_m, gutx_m, guty_m, gutz_m,
+     $     guxx_m, guyy_m, guzz_m, guxy_m, guyz_m, guxz_m, psiy_py_p)
+        call Exact__metric(
+     $     decoded_exact_model,
+     $     x, y, z+eps+eps, t,
+     $     gdtt_m, gdtx_m, gdty_m, gdtz_m,
+     $     gdxx_m, gdyy_m, gdzz_m, gdxy_m, gdyz_m, gdxz_m,
+     $     gutt_m, gutx_m, guty_m, gutz_m,
+     $     guxx_m, guyy_m, guzz_m, guxy_m, guyz_m, guxz_m, psiz_pz_p)
+        call Exact__metric(
+     $     decoded_exact_model,
+     $     x-eps-eps, y, z, t,
+     $     gdtt_m, gdtx_m, gdty_m, gdtz_m,
+     $     gdxx_m, gdyy_m, gdzz_m, gdxy_m, gdyz_m, gdxz_m,
+     $     gutt_m, gutx_m, guty_m, gutz_m,
+     $     guxx_m, guyy_m, guzz_m, guxy_m, guyz_m, guxz_m, psix_mx_m)
+        call Exact__metric(
+     $     decoded_exact_model,
+     $     x, y-eps-eps, z, t,
+     $     gdtt_m, gdtx_m, gdty_m, gdtz_m,
+     $     gdxx_m, gdyy_m, gdzz_m, gdxy_m, gdyz_m, gdxz_m,
+     $     gutt_m, gutx_m, guty_m, gutz_m,
+     $     guxx_m, guyy_m, guzz_m, guxy_m, guyz_m, guxz_m, psiy_my_m)
+        call Exact__metric(
+     $     decoded_exact_model,
+     $     x, y, z-eps-eps, t,
+     $     gdtt_m, gdtx_m, gdty_m, gdtz_m,
+     $     gdxx_m, gdyy_m, gdzz_m, gdxy_m, gdyz_m, gdxz_m,
+     $     gutt_m, gutx_m, guty_m, gutz_m,
+     $     guxx_m, guyy_m, guzz_m, guxy_m, guyz_m, guxz_m, psiz_mz_m)
+        call Exact__metric(
+     $     decoded_exact_model,
+     $     x+eps, y+eps, z, t,
+     $     gdtt_p, gdtx_p, gdty_p, gdtz_p,
+     $     gdxx_p, gdyy_p, gdzz_p, gdxy_p, gdyz_p, gdxz_p,
+     $     gutt_p, gutx_p, guty_p, gutz_p,
+     $     guxx_p, guyy_p, guzz_p, guxy_p, guyz_p, guxz_p, psix_py_p)
+        call Exact__metric(
+     $     decoded_exact_model,
+     $     x+eps, y, z+eps, t,
+     $     gdtt_m, gdtx_m, gdty_m, gdtz_m,
+     $     gdxx_m, gdyy_m, gdzz_m, gdxy_m, gdyz_m, gdxz_m,
+     $     gutt_m, gutx_m, guty_m, gutz_m,
+     $     guxx_m, guyy_m, guzz_m, guxy_m, guyz_m, guxz_m, psix_pz_p)
+        call Exact__metric(
+     $     decoded_exact_model,
+     $     x, y+eps, z+eps, t,
+     $     gdtt_m, gdtx_m, gdty_m, gdtz_m,
+     $     gdxx_m, gdyy_m, gdzz_m, gdxy_m, gdyz_m, gdxz_m,
+     $     gutt_m, gutx_m, guty_m, gutz_m,
+     $     guxx_m, guyy_m, guzz_m, guxy_m, guyz_m, guxz_m, psiy_pz_p)
+        call Exact__metric(
+     $     decoded_exact_model,
+     $     x-eps, y-eps, z, t,
+     $     gdtt_m, gdtx_m, gdty_m, gdtz_m,
+     $     gdxx_m, gdyy_m, gdzz_m, gdxy_m, gdyz_m, gdxz_m,
+     $     gutt_m, gutx_m, guty_m, gutz_m,
+     $     guxx_m, guyy_m, guzz_m, guxy_m, guyz_m, guxz_m, psix_my_m)
+        call Exact__metric(
+     $     decoded_exact_model,
+     $     x-eps, y, z-eps, t,
+     $     gdtt_m, gdtx_m, gdty_m, gdtz_m,
+     $     gdxx_m, gdyy_m, gdzz_m, gdxy_m, gdyz_m, gdxz_m,
+     $     gutt_m, gutx_m, guty_m, gutz_m,
+     $     guxx_m, guyy_m, guzz_m, guxy_m, guyz_m, guxz_m, psix_mz_m)
+        call Exact__metric(
+     $     decoded_exact_model,
+     $     x, y-eps, z-eps, t,
+     $     gdtt_m, gdtx_m, gdty_m, gdtz_m,
+     $     gdxx_m, gdyy_m, gdzz_m, gdxy_m, gdyz_m, gdxz_m,
+     $     gutt_m, gutx_m, guty_m, gutz_m,
+     $     guxx_m, guyy_m, guzz_m, guxy_m, guyz_m, guxz_m, psiy_mz_m)
+        call Exact__metric(
+     $     decoded_exact_model,
+     $     x+eps, y-eps, z, t,
+     $     gdtt_m, gdtx_m, gdty_m, gdtz_m,
+     $     gdxx_m, gdyy_m, gdzz_m, gdxy_m, gdyz_m, gdxz_m,
+     $     gutt_m, gutx_m, guty_m, gutz_m,
+     $     guxx_m, guyy_m, guzz_m, guxy_m, guyz_m, guxz_m, psix_py_m)
+        call Exact__metric(
+     $     decoded_exact_model,
+     $     x+eps, y, z-eps, t,
+     $     gdtt_m, gdtx_m, gdty_m, gdtz_m,
+     $     gdxx_m, gdyy_m, gdzz_m, gdxy_m, gdyz_m, gdxz_m,
+     $     gutt_m, gutx_m, guty_m, gutz_m,
+     $     guxx_m, guyy_m, guzz_m, guxy_m, guyz_m, guxz_m, psix_pz_m)
+        call Exact__metric(
+     $     decoded_exact_model,
+     $     x-eps, y+eps, z, t,
+     $     gdtt_m, gdtx_m, gdty_m, gdtz_m,
+     $     gdxx_m, gdyy_m, gdzz_m, gdxy_m, gdyz_m, gdxz_m,
+     $     gutt_m, gutx_m, guty_m, gutz_m,
+     $     guxx_m, guyy_m, guzz_m, guxy_m, guyz_m, guxz_m, psix_my_p)
+        call Exact__metric(
+     $     decoded_exact_model,
+     $     x-eps, y, z+eps, t,
+     $     gdtt_m, gdtx_m, gdty_m, gdtz_m,
+     $     gdxx_m, gdyy_m, gdzz_m, gdxy_m, gdyz_m, gdxz_m,
+     $     gutt_m, gutx_m, guty_m, gutz_m,
+     $     guxx_m, guyy_m, guzz_m, guxy_m, guyz_m, guxz_m, psix_mz_p)
+        call Exact__metric(
+     $     decoded_exact_model,
+     $     x, y+eps, z-eps, t,
+     $     gdtt_m, gdtx_m, gdty_m, gdtz_m,
+     $     gdxx_m, gdyy_m, gdzz_m, gdxy_m, gdyz_m, gdxz_m,
+     $     gutt_m, gutx_m, guty_m, gutz_m,
+     $     guxx_m, guyy_m, guzz_m, guxy_m, guyz_m, guxz_m, psiy_pz_m)
+        call Exact__metric(
+     $     decoded_exact_model,
+     $     x, y-eps, z+eps, t,
+     $     gdtt_m, gdtx_m, gdty_m, gdtz_m,
+     $     gdxx_m, gdyy_m, gdzz_m, gdxy_m, gdyz_m, gdxz_m,
+     $     gutt_m, gutx_m, guty_m, gutz_m,
+     $     guxx_m, guyy_m, guzz_m, guxy_m, guyz_m, guxz_m, psiy_mz_p)
+
+        four_eps2 = 4.0d0 * eps**2
+        
+        psixx = (psix_mx_m- 2*psi+ psix_px_p) / four_eps2
+        psiyy = (psiy_my_m- 2*psi+ psiy_py_p) / four_eps2
+        psizz = (psiz_mz_m- 2*psi+ psiz_pz_p) / four_eps2
+        psixy = (psix_my_m- psix_my_p- psix_py_m+ psix_py_p) / four_eps2
+        psixz = (psix_mz_m- psix_mz_p- psix_pz_m+ psix_pz_p) / four_eps2
+        psiyz = (psiy_mz_m- psiy_mz_p- psiy_pz_m+ psiy_pz_p) / four_eps2
+        
+      end if
       return
       end
       

@@ -34,6 +34,7 @@ c Minkowski spacetime
 #define EXACT__Minkowski_shift		2
 #define EXACT__Minkowski_funny		3
 #define EXACT__Minkowski_gauge_wave	4
+#define EXACT__Minkowski_conf_wave	5
 
 c black hole spacetimes
 #define EXACT__Schwarzschild_EF		10

@@ -39,6 +39,10 @@ EXTENDS KEYWORD evolution_method
   "slice" :: "Evolve arbitrary slice and  extract Cauchy data"
 }
 
+shares:StaticConformal
+
+USES KEYWORD conformal_storage
+
 ################################################################################
 ##### parameters for the blended boundary conditions ###########################
 ################################################################################
@@ -162,6 +166,7 @@ KEYWORD exact_model "The exact solution/coordinates used in thorn exact"
 "Minkowski/shift"      :: "Minkowski spacetime with time-dependent shift vector"
 "Minkowski/funny"      :: "Minkowski spacetime in non-trivial spatial coordinates"
 "Minkowski/gauge wave" :: "Minkowski spacetime in gauge-wave coordinates"
+"Minkowski/conf wave"  :: "Minkowski spacetime with 'waves' in conformal factor"
 #
 # black hole spacetimes
 #
@@ -283,6 +288,30 @@ REAL Minkowski_gauge_wave__phase \
 {
 *:* :: "any real number"
 } 0.0
+
+################################################################################
+
+#
+# parameters for Minkowski spacetime in gauge-wave coordinates
+#
+
+REAL Minkowski_conf_wave__amplitude \
+  "Minkowski/conf wave: amplitude of the variation of the conformal factor"
+{
+  0:* :: "any positive real number"
+} 0.5
+
+REAL Minkowski_conf_wave__wavelength \
+  "Minkowski/conf wave: wave length in cactus units"
+{
+  0:* :: "any positive real number"
+} 1.0
+
+INT Minkowski_conf_wave__direction \
+  "Minkowski/conf wave: direction of 'wave' 0,1,2 : x,y,z"
+{
+  0:2 :: "0, 1 or 2 for x, y or z"
+} 0
 
 ################################################################################
 ##### black hole spacetimes ####################################################

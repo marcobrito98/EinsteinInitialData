@@ -33,6 +33,11 @@ Copyright
 As noted above, this code has been hacked on by many different people,
 so its' copyright status is somewhat unclear.
 
+Therefore here is a (incomplete) list of authors and their wishes:
+
+Jonathan Thornburg:
+-------------------
+
 However, the new code added in the June 2002 revisions is
 copyright (C) 2001-2002 by Jonathan Thornburg <jthorn@aei.mpg.de>.
 
@@ -50,3 +55,19 @@ You should have received a copy of the GNU General Public License
 along with this thorn (see the file COPYING in this directory);
 if not, write to the Free Software Foundation, Inc., 59 Temple
 Place, Suite 330, Boston, MA  02111-1307  USA
+
+Frank Loeffler
+--------------
+
+Code added by myself (which is mainly Minkowski_conf_wave and the
+code using the conformal factor added in January 2003) is free
+software, you can redistribute it and/or modify it under the terms
+of the GNU General Public License as published bythe Free Software
+Foundation; either version 2 of the License, or(at your option)
+any later version.
+
+This new code is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
