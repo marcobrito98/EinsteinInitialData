@@ -120,14 +120,15 @@ EXTENDS KEYWORD initial_data
 
 EXTENDS KEYWORD initial_lapse 
 {
-  "schwarz" :: "Set lapse to Schwarzschild"
-  "cadez" :: "Set lapse to Misner"
-  "Kerr"  :: "Set lapse to Kerr"
+  "schwarzschild" :: "Set lapse to Schwarzschild"
+  "schwarz"       :: "Set lapse to Schwarzschild"
+  "cadez"         :: "Set lapse to Misner"
+  "kerr"          :: "Set lapse to Kerr"
 }
 
 EXTENDS KEYWORD initial_shift 
 {
-  "Kerr"  :: "Set shift to Kerr"
+  "kerr" :: "Set shift to Kerr"
 }
 
 USES KEYWORD metric_type 

@@ -1,3 +1,4 @@
+
  /*@@
    @file      Schwarzschild.c
    @date      Sun Oct 17 10:35:41 1999
@@ -67,14 +68,14 @@ void Schwarzschild(CCTK_ARGUMENTS)
     for (i = 0; i < npoints; i++)
     {
       /*        Compute conformal factor */
-      psi[i] = ( one + mass/two/r[i]);
+      psi[i] = ( one + mass/(two*r[i]+1e-20));
 
       if(make_conformal_derivs)
       {
         /*        derivatives of psi / psi */
         r_squared = r[i]*r[i];
         r_cubed   = r[i]*r_squared;
-        tmp = mass/two/r_cubed/psi[i];
+        tmp = mass/(two*r_cubed*psi[i]+1e-20);
 
 
         psix[i] = -x[i]*tmp;
@@ -83,7 +84,7 @@ void Schwarzschild(CCTK_ARGUMENTS)
 
         if(*conformal_state > 2)
         {
-          tmp = mass/two/(r_squared*r_cubed)/psi[i];
+          tmp = mass/(two*r_squared*r_cubed*psi[i]+1e-20);
           psixy[i] = three*x[i]*y[i]*tmp;
           psixz[i] = three*x[i]*z[i]*tmp;
           psiyz[i] = three*y[i]*z[i]*tmp;
@@ -105,7 +106,7 @@ void Schwarzschild(CCTK_ARGUMENTS)
   {
     for (i = 0; i < npoints; i++)
     {
-      tmp = one + mass/two/r[i];
+      tmp = one + mass/(two*r[i]+1e-20);
       gxx[i] = tmp*tmp*tmp*tmp;
       gyy[i] = gxx[i];
       gzz[i] = gxx[i];
@@ -116,7 +117,8 @@ void Schwarzschild(CCTK_ARGUMENTS)
   }
   
   /*     If the initial lapse is not one ... */
-  if (CCTK_Equals(initial_lapse,"schwarz"))
+  if (CCTK_Equals(initial_lapse,"schwarzschild")
+      || CCTK_Equals(initial_lapse,"schwarz"))
   {
     CCTK_INFO("Initialise with Schwarzschild lapse");
 
