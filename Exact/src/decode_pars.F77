@@ -101,6 +101,8 @@ c cosmological spacetimes
 	     decoded_exact_model = EXACT__Kasner_axisymmetric
 	elseif (CCTK_Equals(exact_model, "Kasner-generalized") .ne. 0) then
 	     decoded_exact_model = EXACT__Kasner_generalized
+	elseif (CCTK_Equals(exact_model, "Gowdy-wave") .ne. 0) then
+	     decoded_exact_model = EXACT__Gowdy_wave
 	elseif (CCTK_Equals(exact_model, "Milne") .ne. 0) then
 	     decoded_exact_model = EXACT__Milne
 

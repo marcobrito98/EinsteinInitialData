@@ -287,6 +287,11 @@ c
         Tyz  = Tyz
 
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+       elseif (decoded_exact_model .eq. EXACT__Gowdy_wave) then
+c        no stress-energy tensor in this model
+
+
+cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
        elseif (decoded_exact_model .eq. EXACT__Milne) then
 c        no stress-energy tensor in this model

@@ -58,7 +58,8 @@ c cosmological spacetimes
 #define EXACT__Kasner_like		58
 #define EXACT__Kasner_axisymmetric	59
 #define EXACT__Kasner_generalized	60
-#define EXACT__Milne			61
+#define EXACT__Gowdy_wave		61
+#define EXACT__Milne			62
 
 c miscelaneous spacetimes
 #define EXACT__boost_rotation_symmetric	80

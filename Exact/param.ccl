@@ -188,6 +188,7 @@ KEYWORD exact_model "The exact solution/coordinates used in thorn exact"
 "Kasner-like"          :: "Kasner-like spacetime"
 "Kasner-axisymmetric"  :: "axisymmetric Kasner spacetime"
 "Kasner-generalized"   :: "generalized Kasner spacetime"
+"Gowdy-wave"	       :: "Gowdy spacetime with polarized wave on a torus"
 "Milne"                :: "Milne spacetime for pre-big-bang cosmology"
 #
 # miscelaneous spacetimes
@@ -703,6 +704,17 @@ REAL Kasner_generalized__p2 "Kasner-generalized: y exponent parameter"
 {
 [-1.0:1.0] :: "any real number in the range [-1,1]"
 } 0.1
+
+################################################################################
+
+#
+# parameters for Gowdy polarized wave spacetime
+#
+
+REAL Gowdy_wave__amplitude "Gowdy-wave: amplitude parameter"
+{
+*:* :: "any real number"
+} 0.0
 
 ################################################################################
 

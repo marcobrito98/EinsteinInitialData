@@ -243,6 +243,14 @@ c
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz)
 
+      elseif (decoded_exact_model .eq. EXACT__Gowdy_wave) then
+         call Exact__Gowdy_wave(
+     $        x, y, z, t,
+     $        gdtt, gdtx, gdty, gdtz,
+     $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
+     $        gutt, gutx, guty, gutz,
+     $        guxx, guyy, guzz, guxy, guyz, guxz)
+
       elseif (decoded_exact_model .eq. EXACT__Milne) then
          call Exact__Milne(
      $        x, y, z, t,

@@ -31,6 +31,7 @@ SRCS = Minkowski.F77			\
        Kasner_like.F77			\
        Kasner_axisymmetric.F77		\
        Kasner_generalized.F77		\
+       Gowdy.F77			\
        Milne.F77			\
 					\
        boost_rotation_symmetric.F77	\
