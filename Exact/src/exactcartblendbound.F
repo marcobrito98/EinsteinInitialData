@@ -67,9 +67,9 @@ C     Other parameters.
          zblend = exblend_width
       endif
 
-      call CCTK_CoordRange(ierr,cctkGH,xmin,xmax,"x")
-      call CCTK_CoordRange(ierr,cctkGH,ymin,ymax,"y")
-      call CCTK_CoordRange(ierr,cctkGH,zmin,zmax,"z")
+      call CCTK_CoordRange(ierr,cctkGH,xmin,xmax,-1,"x","cart3d")
+      call CCTK_CoordRange(ierr,cctkGH,ymin,ymax,-1,"y","cart3d")
+      call CCTK_CoordRange(ierr,cctkGH,zmin,zmax,-1,"z","cart3d")
 
       do k=1,nz
          do j=1,ny

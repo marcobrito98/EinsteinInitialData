@@ -55,9 +55,9 @@ C     Other parameters.
       doShift  = ((exblend_gauge.eq.1).and.
      $            (CCTK_Equals(shift,"exact").ne.0))
 
-      call CCTK_CoordRange(ierr,cctkGH,xmn,xmx,"x")
-      call CCTK_CoordRange(ierr,cctkGH,ymn,ymx,"y")
-      call CCTK_CoordRange(ierr,cctkGH,zmn,zmx,"z")
+      call CCTK_CoordRange(ierr,cctkGH,xmn,xmx,-1,"x","cart3d")
+      call CCTK_CoordRange(ierr,cctkGH,ymn,ymx,-1,"y","cart3d")
+      call CCTK_CoordRange(ierr,cctkGH,zmn,zmx,-1,"z","cart3d")
 
       rmx = min(xmx,ymx,zmx)
 
