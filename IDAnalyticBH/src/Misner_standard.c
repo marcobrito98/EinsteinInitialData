@@ -63,10 +63,9 @@ void Misner_standard(CCTK_CARGUMENTS)
 
   int i,j,k;
   int n;
+  char *message;
   CCTK_REAL zero, one, three;
-
   CCTK_REAL csch, coth, r1, r2;
-
   CCTK_REAL x_squared, y_squared;
   CCTK_REAL r1_cubed, r2_cubed;
   CCTK_REAL r1_5, r2_5;
@@ -208,7 +207,10 @@ void Misner_standard(CCTK_CARGUMENTS)
     mass += 4./sinh(n*mu);
   }
 
-  printf("   >>ADM mass  %f\n",mass);
+  message = (char *)malloc(200*sizeof(char));
+  sprintf(message,"ADM mass is %f",mass);
+  CCTK_INFO(message);
+  free(message);
   
   /*     Should initialize lapse to Cadez value if possible
    *     --------------------------------------------------
