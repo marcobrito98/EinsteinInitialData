@@ -61,7 +61,7 @@ void IDBrillData_ParamChecker(CCTK_ARGUMENTS)
   {
     if (!CCTK_Equals(conformal_storage,"factor"))
     {
-      CCTK_PARAMWARN("BrillData only sets the conformal factor (this could easily be changed ... please ask)");
+      CCTK_PARAMWARN("BrillData only sets the conformal factor, not its derivatives. (This could easily be changed ... please ask.)");
     }
   }
 
