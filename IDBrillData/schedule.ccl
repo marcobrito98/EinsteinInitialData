@@ -1,3 +1,5 @@
+# Schedule definitions for thorn IDBrillData
+# $Header$
 
 if (CCTK_Equals(initial_data,"brilldata"))
 {
@@ -9,7 +11,6 @@ if (CCTK_Equals(initial_data,"brilldata"))
   schedule brilldata at CCTK_INITIAL
   {
     STORAGE: linearelliptic,brillconf
-    COMMUNICATION: linearelliptic,brillconf
     LANG: Fortran
   } "Construct Brill wave initial data"
 }
