@@ -53,9 +53,9 @@ c     Perhaps this and others should go into cctk.h
       real*8 t1,t2,t3,t4
       real*8 gtil,dngtil,dnngtil,dnnngtil,dnnnngtil,dnnnnngtil,
      $     dnnnnnngtil,dnnnnnnngtil
-      real*8 rhsmax,rmax,odd_get2d,adm,Jmom
+      real*8 rhsmax,rmax,odd_get2d,adm,Jmom,mass,a,R,rBL
       real*8,parameter :: rbh_tol = 1.0d-7,rbh_eps = 1.0d-10
-      integer,parameter :: itmax = 50 
+      integer,parameter :: itmax = 100 
       real*8 pi,zero,one,two
       CCTK_REAL :: xmin,xmax,ymin,ymax,zmin,zmax
       integer :: ne, nq
@@ -129,6 +129,9 @@ c
 #include "Development/IDAxiOddBrillBH/src/gauss.x"
             if(brandt_seidel == 1) then
 #include "Development/IDAxiOddBrillBH/src/ksq_bs.x"
+	    else if (sergio == 1) then
+#include "Development/IDAxiOddBrillBH/src/kerr.x"
+#include "Development/IDAxiOddBrillBH/src/ksq_sergio.x"
             else
 #include "Development/IDAxiOddBrillBH/src/ksq_axi_rdbh.x"
             endif
@@ -456,6 +459,9 @@ c     Extrinsic Curvture:Cactus only needs physical extrinsic curvature
 #include "Development/IDAxiOddBrillBH/src/cgauss.x"
                if (brandt_seidel == 1) then
 #include "Development/IDAxiOddBrillBH/src/kij_bs.x"
+	       else if (sergio == 1) then
+#include "Development/IDAxiOddBrillBH/src/ckerr.x"
+#include "Development/IDAxiOddBrillBH/src/kij_sergio.x"
                else
 #include "Development/IDAxiOddBrillBH/src/kij_axi_rdbh.x"
                endif

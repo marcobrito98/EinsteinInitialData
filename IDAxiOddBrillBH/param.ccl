@@ -58,6 +58,9 @@ BOOLEAN brandt_seidel "Brand-Seidel initial data"
 {
 } "no"
 
+BOOLEAN sergio "Sergio initial data"
+{
+} "no"
 
 BOOLEAN verbose ""
 {
