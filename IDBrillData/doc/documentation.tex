@@ -22,17 +22,17 @@ ds^2 = \Psi^4 \left[ e^{2q} \left( d\rho^2 + dz^2 \right)
 \label{eqn:brillmetric}
 \end{equation}
 where $q$ is a free function subject to certain regularity and
-fall-off conditions and $Psi$ is a conformal factor to be solved for.
+fall-off conditions and $\Psi$ is a conformal factor to be solved for.
 
 The thorn considers several different forms of the function $q$
 depending on certain parameters that will be described below.
 Substituting the metric above into the Hamiltonian constraint results
-in an elliptic equation for the conformal factor $Psi$ that can be
+in an elliptic equation for the conformal factor $\Psi$ that can be
 solved numerically once the function $q$ has been specified. The
 initial data is also assumed to be time-symmetric, so the momentum
 constraints are trivially satisfied.
 
-The thorn is activated by choosing the standard Cactus parameter
+The thorn is activated by choosing the CactusEinstein/ADMBase parameter
 ``initial\_data'' in one of the following two ways:
 
 \begin{itemize}
@@ -110,17 +110,10 @@ q \rightarrow q \left[ 1 + d \frac{\rho^m}{1 + e \rho^m}
   
 \item brill\_srho (REAL):  $\sigma_\rho$ in above
   expressions (default 1.0).
-  
-\item savepsi (KEYWORD): Save conformal factor for output?
-  [``yes'',''no''] Normally, the conformal factor is calculated in the
-  grid function ``psi'', but this is set back to 1 at the end once the
-  physical metric has been constructed.  Setting this parameter to
-  ``yes'' copies the conformal factor to the grid function
-  ``brillpsi0'' before resetting it to 1 (default ``no'').
-
+ 
 \end{itemize}
 
-The elliptic solver is controlled by additional the parameters:
+The elliptic solver is controlled by the additional parameters:
 
 \begin{itemize}
   

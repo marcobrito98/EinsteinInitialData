@@ -6,7 +6,7 @@
 #
 ##############################################################################
 
-ActiveThorns = "time boundary iobasic ellbase ellsor idbrilldata pugh pughreduce pughslab einstein cartgrid3d ioutil ioascii"
+ActiveThorns = "time boundary iobasic ellbase ellsor idbrilldata pugh pughreduce pughslab ADMBase staticconformal cartgrid3d ioutil ioascii"
 
 # General
 
@@ -22,7 +22,8 @@ cactus::cctk_itlast 				= 0
 
 # Brill wave initial data
 
-Einstein::initial_data 				= "brilldata"
+ADMBase::initial_data 				= "brilldata"
+ADMBase::metric_type				= "static conformal"
 
 # Brill wave parameters
 
@@ -41,6 +42,6 @@ idbrilldata::sor_maxit				= 1000
 IO::out_every = 1
 IO::outdir = "brilldata"
 
-IOASCII::out1D_vars = "einstein::gxx einstein::gyy einstein::gzz einstein::gxy einstein::gxz einstein::gyz idbrilldata::brillpsi"
+IOASCII::out1D_vars = "ADMBase::gxx ADMBase::gyy ADMBase::gzz ADMBase::gxy ADMBase::gxz ADMBase::gyz idbrilldata::brillpsi"
 
-IOBasic::outScalar_vars = "einstein::gxx einstein::gyy einstein::gzz einstein::gxy einstein::gxz einstein::gyz idbrilldata::brillpsi"
+IOBasic::outScalar_vars = "ADMBase::gxx ADMBase::gyy ADMBase::gzz ADMBase::gxy ADMBase::gxz ADMBase::gyz idbrilldata::brillpsi"

@@ -12,8 +12,6 @@
 #include "cctk_Parameters.h"
 #include "cctk_Arguments.h"
 
-#include "CactusEinstein/Einstein/src/Einstein.h"
-
       subroutine setupbrilldata3D(CCTK_ARGUMENTS)
 
 c     Set up 3D Brill data for elliptic solve.  The elliptic
@@ -82,9 +80,9 @@ c     Initialize psi.
 
 c     Set up conformal metric.
 
-      if (use_conformal == 1) then
+      if (CCTK_EQUALS(metric_type,"static conformal")) then
       
-         conformal_state = CONFORMAL_METRIC
+         conformal_state = 3
          do k=1,nz
             do j=1,ny
                do i=1,nx
@@ -104,7 +102,7 @@ c     Set up conformal metric.
 
       else
 
-         conformal_state = NOCONFORMAL_METRIC
+         conformal_state = 0
 
       end if
          
@@ -225,4 +223,3 @@ c     Synchronization and boundaries.
 
       return
       end
-

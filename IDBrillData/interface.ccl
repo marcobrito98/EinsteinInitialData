@@ -1,8 +1,8 @@
-# Interface definition for thorn BrillData
+# Interface definition for thorn IDBrillData
 # $Header$
 
 implements: IDBrillData
-inherits: grid einstein ellbase
+inherits: grid ADMBase StaticConformal ellbase
 
 # Grid functions for linear elliptic equation.
 
