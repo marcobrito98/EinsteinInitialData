@@ -131,7 +131,7 @@ c
       do k = 1,np
          do j = 1,nq
             do i = 1,ne
-#include "CactusEinstein/DistortedBHIVP/src/qfunc.x"
+#include "qfunc.x"
             enddo
          enddo
       enddo
@@ -602,9 +602,9 @@ c     Compute eta,q,phi at the each points of cartesian grid
          do j=1,ny
             do i=1,nx
 c     psix = \partial psi / \partial x / psi
-#include "CactusEinstein/DistortedBHIVP/src/psi_1st_deriv.x"
+#include "psi_1st_deriv.x"
 c     psixx = \partial^2\psi / \partial x^2 / psi
-#include "CactusEinstein/DistortedBHIVP/src/psi_2nd_deriv.x"
+#include "psi_2nd_deriv.x"
             enddo
          enddo
       enddo
@@ -618,7 +618,7 @@ c
       do k=1,nz
          do j=1,ny
             do i=1,nx
-#include "CactusEinstein/DistortedBHIVP/src/gij.x"
+#include "gij.x"
             enddo
          enddo
       enddo
