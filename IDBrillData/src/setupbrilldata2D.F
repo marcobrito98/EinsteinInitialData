@@ -42,6 +42,7 @@ c       f
 
       CCTK_REAL x1,y1,z1,rho1
       CCTK_REAL brillq,eps
+      CCTK_REAL zp,zm,rhop,rhom
       CCTK_REAL zero,one
 
       external brillq
@@ -57,9 +58,9 @@ c     Set up grid size.
       ny = cctk_lsh(2)
       nz = cctk_lsh(3)
 
-c     Parameters.
+c     Epsilon for finite differencing.
 
-      eps = brill_eps
+      eps = cctk_delta_space(1)
 
 c     Initialize psi.
 
@@ -106,12 +107,18 @@ c              with a small negative rho, but that should be ok as long as
 c              brillq is even in rho - physically it must be, or the data
 c              will not be regular on the axis.
 
-               brillMlinear(i,j,k) = 0.25d0 
-     .              *(brillq(rho1,z1+eps,zero) 
-     .              + brillq(rho1,z1-eps,zero) 
-     .              + brillq(rho1+eps,z1,zero) 
-     .              + brillq(rho1-eps,z1,zero) 
-     .              - 4.d0*brillq(rho1,z1,zero))/eps**2
+               zp = z1 + eps
+               zm = z1 - eps
+
+               rhop = rho1 + eps
+               rhom = rho1 - eps
+
+               brillMlinear(i,j,k) = 0.25D0
+     .              *(brillq(rho1,zp,zero)
+     .              + brillq(rho1,zm,zero)
+     .              + brillq(rhop,z1,zero)
+     .              + brillq(rhom,z1,zero)
+     .              - 4.0D0*brillq(rho1,z1,zero))/eps**2
 
             end do
          end do
