@@ -51,5 +51,14 @@ IOASCII::out1D_vars      = "einstein::curv einstein::metric einstein::grr admcon
 IOBasic::outInfo_every   = 1
 IOBasic::outInfo_vars    = "einstein::gxx"
 
+IOASCII::out1D_xline_y   = 0.2
+IOASCII::out1D_xline_z   = 0.2
+
+IOASCII::out1D_yline_x   = 0.2
+IOASCII::out1D_yline_z   = 0.2
+
+IOASCII::out1D_zline_x   = 0.2
+IOASCII::out1D_zline_y   = 0.2
+
 ##################################################################
 
