@@ -23,7 +23,12 @@ EXTENDS KEYWORD shift ""
 
 EXTENDS KEYWORD initial_lapse ""
 {
-  "exact"   :: "Initial data from exact solution"
+  "exact"   :: "Initial lapse from exact solution"
+} ""
+
+EXTENDS KEYWORD initial_shift ""
+{
+  "exact"   :: "Initial shift from exact solution"
 } ""
 
 EXTENDS KEYWORD evolution_system ""
