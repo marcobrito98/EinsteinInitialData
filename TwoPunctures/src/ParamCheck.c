@@ -18,15 +18,13 @@ TwoPunctures_ParamCheck (CCTK_ARGUMENTS)
 {
   DECLARE_CCTK_ARGUMENTS;
   DECLARE_CCTK_PARAMETERS;
-  if (par_use_sources)
+  if (use_sources)
   {
     CCTK_INFO("Solving for BH-NS");
-    if (CCTK_IsFunctionAliased ("Set_Rho_ADM"))
-      CCTK_INFO("Aliased Functions found");
-    else
+    if (! CCTK_IsFunctionAliased ("Set_Rho_ADM"))
       CCTK_WARN(0, "I found no (aliased) function for matter sources, but "
-                   "was said to use matter.\n");
+                   "was said to use matter.");
   }
   else
-    CCTK_INFO("not using sources (only BHs)");
+    CCTK_INFO("Solving for BHs");
 }

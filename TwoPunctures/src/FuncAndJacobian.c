@@ -192,7 +192,8 @@ void
 F_of_v (CCTK_POINTER_TO_CONST cctkGH,
         int nvar, int n1, int n2, int n3, derivs v, double *F,
         derivs u)
-{				//      Calculates the left hand sides of the non-linear equations F_m(v_n)=0
+{
+  //      Calculates the left hand sides of the non-linear equations F_m(v_n)=0
   //      and the function u (u.d0[]) as well as its derivatives
   //      (u.d1[], u.d2[], u.d3[], u.d11[], u.d12[], u.d13[], u.d22[], u.d23[], u.d33[])
   //      at interior points and at the boundaries "+/-"
@@ -206,7 +207,7 @@ F_of_v (CCTK_POINTER_TO_CONST cctkGH,
   allocate_derivs (&U, nvar);
 
   sources=calloc(n1*n2*n3, sizeof(CCTK_REAL));
-  if (par_use_sources)
+  if (use_sources)
   {
     CCTK_REAL *s_x, *s_y, *s_z;
     CCTK_INT i3D;
@@ -259,7 +260,7 @@ F_of_v (CCTK_POINTER_TO_CONST cctkGH,
     for (i = 0; i < n1; i++)
       for (j = 0; j < n2; j++)
         for (k = 0; k < n3; k++)
-          sources[i*n1*n2 + j*n2 + k]=0.0;
+          sources[i*n2*n3 + j*n3 + k]=0.0;
 
   Derivatives_AB3 (nvar, n1, n2, n3, v);
 

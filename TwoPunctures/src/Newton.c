@@ -9,6 +9,9 @@
 #include "TP_utilities.h"
 #include "TwoPunctures.h"
 
+static void relax (double *dv, int nvar, int n1, int n2, int n3, double *rhs,
+	    int *ncols, int **cols, double **JFD);
+
 // -----------------------------------------------------------------------------------
 void
 resid (double *res, int ntotal, double *dv, double *rhs,
