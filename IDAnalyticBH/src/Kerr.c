@@ -47,7 +47,7 @@ void KerrID(CCTK_ARGUMENTS)
   int npoints;
   CCTK_REAL rK,R,cth,cth_2,sth,sth_2,r_2,R_2,R_3,rho,rho_2,xx,yy,zz;
   CCTK_REAL Sigma,sqrt_Delta,p2,lapse,beta_phi,shift_phi;
-  CCTK_REAL tmp, inv_psi;
+  CCTK_REAL tmp, tmp2, inv_psi;
   CCTK_REAL Phi4,fourPhi3,Phi,Chi2;
   CCTK_REAL Phi_R,Phi_RR,Phi_Rq,Phi_q,Phi_qq;
   CCTK_REAL Phi4_R,Phi4_RR,Phi4_Rq,Phi4_q,Phi4_qq;
@@ -112,6 +112,7 @@ void KerrID(CCTK_ARGUMENTS)
     /* Define coordinate functions */
     xx=x[i];  yy=y[i];  zz=z[i];
     rho_2=xx*xx+yy*yy;
+    if (rho_2<epsilon) rho_2=epsilon;
     rho=sqrt(rho_2);
     R_2=rho_2+zz*zz;
     R=sqrt(R_2);
@@ -167,6 +168,7 @@ void KerrID(CCTK_ARGUMENTS)
     Phi4_qq=2*a_2*(-cth_2+sth_2)/R_2;
 
     Phi=pow(Phi4,.25);
+
     fourPhi3=4*Phi*Phi*Phi;
     
     Phi_R =Phi4_R/fourPhi3;
@@ -201,15 +203,15 @@ void KerrID(CCTK_ARGUMENTS)
       d2Rdyy=(1-yy*yy/R_2)/R;
       d2Rdyz=-zz*yy/R_3;
       d2Rdzz=(1-zz*zz/R_2)/R;
+      tmp2 = zz/rho/R_2;
       tmp=2/R_2+1/rho_2;
-      d2qdxx=dqdx*(1/xx-xx*tmp);
+      d2qdxx=tmp2 * (1. - xx*xx*tmp);
       d2qdxy=-dqdx*yy*tmp;
-      d2qdyy=dqdy*(1/yy-yy*tmp);
+      d2qdyy=tmp2 * (1. - yy*yy*tmp);
       d2qdzz=-2*dqdz*zz/R_2;
-      tmp=2/R_2-1/zz/zz;
-      d2qdxz=-zz*dqdx*tmp;
-      d2qdyz=-zz*dqdy*tmp;
-    
+      tmp=(1./rho/R_2)*(1. - 2.*zz*zz/R_2);
+      d2qdxz= xx * tmp;
+      d2qdyz= yy * tmp;
 
       /* conformal factor partial derivatives */
       /* note second derivatives are not tensors */
