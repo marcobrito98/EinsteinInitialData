@@ -53,7 +53,7 @@ BOOLEAN exblend_Ks "Blend the K variables with the exact solution?"
 {
 } "yes"
 
-BOOLEAN exblend_gs "Blend the g variables with6~6~ the exact solution?"
+BOOLEAN exblend_gs "Blend the g variables with the exact solution?"
 {
 } "yes"
 
