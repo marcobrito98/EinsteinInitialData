@@ -17,7 +17,7 @@ C $Header$
      $     gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $     gutt, gutx, guty, gutz,
      $     guxx, guyy, guzz, guxy, guyz, guxz,
-     $     psi, Tmunu_flag, rama)
+     $     psi, Tmunu_flag)
 
       implicit none
       DECLARE_CCTK_FUNCTIONS
@@ -31,7 +31,6 @@ c arguments
      $     guxx, guyy, guzz, guxy, guyz, guxz
       CCTK_REAL psi
       LOGICAL   Tmunu_flag
-      CCTK_REAL rama
 
 c local variables
       character*100 warn_buffer
@@ -191,16 +190,6 @@ c
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz,
      $        psi, Tmunu_flag)
-
-CC this metric doesnt work and has been moved to ../archive/
-CC      elseif (decoded_exact_model .eq. EXACT__Robertson_Walker) then
-CC         call Exact__Robertson_Walker(
-CC     $        x, y, z, t,
-CC     $        gdtt, gdtx, gdty, gdtz,
-CC     $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
-CC     $        gutt, gutx, guty, gutz,
-CC     $        guxx, guyy, guzz, guxy, guyz, guxz,
-CC     $        psi, Tmunu_flag, rama)
 
       elseif (decoded_exact_model .eq. EXACT__de_Sitter) then
          call Exact__de_Sitter(

@@ -70,11 +70,10 @@ C     Now we need the exact solution metric in the preferred coordinates x^A.
      $              slicex(i,j,k), slicey(i,j,k), slicez(i,j,k), 
      $              slicet(i,j,k),
      $              gd(4,4), gd(1,4), gd(2,4), gd(3,4),
-     $              gd(1,1), gd(2,2), gd(3,3), 
-     $              gd(1,2), gd(2,3), gd(1,3),
+     $              gd(1,1), gd(2,2), gd(3,3), gd(1,2), gd(2,3), gd(1,3),
      $              gu(4,4), gu(1,4), gu(2,4), gu(3,4),
-     $              gu(1,1), gu(2,2), gu(3,3), 
-     $              gu(1,2), gu(2,3), gu(1,3), exact_psi)
+     $              gu(1,1), gu(2,2), gu(3,3), gu(1,2), gu(2,3), gu(1,3),
+     $              exact_psi)
 
 C     Calculate n^A and dx^A/dt
 

@@ -28,7 +28,7 @@ c
      $     gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $     gutt, gutx, guty, gutz,
      $     guxx, guyy, guzz, guxy, guyz, guxz,
-     $     psi, rama)
+     $     psi)
 
 	implicit none
 	DECLARE_CCTK_FUNCTIONS
@@ -43,7 +43,7 @@ c output arguments
      $		  gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $		  gutt, gutx, guty, gutz,
      $		  guxx, guyy, guzz, guxy, guyz, guxz,
-     $            psi, rama
+     $            psi
 
 c intrinsic functions called
 	CCTK_REAL sqrt
@@ -103,8 +103,8 @@ c
      $			gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
      $			gutt, gutx, guty, gutz,
      $			guxx, guyy, guzz, guxy, guyz, guxz,
-     $			psi, Tmunu_flag,
-     $			rama)
+     $			psi,
+     $			Tmunu_flag)
 		return
 	endif
 
@@ -236,8 +236,7 @@ c
      $			Mguu(0,0), Mguu(0,1), Mguu(0,2), Mguu(0,3),
      $			Mguu(1,1), Mguu(2,2), Mguu(3,3),
      $				Mguu(1,2), Mguu(2,3), Mguu(1,3),
-     $			psi, Tmunu_flag,
-     $			rama)
+     $			psi, Tmunu_flag)
 
 	if (Tmunu_flag) then
 		write (warn_buffer, '(a,i8,a,a)')

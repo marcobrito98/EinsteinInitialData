@@ -88,11 +88,9 @@ C     x^A.
      $              slicetmp1x(i,j,k), slicetmp1y(i,j,k), slicetmp1z(i,j,k), 
      $              slicetmp1t(i,j,k),
      $              gd(4,4), gd(1,4), gd(2,4), gd(3,4),
-     $              gd(1,1), gd(2,2), gd(3,3), 
-     $              gd(1,2), gd(2,3), gd(1,3),
+     $              gd(1,1), gd(2,2), gd(3,3), gd(1,2), gd(2,3), gd(1,3),
      $              gu(4,4), gu(1,4), gu(2,4), gu(3,4),
-     $              gu(1,1), gu(2,2), gu(3,3), 
-     $              gu(1,2), gu(2,3), gu(1,3),
+     $              gu(1,1), gu(2,2), gu(3,3), gu(1,2), gu(2,3), gu(1,3),
      $              local_psi)
 
 C     Calculate n^A and dx^A/dt
