@@ -1,0 +1,14 @@
+# Schedule definitions for thorn DistortedBHIVP
+# $Header$
+
+if (CCTK_Equals(initial_data,"distortedbh"))
+{
+  schedule DistortedBHIVP at CCTK_INITIAL
+  {
+    LANG: Fortran
+  } "Construct DistortedBHIVP"
+}
+
+
+
+

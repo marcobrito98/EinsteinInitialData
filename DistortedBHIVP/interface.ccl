@@ -1,0 +1,9 @@
+# Interface definition for thorn DistortedBHIVP
+# $Header$
+
+implements: distortedbhivp
+inherits: einstein
+
+public:
+
+
