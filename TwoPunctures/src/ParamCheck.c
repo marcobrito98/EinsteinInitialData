@@ -1,4 +1,4 @@
-// TwoPunctures:  File  "TwoPunctures.c"
+/* TwoPunctures:  File  "TwoPunctures.c"*/
 
 #include <assert.h>
 #include <stdio.h>
@@ -12,7 +12,7 @@
 #include "TP_utilities.h"
 #include "TwoPunctures.h"
 
-// -------------------------------------------------------------------
+/* -------------------------------------------------------------------*/
 void
 TwoPunctures_ParamCheck (CCTK_ARGUMENTS)
 {

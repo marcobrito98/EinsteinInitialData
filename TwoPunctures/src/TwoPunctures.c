@@ -1,4 +1,4 @@
-// TwoPunctures:  File  "TwoPunctures.c"
+/* TwoPunctures:  File  "TwoPunctures.c"*/
 
 #include <assert.h>
 #include <stdio.h>
@@ -51,11 +51,11 @@ void set_initial_guess(CCTK_POINTER_TO_CONST cctkGH,
         B = -cos (be);
         phi = 2. * Pi * k / n3;
 
-        // Calculation of (X,R)
+        /* Calculation of (X,R)*/
         AB_To_XR (nvar, A, B, &X, &R, U);
-        // Calculation of (x,r)
+        /* Calculation of (x,r)*/
         C_To_c (nvar, X, R, &(s_x[i3D]), &r, U);
-        // Calculation of (y,z)
+        /* Calculation of (y,z)*/
         rx3_To_xyz (nvar, s_x[i3D], r, phi, &(s_y[i3D]), &(s_z[i3D]), U);
       }
   Set_Initial_Guess_for_u(cctkGH, n1*n2*n3, v.d0, s_x, s_y, s_z);
@@ -80,21 +80,21 @@ void set_initial_guess(CCTK_POINTER_TO_CONST cctkGH,
         B = -cos (be);
         phi = 0.0;
         indx = Index(0,i,j,0,1,n1,n2,n3);
-          U.d0[0] = Am1 * v.d0[indx];        // U
-          U.d1[0] = v.d0[indx] + Am1 * v.d1[indx];        // U_A
-          U.d2[0] = Am1 * v.d2[indx];        // U_B
-          U.d3[0] = Am1 * v.d3[indx];        // U_3
-          U.d11[0] = 2 * v.d1[indx] + Am1 * v.d11[indx];        // U_AA
-          U.d12[0] = v.d2[indx] + Am1 * v.d12[indx];        // U_AB
-          U.d13[0] = v.d3[indx] + Am1 * v.d13[indx];        // U_AB
-          U.d22[0] = Am1 * v.d22[indx];        // U_BB
-          U.d23[0] = Am1 * v.d23[indx];        // U_B3
-          U.d33[0] = Am1 * v.d33[indx];        // U_33
-        // Calculation of (X,R)
+          U.d0[0] = Am1 * v.d0[indx];        /* U*/
+          U.d1[0] = v.d0[indx] + Am1 * v.d1[indx];        /* U_A*/
+          U.d2[0] = Am1 * v.d2[indx];        /* U_B*/
+          U.d3[0] = Am1 * v.d3[indx];        /* U_3*/
+          U.d11[0] = 2 * v.d1[indx] + Am1 * v.d11[indx];        /* U_AA*/
+          U.d12[0] = v.d2[indx] + Am1 * v.d12[indx];        /* U_AB*/
+          U.d13[0] = v.d3[indx] + Am1 * v.d13[indx];        /* U_AB*/
+          U.d22[0] = Am1 * v.d22[indx];        /* U_BB*/
+          U.d23[0] = Am1 * v.d23[indx];        /* U_B3*/
+          U.d33[0] = Am1 * v.d33[indx];        /* U_33*/
+        /* Calculation of (X,R)*/
         AB_To_XR (nvar, A, B, &X, &R, U);
-        // Calculation of (x,r)
+        /* Calculation of (x,r)*/
         C_To_c (nvar, X, R, &(s_x[indx]), &r, U);
-        // Calculation of (y,z)
+        /* Calculation of (y,z)*/
         rx3_To_xyz (nvar, s_x[i3D], r, phi, &(s_y[indx]), &(s_z[indx]), U);
         fprintf(debug_file,
                 "%.16g %.16g %.16g %.16g %.16g %.16g %.16g %.16g %.16g %.16g "
@@ -178,10 +178,10 @@ void set_initial_guess(CCTK_POINTER_TO_CONST cctkGH,
   free(s_y);
   free(s_x);
   free_derivs (&U, nvar);
-  //exit(0);
+  /*exit(0);*/
 }
 
-// -------------------------------------------------------------------
+/* -------------------------------------------------------------------*/
 void
 TwoPunctures (CCTK_ARGUMENTS)
 {

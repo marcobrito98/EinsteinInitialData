@@ -1,4 +1,4 @@
-// TwoPunctures:  File  "TwoPunctures.h"
+/* TwoPunctures:  File  "TwoPunctures.h"*/
 
 #define StencilSize 19
 #define N_PlaneRelax 1
@@ -21,11 +21,11 @@ Files of "TwoPunctures":
 **************************
 */
 
-// Routines in  "TwoPunctures.c"
+/* Routines in  "TwoPunctures.c"*/
 double TestSolution (double A, double B, double X, double R, double phi);
 void TestVector_w (double *par, int nvar, int n1, int n2, int n3, double *w);
 
-// Routines in  "FuncAndJacobian.c"
+/* Routines in  "FuncAndJacobian.c"*/
 int Index (int ivar, int i, int j, int k, int nvar, int n1, int n2, int n3);
 void allocate_derivs (derivs * v, int n);
 void free_derivs (derivs * v, int n);
@@ -51,7 +51,7 @@ double PunctIntPolAtArbitPosition (int ivar, int nvar, int n1,
 				   int n2, int n3, derivs v, double x,
 				   double y, double z);
 
-// Routines in  "CoordTransf.c"
+/* Routines in  "CoordTransf.c"*/
 void AB_To_XR (int nvar, double A, double B, double *X,
 	       double *R, derivs U);
 void C_To_c (int nvar, double X, double R, double *x,
@@ -59,7 +59,7 @@ void C_To_c (int nvar, double X, double R, double *x,
 void rx3_To_xyz (int nvar, double x, double r, double phi, double *y,
 		 double *z, derivs U);
 
-// Routines in  "Equations.c"
+/* Routines in  "Equations.c"*/
 double BY_KKofxyz (double x, double y, double z);
 void BY_Aijofxyz (double x, double y, double z, double Aij[3][3]);
 void NonLinEquations (CCTK_REAL rho_adm,
@@ -70,7 +70,7 @@ void LinEquations (double A, double B, double X, double R,
 		   double x, double r, double phi,
 		   double y, double z, derivs dU, derivs U, double *values);
 
-// Routines in  "Newton.c"
+/* Routines in  "Newton.c"*/
 void TestRelax (CCTK_POINTER_TO_CONST cctkGH,
                 int nvar, int n1, int n2, int n3, derivs v, double *dv);
 void Newton (CCTK_POINTER_TO_CONST cctkGH,

@@ -1,4 +1,4 @@
-// TwoPunctures:  File  "Newton.c"
+/* TwoPunctures:  File  "Newton.c"*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,7 +25,7 @@ LineRelax_al (double *dv, int j, int k, int nvar, int n1, int n2, int n3,
 static void
 LineRelax_be (double *dv, int i, int k, int nvar, int n1, int n2, int n3,
 	      double *rhs, int *ncols, int **cols, double **JFD);
-// -----------------------------------------------------------------------------------
+/* --------------------------------------------------------------------------*/
 static void
 resid (double *res, int ntotal, double *dv, double *rhs,
        int *ncols, int **cols, double **JFD)
@@ -42,7 +42,7 @@ resid (double *res, int ntotal, double *dv, double *rhs,
   }
 }
 
-// -----------------------------------------------------------------------------------
+/* -------------------------------------------------------------------------*/
 static void
 LineRelax_al (double *dv, int j, int k, int nvar, int n1, int n2, int n3,
 	      double *rhs, int *ncols, int **cols, double **JFD)
@@ -96,7 +96,7 @@ LineRelax_al (double *dv, int j, int k, int nvar, int n1, int n2, int n3,
   free_dvector (u, 0, n1 - 1);
 }
 
-// -----------------------------------------------------------------------------------
+/* --------------------------------------------------------------------------*/
 static void
 LineRelax_be (double *dv, int i, int k, int nvar, int n1, int n2, int n3,
 	      double *rhs, int *ncols, int **cols, double **JFD)
@@ -150,7 +150,7 @@ LineRelax_be (double *dv, int i, int k, int nvar, int n1, int n2, int n3,
   free_dvector (u, 0, n2 - 1);
 }
 
-// -----------------------------------------------------------------------------------
+/* --------------------------------------------------------------------------*/
 static void
 relax (double *dv, int nvar, int n1, int n2, int n3,
        double *rhs, int *ncols, int **cols, double **JFD)
@@ -187,7 +187,7 @@ relax (double *dv, int nvar, int n1, int n2, int n3,
   }
 }
 
-// -----------------------------------------------------------------------------------
+/* --------------------------------------------------------------------------*/
 void
 TestRelax (CCTK_POINTER_TO_CONST cctkGH,
      int nvar, int n1, int n2, int n3, derivs v,
@@ -218,7 +218,7 @@ TestRelax (CCTK_POINTER_TO_CONST cctkGH,
   fflush(stdout);
   for (j = 0; j < NRELAX; j++)
   {
-    relax (dv, nvar, n1, n2, n3, F, ncols, cols, JFD);	// solves JFD*sh = s
+    relax (dv, nvar, n1, n2, n3, F, ncols, cols, JFD);	/* solves JFD*sh = s*/
     if (j % Step_Relax == 0)
     {
       resid (res, ntotal, dv, F, ncols, cols, JFD);
@@ -240,7 +240,7 @@ TestRelax (CCTK_POINTER_TO_CONST cctkGH,
   free_ivector (ncols, 0, ntotal - 1);
 }
 
-// -----------------------------------------------------------------------------------
+/* --------------------------------------------------------------------------*/
 static int
 bicgstab (CCTK_POINTER_TO_CONST cctkGH,
           int nvar, int n1, int n2, int n3, derivs v,
@@ -271,11 +271,11 @@ bicgstab (CCTK_POINTER_TO_CONST cctkGH,
   r = dvector (0, ntotal - 1);
   p = dvector (0, ntotal - 1);
   allocate_derivs (&ph, ntotal);
-//      ph  = dvector(0, ntotal-1);
+/*      ph  = dvector(0, ntotal-1);*/
   rt = dvector (0, ntotal - 1);
   s = dvector (0, ntotal - 1);
   allocate_derivs (&sh, ntotal);
-//      sh  = dvector(0, ntotal-1);
+/*      sh  = dvector(0, ntotal-1);*/
   t = dvector (0, ntotal - 1);
   vv = dvector (0, ntotal - 1);
 
@@ -320,10 +320,10 @@ bicgstab (CCTK_POINTER_TO_CONST cctkGH,
     /* compute direction adjusting vector ph and scalar alpha */
     for (j = 0; j < ntotal; j++)
       ph.d0[j] = 0;
-    for (j = 0; j < NRELAX; j++)	// solves JFD*ph = p by relaxation
+    for (j = 0; j < NRELAX; j++)	/* solves JFD*ph = p by relaxation*/
       relax (ph.d0, nvar, n1, n2, n3, p, ncols, cols, JFD);
 
-    J_times_dv (nvar, n1, n2, n3, ph, vv, u);	// vv=J*ph
+    J_times_dv (nvar, n1, n2, n3, ph, vv, u);	/* vv=J*ph*/
     alpha = rho / scalarproduct (rt, vv, ntotal);
     for (j = 0; j < ntotal; j++)
       s[j] = r[j] - alpha * vv[j];
@@ -345,10 +345,10 @@ bicgstab (CCTK_POINTER_TO_CONST cctkGH,
     /* compute stabilizer vector sh and scalar omega */
     for (j = 0; j < ntotal; j++)
       sh.d0[j] = 0;
-    for (j = 0; j < NRELAX; j++)	// solves JFD*sh = s by relaxation
+    for (j = 0; j < NRELAX; j++)	/* solves JFD*sh = s by relaxation*/
       relax (sh.d0, nvar, n1, n2, n3, s, ncols, cols, JFD);
 
-    J_times_dv (nvar, n1, n2, n3, sh, t, u);	// t=J*sh
+    J_times_dv (nvar, n1, n2, n3, sh, t, u);	/* t=J*sh*/
     omega = scalarproduct (t, s, ntotal) / scalarproduct (t, t, ntotal);
 
     /* compute new solution approximation */
@@ -375,11 +375,11 @@ bicgstab (CCTK_POINTER_TO_CONST cctkGH,
   /* free temporary storage */
   free_dvector (r, 0, ntotal - 1);
   free_dvector (p, 0, ntotal - 1);
-//      free_dvector(ph,  0, ntotal-1);
+/*      free_dvector(ph,  0, ntotal-1);*/
   free_derivs (&ph, ntotal);
   free_dvector (rt, 0, ntotal - 1);
   free_dvector (s, 0, ntotal - 1);
-//      free_dvector(sh,  0, ntotal-1);
+/*      free_dvector(sh,  0, ntotal-1);*/
   free_derivs (&sh, ntotal);
   free_dvector (t, 0, ntotal - 1);
   free_dvector (vv, 0, ntotal - 1);
@@ -405,7 +405,7 @@ bicgstab (CCTK_POINTER_TO_CONST cctkGH,
   return ii + 1;
 }
 
-// -------------------------------------------------------------------
+/* -------------------------------------------------------------------*/
 void
 Newton (CCTK_POINTER_TO_CONST cctkGH,
   int nvar, int n1, int n2, int n3,
@@ -469,4 +469,4 @@ Newton (CCTK_POINTER_TO_CONST cctkGH,
   free_derivs (&u, ntotal);
 }
 
-// -------------------------------------------------------------------
+/* -------------------------------------------------------------------*/

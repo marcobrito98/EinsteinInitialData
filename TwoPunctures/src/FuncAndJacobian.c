@@ -1,4 +1,4 @@
-// TwoPunctures:  File  "FuncAndJacobian.c"
+/* TwoPunctures:  File  "FuncAndJacobian.c"*/
 
 #include <assert.h>
 #include <stdio.h>
@@ -13,15 +13,15 @@
 #include "TwoPunctures.h"
 
 #define FAC sin(al)*sin(be)*sin(al)*sin(be)*sin(al)*sin(be)
-//#define FAC sin(al)*sin(be)*sin(al)*sin(be)
-//#define FAC 1
+/*#define FAC sin(al)*sin(be)*sin(al)*sin(be)*/
+/*#define FAC 1*/
 
 static inline double min (double const x, double const y)
 {
   return x<y ? x : y;
 }
 
-// -------------------------------------------------------------------------------
+/* --------------------------------------------------------------------------*/
 int
 Index (int ivar, int i, int j, int k, int nvar, int n1, int n2, int n3)
 {
@@ -45,7 +45,7 @@ Index (int ivar, int i, int j, int k, int nvar, int n1, int n2, int n3)
   return ivar + nvar * (i1 + n1 * (j1 + n2 * k1));
 }
 
-// -------------------------------------------------------------------------------
+/* --------------------------------------------------------------------------*/
 void
 allocate_derivs (derivs * v, int n)
 {
@@ -62,7 +62,7 @@ allocate_derivs (derivs * v, int n)
   (*v).d33 = dvector (0, m);
 }
 
-// -------------------------------------------------------------------------------
+/* --------------------------------------------------------------------------*/
 void
 free_derivs (derivs * v, int n)
 {
@@ -79,7 +79,7 @@ free_derivs (derivs * v, int n)
   free_dvector ((*v).d33, 0, m);
 }
 
-// -------------------------------------------------------------------------------
+/* --------------------------------------------------------------------------*/
 void
 Derivatives_AB3 (int nvar, int n1, int n2, int n3, derivs v)
 {
@@ -99,9 +99,9 @@ Derivatives_AB3 (int nvar, int n1, int n2, int n3, derivs v)
   for (ivar = 0; ivar < nvar; ivar++)
   {
     for (k = 0; k < n3; k++)
-    {				// Calculation of Derivatives w.r.t. A-Dir. 
+    {				/* Calculation of Derivatives w.r.t. A-Dir. */
       for (j = 0; j < n2; j++)
-      {				// (Chebyshev_Zeros)
+      {				/* (Chebyshev_Zeros)*/
 	for (i = 0; i < n1; i++)
 	{
 	  indx[i] = Index (ivar, i, j, k, nvar, n1, n2, n3);
@@ -120,9 +120,9 @@ Derivatives_AB3 (int nvar, int n1, int n2, int n3, derivs v)
       }
     }
     for (k = 0; k < n3; k++)
-    {				// Calculation of Derivatives w.r.t. B-Dir. 
+    {				/* Calculation of Derivatives w.r.t. B-Dir. */
       for (i = 0; i < n1; i++)
-      {				// (Chebyshev_Zeros)
+      {				/* (Chebyshev_Zeros)*/
 	for (j = 0; j < n2; j++)
 	{
 	  indx[j] = Index (ivar, i, j, k, nvar, n1, n2, n3);
@@ -146,7 +146,7 @@ Derivatives_AB3 (int nvar, int n1, int n2, int n3, derivs v)
       }
     }
     for (i = 0; i < n1; i++)
-    {				// Calculation of Derivatives w.r.t. phi-Dir. (Fourier)
+    {				/* Calculation of Derivatives w.r.t. phi-Dir. (Fourier)*/
       for (j = 0; j < n2; j++)
       {
 	for (k = 0; k < n3; k++)
@@ -187,16 +187,16 @@ Derivatives_AB3 (int nvar, int n1, int n2, int n3, derivs v)
   free_ivector (indx, 0, N);
 }
 
-// -------------------------------------------------------------------------------
+/* --------------------------------------------------------------------------*/
 void
 F_of_v (CCTK_POINTER_TO_CONST cctkGH,
         int nvar, int n1, int n2, int n3, derivs v, double *F,
         derivs u)
 {
-  //      Calculates the left hand sides of the non-linear equations F_m(v_n)=0
-  //      and the function u (u.d0[]) as well as its derivatives
-  //      (u.d1[], u.d2[], u.d3[], u.d11[], u.d12[], u.d13[], u.d22[], u.d23[], u.d33[])
-  //      at interior points and at the boundaries "+/-"
+  /*      Calculates the left hand sides of the non-linear equations F_m(v_n)=0*/
+  /*      and the function u (u.d0[]) as well as its derivatives*/
+  /*      (u.d1[], u.d2[], u.d3[], u.d11[], u.d12[], u.d13[], u.d22[], u.d23[], u.d33[])*/
+  /*      at interior points and at the boundaries "+/-"*/
   DECLARE_CCTK_PARAMETERS;
   int i, j, k, ivar, indx;
   double al, be, A, B, X, R, x, r, phi, y, z, Am1, *values;
@@ -230,25 +230,25 @@ F_of_v (CCTK_POINTER_TO_CONST cctkGH,
           for (ivar = 0; ivar < nvar; ivar++)
           {
             indx = Index (ivar, i, j, k, nvar, n1, n2, n3);
-            U.d0[ivar] = Am1 * v.d0[indx];        // U
-            U.d1[ivar] = v.d0[indx] + Am1 * v.d1[indx];        // U_A
-            U.d2[ivar] = Am1 * v.d2[indx];        // U_B
-            U.d3[ivar] = Am1 * v.d3[indx];        // U_3
-            U.d11[ivar] = 2 * v.d1[indx] + Am1 * v.d11[indx];        // U_AA
-            U.d12[ivar] = v.d2[indx] + Am1 * v.d12[indx];        // U_AB
-            U.d13[ivar] = v.d3[indx] + Am1 * v.d13[indx];        // U_AB
-            U.d22[ivar] = Am1 * v.d22[indx];        // U_BB
-            U.d23[ivar] = Am1 * v.d23[indx];        // U_B3
-            U.d33[ivar] = Am1 * v.d33[indx];        // U_33
+            U.d0[ivar] = Am1 * v.d0[indx];        /* U*/
+            U.d1[ivar] = v.d0[indx] + Am1 * v.d1[indx];        /* U_A*/
+            U.d2[ivar] = Am1 * v.d2[indx];        /* U_B*/
+            U.d3[ivar] = Am1 * v.d3[indx];        /* U_3*/
+            U.d11[ivar] = 2 * v.d1[indx] + Am1 * v.d11[indx];        /* U_AA*/
+            U.d12[ivar] = v.d2[indx] + Am1 * v.d12[indx];        /* U_AB*/
+            U.d13[ivar] = v.d3[indx] + Am1 * v.d13[indx];        /* U_AB*/
+            U.d22[ivar] = Am1 * v.d22[indx];        /* U_BB*/
+            U.d23[ivar] = Am1 * v.d23[indx];        /* U_B3*/
+            U.d33[ivar] = Am1 * v.d33[indx];        /* U_33*/
           }
-          // Calculation of (X,R) and
-          // (U_X, U_R, U_3, U_XX, U_XR, U_X3, U_RR, U_R3, U_33)
+          /* Calculation of (X,R) and*/
+          /* (U_X, U_R, U_3, U_XX, U_XR, U_X3, U_RR, U_R3, U_33)*/
           AB_To_XR (nvar, A, B, &X, &R, U);
-          // Calculation of (x,r) and
-          // (U, U_x, U_r, U_3, U_xx, U_xr, U_x3, U_rr, U_r3, U_33)
+          /* Calculation of (x,r) and*/
+          /* (U, U_x, U_r, U_3, U_xx, U_xr, U_x3, U_rr, U_r3, U_33)*/
           C_To_c (nvar, X, R, &(s_x[i3D]), &r, U);
-          // Calculation of (y,z) and
-          // (U, U_x, U_y, U_z, U_xx, U_xy, U_xz, U_yy, U_yz, U_zz)
+          /* Calculation of (y,z) and*/
+          /* (U, U_x, U_y, U_z, U_xx, U_xy, U_xz, U_yy, U_yz, U_zz)*/
           rx3_To_xyz (nvar, s_x[i3D], r, phi, &(s_y[i3D]), &(s_z[i3D]), U);
         }
     Set_Rho_ADM(cctkGH, n1*n2*n3, sources, s_x, s_y, s_z);
@@ -286,25 +286,25 @@ F_of_v (CCTK_POINTER_TO_CONST cctkGH,
         for (ivar = 0; ivar < nvar; ivar++)
         {
           indx = Index (ivar, i, j, k, nvar, n1, n2, n3);
-          U.d0[ivar] = Am1 * v.d0[indx];        // U
-          U.d1[ivar] = v.d0[indx] + Am1 * v.d1[indx];        // U_A
-          U.d2[ivar] = Am1 * v.d2[indx];        // U_B
-          U.d3[ivar] = Am1 * v.d3[indx];        // U_3
-          U.d11[ivar] = 2 * v.d1[indx] + Am1 * v.d11[indx];        // U_AA
-          U.d12[ivar] = v.d2[indx] + Am1 * v.d12[indx];        // U_AB
-          U.d13[ivar] = v.d3[indx] + Am1 * v.d13[indx];        // U_AB
-          U.d22[ivar] = Am1 * v.d22[indx];        // U_BB
-          U.d23[ivar] = Am1 * v.d23[indx];        // U_B3
-          U.d33[ivar] = Am1 * v.d33[indx];        // U_33
+          U.d0[ivar] = Am1 * v.d0[indx];        /* U*/
+          U.d1[ivar] = v.d0[indx] + Am1 * v.d1[indx];        /* U_A*/
+          U.d2[ivar] = Am1 * v.d2[indx];        /* U_B*/
+          U.d3[ivar] = Am1 * v.d3[indx];        /* U_3*/
+          U.d11[ivar] = 2 * v.d1[indx] + Am1 * v.d11[indx];        /* U_AA*/
+          U.d12[ivar] = v.d2[indx] + Am1 * v.d12[indx];        /* U_AB*/
+          U.d13[ivar] = v.d3[indx] + Am1 * v.d13[indx];        /* U_AB*/
+          U.d22[ivar] = Am1 * v.d22[indx];        /* U_BB*/
+          U.d23[ivar] = Am1 * v.d23[indx];        /* U_B3*/
+          U.d33[ivar] = Am1 * v.d33[indx];        /* U_33*/
         }
-        // Calculation of (X,R) and
-        // (U_X, U_R, U_3, U_XX, U_XR, U_X3, U_RR, U_R3, U_33)
+        /* Calculation of (X,R) and*/
+        /* (U_X, U_R, U_3, U_XX, U_XR, U_X3, U_RR, U_R3, U_33)*/
         AB_To_XR (nvar, A, B, &X, &R, U);
-        // Calculation of (x,r) and
-        // (U, U_x, U_r, U_3, U_xx, U_xr, U_x3, U_rr, U_r3, U_33)
+        /* Calculation of (x,r) and*/
+        /* (U, U_x, U_r, U_3, U_xx, U_xr, U_x3, U_rr, U_r3, U_33)*/
         C_To_c (nvar, X, R, &x, &r, U);
-        // Calculation of (y,z) and
-        // (U, U_x, U_y, U_z, U_xx, U_xy, U_xz, U_yy, U_yz, U_zz)
+        /* Calculation of (y,z) and*/
+        /* (U, U_x, U_y, U_z, U_xx, U_xy, U_xz, U_yy, U_yz, U_zz)*/
         rx3_To_xyz (nvar, x, r, phi, &y, &z, U);
         NonLinEquations (sources[Index(0,i,j,k,1,n1,n2,n3)],
                          A, B, X, R, x, r, phi, y, z, U, values);
@@ -312,18 +312,18 @@ F_of_v (CCTK_POINTER_TO_CONST cctkGH,
         {
           indx = Index (ivar, i, j, k, nvar, n1, n2, n3);
           F[indx] = values[ivar] * FAC;
-          // if ((i<5) && ((j<5) || (j>n2-5)))
-          //     F[indx] = 0.0;
-          u.d0[indx] = U.d0[ivar];        //  U
-          u.d1[indx] = U.d1[ivar];        //      U_x
-          u.d2[indx] = U.d2[ivar];        //      U_y
-          u.d3[indx] = U.d3[ivar];        //      U_z
-          u.d11[indx] = U.d11[ivar];        //      U_xx
-          u.d12[indx] = U.d12[ivar];        //      U_xy
-          u.d13[indx] = U.d13[ivar];        //      U_xz
-          u.d22[indx] = U.d22[ivar];        //      U_yy
-          u.d23[indx] = U.d23[ivar];        //      U_yz
-          u.d33[indx] = U.d33[ivar];        //      U_zz
+          /* if ((i<5) && ((j<5) || (j>n2-5)))*/
+          /*     F[indx] = 0.0;*/
+          u.d0[indx] = U.d0[ivar];        /*  U*/
+          u.d1[indx] = U.d1[ivar];        /*      U_x*/
+          u.d2[indx] = U.d2[ivar];        /*      U_y*/
+          u.d3[indx] = U.d3[ivar];        /*      U_z*/
+          u.d11[indx] = U.d11[ivar];        /*      U_xx*/
+          u.d12[indx] = U.d12[ivar];        /*      U_xy*/
+          u.d13[indx] = U.d13[ivar];        /*      U_xz*/
+          u.d22[indx] = U.d22[ivar];        /*      U_yy*/
+          u.d23[indx] = U.d23[ivar];        /*      U_yz*/
+          u.d33[indx] = U.d33[ivar];        /*      U_zz*/
         }
         if (do_residuum_debug_output && (k==0))
         {
@@ -342,14 +342,14 @@ F_of_v (CCTK_POINTER_TO_CONST cctkGH,
              (U.d11[0] +
               U.d22[0] +
               U.d33[0] +
-//              0.125 * BY_KKofxyz (x, y, z) / psi7 +
+/*              0.125 * BY_KKofxyz (x, y, z) / psi7 +*/
               2.0 * Pi / psi2/psi * sources[indx]) * FAC,
              (U.d11[0] +
               U.d22[0] +
               U.d33[0])*FAC,
              -(2.0 * Pi / psi2/psi * sources[indx]) * FAC,
              sources[indx]
-             //F[indx]
+             /*F[indx]*/
              );
         }
       }
@@ -364,14 +364,14 @@ F_of_v (CCTK_POINTER_TO_CONST cctkGH,
   free_derivs (&U, nvar);
 }
 
-// -------------------------------------------------------------------------------
+/* --------------------------------------------------------------------------*/
 void
 J_times_dv (int nvar, int n1, int n2, int n3, derivs dv,
 	    double *Jdv, derivs u)
-{				//      Calculates the left hand sides of the non-linear equations F_m(v_n)=0
-  //      and the function u (u.d0[]) as well as its derivatives
-  //      (u.d1[], u.d2[], u.d3[], u.d11[], u.d12[], u.d13[], u.d22[], u.d23[], u.d33[])
-  //      at interior points and at the boundaries "+/-"
+{				/*      Calculates the left hand sides of the non-linear equations F_m(v_n)=0*/
+  /*      and the function u (u.d0[]) as well as its derivatives*/
+  /*      (u.d1[], u.d2[], u.d3[], u.d11[], u.d12[], u.d13[], u.d22[], u.d23[], u.d33[])*/
+  /*      at interior points and at the boundaries "+/-"*/
   DECLARE_CCTK_PARAMETERS;
   int i, j, k, ivar, indx;
   double al, be, A, B, X, R, x, r, phi, y, z, Am1, *values;
@@ -401,35 +401,35 @@ J_times_dv (int nvar, int n1, int n2, int n3, derivs dv,
 	for (ivar = 0; ivar < nvar; ivar++)
 	{
 	  indx = Index (ivar, i, j, k, nvar, n1, n2, n3);
-	  dU.d0[ivar] = Am1 * dv.d0[indx];	// dU
-	  dU.d1[ivar] = dv.d0[indx] + Am1 * dv.d1[indx];	// dU_A
-	  dU.d2[ivar] = Am1 * dv.d2[indx];	// dU_B
-	  dU.d3[ivar] = Am1 * dv.d3[indx];	// dU_3
-	  dU.d11[ivar] = 2 * dv.d1[indx] + Am1 * dv.d11[indx];	// dU_AA
-	  dU.d12[ivar] = dv.d2[indx] + Am1 * dv.d12[indx];	// dU_AB
-	  dU.d13[ivar] = dv.d3[indx] + Am1 * dv.d13[indx];	// dU_AB
-	  dU.d22[ivar] = Am1 * dv.d22[indx];	// dU_BB
-	  dU.d23[ivar] = Am1 * dv.d23[indx];	// dU_B3
-	  dU.d33[ivar] = Am1 * dv.d33[indx];	// dU_33
-	  U.d0[ivar] = u.d0[indx];	// U   
-	  U.d1[ivar] = u.d1[indx];	// U_x
-	  U.d2[ivar] = u.d2[indx];	// U_y
-	  U.d3[ivar] = u.d3[indx];	// U_z
-	  U.d11[ivar] = u.d11[indx];	// U_xx
-	  U.d12[ivar] = u.d12[indx];	// U_xy
-	  U.d13[ivar] = u.d13[indx];	// U_xz
-	  U.d22[ivar] = u.d22[indx];	// U_yy
-	  U.d23[ivar] = u.d23[indx];	// U_yz
-	  U.d33[ivar] = u.d33[indx];	// U_zz
+	  dU.d0[ivar] = Am1 * dv.d0[indx];	/* dU*/
+	  dU.d1[ivar] = dv.d0[indx] + Am1 * dv.d1[indx];	/* dU_A*/
+	  dU.d2[ivar] = Am1 * dv.d2[indx];	/* dU_B*/
+	  dU.d3[ivar] = Am1 * dv.d3[indx];	/* dU_3*/
+	  dU.d11[ivar] = 2 * dv.d1[indx] + Am1 * dv.d11[indx];	/* dU_AA*/
+	  dU.d12[ivar] = dv.d2[indx] + Am1 * dv.d12[indx];	/* dU_AB*/
+	  dU.d13[ivar] = dv.d3[indx] + Am1 * dv.d13[indx];	/* dU_AB*/
+	  dU.d22[ivar] = Am1 * dv.d22[indx];	/* dU_BB*/
+	  dU.d23[ivar] = Am1 * dv.d23[indx];	/* dU_B3*/
+	  dU.d33[ivar] = Am1 * dv.d33[indx];	/* dU_33*/
+	  U.d0[ivar] = u.d0[indx];	/* U   */
+	  U.d1[ivar] = u.d1[indx];	/* U_x*/
+	  U.d2[ivar] = u.d2[indx];	/* U_y*/
+	  U.d3[ivar] = u.d3[indx];	/* U_z*/
+	  U.d11[ivar] = u.d11[indx];	/* U_xx*/
+	  U.d12[ivar] = u.d12[indx];	/* U_xy*/
+	  U.d13[ivar] = u.d13[indx];	/* U_xz*/
+	  U.d22[ivar] = u.d22[indx];	/* U_yy*/
+	  U.d23[ivar] = u.d23[indx];	/* U_yz*/
+	  U.d33[ivar] = u.d33[indx];	/* U_zz*/
 	}
-	// Calculation of (X,R) and
-	// (dU_X, dU_R, dU_3, dU_XX, dU_XR, dU_X3, dU_RR, dU_R3, dU_33)
+	/* Calculation of (X,R) and*/
+	/* (dU_X, dU_R, dU_3, dU_XX, dU_XR, dU_X3, dU_RR, dU_R3, dU_33)*/
 	AB_To_XR (nvar, A, B, &X, &R, dU);
-	// Calculation of (x,r) and
-	// (dU, dU_x, dU_r, dU_3, dU_xx, dU_xr, dU_x3, dU_rr, dU_r3, dU_33)
+	/* Calculation of (x,r) and*/
+	/* (dU, dU_x, dU_r, dU_3, dU_xx, dU_xr, dU_x3, dU_rr, dU_r3, dU_33)*/
 	C_To_c (nvar, X, R, &x, &r, dU);
-	// Calculation of (y,z) and
-	// (dU, dU_x, dU_y, dU_z, dU_xx, dU_xy, dU_xz, dU_yy, dU_yz, dU_zz)
+	/* Calculation of (y,z) and*/
+	/* (dU, dU_x, dU_y, dU_z, dU_xx, dU_xy, dU_xz, dU_yy, dU_yz, dU_zz)*/
 	rx3_To_xyz (nvar, x, r, phi, &y, &z, dU);
 	LinEquations (A, B, X, R, x, r, phi, y, z, dU, U, values);
 	for (ivar = 0; ivar < nvar; ivar++)
@@ -445,14 +445,14 @@ J_times_dv (int nvar, int n1, int n2, int n3, derivs dv,
   free_derivs (&U, nvar);
 }
 
-// -------------------------------------------------------------------------------
+/* --------------------------------------------------------------------------*/
 void
 JFD_times_dv (int i, int j, int k, int nvar, int n1, int n2,
 	      int n3, derivs dv, derivs u, double *values)
-{				// Calculates rows of the vector 'J(FD)*dv'.
-  // First row to be calculated: row = Index(0,      i, j, k; nvar, n1, n2, n3)
-  // Last  row to be calculated: row = Index(nvar-1, i, j, k; nvar, n1, n2, n3)
-  // These rows are stored in the vector JFDdv[0] ... JFDdv[nvar-1].
+{				/* Calculates rows of the vector 'J(FD)*dv'.*/
+  /* First row to be calculated: row = Index(0,      i, j, k; nvar, n1, n2, n3)*/
+  /* Last  row to be calculated: row = Index(nvar-1, i, j, k; nvar, n1, n2, n3)*/
+  /* These rows are stored in the vector JFDdv[0] ... JFDdv[nvar-1].*/
   DECLARE_CCTK_PARAMETERS;
   int ivar, indx;
   double al, be, A, B, X, R, x, r, phi, y, z, Am1;
@@ -470,20 +470,20 @@ JFD_times_dv (int i, int j, int k, int nvar, int n1, int n2,
   if (k >= n3)
     k = k - n3;
 
-  ha = Pi / n1;			// ha: Stepsize with respect to (al)
+  ha = Pi / n1;			/* ha: Stepsize with respect to (al)*/
   al = ha * (i + 0.5);
   A = -cos (al);
   ga = 1 / ha;
   ga2 = ga * ga;
 
-  hb = Pi / n2;			// hb: Stepsize with respect to (be)
+  hb = Pi / n2;			/* hb: Stepsize with respect to (be)*/
   be = hb * (j + 0.5);
   B = -cos (be);
   gb = 1 / hb;
   gb2 = gb * gb;
   gagb = ga * gb;
 
-  hp = 2 * Pi / n3;		// hp: Stepsize with respect to (phi)
+  hp = 2 * Pi / n3;		/* hp: Stepsize with respect to (phi)*/
   phi = hp * j;
   gp = 1 / hp;
   gp2 = gp * gp;
@@ -524,7 +524,7 @@ JFD_times_dv (int i, int j, int k, int nvar, int n1, int n2,
       impc = Index (ivar, i - 1, j + 1, k, nvar, n1, n2, n3),
       ipmc = Index (ivar, i + 1, j - 1, k, nvar, n1, n2, n3),
       immc = Index (ivar, i - 1, j - 1, k, nvar, n1, n2, n3);
-    // Derivatives of (dv) w.r.t. (al,be,phi):
+    /* Derivatives of (dv) w.r.t. (al,be,phi):*/
     dV0 = dv.d0[iccc];
     dV1 = 0.5 * ga * (dv.d0[ipcc] - dv.d0[imcc]);
     dV2 = 0.5 * gb * (dv.d0[icpc] - dv.d0[icmc]);
@@ -538,7 +538,7 @@ JFD_times_dv (int i, int j, int k, int nvar, int n1, int n2,
       0.25 * gagp * (dv.d0[ipcp] - dv.d0[imcp] + dv.d0[imcm] - dv.d0[ipcm]);
     dV23 =
       0.25 * gbgp * (dv.d0[icpp] - dv.d0[icpm] + dv.d0[icmm] - dv.d0[icmp]);
-    // Derivatives of (dv) w.r.t. (A,B,phi):
+    /* Derivatives of (dv) w.r.t. (A,B,phi):*/
     dV11 = sin_al_i3 * (sin_al * dV11 - cos_al * dV1);
     dV12 = sin_al_i1 * sin_be_i1 * dV12;
     dV13 = sin_al_i1 * dV13;
@@ -546,7 +546,7 @@ JFD_times_dv (int i, int j, int k, int nvar, int n1, int n2,
     dV23 = sin_be_i1 * dV23;
     dV1 = sin_al_i1 * dV1;
     dV2 = sin_be_i1 * dV2;
-    // Derivatives of (dU) w.r.t. (A,B,phi):
+    /* Derivatives of (dU) w.r.t. (A,B,phi):*/
     dU.d0[ivar] = Am1 * dV0;
     dU.d1[ivar] = dV0 + Am1 * dV1;
     dU.d2[ivar] = Am1 * dV2;
@@ -559,25 +559,25 @@ JFD_times_dv (int i, int j, int k, int nvar, int n1, int n2,
     dU.d33[ivar] = Am1 * dV33;
 
     indx = Index (ivar, i, j, k, nvar, n1, n2, n3);
-    U.d0[ivar] = u.d0[indx];	// U   
-    U.d1[ivar] = u.d1[indx];	// U_x
-    U.d2[ivar] = u.d2[indx];	// U_y
-    U.d3[ivar] = u.d3[indx];	// U_z
-    U.d11[ivar] = u.d11[indx];	// U_xx
-    U.d12[ivar] = u.d12[indx];	// U_xy
-    U.d13[ivar] = u.d13[indx];	// U_xz
-    U.d22[ivar] = u.d22[indx];	// U_yy
-    U.d23[ivar] = u.d23[indx];	// U_yz
-    U.d33[ivar] = u.d33[indx];	// U_zz
+    U.d0[ivar] = u.d0[indx];	/* U   */
+    U.d1[ivar] = u.d1[indx];	/* U_x*/
+    U.d2[ivar] = u.d2[indx];	/* U_y*/
+    U.d3[ivar] = u.d3[indx];	/* U_z*/
+    U.d11[ivar] = u.d11[indx];	/* U_xx*/
+    U.d12[ivar] = u.d12[indx];	/* U_xy*/
+    U.d13[ivar] = u.d13[indx];	/* U_xz*/
+    U.d22[ivar] = u.d22[indx];	/* U_yy*/
+    U.d23[ivar] = u.d23[indx];	/* U_yz*/
+    U.d33[ivar] = u.d33[indx];	/* U_zz*/
   }
-  // Calculation of (X,R) and
-  // (dU_X, dU_R, dU_3, dU_XX, dU_XR, dU_X3, dU_RR, dU_R3, dU_33)
+  /* Calculation of (X,R) and*/
+  /* (dU_X, dU_R, dU_3, dU_XX, dU_XR, dU_X3, dU_RR, dU_R3, dU_33)*/
   AB_To_XR (nvar, A, B, &X, &R, dU);
-  // Calculation of (x,r) and
-  // (dU, dU_x, dU_r, dU_3, dU_xx, dU_xr, dU_x3, dU_rr, dU_r3, dU_33)
+  /* Calculation of (x,r) and*/
+  /* (dU, dU_x, dU_r, dU_3, dU_xx, dU_xr, dU_x3, dU_rr, dU_r3, dU_33)*/
   C_To_c (nvar, X, R, &x, &r, dU);
-  // Calculation of (y,z) and
-  // (dU, dU_x, dU_y, dU_z, dU_xx, dU_xy, dU_xz, dU_yy, dU_yz, dU_zz)
+  /* Calculation of (y,z) and*/
+  /* (dU, dU_x, dU_y, dU_z, dU_xx, dU_xy, dU_xz, dU_yy, dU_yz, dU_zz)*/
   rx3_To_xyz (nvar, x, r, phi, &y, &z, dU);
   LinEquations (A, B, X, R, x, r, phi, y, z, dU, U, values);
   for (ivar = 0; ivar < nvar; ivar++)
@@ -587,7 +587,7 @@ JFD_times_dv (int i, int j, int k, int nvar, int n1, int n2,
   free_derivs (&U, nvar);
 }
 
-// -------------------------------------------------------------------------------
+/* --------------------------------------------------------------------------*/
 void
 SetMatrix_JFD (int nvar, int n1, int n2, int n3, derivs u,
 	       int *ncols, int **cols, double **Matrix)
@@ -677,8 +677,8 @@ SetMatrix_JFD (int nvar, int n1, int n2, int n3, derivs u,
   free_dvector (values, 0, nvar - 1);
 }
 
-// -------------------------------------------------------------------------------
-// Calculates the value of v at an arbitrary position (A,B,phi)
+/* --------------------------------------------------------------------------*/
+/* Calculates the value of v at an arbitrary position (A,B,phi)*/
 double
 PunctEvalAtArbitPosition (double *v, double A, double B, double phi,
 			  int n1, int n2, int n3)
@@ -720,7 +720,7 @@ PunctEvalAtArbitPosition (double *v, double A, double B, double phi,
   return result;
 }
 
-// -------------------------------------------------------------------------------
+/* --------------------------------------------------------------------------*/
 void
 calculate_derivs (int i, int j, int k, int ivar, int nvar, int n1, int n2,
 		  int n3, derivs v, derivs vv)
@@ -744,7 +744,7 @@ calculate_derivs (int i, int j, int k, int ivar, int nvar, int n1, int n2,
   vv.d33[0] = v.d33[Index (ivar, i, j, k, nvar, n1, n2, n3)];
 }
 
-// -------------------------------------------------------------------------------
+/* --------------------------------------------------------------------------*/
 double
 interpol (double a, double b, double c, derivs v)
 {
@@ -754,8 +754,8 @@ interpol (double a, double b, double c, derivs v)
     + 0.5 * b * b * v.d22[0] + b * c * v.d23[0] + 0.5 * c * c * v.d33[0];
 }
 
-// -------------------------------------------------------------------------------
-// Calculates the value of v at an arbitrary position (x,y,z)
+/* --------------------------------------------------------------------------*/
+/* Calculates the value of v at an arbitrary position (x,y,z)*/
 double
 PunctTaylorExpandAtArbitPosition (int ivar, int nvar, int n1,
                                   int n2, int n3, derivs v, double x, double y,
@@ -805,8 +805,8 @@ PunctTaylorExpandAtArbitPosition (int ivar, int nvar, int n1,
   return Ui;
 }
 
-// -------------------------------------------------------------------------------
-// Calculates the value of v at an arbitrary position (x,y,z)
+/* --------------------------------------------------------------------------*/
+/* Calculates the value of v at an arbitrary position (x,y,z)*/
 double
 PunctIntPolAtArbitPosition (int ivar, int nvar, int n1,
 			    int n2, int n3, derivs v, double x, double y,
@@ -840,4 +840,4 @@ PunctIntPolAtArbitPosition (int ivar, int nvar, int n1,
   return Ui;
 }
 
-// -------------------------------------------------------------------------------
+/* --------------------------------------------------------------------------*/

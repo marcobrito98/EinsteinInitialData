@@ -1,4 +1,4 @@
-// TwoPunctures:  File  "Equations.c"
+/* TwoPunctures:  File  "Equations.c"*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,16 +9,16 @@
 #include "TP_utilities.h"
 #include "TwoPunctures.h"
 
-// U.d0[ivar]   = U[ivar];  (ivar = 0..nvar-1) 
-// U.d1[ivar]   = U[ivar]_x;  
-// U.d2[ivar]   = U[ivar]_y;  
-// U.d3[ivar]   = U[ivar]_z;  
-// U.d11[ivar]  = U[ivar]_xx; 
-// U.d12[ivar]  = U[ivar]_xy; 
-// U.d13[ivar]  = U[ivar]_xz;
-// U.d22[ivar]  = U[ivar]_yy;
-// U.d23[ivar]  = U[ivar]_yz;
-// U.d33[ivar]  = U[ivar]_zz;
+/* U.d0[ivar]   = U[ivar];  (ivar = 0..nvar-1) */
+/* U.d1[ivar]   = U[ivar]_x;  */
+/* U.d2[ivar]   = U[ivar]_y;  */
+/* U.d3[ivar]   = U[ivar]_z;  */
+/* U.d11[ivar]  = U[ivar]_xx; */
+/* U.d12[ivar]  = U[ivar]_xy; */
+/* U.d13[ivar]  = U[ivar]_xz;*/
+/* U.d22[ivar]  = U[ivar]_yy;*/
+/* U.d23[ivar]  = U[ivar]_yz;*/
+/* U.d33[ivar]  = U[ivar]_zz;*/
 
 double
 BY_KKofxyz (double x, double y, double z)
@@ -42,7 +42,7 @@ BY_KKofxyz (double x, double y, double z)
   n_plus[2] = z / r_plus;
   n_minus[2] = z / r_minus;
 
-  // dot product: np_Pp = (n_+).(P_+); nm_Pm = (n_-).(P_-) 
+  /* dot product: np_Pp = (n_+).(P_+); nm_Pm = (n_-).(P_-) */
   np_Pp = 0;
   nm_Pm = 0;
   for (i = 0; i < 3; i++)
@@ -50,7 +50,7 @@ BY_KKofxyz (double x, double y, double z)
     np_Pp += n_plus[i] * par_P_plus[i];
     nm_Pm += n_minus[i] * par_P_minus[i];
   }
-  // cross product: np_Sp[i] = [(n_+) x (S_+)]_i; nm_Sm[i] = [(n_-) x (S_-)]_i
+  /* cross product: np_Sp[i] = [(n_+) x (S_+)]_i; nm_Sm[i] = [(n_-) x (S_-)]_i*/
   np_Sp[0] = n_plus[1] * par_S_plus[2] - n_plus[2] * par_S_plus[1];
   np_Sp[1] = n_plus[2] * par_S_plus[0] - n_plus[0] * par_S_plus[2];
   np_Sp[2] = n_plus[0] * par_S_plus[1] - n_plus[1] * par_S_plus[0];
@@ -61,7 +61,7 @@ BY_KKofxyz (double x, double y, double z)
   for (i = 0; i < 3; i++)
   {
     for (j = 0; j < 3; j++)
-    {				// Bowen-York-Curvature :
+    {				/* Bowen-York-Curvature :*/
       Aij =
 	+ 1.5 * (par_P_plus[i] * n_plus[j] + par_P_plus[j] * n_plus[i]
                  + np_Pp * n_plus[i] * n_plus[j]) / r2_plus
@@ -100,7 +100,7 @@ BY_Aijofxyz (double x, double y, double z, double Aij[3][3])
   n_plus[2] = z / r_plus;
   n_minus[2] = z / r_minus;
 
-  // dot product: np_Pp = (n_+).(P_+); nm_Pm = (n_-).(P_-) 
+  /* dot product: np_Pp = (n_+).(P_+); nm_Pm = (n_-).(P_-) */
   np_Pp = 0;
   nm_Pm = 0;
   for (i = 0; i < 3; i++)
@@ -108,7 +108,7 @@ BY_Aijofxyz (double x, double y, double z, double Aij[3][3])
     np_Pp += n_plus[i] * par_P_plus[i];
     nm_Pm += n_minus[i] * par_P_minus[i];
   }
-  // cross product: np_Sp[i] = [(n_+) x (S_+)]_i; nm_Sm[i] = [(n_-) x (S_-)]_i
+  /* cross product: np_Sp[i] = [(n_+) x (S_+)]_i; nm_Sm[i] = [(n_-) x (S_-)]_i*/
   np_Sp[0] = n_plus[1] * par_S_plus[2] - n_plus[2] * par_S_plus[1];
   np_Sp[1] = n_plus[2] * par_S_plus[0] - n_plus[0] * par_S_plus[2];
   np_Sp[2] = n_plus[0] * par_S_plus[1] - n_plus[1] * par_S_plus[0];
@@ -118,7 +118,7 @@ BY_Aijofxyz (double x, double y, double z, double Aij[3][3])
   for (i = 0; i < 3; i++)
   {
     for (j = 0; j < 3; j++)
-    {				// Bowen-York-Curvature :
+    {				/* Bowen-York-Curvature :*/
       Aij[i][j] =
         + 1.5 * (par_P_plus[i] * n_plus[j] + par_P_plus[j] * n_plus[i]
 		 + np_Pp * n_plus[i] * n_plus[j]) / r2_plus
@@ -132,9 +132,9 @@ BY_Aijofxyz (double x, double y, double z, double Aij[3][3])
   }
 }
 
-//---------------------------------------------------------------
-//*******           Nonlinear Equations                **********
-//---------------------------------------------------------------
+/*-----------------------------------------------------------*/
+/********           Nonlinear Equations                ***********/
+/*-----------------------------------------------------------*/
 void
 NonLinEquations (CCTK_REAL rho_adm,
      double A, double B, double X, double R,
@@ -160,9 +160,9 @@ NonLinEquations (CCTK_REAL rho_adm,
 
 }
 
-//---------------------------------------------------------------
-//*******               Linear Equations                **********
-//---------------------------------------------------------------
+/*-----------------------------------------------------------*/
+/********               Linear Equations                ***********/
+/*-----------------------------------------------------------*/
 void
 LinEquations (double A, double B, double X, double R,
 	      double x, double r, double phi,
@@ -184,4 +184,4 @@ LinEquations (double A, double B, double X, double R,
     - 0.875 * BY_KKofxyz (x, y, z) / psi8 * dU.d0[0];
 }
 
-//---------------------------------------------------------------
+/*-----------------------------------------------------------*/
