@@ -18,8 +18,10 @@
 #include <assert.h>
 #include <math.h>
 
-int nbholes;
-CCTK_REAL mu;
+void Misner_init(int n, CCTK_REAL mu, int terms);
+void MisnerEvalPsi(CCTK_REAL x, CCTK_REAL y, CCTK_REAL z, CCTK_REAL *res);
+
+static int nbholes;
 
 /* Basic data about a brill-lindquist black hole term. */
 struct bhole {
@@ -38,11 +40,11 @@ struct bhole {
 /* The seed black holes. */
 struct bhole bholes[MAXBHOLES];
 
-static CCTK_REAL csch(CCTK_REAL mu) {
-  return 1.0/sinh(mu); 
+static CCTK_REAL csch(CCTK_REAL theta) {
+  return 1.0/sinh(theta); 
 }
-static CCTK_REAL coth(CCTK_REAL mu) {
-  return cosh(mu)/sinh(mu); 
+static CCTK_REAL coth(CCTK_REAL theta) {
+  return cosh(theta)/sinh(theta); 
 }
 
  /*@@
