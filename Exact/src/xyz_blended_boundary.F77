@@ -12,7 +12,7 @@ C $Header$
       DECLARE_CCTK_PARAMETERS
       DECLARE_CCTK_FUNCTIONS
 
-      logical doKij, doGij, doDs, doVs, doLapse, doShift
+      logical doKij, doGij, doLapse, doShift
 
       integer i,j,k
       integer nx,ny,nz
@@ -32,7 +32,6 @@ C $Header$
       CCTK_REAL betaxe,betaye,betaze
       CCTK_REAL bxxe,bxye,bxze,byxe,byye,byze,bzxe,bzye,bzze
       CCTK_REAL det, uxx, uxy, uxz, uyy, uyz, uzz
-      CCTK_REAL vxe,vye,vze,sav
       CCTK_REAL
      $     exact_psi,
      $     exact_psix, exact_psiy, exact_psiz,
