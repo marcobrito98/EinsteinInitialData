@@ -4,6 +4,8 @@ C     This wrapper written by Carsten Gundlach.
 #include "declare_arguments.h"
 #include "declare_parameters.h"
 
+#include "../../Einstein/src/Einstein.h"
+
       subroutine Misner(CCTK_FARGUMENTS)
 
       implicit none
@@ -22,9 +24,9 @@ C     Finite differencing step.
 
 c     Must use conformal metric
 c     -------------------------
-      if (conformal_state == 0) then
+      if (conformal_state == NOCONFORMAL_METRIC) then
          call CCTK_Warn(1,"Changing to conformal metric in Misner")
-         conformal_state = 1
+         conformal_state = CONFORMAL_METRIC
       end if
 
 C     Initialize some C global variables before calls to 

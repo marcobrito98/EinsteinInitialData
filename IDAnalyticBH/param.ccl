@@ -5,7 +5,7 @@ private:
 
 REAL mass "Mass of black hole"
 {
-: :: "Not sure if it can be negative or no"
+: :: "Not sure if it can be negative or not"
 } 2.0
 
 
@@ -103,7 +103,7 @@ REAL bl_M_4 "Mass of 4th BL hole"
 #{ 
 #}
 
-#EXTENDS KEYWORD model ""
+#EXTENDS KEYWORD initial_data ""
 #{
 #  "schwarzschild" :: "One Schwarzshild black hole"
 #} 
