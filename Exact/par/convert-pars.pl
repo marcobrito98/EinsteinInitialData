@@ -1,19 +1,21 @@
 #! /usr/bin/perl -i.bak
 # $Header$
 
-#
-# This perl script converts old parameter files for this thorn to use
-# the new (June 2002) parameter names.
-#
-# Usage:
-#	convert-pars.pl myrun.par myrun2.par ...
-#
-# This will rename the original files to myrun.par.bak, myrun2.par.bak, ...,
-# and write new parameter files myrun.par, myrun2.par, ... .
-#
-# This script can be fooled by \-line-continues in strange places or
-# other lexical wierdness, but in practice it should work for almost all
-# "reasonable" parameter files.
+my $help_msg = <<'EOF';
+This perl script converts old parameter files for this thorn to use
+the new (June 2002) parameter names.
+
+Usage:
+	convert-pars.pl myparfile.par myparfile2.par ...
+
+This will write new parameter files myparfile.par, myparfile2.par, ... ,
+renaming the original files to myparfile.par.bak, myparfile2.par.bak, ... .
+
+This script can be fooled by \-line-continues in strange places or
+other lexical wierdness, but in practice it should work for almost all
+"reasonable" parameter files.
+EOF
+
 #
 # Assumptions:
 # - We assume that the exactmodel/exact_model parameter is specified
@@ -22,6 +24,15 @@
 #
 
 ################################################################################
+
+if ( (scalar(@ARGV) == 1)
+     && (($ARGV[0] eq '-help') || ($ARGV[0] eq '--help')) )
+	{
+	print $help_msg;
+	exit;
+	}
+
+########################################
 
 my $exact_model;
 
