@@ -16,21 +16,17 @@
 
 # These thorns must be compiled
 
-ActiveThorns = "einstein time adm iobasic ioutil ioascii pugh cartgrid3d boundary idlinearwaves IsoSurfacer NetGeometry http"
+ActiveThorns = "einstein time adm iobasic ioutil ioascii pugh pughreduce pughslab cartgrid3d boundary idlinearwaves IsoSurfacer httpd httpdextra"
 
 #------------------------------------------------------------------------------
 
-# Number of grid points in each direction
+# Number of grid points in each direction (should be 100)
 
-driver::global_nsize       = 100
+driver::global_nsize       = 10
 
 # How many iterations
 
 cactus::cctk_final_time    = 4.0
-
-# Hosts to which remote visualisation is announced
-
-NetGeometry::amira_announce = ""
 
 # What to output and when
 
@@ -45,20 +41,16 @@ ioascii::out1d_vars        = "einstein::grr einstein::alp"
 # 
 #------------------------------------------------------------------------------
 
-# IsoSurfacer parameters:
-#  - the variable to compute the isosurface from
-#  - the isosurface level
-#  - the output format
-#  - frequency , first iteration, resolution of output, uniq_vertices flag
 
-IsoSurfacer::isosurfacer = "{(einstein::grr) (0.999,1.001) (SOCK) (1, 1, 1, 1)}"
+isosurfacer::dataport           = 5557 
+isosurfacer::controlport        = 5558 
+isosurfacer::output_format      = "SOCK"
+isosurfacer::output_var         = "psikadelia::psi0re"
+isosurfacer::isovalue           = 0.5
+isosurfacer::output_frequency   = 1 
 
-IsoSurfacer::allow_empty_sends = "yes"
+httpd::port                 = 7050
 
-http::port                  = 7050
-
-NetGeometry::port           = 7051
-NetGeometry::tcpwindowsize  = 1048576
 
 #------------------------------------------------------------------------------
 # 
@@ -78,14 +70,14 @@ einstein::evolution_system = "ADM"
 adm::method                = "stagleap"
 adm::bound                 = "radiative"
 adm::harmonic_f            = 2
-cd
+
 einstein::slicing          = "1+log"     
 einstein::initial_data     = "teukwaves"
 
 idlinearwaves::mvalue      = 2          
 idlinearwaves::parity      = "even"     
 idlinearwaves::packet      = "eppley"   
-idlinearwaves::wavesgoing  = "inout"       
+idlinearwaves::wavesgoing  = "both"       
 idlinearwaves::wavecenter  = 0.
 idlinearwaves::wavelength  = 2.
 
