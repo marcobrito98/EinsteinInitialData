@@ -42,9 +42,10 @@ cactus::cctk_itlast        = 3
 adm::bound                 = "flat"      
 adm::method                = "leapfrog"
 
-IO::outdir           = "test_bl"
+IO::outdir               = "test_bl"
+IO::out_fileinfo         = "none"
 IOBasic::outInfo_every   = 1
-IOBasic::outInfo_vars  = "einstein::gxx einstein::psi"
+IOBasic::outInfo_vars    = "einstein::gxx einstein::psi"
 IOBasic::outScalar_every = 2
 IOBasic::outScalar_vars  = "einstein::grr einstein::psi"
 
