@@ -67,16 +67,16 @@ c     Set up background metric and coefficients for linear solve.
 c     Tolerances for elliptic solve.
 
       AbsTol(1)= brill_thresh
-      AbsTol(2)= brill_thresh
-      AbsTol(3)= brill_thresh
+      AbsTol(2)= -1.0D0
+      AbsTol(3)= -1.0D0
  
-      RelTol(1)= -1
-      RelTol(2)= -1
-      RelTol(3)= -1
+      RelTol(1)= -1.0D0
+      RelTol(2)= -1.0D0
+      RelTol(3)= -1.0D0
 
 c     Boundaries.
 
-      call Ell_SetRealKey(ierr,1.0d0,"EllLinConfMetric::Bnd::Robin::inf")
+      call Ell_SetRealKey(ierr,1.0D0,"EllLinConfMetric::Bnd::Robin::inf")
       call Ell_SetIntKey(ierr,1,"EllLinConfMetric::Bnd::Robin::falloff")
 
 c     Elliptic solver.
@@ -115,3 +115,4 @@ c     Reconstruct physical metric.
 
       return
       end
+
