@@ -1,0 +1,13 @@
+This is a "todo" list for this thorn
+$Header$
+
+Ian Hawke:
+It would be nice to be able to output the difference between a
+numerical evolution and the exact solution.
+
+Sascha Husa:
+It would be nice if Exact could set up variables other than the ADM ones
+(indeed it appears to not even grok BSSN right now).
+
+The boundary setup needs to be generalized to handle ghost zones wider
+than 1 point.
