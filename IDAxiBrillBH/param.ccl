@@ -1,7 +1,7 @@
-# Parameter definitions for thorn AxiBrillBHIVP
+# Parameter definitions for thorn IDAxiBrillBH
 # $Header$
 
-shares:einstein
+shares: ADMBase
 
 EXTENDS KEYWORD initial_lapse 
 {
@@ -12,6 +12,9 @@ EXTENDS KEYWORD initial_data
 {
    "axibrillbh" :: "Axisymmetry Initial data for Black hole + Brill wave"
 }
+
+USES KEYWORD metric_type
+
 
 private:
 

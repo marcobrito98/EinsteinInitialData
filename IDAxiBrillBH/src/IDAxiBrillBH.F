@@ -350,7 +350,9 @@ c     Set ADM mass
          alp = (2.*r - adm)/(2.*r+adm)
       endif
       
-      conformal_state = CONFORMAL_METRIC
+c      conformal_state = CONFORMAL_METRIC (What is CONFORMAL_METRIC?)
+      conformal_state = 3
+c     3 ==> 'all' derivatives were calculated
       
       deallocate(cc,ce,cw,cn,cs,rhs,psi2d,detapsi2d,dqpsi2d,
      $     detaetapsi2d,detaqpsi2d,dqqpsi2d,
@@ -360,4 +362,3 @@ c     Set ADM mass
 
       return
       end
-
