@@ -2,7 +2,7 @@
 # Geodesically sliced black hole + brill wave, ADM, Staggered leapfrog
 ######################################################################
 
-ActiveThorns = "Boundary Time ADMconstraints PUGH PUGHSlab PUGHReduce PUGHInterp CartGrid3D ADMBase admmacros coordgauge staticconformal ADMCoupling SpaceMask ADM ADMAnalysis IDAxiBrillBH IOASCII IOUtil IOBasic LocalInterp"
+ActiveThorns = "coordbase symbase Boundary Time ADMconstraints PUGH PUGHSlab PUGHReduce PUGHInterp CartGrid3D ADMBase admmacros coordgauge staticconformal ADMCoupling SpaceMask ADM ADMAnalysis IDAxiBrillBH IOASCII IOUtil IOBasic LocalInterp"
 
 
 # GENERAL
