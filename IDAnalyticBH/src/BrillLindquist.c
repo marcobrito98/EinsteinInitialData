@@ -18,6 +18,7 @@
 #define SQR(a) ((a)*(a))
 
 #define MAX_HOLES 4
+
  /*@@
    @routine    BrillLindquist
    @date       
@@ -39,7 +40,8 @@ void BrillLindquist(CCTK_CARGUMENTS)
   DECLARE_CCTK_PARAMETERS
 
   int n;
-  CCTK_REAL hole_mass[MAX_HOLES], hole_x0[MAX_HOLES], hole_y0[MAX_HOLES], hole_z0[MAX_HOLES];
+  CCTK_REAL hole_mass[MAX_HOLES], hole_x0[MAX_HOLES];
+  CCTK_REAL hole_y0[MAX_HOLES], hole_z0[MAX_HOLES];
   CCTK_REAL tmp1, tmp2, tmp3;
   CCTK_REAL xval, yval, zval;
   CCTK_REAL x_2, y_2, z_2;
@@ -82,13 +84,13 @@ void BrillLindquist(CCTK_CARGUMENTS)
       for(i=0; i < nx; i++)
       {
         index = CCTK_GFINDEX3D(cctkGH, i,j,k);
-          
 
         /*     Initialize to zero and then use +=
          *     ----------------------------------
          */
 
         psi[index] = 1.0;
+
 
         if (use_conformal_derivs == 1)
         {
@@ -105,18 +107,19 @@ void BrillLindquist(CCTK_CARGUMENTS)
 
         x_2 = SQR(x[index]);
         y_2 = SQR(y[index]);
+        z_2 = SQR(z[index]);
 
         xval = x[index];
         yval = y[index];
         zval = z[index];
 
-        for(n = 0;  n < bl_nbh; i++)
+        for(n = 0;  n < bl_nbh; n++)
         {
 
           /*     Maple Output
            *     ------------
            */
-          
+
           tmp1 = sqrt(x_2+2.0*xval*hole_x0[n]+SQR(hole_x0[n])
                      +y_2+2.0*yval*hole_y0[n]+SQR(hole_y0[n])
                      +z_2+2.0*zval*hole_z0[n]+SQR(hole_z0[n]));
@@ -134,15 +137,22 @@ void BrillLindquist(CCTK_CARGUMENTS)
             tmp2 = pow(tmp1, 5.0);
             tmp3 = pow(tmp1, 3.0);
 
-            psixx[index] += 3.0/8.0*hole_mass[n]/tmp2*SQR(2.0*xval+2.0*hole_x0[n])-hole_mass[n]/tmp3/2.0;
+            psixx[index] += 3.0/8.0*hole_mass[n]/tmp2*
+	      SQR(2.0*xval+2.0*hole_x0[n])-hole_mass[n]/tmp3/2.0;
         
-            psixy[index] += 3.0/8.0*hole_mass[n]/tmp2*(2.0*xval+2.0*hole_x0[n])*(2.0*yval+2.0*hole_y0[n]);
-            psixz[index] += 3.0/8.0*hole_mass[n]/tmp2*(2.0*xval+2.0*hole_x0[n])*(2.0*zval+2.0*hole_z0[n]);
+            psixy[index] += 3.0/8.0*hole_mass[n]/tmp2*
+	      (2.0*xval+2.0*hole_x0[n])*(2.0*yval+2.0*hole_y0[n]);
+            psixz[index] += 3.0/8.0*hole_mass[n]/tmp2*
+	      (2.0*xval+2.0*hole_x0[n])*(2.0*zval+2.0*hole_z0[n]);
 
-            psiyy[index] += 3.0/8.0*hole_mass[n]/tmp2*SQR(2.0*yval+2.0*hole_y0[n])-hole_mass[n]/tmp3/2.0;
-            psiyz[index] += 3.0/8.0*hole_mass[n]/tmp2*(2.0*yval+2.0*hole_y0[n])*(2.0*zval+2.0*hole_z0[n]);
+            psiyy[index] += 3.0/8.0*hole_mass[n]/tmp2*
+	      SQR(2.0*yval+2.0*hole_y0[n])-hole_mass[n]/tmp3/2.0;
+            psiyz[index] += 3.0/8.0*hole_mass[n]/tmp2*
+	      (2.0*yval+2.0*hole_y0[n])*(2.0*zval+2.0*hole_z0[n]);
 
-            psizz[index] += 3.0/8.0*hole_mass[n]/tmp2*SQR(2.0*zval+2.0*hole_z0[n])-hole_mass[n]/tmp3/2.0;
+            psizz[index] += 3.0/8.0*hole_mass[n]/tmp2*
+	      SQR(2.0*zval+2.0*hole_z0[n])-hole_mass[n]/tmp3/2.0;
+
           }
         }
       }
@@ -191,7 +201,6 @@ void BrillLindquist(CCTK_CARGUMENTS)
         {
           index = CCTK_GFINDEX3D(cctkGH, i,j,k);
           
-
           gxx[index] = 1.0;
           gyy[index] = 1.0;
           gzz[index] = 1.0;
