@@ -29,20 +29,6 @@ void Schwarzschild(CCTK_ARGUMENTS)
   const CCTK_REAL zero = 0.0, one = 1.0, two = 2.0, three = 3.0;
   CCTK_REAL tmp, r_squared, r_cubed;
   int i, npoints;
-  int make_conformal_derivs;
-
-
-    if(CCTK_EQUALS(conformal_storage,"factor+derivs"))
-    {
-      *conformal_state = 2;
-      make_conformal_derivs = 1;
-    }
-    else if(CCTK_EQUALS(conformal_storage,"factor+derivs+2nd derivs"))
-    {
-      *conformal_state = 3;
-      make_conformal_derivs = 1;
-    }
-
 
   npoints = cctk_lsh[0] * cctk_lsh[1] * cctk_lsh[2];
 
