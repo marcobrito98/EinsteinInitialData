@@ -8,15 +8,94 @@ REAL mass "Mass of black hole"
 : :: "Not sure if it can be negative or no"
 } 2.0
 
+
+# Misner Parameters
+# -----------------
 REAL mu "Misner mu value"
 {
-: :: "Don't know allowed range"
+0: :: ""
 } 1.2
 
 INTEGER nmax "Number of terms to include for Misner series"
 {
-0: 
+0: :: ""
 } 30
+
+INTEGER misner_nbh "Number of Misner black holes"
+{
+ 1:10 :: ""
+} 1
+
+# Brill Lindquist Parameters
+# --------------------------
+INTEGER bl_nbh "Number of Brill Lindquist black holes"
+{
+ 1:4 :: "Between one and four holes implemented"
+} 1
+REAL bl_x0_1 "x-position of 1st BL hole"
+{
+: ::
+} 0.0
+REAL bl_y0_1 "y-position of 1st BL hole"
+{
+: ::
+} 0.0
+REAL bl_z0_1 "z-position of 1st BL hole"
+{
+: ::
+} 0.0
+REAL bl_M_1 "Mass of 1st BL hole"
+{
+: ::
+} 1.0
+REAL bl_x0_2 "x-position of 2nd BL hole"
+{
+: ::
+} 0.0
+REAL bl_y0_2 "y-position of 2nd BL hole"
+{
+: ::
+} 0.0
+REAL bl_z0_2 "z-position of 2nd BL hole"
+{
+: ::
+} 0.0
+REAL bl_M_2 "Mass of 2nd BL hole"
+{
+: ::
+} 1.0
+REAL bl_x0_3 "x-position of 3nd BL hole"
+{
+: ::
+} 0.0
+REAL bl_y0_3 "y-position of 3nd BL hole"
+{
+: ::
+} 0.0
+REAL bl_z0_3 "z-position of 3nd BL hole"
+{
+: ::
+} 0.0
+REAL bl_M_3 "Mass of 3rd BL hole"
+{
+: ::
+} 1.0
+REAL bl_x0_4 "x-position of 4th BL hole"
+{
+: ::
+} 0.0
+REAL bl_y0_4 "y-position of 4th BL hole"
+{
+: ::
+} 0.0
+REAL bl_z0_4 "z-position of 4th BL hole"
+{
+: ::
+} 0.0
+REAL bl_M_4 "Mass of 4th BL hole"
+{
+: ::
+} 1.0
 
 #friend:einstein
 

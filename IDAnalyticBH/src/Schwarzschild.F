@@ -11,7 +11,7 @@
 
       REAL zero,one,two,three
 
-      REAL A,B,C,t1,r0
+      REAL t1,r0
 
       integer CCTK_Equals
       integer i,j,k
@@ -22,13 +22,9 @@
       one = 1.d0
       two = 2.d0
       three = 3.d0
-      
-      print*, 'One Black Hole:  Throat at :',mass/two
-      
+            
 c     conformal metric flag
       if (use_conformal==1) then
-
-         print*,'Evolving conformal metric (psi derivs in the sources)'
 
 c        Compute conformal factor
          psi = ( one + mass/two/r)
@@ -54,8 +50,6 @@ c        derivatives of psi / psi
          gyz = zero   
           
       else
-
-         print*,'Evolving ***non-conformal*** metric'         
 
          gxx = ( one + mass/two/r)**4
          gyy = gxx
