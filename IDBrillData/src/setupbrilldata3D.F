@@ -78,38 +78,6 @@ c     Initialize psi.
 
       brillpsi = one
 
-c     Set up conformal metric.
-
-      if (CCTK_EQUALS(metric_type,"static conformal")) then
-      
-         conformal_state = 1
-         do k=1,nz
-            do j=1,ny
-               do i=1,nx
-                  psi(i,j,k) = one
-                  if (CCTK_EQUALS(conformal_storage,"factor+derivs") .or. 
-     &                 CCTK_EQUALS(conformal_storage,"factor+derivs+2nd derivs")) then
-                     psix(i,j,k) = zero
-                     psiy(i,j,k) = zero
-                     psiz(i,j,k) = zero
-                     conformal_state = 2
-                  end if
-                  if (CCTK_EQUALS(conformal_storage,"factor+derivs+2nd derivs")) then
-                     psixx(i,j,k) = zero
-                     psiyy(i,j,k) = zero
-                     psizz(i,j,k) = zero
-                     psixy(i,j,k) = zero
-                     psixz(i,j,k) = zero
-                     psiyz(i,j,k) = zero
-                     conformal_state = 3
-                  end if
-               end do
-            end do
-         end do
-
-      end if
-         
-
       do k=1,nz
          do j=1,ny
             do i=1,nx

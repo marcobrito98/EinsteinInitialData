@@ -66,8 +66,6 @@ c     Initialize psi.
 
 c     Initialize metric.
 
-      psi = one
-
       gxx = one
       gyy = one
       gzz = one
