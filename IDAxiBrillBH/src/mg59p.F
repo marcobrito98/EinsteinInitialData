@@ -60,9 +60,11 @@ c .....................................................................
      + np2(m,1)=np2(m,1)+1
       np2(m,2)=2
       go to 10
-   20 do 30 k=1,m
+   20 continue
+      do 30 k=1,m
       np2(m-k+1,jm)=np2(k,1)
-   30 np2(m-k+1,jred)=np2(k,2)
+   30 continue
+      np2(m-k+1,jred)=np2(k,2)
       do 40 k=m,1,-1
       ktot=imx*np2(k,jm)
       np2(k,n5)=iq5
@@ -70,11 +72,13 @@ c .....................................................................
       np2(k,n9)=iq9
       if(k.lt.m.or.ifd59.eq.9) iq9=iq9+ktot
       np2(k,ni)=iqi
-   40 if(k.lt.m) iqi=iqi+ktot
+   40 continue
+      if(k.lt.m) iqi=iqi+ktot
       do 50 k=1,m
       np2(k,i9)=imx
       np2(k,j9)=np2(k,jm)
-   50 np2(k,ifd)=9
+   50 continue
+      np2(k,ifd)=9
          if(ifd59.eq.5) then
       np2(m,i9)=1
       np2(m,j9)=1
