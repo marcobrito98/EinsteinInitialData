@@ -1,0 +1,9 @@
+# Schedule definitions for thorn IDLinearWaves
+
+if (CCTK_Equals(initaldata,"linearwaves")) 
+{
+  schedule LinearWaves at CACTUS_INITIAL
+  {
+    LANG: Fortran
+  } "Construct linear wave initial data"  
+}
