@@ -17,17 +17,13 @@
 
 # These thorns must be compiled
 
-ActiveThorns = "Boundary ADM CartGrid3D Einstein IDanalyticBH IOBasic IOUtil IOASCII PsiKadelia IsoSurfacer http NetGeometry Pugh Time"
+ActiveThorns = "Boundary ADM CartGrid3D Einstein IDanalyticBH IOBasic IOUtil IOASCII PsiKadelia IsoSurfacer httpd httpdextra Pugh Pughreduce Pughslab Time"
  
 #------------------------------------------------------------------------------
 
 # Number of grid points in each direction (must be around 100 or larger)
  
-driver::global_nsize       = 100
-
-# Hosts to announce the remote vizualisation to
-
-NetGeometry::amira_announce = ""
+driver::global_nsize       = 40
 
 # How many iterations 
 
@@ -46,19 +42,14 @@ IOASCII::out1D_every       = 10
 #
 #------------------------------------------------------------------------------
 
-# IsoSurfacer parameters:
-#  - the variable to compute the isosurface from
-#  - the isosurface level
-#  - the output format
-#  - frequency , first iteration, resolution of output, uniq_vertices flag
+isosurfacer::dataport           = 5557 
+isosurfacer::controlport        = 5558 
+isosurfacer::output_format      = "SOCK"
+isosurfacer::output_var         = "psikadelia::psi0re"
+isosurfacer::isovalue           = 0.5
+isosurfacer::output_frequency   = 1 
 
-IsoSurfacer::isosurfacer = "{(psikadelia::psi0re) (-0.001,0.001) (SOCK) (1, 1, 1, 1)}"
-IsoSurfacer::allow_empty_sends = "yes"
-
-http::port                 = 7050
-
-NetGeometry::port          = 7051
-NetGeometry::tcpwindowsize = 1048576
+httpd::port                 = 7050
 
 
 #------------------------------------------------------------------------------
