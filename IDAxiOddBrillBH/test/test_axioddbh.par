@@ -2,7 +2,7 @@
 #!DESC "Initial data for axisymmetric distored black hole"
 ######################################################################
 
-ActiveThorns = "time ADMconstraints pugh pughreduce pughslab pughinterp cartgrid3d einstein ADM IDAxiOddBrillBH ioascii iobasic ioutil"
+ActiveThorns = "time boundary ADMconstraints pugh pughreduce pughslab pughinterp cartgrid3d einstein ADM IDAxiOddBrillBH ioascii iobasic ioutil"
 
 # GENERAL 
 
