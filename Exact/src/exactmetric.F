@@ -202,6 +202,16 @@ C     Call the corresponding routine.
      $        guxx, guyy, guzz, guxy, guyz, guxz)
 
 
+      elseif (CCTK_Equals(exactmodel,"gauge_wave").eq.1) then
+
+         call gauge_wave(
+     $        x, y, z, t,
+     $        gdtt, gdtx, gdty, gdtz, 
+     $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
+     $        gutt, gutx, guty, gutz, 
+     $        guxx, guyy, guzz, guxy, guyz, guxz)
+
+
       else
 
 
