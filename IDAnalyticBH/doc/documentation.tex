@@ -82,7 +82,7 @@ associated parameters in turn.
 The Schwarzschild metric corresponds to a single, static, black hole.
 If the Cactus metric is specified as a conformal metric (by setting
 \texttt{admbase::metric\_type="yes"}), then the metric is
-set using isotropic coordinates \cite{CactusEinstein_IDAnalytic_mtw-isotropic}:
+set using isotropic coordinates \cite{CactusEinstein_IDAnalyticBH_mtw-isotropic}:
 \begin{equation}
   ds^2 = -\left(\frac{2r - M}{2r + M}\right)^2
   + \left(1 + \frac{M}{2r}\right)^4 \left(dr^2 + r^2(d\theta^2
@@ -150,7 +150,7 @@ could modify your parameter file as follows:
 \section{Kerr}
 
 Kerr initial data for an isolated rotating black hole is specified
-using the ``quasi-isotropic'' coordinates \cite{CactusEinstein_IDAnalytic_brandt-seidel:1996}:
+using the ``quasi-isotropic'' coordinates \cite{CactusEinstein_IDAnalyticBH_brandt-seidel:1996}:
 \begin{equation}
   ds^2 = \psi^4 (dr^2 + r^2(d\theta^2 + \chi^2\sin^2\theta d\phi^2)),
 \end{equation}
@@ -214,18 +214,15 @@ intial data with mass $M=1$ and angular momentum $a=0.3$ are:
 
 The earliest suggestion for initial data that might be said to
 corresponding to multiple black holes was given by Misner in 1960
-\cite{CactusEinstein_IDAnalytic_misner:1960}. He provided a prescription for writing a metric
+\cite{CactusEinstein_IDAnalyticBH_misner:1960}. He provided a prescription for writing a metric
 connecting a pair of massive bodies, instaneously at rest, whose
 throats are connected by a wormhole. Using the method of images, this
 solution was generalised to describe any number of black holes whose
 throats connect two identical asymptotically flat spacetimes
-\cite{CactusEinstein_IDAnalytic_misner:1963}.
+\cite{CactusEinstein_IDAnalyticBH_misner:1963}.
 \begin{figure}
   \centering
-  \ifpdf
-  \else
-  \includegraphics[height=40mm]{misner.eps}
-  \fi
+  \includegraphics[height=40mm]{misner}
   \caption{The topology of the Misner spacetime is that of a pair of
   asymptotically flat sheets connected by a number of Einstein-Rosen
   bridges. By construction, an exact isometry exists between the upper
@@ -254,7 +251,7 @@ where the conformal factor $\psi$ is given by
 \end{equation}
 The extrinsic curvature for the Misner data is zero.
 
-The parameter $\mu_0$ is a measure of the ration of mass to separation
+The parameter $\mu_0$ is a measure of the ratio of mass to separation
 of the throats, and is set using the parameter
 \texttt{idanalyticbh::mu}. For values less than $\mu\simeq 1.8$, the
 throats will have a single event horizon.
@@ -306,10 +303,7 @@ the first black hole lies on the $x$-axis (as in Figure
 \begin{figure}
   \centering
   \label{fig:multi_misner}
-  \ifpdf
-  \else
-  \includegraphics[height=40mm]{multi_misner.eps}
-  \fi
+  \includegraphics[height=40mm]{multi_misner}
   \caption{Configuration for three Misner throats using the
   \texttt{multiple\_misner\_bh} initial data.}
 \end{figure}
@@ -347,13 +341,10 @@ data which differs from the Misner data mainly in its choice of
 spacetime topology. Whereas the Misner data presumes that the throats
 connect a pair of asymptotically flat spacetimes which are identical
 to each other, the Brill-Lindquist data connects each throat to a
-separate asymptotically flat region \cite{CactusEinstein_IDAnalytic_brill-lindquist:1963}.
+separate asymptotically flat region \cite{CactusEinstein_IDAnalyticBH_brill-lindquist:1963}.
 \begin{figure}
   \centering
-  \ifpdf
-  \else
-  \includegraphics[height=40mm]{brill_lindquist.eps}
-  \fi
+  \includegraphics[height=40mm]{brill_lindquist}
   \caption{Two Brill-Lindquist throats connecting separate
     asymptotically flat regions.}
 \end{figure}
