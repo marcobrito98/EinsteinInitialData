@@ -5,8 +5,8 @@
 SRCS = 	\
 	LinearWaves.F\
 	planewaves.F\
-        teukwaves.F
-
+	teukwaves.F
+
 # Subdirectories containing source files
 SUBDIRS = 
 
