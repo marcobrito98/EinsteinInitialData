@@ -37,6 +37,7 @@ TwoPunctures (CCTK_ARGUMENTS)
   int i, j, k, ntotal = n1 * n2 * n3 * nvar;
   static double *F = NULL;
   static derivs u, v;
+  double admMass;
 
   if (! F) {
     /* Solve only when called for the first time */
@@ -217,4 +218,10 @@ TwoPunctures (CCTK_ARGUMENTS)
     free_derivs (&u, ntotal);
     free_derivs (&v, ntotal);
   }
+
+
+  /* print out ADM mass, eq.: \Delta M_ADM=2*r*u=4*B*V for A=1,B=0,phi=0 */
+  admMass=par_m_plus+par_m_minus-
+          4*par_b*PunctEvalAtArbitPosition(v.d0, 1, 0, 0, n1, n2, n3);
+  CCTK_VInfo(CCTK_THORNSTRING,"ADM mass is %f\n",admMass);
 }
