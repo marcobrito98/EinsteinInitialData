@@ -14,11 +14,8 @@ C     slicey, slicez, slicet, and calculate dx^A/dt.
       integer nx,ny,nz
 
       CCTK_REAL s1d(4,3), nd(4), nu(4), norm, gd(4,4), gu(4,4), g3(3,3),
-     $   gd_p(4,4), gd_m(4,4), gd1d(4,4,4), s2d(4,3,3), h3(3,3), 
-     $   ex_eps, d3(3,3,3)
-
-      CCTK_REAL dx,dy,dz
-
+     $   gd_p(4,4), gd_m(4,4), gd1d(4,4,4), s2d(4,3,3), k3(3,3), 
+     $   ex_eps, d3(3,3,3), dx, dy, dz
       parameter (ex_eps=1.d-6)
 
 C     Grid parameters.
@@ -272,15 +269,15 @@ C     Fill in remaining components of metric derivative.
 
 C     Calculate K_ij.
 
-               h3 = 0.d0
+               k3 = 0.d0
                do p=1,3
                   do q=p,3
                      do l=1,4
                         do m=1,4
-                           h3(p,q) = h3(p,q) 
+                           k3(p,q) = k3(p,q) 
      $                          + s2d(l,p,q) * nu(m) * gd(l,m)
                            do n=1,4
-                              h3(p,q) = h3(p,q) + 0.5d0 * (
+                              k3(p,q) = k3(p,q) + 0.5d0 * (
      $                             s1d(l,p) * s1d(n,q) * nu(m)
      $                             + s1d(n,p) * s1d(m,q) * nu(l)
      $                             - s1d(l,p) * s1d(m,q) * nu(n) )
@@ -291,19 +288,18 @@ C     Calculate K_ij.
                   end do
                end do
 
-               kxx(i,j,k) = h3(1,1)
-               kxy(i,j,k) = h3(1,2)
-               kxz(i,j,k) = h3(1,3)
-               kyy(i,j,k) = h3(2,2)
-               kyz(i,j,k) = h3(2,3)
-               kzz(i,j,k) = h3(3,3)
+               kxx(i,j,k) = - k3(1,1)
+               kxy(i,j,k) = - k3(1,2)
+               kxz(i,j,k) = - k3(1,3)
+               kyy(i,j,k) = - k3(2,2)
+               kyz(i,j,k) = - k3(2,3)
+               kzz(i,j,k) = - k3(3,3)
 
             end do
          end do
       end do
 
 C     Synchronize and bound slicetmp2, which contains dx^A/dt.
-C     This is really just for output, and will eventually be redundant.
 
       call linextraponebound(CCTK_FARGUMENTS,slicetmp2x)
       call linextraponebound(CCTK_FARGUMENTS,slicetmp2y)
@@ -312,12 +308,25 @@ C     This is really just for output, and will eventually be redundant.
  
       call CCTK_SyncGroup(cctkGH,"Exact::Exact_slicetemp2")
 
-      kxx = - kxx
-      kxy = - kxy
-      kxz = - kxz
-      kyy = - kyy
-      kyz = - kyz
-      kzz = - kzz
+C     Bound and synchronize the 3-metric and extrinsic curvature.
+
+      call linextraponebound(CCTK_FARGUMENTS,gxx)
+      call linextraponebound(CCTK_FARGUMENTS,gxy)
+      call linextraponebound(CCTK_FARGUMENTS,gxz)
+      call linextraponebound(CCTK_FARGUMENTS,gyy)
+      call linextraponebound(CCTK_FARGUMENTS,gyz)
+      call linextraponebound(CCTK_FARGUMENTS,gzz)
+
+      call CCTK_SyncGroup(cctkGH,"Einstein::metric")
+
+      call linextraponebound(CCTK_FARGUMENTS,kxx)
+      call linextraponebound(CCTK_FARGUMENTS,kxy)
+      call linextraponebound(CCTK_FARGUMENTS,kxz)
+      call linextraponebound(CCTK_FARGUMENTS,kyy)
+      call linextraponebound(CCTK_FARGUMENTS,kyz)
+      call linextraponebound(CCTK_FARGUMENTS,kzz)
+
+      call CCTK_SyncGroup(cctkGH,"Einstein::curv")
 
       return
       end
