@@ -36,20 +36,12 @@ c output arguments
       CCTK_REAL psi
       LOGICAL   Tmunu_flag
 
-c local static variables
-      logical firstcall
+c local variables
       CCTK_REAL boostv, eps, m, a
-      data firstcall /.true./
-      save firstcall, boostv, eps, m, a
 
 c local variables
       CCTK_REAL gamma, t0, z0, x0, y0, rho02, r02, r0, costheta0, 
      $     lt0, lx0, ly0, lz0, hh, lt, lx, ly, lz
-
-      integer R02_TOO_SMALL_WARN_LEVEL
-      parameter (R02_TOO_SMALL_WARN_LEVEL = 2)
-
-      character*100 warn_buffer
 
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
@@ -60,13 +52,10 @@ C     Get parameters of the exact solution,
 C     and convert from parameter file spin parameter J/m^2
 C     to the J/m definition used in the code here.
 
-      if (firstcall) then
-         boostv = Kerr_KerrSchild__boost_v
-         eps    = Kerr_KerrSchild__epsilon
-         m      = Kerr_KerrSchild__mass
-         a      = m*Kerr_KerrSchild__spin
-         firstcall = .false.
-      end if
+      boostv = Kerr_KerrSchild__boost_v
+      eps    = Kerr_KerrSchild__epsilon
+      m      = Kerr_KerrSchild__mass
+      a      = m*Kerr_KerrSchild__spin
 
 C     Boost factor.
 
@@ -90,19 +79,7 @@ C     Spherical auxiliary coordinate r and angle theta in BH rest frame.
 
       r02 = 0.5d0 * (rho02 - a**2) 
      $     + sqrt(0.25d0 * (rho02 - a**2)**2 + a**2 * z0**2)
-      if (r02 .lt. eps) then
-         call CCTK_WARN(R02_TOO_SMALL_WARN_LEVEL,'Kerr/Kerr-Schild: r02 is too small at relative position')
-
-         write(warn_buffer, '(a,f8.3, a,f8.3, a,f8.3)')
-     $        '                  x0=',x0, ' y0=',y0, ' z0=',z0
-         call CCTK_WARN(R02_TOO_SMALL_WARN_LEVEL, warn_buffer)
-
-         write(warn_buffer, '(a,f9.3, a,g12.3)')
-     $        '                  rho02=',rho02, ' ==> r02=',r02
-         call CCTK_WARN(R02_TOO_SMALL_WARN_LEVEL, warn_buffer)
-      end if
-      r02 = max(r02,eps)
-      r0 = sqrt(r02)
+      r0 = (r02**2 + eps**4)**0.25d0
       costheta0 = z0 / r0
       
 C     Coefficient H. Note this transforms as a scalar, so does not carry
