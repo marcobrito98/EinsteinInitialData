@@ -12,12 +12,13 @@
 #include "cctk_Parameters.h"
 #include "cctk_Arguments.h"
 
-      subroutine finishbrilldata(CCTK_ARGUMENTS)
+      subroutine IDBrillData_Finish(CCTK_ARGUMENTS)
 
       implicit none
 
       DECLARE_CCTK_ARGUMENTS
       DECLARE_CCTK_PARAMETERS
+      DECLARE_CCTK_FUNCTIONS
 
       integer i,j,k
       integer nx,ny,nz
@@ -59,7 +60,6 @@ c     Brill metric calculated from q and Psi.
 
                phi = phif(x1,y1)
 
-               psi4 = brillpsi(i,j,k)**4
                e2q  = dexp(2.d0*brillq(rho1,z1,phi))
 
 c              Fudge division by rho^2 on axis. (Physically, y^/rho^2,
@@ -74,26 +74,61 @@ c              The individual coefficients can be read off as
 
                if (rho1.gt.rhofudge) then
 
-                  gxx(i,j,k) = psi4*(e2q + (one - e2q)*y1**2/rho2)
-                  gyy(i,j,k) = psi4*(e2q + (one - e2q)*x1**2/rho2)
-                  gzz(i,j,k) = psi4*e2q
-                  gxy(i,j,k) = - psi4*(one - e2q)*x1*y1/rho2
+                  gxx(i,j,k) = (e2q + (one - e2q)*y1**2/rho2)
+                  gyy(i,j,k) = (e2q + (one - e2q)*x1**2/rho2)
+                  gzz(i,j,k) = e2q
+                  gxy(i,j,k) = - (one - e2q)*x1*y1/rho2
 
                else
 
 c                 This fudge assumes that q = O(rho^2) near the axis. Which
 c                 it should be, or the data will be singular.
 
-                  gxx(i,j,k) = psi4
-                  gyy(i,j,k) = psi4
-                  gzz(i,j,k) = psi4
-                  gxy(i,j,k) = zero
+                  gxx(i,j,k) = 0.0d0
+                  gyy(i,j,k) = 0.0d0
+                  gzz(i,j,k) = 0.0d0
+                  gxy(i,j,k) = 0.0d0
 
                end if
 
             end do
          end do
       end do
+
+      if (CCTK_EQUALS(metric_type,"static conformal")) then
+
+         conformal_state = 1
+
+         do k=1,nz
+            do j=1,ny
+               do i=1,nx
+
+                  psi(i,j,k) = brillpsi(i,j,k)
+                  
+               end do
+            end do
+         end do
+
+      else
+
+         conformal_state = 0
+
+         do k=1,nz
+            do j=1,ny
+               do i=1,nx
+
+                  psi4  = brillpsi(i,j,k)**4
+
+                  gxx(i,j,k) = psi4*gxx(i,j,k)
+                  gyy(i,j,k) = psi4*gyy(i,j,k)
+                  gzz(i,j,k) = psi4*gzz(i,j,k)
+                  gxy(i,j,k) = psi4*gxy(i,j,k)
+                  
+               end do
+            end do
+         end do
+
+      end if
 
 c     In any case,
 

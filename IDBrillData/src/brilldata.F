@@ -23,26 +23,25 @@
       DECLARE_CCTK_FUNCTIONS
 
       integer ipsi,iMcoeff,iNcoeff
-      integer metpsi_index(7)
+      integer metric_index(6)
       integer ierr
 
       CCTK_REAL AbsTol(3),RelTol(3)
 
 c     Get indices for metric.
 
-      call CCTK_VarIndex(metpsi_index(1), "admbase::gxx")
-      call CCTK_VarIndex(metpsi_index(2), "admbase::gxy")
-      call CCTK_VarIndex(metpsi_index(3), "admbase::gxz")
-      call CCTK_VarIndex(metpsi_index(4), "admbase::gyy")
-      call CCTK_VarIndex(metpsi_index(5), "admbase::gyz")
-      call CCTK_VarIndex(metpsi_index(6), "admbase::gzz")
-      call CCTK_VarIndex(metpsi_index(7), "staticconformal::psi")
+      call CCTK_VarIndex(metric_index(1), "admbase::gxx")
+      call CCTK_VarIndex(metric_index(2), "admbase::gxy")
+      call CCTK_VarIndex(metric_index(3), "admbase::gxz")
+      call CCTK_VarIndex(metric_index(4), "admbase::gyy")
+      call CCTK_VarIndex(metric_index(5), "admbase::gyz")
+      call CCTK_VarIndex(metric_index(6), "admbase::gzz")
 
 c     Get indices for grid functions.
 
       call CCTK_VarIndex(ipsi,"idbrilldata::brillpsi")
       if (ipsi.lt.0) then
-	call CCTK_WARN(0,"Grid variable index for iphi not found")
+	call CCTK_WARN(0,"Grid variable index for ipsi not found")
       end if
 
       call CCTK_VarIndex(iMcoeff,"idbrilldata::brillMlinear")
@@ -83,14 +82,14 @@ c     Elliptic solver.
 
       if (CCTK_EQUALS(brill_solver,"sor")) then
          call Ell_SetIntKey(ierr,sor_maxit,"Ell::SORmaxit");
-         call Ell_LinConfMetricSolver(ierr,cctkGH, 
-     .   metpsi_index,ipsi,iMcoeff,iNcoeff,AbsTol,RelTol,"sor")
+         call Ell_LinMetricSolver(ierr,cctkGH, 
+     .   metric_index,ipsi,iMcoeff,iNcoeff,AbsTol,RelTol,"sor")
       else if (CCTK_EQUALS(brill_solver,"petsc")) then
-         call Ell_LinConfMetricSolver(ierr,cctkGH, 
-     .   metpsi_index,ipsi,iMcoeff,iNcoeff,AbsTol,RelTol,"petsc")
+         call Ell_LinMetricSolver(ierr,cctkGH, 
+     .   metric_index,ipsi,iMcoeff,iNcoeff,AbsTol,RelTol,"petsc")
       else if (CCTK_EQUALS(brill_solver,"bam")) then
-         call Ell_LinConfMetricSolver(ierr,cctkGH, 
-     .   metpsi_index,ipsi,iMcoeff,iNcoeff,AbsTol,RelTol,"bam")
+         call Ell_LinMetricSolver(ierr,cctkGH, 
+     .   metric_index,ipsi,iMcoeff,iNcoeff,AbsTol,RelTol,"bam")
       end if
 
 c     Check for errors.
@@ -110,9 +109,9 @@ c     Synchronization and symmetry boundaries.
       call CCTK_SyncGroup(ierr,cctkGH,"idbrilldata::brillconf")
       call CartSymGN(ierr,cctkGH,"idbrilldata::brillconf")
 
-c     Reconstruct physical metric.
+c     Construct final metric.
 
-      call finishbrilldata(CCTK_ARGUMENTS)
+      call IDBrillData_Finish(CCTK_ARGUMENTS)
 
       return
       end
