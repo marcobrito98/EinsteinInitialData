@@ -1,5 +1,6 @@
 Cactus Code Thorn Exact
 Authors    : Carsten Gundlach initially, plus many other authors.
+Maintainer : Jonathan Thornburg <jthorn@aei.mpg.de>
 CVS info   : $Header$
 --------------------------------------------------------------------------
 
@@ -15,10 +16,6 @@ spcetimes.  All od these exact spacetimes have been found useful for
 testing different aspect of the code.  Since mamy different people have
 contributed to this thorn by adding new exact solutions, you should expect
 many different styles of coding here.
-
-The current maintainer is Jonathan Thornburg <jthorn@aei.mpg.de> .
-Mitica Vulcanov <vulcan@aei.mpg.de> is the maintainer for the
-Schwarzschild-Lemaitre solution and all the cosmological solutions.
 
 For more details see the comments in the param.ccl file, and the
 documentation in the directory doc.  For instructions on how to add
