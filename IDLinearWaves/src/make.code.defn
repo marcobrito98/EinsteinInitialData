@@ -3,7 +3,6 @@
 
 # Source files in this directory
 SRCS = 	\
-	LinearWaves.F\
 	planewaves.F\
 	teukwaves.F
 
