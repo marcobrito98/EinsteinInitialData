@@ -78,7 +78,7 @@ REAL exblend_rout "Outer boundary of blending region"
 
 REAL exblend_width "Width of blending zone"
 {
-: :: Positive means width in radius, negative means width = exbeldn_width*dx"
+: :: "Positive means width in radius, negative means width = exbeldn_width*dx"
 } -3.0
 
 
