@@ -25,9 +25,6 @@ c
 c  @endhistory 
 c@@*/
       
-c     Need include file from Einstein
-#include "CactusEinstein/Einstein/src/Einstein.h"
-
       subroutine IDAxiBrillBH(CCTK_ARGUMENTS)
       
       implicit none
