@@ -108,12 +108,12 @@ c     precalc
       kx = 2*pi*sin(the)*cos(phi)/wave
       ky = 2*pi*sin(the)*sin(phi)/wave
       kz = 2*pi*cos(the)/wave
-      w = (kx*kx+ky*ky+kz*kz)**0.5
+      w = sqrt(kx*kx+ky*ky+kz*kz)
       
       kxp = 2*pi*sin(the)*cos(phi)/wavep
       kyp = 2*pi*sin(the)*sin(phi)/wavep
       kzp = 2*pi*cos(the)/wavep
-      wp = (kxp*kxp+kyp*kyp+kzp*kzp)**0.5
+      wp = sqrt(kxp*kxp+kyp*kyp+kzp*kzp)
 
 c  *************** plane waves ********************
       do k=1,cctk_lsh(3)
