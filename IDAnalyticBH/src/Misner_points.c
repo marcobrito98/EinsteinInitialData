@@ -18,6 +18,10 @@
 #include <assert.h>
 #include <math.h>
 
+static const char *rcsid = "$Header$";
+
+CCTK_FILEVERSION(CactusEinstein_IDAnalyticBH_Misner_points_c)
+
 void Misner_init(int n, CCTK_REAL mu, int terms);
 void MisnerEvalPsi(CCTK_REAL x, CCTK_REAL y, CCTK_REAL z, CCTK_REAL *res);
 

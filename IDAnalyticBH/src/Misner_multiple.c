@@ -17,8 +17,8 @@
 #include "CactusEinstein/Einstein/src/Einstein.h"
 
 static char *rcsid = "$Header$";
-CCTK_FILEVERSION(CactusEinstein_IDAnalyticBH_Misner_multiple_c)
 
+CCTK_FILEVERSION(CactusEinstein_IDAnalyticBH_Misner_multiple_c)
 
 #define SQR(a) ((a)*(a))
 
