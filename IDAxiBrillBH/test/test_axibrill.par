@@ -2,7 +2,7 @@
 !DESC "Initial data for axisymmetric distored black hole"
 ######################################################################
 
-ActiveThorns = "time iobasic ADMconstraints pugh interp cartgrid3d einstein ADM IDAxiBrillBH ioascii ioutil"
+ActiveThorns = "Boundary time iobasic ADMconstraints pugh pughslab pughreduce pughinterp cartgrid3d einstein ADM IDAxiBrillBH ioascii ioutil"
 
 #pugh::enable_all_storage = "yes"
 #cactus::cctk_show_banners = 0
@@ -37,19 +37,29 @@ idaxibrillbh::etamax   = 6.0
 idaxibrillbh::n        = 2
 idaxibrillbh::ne       = 102
 idaxibrillbh::nq       = 27
-interp::order          = 1
 
+idaxibrillbh::interpolation_order          = 1
 
 # GAUGE
 einstein::slicing    = "geodesic"  
 
 
 # OUTPUT ########################################################
-IO::outdir         = "test_axibrill"
+IO::outdir               = "test_axibrill"
+IO::out_fileinfo         = "none"
 IOASCII::out1d_every     =  1
 IOASCII::out1D_vars      = "einstein::curv einstein::metric einstein::grr admconstraints::ham"
 IOBasic::outInfo_every   = 1
 IOBasic::outInfo_vars    = "einstein::gxx"
+
+IOASCII::out1D_xline_y   = 0.2
+IOASCII::out1D_xline_z   = 0.2
+
+IOASCII::out1D_yline_x   = 0.2
+IOASCII::out1D_yline_z   = 0.2
+
+IOASCII::out1D_zline_x   = 0.2
+IOASCII::out1D_zline_y   = 0.2
 
 ##################################################################
 

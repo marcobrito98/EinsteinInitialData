@@ -8,8 +8,8 @@ c  @enddesc
 c@@*/
 
 #include "cctk.h" 
-#include "cctk_parameters.h"
-#include "cctk_arguments.h"
+#include "cctk_Parameters.h"
+#include "cctk_Arguments.h"
 
 c/*@@
 c  @routine    AxiBrillBHIVP
@@ -28,11 +28,11 @@ c@@*/
 c     Need include file from Einstein
 #include "CactusEinstein/Einstein/src/Einstein.h"
 
-      subroutine AxiBrillBHIVP(CCTK_FARGUMENTS)
+      subroutine AxiBrillBHIVP(CCTK_ARGUMENTS)
       
       implicit none
       
-      DECLARE_CCTK_FARGUMENTS
+      DECLARE_CCTK_ARGUMENTS
       DECLARE_CCTK_PARAMETERS
 
 c     Perhaps this and others should go into cctk.h
@@ -246,7 +246,7 @@ c               phi(i,j,k)= datan2(y(i,j,k),x(i,j,k))
          enddo
       enddo
 
-      call CCTK_GetInterpHandle (handle, "simple_local")
+      call CCTK_InterpHandle (handle, "simple_local")
       
       npoints = nx*ny*nz
 
