@@ -43,35 +43,7 @@ C     Set data pointwise.
       ny = cctk_lsh(2)
       nz = cctk_lsh(3)
 
-      if ((CCTK_Equals(initial_data,"exact") == 1).and.
-     .    (CCTK_Equals(initial_lapse,"exact") == 1)) then
-
-         do k=1,nz
-            do j=1,ny
-               do i=1,nx
-
-                  call exactdata(x(i,j,k), y(i,j,k), z(i,j,k), cctk_time,
-     $              gxx(i,j,k), gyy(i,j,k), gzz(i,j,k), 
-     $              gxy(i,j,k), gyz(i,j,k), gxz(i,j,k),
-     $              kxx(i,j,k), kyy(i,j,k), kzz(i,j,k), 
-     $              kxy(i,j,k), kyz(i,j,k), kxz(i,j,k),
-     $              dxgxxjunk, dxgyyjunk, dxgzzjunk, 
-     $              dxgxyjunk, dxgyzjunk, dxgxzjunk,
-     $              dygxxjunk, dygyyjunk, dygzzjunk, 
-     $              dygxyjunk, dygyzjunk, dygxzjunk,
-     $              dzgxxjunk, dzgyyjunk, dzgzzjunk, 
-     $              dzgxyjunk, dzgyzjunk, dzgxzjunk,
-     $              alp(i,j,k), axjunk, ayjunk, azjunk, 
-     $              betaxjunk, betayjunk, betazjunk,
-     $              bxxjunk, bxyjunk, bxzjunk,
-     $              byxjunk, byyjunk, byzjunk,
-     $              bzxjunk, bzyjunk, bzzjunk)
-
-               end do
-            end do
-         end do
-
-      else if (CCTK_Equals(initial_data,"exact") == 1) then
+      if (CCTK_Equals(initial_data,"exact") == 1) then
 
          do k=1,nz
             do j=1,ny
@@ -98,7 +70,9 @@ C     Set data pointwise.
             end do
          end do
 
-      else if (CCTK_Equals(initial_lapse,"exact") == 1) then
+      end if
+
+      if (CCTK_Equals(initial_lapse,"exact") == 1) then
 
          do k=1,nz
             do j=1,ny
@@ -117,6 +91,35 @@ C     Set data pointwise.
      $                 dzgxyjunk, dzgyzjunk, dzgxzjunk,
      $                 alp(i,j,k), axjunk, ayjunk, azjunk, 
      $                 betaxjunk, betayjunk, betazjunk,
+     $                 bxxjunk, bxyjunk, bxzjunk, 
+     $                 byxjunk, byyjunk, byzjunk, 
+     $                 bzxjunk, bzyjunk, bzzjunk)
+
+               end do
+            end do
+         end do
+
+      end if
+
+      if (CCTK_Equals(initial_shift,"exact") == 1) then
+
+         do k=1,nz
+            do j=1,ny
+               do i=1,nx
+
+                  call exactdata(x(i,j,k), y(i,j,k), z(i,j,k), cctk_time,
+     $                 gxxjunk, gyyjunk, gzzjunk, 
+     $                 gxyjunk, gyzjunk, gxzjunk,
+     $                 kxxjunk, kyyjunk, kzzjunk, 
+     $                 kxyjunk, kyzjunk, kxzjunk,
+     $                 dxgxxjunk, dxgyyjunk, dxgzzjunk, 
+     $                 dxgxyjunk, dxgyzjunk, dxgxzjunk,
+     $                 dygxxjunk, dygyyjunk, dygzzjunk, 
+     $                 dygxyjunk, dygyzjunk, dygxzjunk,
+     $                 dzgxxjunk, dzgyyjunk, dzgzzjunk, 
+     $                 dzgxyjunk, dzgyzjunk, dzgxzjunk,
+     $                 alpjunk, axjunk, ayjunk, azjunk, 
+     $                 betax(i,j,k), betay(i,j,k), betaz(i,j,k),
      $                 bxxjunk, bxyjunk, bxzjunk, 
      $                 byxjunk, byyjunk, byzjunk, 
      $                 bzxjunk, bzyjunk, bzzjunk)
