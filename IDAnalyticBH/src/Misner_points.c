@@ -122,7 +122,7 @@ void fill_iso(struct bhole *b, int n)
 
 @@*/
 
-void FORTRAN_NAME(Misner_init)(int *n, CCTK_REAL *mu, int *terms) 
+void FMODIFIER FORTRAN_NAME(Misner_init)(int *n, CCTK_REAL *mu, int *terms) 
 {
 
   int i;
@@ -198,7 +198,7 @@ CCTK_REAL eval_bh_psi(struct bhole *b, CCTK_REAL x, CCTK_REAL y, CCTK_REAL z)
 
 @@*/
 
-void FORTRAN_NAME(MisnerEvalPsi)(CCTK_REAL *x, CCTK_REAL *y, CCTK_REAL *z, CCTK_REAL *res) 
+void FMODIFIER FORTRAN_NAME(MisnerEvalPsi)(CCTK_REAL *x, CCTK_REAL *y, CCTK_REAL *z, CCTK_REAL *res) 
 {
   int i;
   *res = 1;
