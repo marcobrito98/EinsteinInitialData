@@ -1,17 +1,23 @@
+/*@@
+  @file      phif.F
+  @date      October 1998
+  @author    Miguel Alcubierre
+  @desc
+             Function to find angle phi from coordinates {x,y}.
+  @enddesc
+  @version   $Header$
+@@*/
+
 #include "cctk.h"
 
       CCTK_REAL function phif(x,y)
 
-c     Author: Miguel Alcubierre, October 1998.
-c
-c     Function to find angle phi from coordinates {x,y}.
-
       implicit none
 
       CCTK_REAL x,y
-      real*8 zero,half,one,two,pi
+      CCTK_REAL zero,half,one,two,pi
 
-c     Define numbers.
+c     Numbers.
 
       zero = 0.0D0
       half = 0.5D0
