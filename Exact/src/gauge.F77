@@ -123,6 +123,9 @@ C     (also to tell the models about the conformal_state)
      $                 bxxjunk, bxyjunk, bxzjunk, 
      $                 byxjunk, byyjunk, byzjunk, 
      $                 bzxjunk, bzyjunk, bzzjunk)
+                  betax(i,j,k) = betax(i,j,k) + shift_add_x
+                  betay(i,j,k) = betay(i,j,k) + shift_add_y
+                  betaz(i,j,k) = betaz(i,j,k) + shift_add_z
                end do
             end do
          end do
@@ -244,6 +247,9 @@ C     (also to tell the models about the conformal_state)
      $                 bxxjunk, bxyjunk, bxzjunk, 
      $                 byxjunk, byyjunk, byzjunk, 
      $                 bzxjunk, bzyjunk, bzzjunk)
+                  betax(i,j,k) = betax(i,j,k) + shift_add_x
+                  betay(i,j,k) = betay(i,j,k) + shift_add_y
+                  betaz(i,j,k) = betaz(i,j,k) + shift_add_z
 
                end do
             end do
