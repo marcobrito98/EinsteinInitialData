@@ -12,16 +12,20 @@ real Exact_slice type=GF
   slicey,
   slicez,
   slicet
-} "position of an arbitrary slice in exact solution spacetime"
+} "Position of an arbitrary slice in exact solution spacetime"
 
-real Exact_slicetemp type=GF
+real Exact_slicetemp1 type=GF
 {
   slicetmp1x,
   slicetmp1y,
   slicetmp1z,
-  slicetmp1t,
+  slicetmp1t
+} "Temporary grid functions 1"
+
+real Exact_slicetemp2 type=GF
+{
   slicetmp2x,
   slicetmp2y,
   slicetmp2z,
   slicetmp2t
-} "Temporary grid functions"
+} "Temporary grid functions 2"
