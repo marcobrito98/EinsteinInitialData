@@ -1,20 +1,8 @@
 Cactus Code Thorn IDAxiOddBrillBH
-Authors    : ...
-Managed by : ... <...@...........>
-Version    : ...  
+Authors    : Ryoji Takahashi 
 CVS info   : $Header$
 --------------------------------------------------------------------------
 
-1. Purpose of the thorn
+This thorn does calculates initial data for a black hole distorted
+by a axisymmetric odd parity perturbation 
 
-This thorn does ...
-
-2. Dependencies of the thorn
-
-This thorn additionally requires implementations and thorns ...
-
-3. Thorn distribution
-
-This thorn is available to ...
-
-4. Additional information

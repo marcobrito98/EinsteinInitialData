@@ -28,11 +28,11 @@ c@@*/
 c     Need include file from Einstein
 #include "CactusEinstein/Einstein/src/Einstein.h"
 
-      subroutine IDAxiOddBrillBH(CCTK_FARGUMENTS)
+      subroutine IDAxiOddBrillBH(CCTK_ARGUMENTS)
       
       implicit none
       
-      DECLARE_CCTK_FARGUMENTS
+      DECLARE_CCTK_ARGUMENTS
       DECLARE_CCTK_PARAMETERS
 
 c     Perhaps this and others should go into cctk.h
