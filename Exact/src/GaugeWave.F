@@ -2,8 +2,8 @@
 #include "cctk_Arguments.h"
 #include "cctk_Parameters.h"
 
-C    #define Pi 4 * atan(1.d0)
-C #define Pi 3.1415
+#define Pi (4 * atan(1.d0))
+
       
       subroutine  gauge_wave(
      $     x, y, z, t,
@@ -39,7 +39,8 @@ C     Get parameters of the exact solution.
          a = GW_a
          o = GW_omega
          half = 1/2d0
-         d = GW_del / 8d0 / atan(1.d0)
+C         d = GW_del / 8d0 / atan(1.d0)
+         d = GW_del * half / Pi
          fs = GW_phase_shift
 
          firstcall = .false.
@@ -49,7 +50,7 @@ C     Get parameters of the exact solution.
 C     How should the wave look like
       if (CCTK_Equals(GW_H,"sin").eq.1) then
         
-        if (GW_diagonal) then
+        if (GW_diagonal.ne.0) then
 
           H = 1 - a * sin((x-y)/sqrt(2.d0)/d - o*t/d)
  
@@ -67,7 +68,7 @@ C     How should the wave look like
 
 C     write metric      
 
-      if (GW_diagonal) then
+      if (GW_diagonal.ne.0) then
          gdxx = half + half *H 
          gdyy = half + half *H 
          gdxy = half - half *H  
