@@ -6,9 +6,7 @@ C $Header$
 #include "cctk_Arguments.h"
 
       subroutine Exact__slice_data(CCTK_ARGUMENTS)
-
       implicit none
-
       DECLARE_CCTK_ARGUMENTS
 
       integer i, j, k, l, m, n, p, q, s
@@ -69,7 +67,7 @@ C     Now we need the exact solution metric in the preferred coordinates x^A.
 
 C     Calculate n^A and dx^A/dt
 
-#include "include/slice_normal.h"
+#include "include/slice_normal.inc"
 
 C     Calculate g_ij = X^A,i X^B,j g_AB, at first in a temp.
 
@@ -341,5 +339,3 @@ C     Bound and synchronize the 3-metric and extrinsic curvature.
 
       return
       end
-
-

@@ -5,9 +5,7 @@ C $Header$
 #include "cctk_Arguments.h"
 
       subroutine Exact__slice_evolve(CCTK_ARGUMENTS)
-
       implicit none
-
       DECLARE_CCTK_ARGUMENTS
 
       integer i,j,k,m,n
@@ -86,7 +84,7 @@ C     x^A.
      $              gu(1,2), gu(2,3), gu(1,3))
 
 C     Calculate n^A and dx^A/dt
-#include "include/slice_normal.h"
+#include "include/slice_normal.inc"
 
             end do
          end do

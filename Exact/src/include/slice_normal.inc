@@ -1,3 +1,7 @@
+C slice_normal.inc -- common code for computing n^A and dx^A/dt,
+C                     used in ../slice_data.F and ../slice_evolve.F
+C $Header$
+
 C     Fill in remaining components of metric.
       do m=1,4
          do n=1,m-1

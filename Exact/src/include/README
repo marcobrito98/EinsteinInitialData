@@ -24,6 +24,6 @@ param_defs.inc
 	other decoded keyword/string parameters they should also
 	live here.
 
-slice_normal.h
-	Despite the file name, this actually contains Fortran (!) code,
-	to compute the normal vector to a slice.
+slice_normal.inc
+	This contains a fragment of Fortran code to compute the
+	normal vector to a slice.
