@@ -2,7 +2,7 @@
 # $Header$
 
 # Source files in this directory
-SRCS = RotatingDBHIVP.F Stab3d.F
+SRCS = RotatingDBHIVP.F Stab3d.F ParamCheck.c
 
 # Subdirectories containing source files
 SUBDIRS = 
