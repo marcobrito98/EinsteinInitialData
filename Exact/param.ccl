@@ -35,6 +35,7 @@ EXTENDS KEYWORD initial_shift
 
 EXTENDS KEYWORD evolution_method
 {
+  "exact" :: "Fake an evolution by setting exact data at every timestep"
   "slice" :: "Evolve arbitrary slice and  extract Cauchy data"
 }
 

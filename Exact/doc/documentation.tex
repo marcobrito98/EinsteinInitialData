@@ -117,7 +117,7 @@
 
 % Add an abstract for this thorn's documentation
 \begin{abstract}
-This thorn sets up the $3+1$ ADM field variables for any of a number
+This thorn sets up the $3+1$ ADM variables for any of a number
 of exact spacetimes/coordinates, and even some non-Einstein
 spcetimes/coordinates.  It's easy to add more spacetimes/coordinates:
 all you have to supply is the 4-metric $g_{ab}$ and the inverse 4-metric
@@ -133,18 +133,30 @@ order to test gauge conditions without the need for an evolution code.
 
 \section{Introduction}
 
-This thorn sets up the ADM field variables for any of a number of
+This thorn sets up the ADM variables for any of a number of
 different spacetimes/coordinates (we call the combination of a
 spacetime and a coordinate system a \defn{model}), as specified by the
 \verb|Exact::exact_model| parameter.
 
-Optionally, the ADM variables can be calculated on an arbitrary slice
-through the spacetime, using arbitrary coordinates on the slice. Given
-a lapse and shift, the slice can be evolved through the exact
-solution, in order to check on an evolution code, or in order to test
-gauge conditions without the need for an evolution code. This is
+By default, this thorn sets up the ADM variables on an initial
+slice only.  However, setting\\
+\verb|ADMBase::evolution_method = "exact"|
+makes this thorn set up the ADM variables at \verb|CCTK_PRESTEP|
+every time step of an evolution, so you get an exact {\em spacetime\/},
+not just a single slice.
+
+There is also a more general option to set up the ADM variables
+on an arbitrary slice through the spacetime, using arbitrary
+coordinates on the slice.  Given a lapse and shift computed by some
+other thorn(s), the slice can be evolved through the exact solution,
+in order to check on an evolution code, or in order to test gauge
+conditions without the need for an evolution code.  This option is
 documented in the file \verb|slice_evolver.tex| in the \verb|doc/|
 directory.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Models Supported}
 
 The following models are currently supported:%%%
 \footnote{%%%
@@ -1209,6 +1221,8 @@ code works.)
 The description of the Kastor-Traschen maximally charged multi-BH
 model is adapted from the file \verb|KTsol.tex| in this same directory,
 by Hisa-aki Shinkai.
+The \verb|ADMBase::evolution_method = "exact"| code was written
+by Peter Diener.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

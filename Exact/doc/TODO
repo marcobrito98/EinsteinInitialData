@@ -22,18 +22,6 @@ than 1 point.
 
 ----------------------------------------
 
-Peter Diener:
-There's no documented way to generate an entire exact spacetime
-(not just a t=0 slice).  The "slice_evolver.tex" stuff may be able
-to do this, but it looks complicated. :(  There ought to be a
-simple way of doing this!  (And it ought to be documented simply, too!)
-
---> Peter has come up with a small patch to the param.ccl and schedule.ccl
-    files which does this.  I (JT) need to document this and commit it
-    to CVS.
-
-----------------------------------------
-
 Every model should have .ge. 1 test case!  Right now most of the
 models have no test cases at all, and this makes it way too easy for
 bugs to creep in and go undetected for a long time.

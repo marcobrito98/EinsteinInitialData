@@ -113,6 +113,17 @@ if ( (CCTK_Equals(evolution_method,"slice")) && (CCTK_Equals(initial_data,"slice
   } "Evolve arbitrary slice and extract Cauchy data"
 }
 
+# Fake the evolution of an exact solution, by setting g and K according
+# to the exact solution at CCTK_PRESTEP.
+
+if (CCTK_Equals(evolution_method,"exact"))
+{
+  schedule Exact__initialize at CCTK_PRESTEP
+  {
+    LANG: Fortran
+  } "Set data from exact solution on an exact slice"
+}
+
 #######################################################################
 # BOUNDARY DATA
 #######################################################################
