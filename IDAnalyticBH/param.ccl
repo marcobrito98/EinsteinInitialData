@@ -109,7 +109,7 @@ REAL bl_M_4 "Mass of 4th BL hole"
 
 shares:einstein
 
-EXTENDS KEYWORD initial_data ""
+EXTENDS KEYWORD initial_data 
 {
   "schwarzschild"      :: "One Schwarzshild black hole"
   "bl_bh"              :: "Brill Lindquist black holes"
@@ -118,23 +118,23 @@ EXTENDS KEYWORD initial_data ""
   "kerr"	       :: "One Kerr black hole"	
 } 
 
-EXTENDS KEYWORD initial_lapse ""
+EXTENDS KEYWORD initial_lapse 
 {
   "schwarz" :: "Set lapse to Schwarzschild"
   "cadez" :: "Set lapse to Misner"
   "Kerr"  :: "Set lapse to Kerr"
 }
 
-EXTENDS KEYWORD initial_shift ""
+EXTENDS KEYWORD initial_shift 
 {
   "Kerr"  :: "Set shift to Kerr"
 }
 
-EXTENDS BOOLEAN use_conformal ""
+EXTENDS BOOLEAN use_conformal 
 {
 }
 
-EXTENDS BOOLEAN use_conformal_derivs ""
+EXTENDS BOOLEAN use_conformal_derivs 
 {
 }
 
