@@ -13,7 +13,7 @@
 @@*/
         
 /*@@
-  @routine  teukwaves
+  @routine  IDLinearWaves_TeukWaves
   @date     Jan 96
   @author   Malcolm Tobias + Joan Masso 
   @desc 
@@ -28,7 +28,7 @@
   @enddesc
 @@*/
 
-      subroutine teukwaves(CCTK_ARGUMENTS)
+      subroutine IDLinearWaves_TeukWaves(CCTK_ARGUMENTS)
       implicit none
       
       DECLARE_CCTK_ARGUMENTS
@@ -63,8 +63,6 @@ c     from old spheretocart
 
       DECLARE_CCTK_PARAMETERS
             
-cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-
       pi    = 3.14159265358979
       kappa = sqrt(143.0d0/pi)/12288.0d0
       
@@ -72,11 +70,6 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
          call CCTK_WARN(0,"Teukwaves: wavecenter must be zero for time symmetry")
       endif
  
-c     CACTUS 4.0: all REAL/INTEGER parameter are available as variables and 
-c     need not be derived from the database. Nevertheless I will assign 
-c     the parameter variables to the variables of CAC3.0, to allow for 
-c     easy portation (wavepulse stays wavepulse btw). (GERD)
-      
       amp  = amplitude
       m    = mvalue
       wave = wavelength

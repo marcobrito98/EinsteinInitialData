@@ -13,7 +13,7 @@
 @@*/
 
  /*@@
-   @routine    planewaves
+   @routine    IDLinearWaves_PlaneWaves
    @date       Mon Jan 29 11:57:00 1996
    @author     Malcolm Tobias + Joan Masso
    @desc   
@@ -39,7 +39,8 @@
 #include "cctk_Parameters.h"
 
 
-      subroutine planewaves(CCTK_ARGUMENTS)
+      subroutine IDLinearWaves_PlaneWaves(CCTK_ARGUMENTS)
+
       implicit none
       
       DECLARE_CCTK_ARGUMENTS
@@ -53,7 +54,6 @@
       CCTK_REAL kxp,kyp,kzp,wp
       CHARACTER*200 infoline
 
-c     local arrays (scalars! Man, what a sweat!)
       CCTK_REAL plus,minus,plusp,minusp,ain,aout
       
       INTEGER i,j,k
@@ -63,9 +63,6 @@ c     local arrays (scalars! Man, what a sweat!)
       pi = 3.14159265358979d0
 
 c     Wave characteristics
-
-c     amplitude is declared by DECLARE_PARAMETER, for all other parameters
-c     we stick to the naming in the cactus3.2.0 version of cactus
 
 c     wavecentering
       ra   = wavecenter
