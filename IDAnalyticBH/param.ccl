@@ -114,3 +114,12 @@ EXTENDS KEYWORD initial_lapse ""
 {
   "schwarz" :: "Set lapse to Schwarzschild"
 }
+
+EXTENDS BOOLEAN use_conformal ""
+{
+}
+
+EXTENDS BOOLEAN use_conformal_derivs ""
+{
+}
+
