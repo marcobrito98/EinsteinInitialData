@@ -24,6 +24,7 @@ cactus::cctk_itlast        = 10
 
 adm::bound                 = "flat"      
 adm::method                = "leapfrog"
+admanalysis::normalize_dtheta_dphi = "yes"
 
 IO::outdir               = "kerr"
 IO::out_fileinfo         = "none"
