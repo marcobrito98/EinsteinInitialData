@@ -3,32 +3,35 @@
 ######################################################################
 
 #Required thorns
-ActiveThorns = "Boundary Time ADMconstraints PUGH PUGHSlab PUGHReduce PUGHInterp CartGrid3D Einstein ADM IDAxiBrillBH IOASCII IOUtil IOBasic"
+ActiveThorns = "Boundary Time ADMconstraints PUGH PUGHSlab PUGHReduce PUGHInterp CartGrid3D ADMBase admmacros coordgauge staticconformal ADM ADMAnalysis IDAxiBrillBH IOASCII IOUtil IOBasic"
 
 pugh::enable_all_storage = "yes"
 
-# GENERAL 
+# GENERAL
 
-einstein::evolution_system = "ADM"     
+ADMBase::evolution_method = "ADM"
+#ADMBase::metric_type = "static conformal"
+ADMBase::metric_type = "physical"
 
-driver::global_nx =  20     
-driver::global_ny =  20     
-driver::global_nz =  20     
+driver::global_nx =  22
+driver::global_ny =  22
+driver::global_nz =  22
 
 grid::type = "byspacing"
 grid::dxyz = 0.2
-grid::domain = "octant"
+#grid::domain = "octant"
 
-time::dtfac         =     0.25   
+time::dtfac = 0.25   
 
-cactus::cctk_initial_time         =     0.     
-cactus::cctk_itlast        =     10      
+cactus::cctk_initial_time  =     0.
+cactus::cctk_itlast        =     10
 
-adm::method        =    "stagleap" 
-adm::bound = "flat"
+adm::method = "stagleap"
+adm::bound  = "flat"
 
-# MODEL 
-einstein::initial_data = "axibrillbh"
+# MODEL
+#ADMBase::initial_data = "axibrillbh"
+# gives nans, independent of initial data -- something is wrong with these parameters, but not this thorn (DPR, 3 may 002)
 idaxibrillbh::amp = 0.5
 idaxibrillbh::eta0 = 0.0
 idaxibrillbh::sigma = 1.0
@@ -38,16 +41,16 @@ idaxibrillbh::ne = 302
 idaxibrillbh::nq = 54
 
 # GAUGE
-einstein::slicing       =    "geodesic"  
+ADMBase::lapse_evolution_method = "geodesic"
 
 
 # OUTPUT ########################################################
 
 IO::outdir = "IDAxiBrillBH"
 
-IOBasic::outInfo_every = 2      
-IOASCII::out1d_every = 1
-IOBasic::outInfo_vars = "einstein::gxx"
-IOASCII::out1d_vars = "einstein::gxx einstein::kxx admconstraints::ham einstein::grr einstein::alp"
+IOBasic::outInfo_every = 1
+IOASCII::out1d_every   = 1
+IOBasic::outInfo_vars = "admbase::gxx"
+IOASCII::out1d_vars = "admbase::gxx admbase::kxx admconstraints::ham admanalysis::grr admbase::alp"
 
 ##################################################################
