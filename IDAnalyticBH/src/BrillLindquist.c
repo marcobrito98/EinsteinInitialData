@@ -147,7 +147,8 @@ void BrillLindquist(CCTK_ARGUMENTS)
 
       tmp1 = sqrt(x_2+2.0*xval*hole_x0[n]+SQR(hole_x0[n])
                  +y_2+2.0*yval*hole_y0[n]+SQR(hole_y0[n])
-                 +z_2+2.0*zval*hole_z0[n]+SQR(hole_z0[n]));
+                 +z_2+2.0*zval*hole_z0[n]+SQR(hole_z0[n])
+                 +1.0e-20);
 
       psi[i] += hole_mass[n]/tmp1*0.5;
 
