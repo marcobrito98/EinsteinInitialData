@@ -1,14 +1,11 @@
+
 #include "cctk.h" 
 #include "cctk_Parameters.h"
 #include "cctk_Arguments.h"
-#include "../../../CactusEinstein/Einstein/src/Einstein.h"
+
+#include "CactusEinstein/Einstein/src/Einstein.h"
 
       subroutine finishbrilldata(CCTK_FARGUMENTS)
-
-C     Author: Carsten Gundlach.
-C
-C     Set up 3-metric, extrinsic curvature and BM variables
-C     once the conformal factor has been found.
 
       implicit none
 
@@ -66,7 +63,7 @@ C
 C              e^2q (drho^2 + dz^2) + rho^2 dphi^2 =
 C              e^2q (dx^2 + dy^2 + dz^2) + (1-e^2q) (xdy-ydx)^2/rho^2
 C
-C               The individual coefficients can be read off as
+C              The individual coefficients can be read off as
 
                if (rho1 .gt. rhofudge) then
 
@@ -77,8 +74,8 @@ C               The individual coefficients can be read off as
 
                else
 
-C              This fudge assumes that q = O(rho^2) near the axis. Which
-C              it should be, or the data will be singular.
+C                 This fudge assumes that q = O(rho^2) near the axis. Which
+C                 it should be, or the data will be singular.
 
                   gzz(i,j,k) = psi4 
                   gxx(i,j,k) = psi4 

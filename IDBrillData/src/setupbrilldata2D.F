@@ -58,9 +58,14 @@ C     [Delta(g) + Mlinear] psi = Nsource.
 
       psi = one
 
+      psix = zero
+      psiy = zero
+      psiz = zero
+
       gxx = one
       gyy = one
       gzz = one
+
       gxy = zero
       gxz = zero
       gyz = zero

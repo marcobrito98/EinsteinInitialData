@@ -1,3 +1,6 @@
+# Interface definition for thorn BrillData
+# $Header$
+
 implements: IDBrillData
 inherits: einstein ellbase
 
@@ -5,13 +8,13 @@ inherits: einstein ellbase
 
 private: 
 
-real linearelliptic TYPE=GF
+CCTK_REAL linearelliptic TYPE=GF
 {
   Mlinear,
   Nsource
 } "Coefficients for linear elliptic equation"
 
-real brillconf TYPE=GF
+CCTK_REAL brillconf TYPE=GF
 {
   brillpsi
 } "Conformal factor for Brill data"

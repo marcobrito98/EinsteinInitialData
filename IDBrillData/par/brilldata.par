@@ -1,50 +1,42 @@
-#################################################################
+################################################
 #
 # brilldata.par
 #
-# Simply Brill wave data of the Hoz et.al. type
+# Simple Brill wave data of the Holz et.al. type
 #
-#################################################################
+################################################
 
-ActiveThorns = "iobasic ellbase ellsor IDBrillData pugh pughslab pughreduce einstein cartgrid3d ioutil ioascii"
-
-# Brill wave initial data
-
-Einstein::initial_data = "brilldata"
-
-# Brill wave parameters [Holz et.al. type data]
-
-idbrilldata::brill_q = 2                  # Form of function q [0,1,2]
-idbrilldata::brill_a = 1.0                # Amplitude (default 0)
-
-idbrilldata::outputpsi = "yes"
-
-# Elliptic solver.
-
-#idbrilldata::solver = "sor"               #[petsc,sor,bam]
+ActiveThorns = "iobasic ellbase ellsor idbrilldata pugh pughreduce einstein cartgrid3d ioutil ioascii"
 
 # General
 
-driver::global_nx = 32     
-driver::global_ny = 32     
-driver::global_nz = 32     
+driver::global_nx 				= 32     
+driver::global_ny 				= 32     
+driver::global_nz 				= 32     
 
-grid::type = "byspacing"
-grid::dxyz = 0.2
-grid::domain = "octant" 
+grid::type 					= "byspacing"
+grid::dxyz 					= 0.2
+grid::domain 					= "octant" 
 
-cactus::cctk_itlast = 0.0      
+cactus::cctk_itlast 				= 0
+
+# Brill wave initial data
+
+Einstein::initial_data 				= "brilldata"
+
+# Brill wave parameters [Holz et.al. type data]
+
+idbrilldata::brill_q 				= 2	# Form of function q [0,1,2]
+idbrilldata::brill_a 				= 1.0	# Amplitude (default 0)
+
+# Elliptic solver.
+
+idbrilldata::brill_solver 			= "sor" #[petsc,sor,bam]
 
 # Output.
 
-IO::outdir = "BrillData"
-
 IO::out_every = 1
 
-IOASCII::out1D_vars = "einstein::gxx einstein::gyy einstein::gzz
-                     einstein::gxy einstein::gxz einstein::gyz
-                     IDBrillData::brillpsi"
+IOASCII::out1D_vars = "einstein::gxx einstein::gyy einstein::gzz einstein::gxy einstein::gxz einstein::gyz idbrilldata::brillpsi"
 
-IOBasic::outScalar_vars = "einstein::gxx einstein::gyy einstein::gzz
-                     einstein::gxy einstein::gxz einstein::gyz
-                     IDBrillData::brillpsi"
+IOBasic::outScalar_vars = "einstein::gxx einstein::gyy einstein::gzz einstein::gxy einstein::gxz einstein::gyz idbrilldata::brillpsi"
