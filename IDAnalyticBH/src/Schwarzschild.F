@@ -33,7 +33,7 @@ c     conformal metric flag
 
 c        Compute conformal factor
          psi = ( one + mass/two/r)
-         
+
 c        derivatives of psi / psi
          psix = -x*mass/two/r**3 / psi
          psiy = -y*mass/two/r**3 / psi
