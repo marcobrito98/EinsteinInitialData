@@ -17,6 +17,11 @@ static inline double pow2 (const double x)
   return x*x;
 }
 
+static inline double pow4 (const double x)
+{
+  return x*x*x*x;
+}
+
 // -------------------------------------------------------------------
 void
 TwoPunctures (CCTK_ARGUMENTS)
@@ -34,7 +39,7 @@ TwoPunctures (CCTK_ARGUMENTS)
   allocate_derivs (&u, ntotal);
   allocate_derivs (&v, ntotal);
 
-  CCTK_INFO ("Beginning elliptic solving");
+  CCTK_INFO ("Solving puncture equation");
   Newton (nvar, n1, n2, n3, v, 1.e-10, 5);
 
   F_of_v (nvar, n1, n2, n3, v, F, u);
@@ -68,55 +73,106 @@ TwoPunctures (CCTK_ARGUMENTS)
         
         const double U = PunctIntPolAtArbitPosition
 	  (0, nvar, n1, n2, n3, v, x[ind], y[ind], z[ind]);
-        const double psi1 = 1 + 0.5 * par_m_plus / r_plus
-                              + 0.5 * par_m_minus / r_minus + U;
-        const double psi4 = pow2(pow2(psi1));
-        const double psim2 = 1.0/pow2(psi1);
-
+        const double psi1 = 1
+          + 0.5 * par_m_plus / r_plus
+          + 0.5 * par_m_minus / r_minus + U;
+        double static_psi = 1;
+        
         double Aij[3][3];
         BY_Aijofxyz (x[ind], y[ind], z[ind], Aij);
 
-        switch (*conformal_state) {
-        case 0:
-          gxx[ind] = psi4;
-          gxy[ind] = 0;
-          gxz[ind] = 0;
-          gyy[ind] = psi4;
-          gyz[ind] = 0;
-          gzz[ind] = psi4;
-          break;
+        if (*conformal_state > 0) {
+
+          double xp, yp, zp, rp, ir;
+          double s1, s3, s5;
+          double p, px, py, pz, pxx, pxy, pxz, pyy, pyz, pzz;
+
+          p = 1.0;
+          px = py = pz = 0.0;
+          pxx = pxy = pxz = 0.0;
+          pyy = pyz = pzz = 0.0;
+
+          /* first puncture */
+          xp = x[ind] - par_b;
+          yp = y[ind];
+          zp = z[ind];
+          rp = sqrt (xp*xp + yp*yp + zp*zp);
+          ir = 1.0/rp;
+
+          s1 = 0.5*par_m_plus*ir;
+          s3 = -s1*ir*ir;
+          s5 = -3.0*s3*ir*ir;
+
+          p += s1;
+
+          px += xp*s3;
+          py += yp*s3;
+          pz += zp*s3;
+
+          pxx += xp*xp*s5 + s3;
+          pxy += xp*yp*s5;
+          pxz += xp*zp*s5;
+          pyy += yp*yp*s5 + s3;
+          pyz += yp*zp*s5;
+          pzz += zp*zp*s5 + s3;
+
+          /* second puncture */
+          xp = x[ind] + par_b;
+          yp = y[ind];
+          zp = z[ind];
+          rp = sqrt (xp*xp + yp*yp + zp*zp);
+          ir = 1.0/rp;
+
+          s1 = 0.5*par_m_minus*ir;
+          s3 = -s1*ir*ir;
+          s5 = -3.0*s3*ir*ir;
+
+          p += s1;
+
+          px += xp*s3;
+          py += yp*s3;
+          pz += zp*s3;
+
+          pxx += xp*xp*s5 + s3;
+          pxy += xp*yp*s5;
+          pxz += xp*zp*s5;
+          pyy += yp*yp*s5 + s3;
+          pyz += yp*zp*s5;
+          pzz += zp*zp*s5 + s3;
+
+          if (*conformal_state >= 1) {
+            static_psi = p;
+            psi[ind] = static_psi;
+          }
+          if (*conformal_state >= 2) {
+            psix[ind] = px / static_psi;
+            psiy[ind] = py / static_psi;
+            psiz[ind] = pz / static_psi;
+          }
+          if (*conformal_state >= 3) {
+            psixx[ind] = pxx / static_psi;
+            psixy[ind] = pxy / static_psi;
+            psixz[ind] = pxz / static_psi;
+            psiyy[ind] = pyy / static_psi;
+            psiyz[ind] = pyz / static_psi;
+            psizz[ind] = pzz / static_psi;
+          }
+
+        } /* if conformal-state>0 */
           
-        case 3:
-          /* not yet supported */
-          assert (0);
-          /* fall through */
+        gxx[ind] = pow4 (psi1 / static_psi);
+        gxy[ind] = 0;
+        gxz[ind] = 0;
+        gyy[ind] = pow4 (psi1 / static_psi);
+        gyz[ind] = 0;
+        gzz[ind] = pow4 (psi1 / static_psi);
 
-        case 2:
-          /* not yet supported */
-          assert (0);
-          /* fall through */
-
-        case 1:
-          psi[ind] = psi1;
-
-          gxx[ind] = 1;
-          gxy[ind] = 0;
-          gxz[ind] = 0;
-          gyy[ind] = 1;
-          gyz[ind] = 0;
-          gzz[ind] = 1;
-          break;
-
-        default:
-          assert(0);
-        }
-
-        kxx[ind] = psim2 * Aij[0][0];
-        kxy[ind] = psim2 * Aij[0][1];
-        kxz[ind] = psim2 * Aij[0][2];
-        kyy[ind] = psim2 * Aij[1][1];
-        kyz[ind] = psim2 * Aij[1][2];
-        kzz[ind] = psim2 * Aij[2][2];
+        kxx[ind] = Aij[0][0] / pow2(psi1);
+        kxy[ind] = Aij[0][1] / pow2(psi1);
+        kxz[ind] = Aij[0][2] / pow2(psi1);
+        kyy[ind] = Aij[1][1] / pow2(psi1);
+        kyz[ind] = Aij[1][2] / pow2(psi1);
+        kzz[ind] = Aij[2][2] / pow2(psi1);
 
       }
     }
