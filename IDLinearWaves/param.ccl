@@ -3,8 +3,9 @@
 friend:einstein
 
 EXTENDS KEYWORD initial_data ""
-"teukwaves" :: "linear waves initialdata: Teukolsky waves"
-"planewaves" :: "linear waves initialdata: plane waves"
+{
+"teukwaves"  :: "linear waves initial data- Teukolsky waves"
+"planewaves" :: "linear waves initial data- plane waves"
 }
 
 private:
