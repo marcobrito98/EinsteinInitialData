@@ -43,9 +43,10 @@ C     Set conformal state
         conformal_state=1
         if (CCTK_EQUALS(conformal_storage,"factor+derivs")) then
           conformal_state = 2
-        else if (CCTK_EQUALS(conformal_storage,
-     $                                 "factor+derivs+2nd derivs")) then
-             conformal_state = 3
+        else if
+     $     (CCTK_EQUALS(conformal_storage, "factor+derivs+2nd derivs"))
+           then
+          conformal_state = 3
         end if
       end if
 
