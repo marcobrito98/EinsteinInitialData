@@ -1,0 +1,68 @@
+Description of files in this directory
+======================================
+
+$Header$
+
+This directory contains the main top-level files for thorn Exact.
+
+There are subdirectories
+include/	include files
+metrics/	individual 4-metrics for the various models
+
+
+The files in this directory are as follows:
+
+Startup.c
+	This is scheduled at STARTUP to register our slicing.
+
+ParamCheck.c
+	This is scheduled at PARAMCHECK to do some basic consistency
+	checks on the parameters.
+
+decode_pars.F
+	This is scheduled at INITIAL to decode/copy our parameters
+	into protected grid scalars, for the benefit of the stress-energy
+	tensor code in "include/Scalar_CalcTmunu.inc".  In particular,
+	this code decodes the keyword parameter  exact_model  into
+	the integer  decoded_exact_model  (which has one of the values
+	#defined in  include/param_defs.inc ).
+
+initialize.F
+	This is the main top-level routine scheduled at INITIAL
+	to set up an initial slice.
+
+Bona_Masso_data.F
+	This contains code to compute the Bona-Masso variables for
+	the initial data, making use of the subroutine Exact__metric()
+	to calculate the spacetime metric and its inverse.  Note that
+	this use of the Bona-Masso variables is independent of how
+	(or even if) we are evolving the Einstein equations -- here
+	the Bona-Masso variables are "just" used as intermediate variables.
+
+metric.F
+	This contains the subroutine Exact__metric(); this decodes
+	the decoded_exact_model parameter and calls the appropriate
+	Exact__model_name_coords() subroutine to compute the 4-metric
+	and its inverse at a point.  See the metrics/ subdirectory
+	for these computations for the various models.
+
+gauge.F
+	This contains code to set the lapse/shift from an exact solution
+	at each time step of an evolution.
+
+boundary.F
+	This is the top-level routine scheduled at POSTSTEP to
+	implement exact-solution boundary conditions.
+
+blended_boundary.F
+xyz_blended_boundary.F
+	These files implement the blended boundary conditions described
+	in "doc/slice_evolver.tex".
+
+slice_initialize.F
+slice_evolve.F
+slice_data.F
+linear_extrap_one_bndry.F
+	These routines are scheduled at INITIAL and EVOL to allow
+	the computing of exact data on arbitrary slices.  See
+	"doc/slice_evolver.tex" for details.
