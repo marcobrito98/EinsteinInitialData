@@ -29,6 +29,9 @@ TwoPunctures (CCTK_ARGUMENTS)
   DECLARE_CCTK_ARGUMENTS;
   DECLARE_CCTK_PARAMETERS;
 
+  enum GRID_SETUP_METHOD { GSM_Taylor_expansion, GSM_interpolation };
+  enum GRID_SETUP_METHOD gsm;
+
   int nvar = 1, n1 = npoints_A, n2 = npoints_B, n3 = npoints_phi;
 
   int i, j, k, ntotal = n1 * n2 * n3 * nvar;
@@ -45,6 +48,19 @@ TwoPunctures (CCTK_ARGUMENTS)
     Newton (nvar, n1, n2, n3, v, Newton_tol, Newton_maxit);
 
     F_of_v (nvar, n1, n2, n3, v, F, u);
+  }
+
+  if (CCTK_EQUALS(grid_setup_method, "Taylor expansion"))
+  {
+    gsm = GSM_Taylor_expansion;
+  }
+  else if (CCTK_EQUALS(grid_setup_method, "interpolation"))
+  {
+    gsm = GSM_interpolation;
+  }
+  else
+  {
+    CCTK_WARN (0, "internal error");
   }
 
   CCTK_INFO ("Interpolating result");
@@ -74,10 +90,20 @@ TwoPunctures (CCTK_ARGUMENTS)
         const double r_minus
           = sqrt(pow2(x[ind] + par_b) + pow2(y[ind]) + pow2(z[ind]));
         
-        const double U = PunctTaylorExpandAtArbitPosition
-	  (0, nvar, n1, n2, n3, v, x[ind], y[ind], z[ind]);
-/*         const double U = PunctIntPolAtArbitPosition */
-/* 	  (0, nvar, n1, n2, n3, v, x[ind], y[ind], z[ind]); */
+        double U;
+        switch (gsm)
+        {
+        case GSM_Taylor_expansion:
+          U = PunctTaylorExpandAtArbitPosition
+            (0, nvar, n1, n2, n3, v, x[ind], y[ind], z[ind]);
+          break;
+        case GSM_interpolation:
+          U = PunctIntPolAtArbitPosition
+            (0, nvar, n1, n2, n3, v, x[ind], y[ind], z[ind]);
+          break;
+        default:
+          assert (0);
+        }
         const double psi1 = 1
           + 0.5 * par_m_plus / r_plus
           + 0.5 * par_m_minus / r_minus + U;
