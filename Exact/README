@@ -4,7 +4,8 @@ Maintainer : Jonathan Thornburg <jthorn@aei.mpg.de>
 CVS info   : $Header$
 --------------------------------------------------------------------------
 
-Purpose of the thorn:
+Purpose of the thorn
+====================
 
 The initial purpose of this thorn was the comparison of numerical
 spacetimes against exact solutions.  One particular solution,
@@ -25,6 +26,18 @@ Note that the June 2002 revisions to this thorn included renaming
 most of the parameters.  The perl script  par/convert-par.pl  will
 convert old parameter files to use the new names, renaming the old
 parameter files to ".par.bak" as backups.
+
+
+Compilation
+===========
+
+On some systems (notably the AEI Xeons using the Intel compilers) this
+thorn only compiles if you use the Cactus (perl) preprocessor, i.e. you
+need to configure with
+
+gmake foo-config CPP='$${PERL} $${CCTK_HOME}/lib/sbin/cpp.pl'
+
+(along with any other configuration options).
 
 
 Copyright
