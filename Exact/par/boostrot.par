@@ -30,6 +30,7 @@ time::dtfac = 0.25
 admbase::metric_type = "physical"
 #staticconformal::conformal_storage = "factor+derivs+2nd derivs"
 admbase::initial_data = "exact"
+admbase::initial_shift   = "exact"
 
 exact::exactmodel = "boostrot"
 
@@ -48,6 +49,7 @@ admbase::shift_evolution_method   = "exact"
 
 # Output
 
+IO::out_dir = "boostrot"
 IOBasic::outInfo_every = 1
 IOBasic::outInfo_vars  = "admbase::gxx"
 

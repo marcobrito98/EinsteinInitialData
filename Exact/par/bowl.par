@@ -4,7 +4,7 @@
 
 # Required thorns
 
-ActiveThorns = "time pugh cartgrid3d einstein adm exact ioascii ioutil iobasic"
+ActiveThorns = "time pugh pughslab cartgrid3d admbase adm admmacros staticconformal coordgauge exact ioascii ioutil iobasic boundary "
 
 # Grid
 
@@ -29,13 +29,14 @@ exact::exactmodel = "bowl"
 
 # Output
 
+IO::out_dir = "bowl"
 IOBasic::outInfo_every = 1
-IOBasic::outInfo_vars  = "einstein::gxx"
+IOBasic::outInfo_vars  = "admbase::gxx"
 
 IOBasic::outScalar_every =  1
-IOBasic::outScalar_vars  = "einstein::gxx einstein::gyy einstein::gzz"
+IOBasic::outScalar_vars  = "admbase::gxx admbase::gyy admbase::gzz"
 
 IOASCII::out1D_every =  1
-IOASCII::out1D_vars  = "einstein::gxx einstein::gyy einstein::gzz"
+IOASCII::out1D_vars  = "admbase::gxx admbase::gyy admbase::gzz"
 
 
