@@ -15,4 +15,28 @@ CCTK_INT FUNCTION Set_Rho_ADM(              \
     CCTK_REAL ARRAY       IN  y,            \
     CCTK_REAL ARRAY       IN  z             \
     )
+CCTK_INT FUNCTION Set_Initial_Guess_for_u(  \
+    CCTK_POINTER_TO_CONST IN  cctkGH,       \
+    CCTK_INT              IN  size,         \
+    CCTK_REAL ARRAY       OUT u,            \
+    CCTK_REAL ARRAY       IN  x,            \
+    CCTK_REAL ARRAY       IN  y,            \
+    CCTK_REAL ARRAY       IN  z             \
+    )
+CCTK_INT FUNCTION Rescale_Sources(  \
+    CCTK_POINTER_TO_CONST IN  cctkGH,       \
+    CCTK_INT              IN  size,         \
+    CCTK_REAL ARRAY       IN  x,            \
+    CCTK_REAL ARRAY       IN  y,            \
+    CCTK_REAL ARRAY       IN  z,            \
+    CCTK_REAL ARRAY       IN  psi,          \
+    CCTK_REAL ARRAY       IN  gxx,          \
+    CCTK_REAL ARRAY       IN  gyy,          \
+    CCTK_REAL ARRAY       IN  gzz,          \
+    CCTK_REAL ARRAY       IN  gxy,          \
+    CCTK_REAL ARRAY       IN  gxz,          \
+    CCTK_REAL ARRAY       IN  gyz           \
+    )
 USES FUNCTION Set_Rho_ADM
+USES FUNCTION Set_Initial_Guess_for_u
+USES FUNCTION Rescale_Sources
