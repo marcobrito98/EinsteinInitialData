@@ -126,14 +126,14 @@ c     Compute K^2:
 c     
       do j = 1,nq
          do i = 1,ne
-#include "Development/IDAxiOddBrillBH/src/gauss.x"
+#include "gauss.x"
             if(brandt_seidel == 1) then
-#include "Development/IDAxiOddBrillBH/src/ksq_bs.x"
+#include "ksq_bs.x"
 	    else if (sergio == 1) then
-#include "Development/IDAxiOddBrillBH/src/kerr.x"
-#include "Development/IDAxiOddBrillBH/src/ksq_sergio.x"
+#include "kerr.x"
+#include "ksq_sergio.x"
             else
-#include "Development/IDAxiOddBrillBH/src/ksq_axi_rdbh.x"
+#include "ksq_axi_rdbh.x"
             endif
          enddo
       enddo
@@ -430,10 +430,10 @@ c     Interpolator handle.
             do i=1,nx
                
 c     psix = \partial psi / \partial x / psi
-#include "Development/IDAxiOddBrillBH/src/psi_1st_deriv.x"
+#include "psi_1st_deriv.x"
                
 c     psixx = \partial^2\psi / \partial x^2 / psi
-#include "Development/IDAxiOddBrillBH/src/psi_2nd_deriv.x"
+#include "psi_2nd_deriv.x"
 
             enddo
          enddo
@@ -448,22 +448,22 @@ c
       do k= 1,nz
          do j= 1,ny
             do i= 1,nx
-#include "Development/IDAxiOddBrillBH/src/gij.x"
+#include "gij.x"
             enddo
          enddo
       enddo
-c     Extrinsic Curvture:Cactus only needs physical extrinsic curvature
+c     Extrinsic curvature: Cactus only needs physical extrinsic curvature
       do k= 1,nz
          do j= 1,ny
             do i= 1,nx 
-#include "Development/IDAxiOddBrillBH/src/cgauss.x"
+#include "cgauss.x"
                if (brandt_seidel == 1) then
-#include "Development/IDAxiOddBrillBH/src/kij_bs.x"
+#include "kij_bs.x"
 	       else if (sergio == 1) then
-#include "Development/IDAxiOddBrillBH/src/ckerr.x"
-#include "Development/IDAxiOddBrillBH/src/kij_sergio.x"
+#include "ckerr.x"
+#include "kij_sergio.x"
                else
-#include "Development/IDAxiOddBrillBH/src/kij_axi_rdbh.x"
+#include "kij_axi_rdbh.x"
                endif
             enddo
          enddo
