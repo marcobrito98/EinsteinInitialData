@@ -29,39 +29,68 @@ void Schwarzschild(CCTK_ARGUMENTS)
   const CCTK_REAL zero = 0.0, one = 1.0, two = 2.0, three = 3.0;
   CCTK_REAL tmp, r_squared, r_cubed;
   int i, npoints;
+  int make_conformal_derivs;
+
+
+    if(CCTK_EQUALS(conformal_storage,"factor+derivs"))
+    {
+      *conformal_state = 2;
+      make_conformal_derivs = 1;
+    }
+    else if(CCTK_EQUALS(conformal_storage,"factor+derivs+2nd derivs"))
+    {
+      *conformal_state = 3;
+      make_conformal_derivs = 1;
+    }
 
 
   npoints = cctk_lsh[0] * cctk_lsh[1] * cctk_lsh[2];
 
   /*     conformal metric flag */
-  if(CCTK_EQUALS(metric_type, "static conformal") &&
-     (CCTK_EQUALS(conformal_storage,"factor+derivs") ||
-      CCTK_EQUALS(conformal_storage,"factor+derivs+2nd derivs")))
+  if(CCTK_EQUALS(metric_type, "static conformal"))
   {
-    *conformal_state = 2;
+    int make_conformal_derivs;
+
+    if(CCTK_EQUALS(conformal_storage,"factor+derivs"))
+    {
+      *conformal_state = 2;
+      make_conformal_derivs = 1;
+    }
+    else if(CCTK_EQUALS(conformal_storage,"factor+derivs+2nd derivs"))
+    {
+      *conformal_state = 3;
+      make_conformal_derivs = 1;
+    }
 
     for (i = 0; i < npoints; i++)
     {
       /*        Compute conformal factor */
       psi[i] = ( one + mass/two/r[i]);
 
-      /*        derivatives of psi / psi */
-      r_squared = r[i]*r[i];
-      r_cubed   = r[i]*r_squared;
-      tmp = mass/two/r_cubed/psi[i];
-      psix[i] = -x[i]*tmp;
-      psiy[i] = -y[i]*tmp;
-      psiz[i] = -z[i]*tmp;
+      if(make_conformal_derivs)
+      {
+        /*        derivatives of psi / psi */
+        r_squared = r[i]*r[i];
+        r_cubed   = r[i]*r_squared;
+        tmp = mass/two/r_cubed/psi[i];
 
-      tmp = mass/two/(r_squared*r_cubed)/psi[i];
-      psixy[i] = three*x[i]*y[i]*tmp;
-      psixz[i] = three*x[i]*z[i]*tmp;
-      psiyz[i] = three*y[i]*z[i]*tmp;
 
-      psixx[i]  = (three*x[i]*x[i] - r_squared)*tmp;
-      psiyy[i]  = (three*y[i]*y[i] - r_squared)*tmp;
-      psizz[i]  = (three*z[i]*z[i] - r_squared)*tmp;
+        psix[i] = -x[i]*tmp;
+        psiy[i] = -y[i]*tmp;
+        psiz[i] = -z[i]*tmp;
 
+        if(*conformal_state > 2)
+        {
+          tmp = mass/two/(r_squared*r_cubed)/psi[i];
+          psixy[i] = three*x[i]*y[i]*tmp;
+          psixz[i] = three*x[i]*z[i]*tmp;
+          psiyz[i] = three*y[i]*z[i]*tmp;
+      
+          psixx[i]  = (three*x[i]*x[i] - r_squared)*tmp;
+          psiyy[i]  = (three*y[i]*y[i] - r_squared)*tmp;
+          psizz[i]  = (three*z[i]*z[i] - r_squared)*tmp;
+        }
+      }
       gxx[i] = one;
       gyy[i] = one;
       gzz[i] = one;
