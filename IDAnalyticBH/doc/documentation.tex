@@ -17,42 +17,33 @@
 % FIXME:   brill-lindquist code.
 % FIXME: Check that figure was included for Cartoon docs.
 
+
 \documentclass{article}
 
-\newif\ifpdf
-\ifx\pdfoutput\undefined
-\pdffalse % we are not running PDFLaTeX
-\else
-\pdfoutput=1 % we are running PDFLaTeX
-\pdftrue
-\fi
-
-\ifpdf
-\usepackage[pdftex]{graphicx}
-\else
-\usepackage{graphicx}
-\fi
-
-\parskip = 0 pt
-\parindent = 0pt
-\oddsidemargin = 0 cm
-\textwidth = 16 cm
-\topmargin = -1 cm
-\textheight = 24 cm
+% Use the Cactus ThornGuide style file
+% (Automatically used from Cactus distribution, if you have a 
+%  thorn without the Cactus Flesh download this from the Cactus
+%  homepage at www.cactuscode.org)
+\usepackage{../../../../doc/ThornGuide/cactus}
 
 \begin{document}
+
 \title{Using \texttt{IDAnalyticBH}}
 \author{Denis Pollney}
-\date{April 2002}
+\date{$ $Date$ $}
 
 \maketitle
 
-\abstract{The \texttt{IDAnalyticBH} thorn contains a number of initial data
+% Do not delete next line
+% START CACTUS THORNGUIDE
+
+\begin{abstract}
+The \texttt{IDAnalyticBH} thorn contains a number of initial data
 sets for black-hole evolutions which can be specified analytically
 as metric and extrinsic curvature components. The initial data which
 is included in this thorn include single Schwarzschild and Kerr black
 holes, and multiple black hole Misner and Brill-Lindquist solutions.
-}
+\end{abstract}
 
 
 \section{Background}
@@ -427,5 +418,8 @@ parameters such as the following could be used:
     \emph{Interaction Energy in Geometrostatics}
     Phys. Rev., \textbf{131}, 471--476.
 \end{thebibliography}
+
+% Do not delete next line
+% START CACTUS THORNGUIDE
 
 \end{document}
