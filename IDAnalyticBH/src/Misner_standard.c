@@ -22,7 +22,7 @@
 
 #include "CactusEinstein/Einstein/src/Einstein.h"
 
-static char *rcsid = "$Header$";
+static const char *rcsid = "$Header$";
 
 CCTK_FILEVERSION(CactusEinstein_IDAnalyticBH_Misner_standard_c)
 
