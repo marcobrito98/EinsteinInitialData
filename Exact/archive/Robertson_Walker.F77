@@ -6,6 +6,13 @@ C Author : D. Vulcanov (Timisoara, Romania)
 C see ../../README for copyright & licensing info
 C
 C $Header$
+C
+C FIXME:
+C This metric doesn't work.  The argument  rama  is the R(t) in the
+C Robertson-Walker metric, and if this is passed correctly then this
+C subroutine computes the correct metric.  But the rest of this thorn
+C doesn't know to pass this value. :( :(  See Mitica's Cosmo thorn
+C for a better way to get this metric.
 
 #include "cctk.h"
 #include "cctk_Parameters.h"
