@@ -17,6 +17,10 @@
 
 #include "CactusEinstein/Einstein/src/Einstein.h"
 
+static const char *rcsid = "$Header$";
+
+CCTK_FILEVERSION(CactusEinstein_IDAnalyticBH_Kerr_c)
+
 void KerrID(CCTK_ARGUMENTS)
 {
   DECLARE_CCTK_ARGUMENTS
