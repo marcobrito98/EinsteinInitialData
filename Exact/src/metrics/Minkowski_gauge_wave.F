@@ -1,0 +1,111 @@
+c $Header$
+
+#include "cctk.h"
+#include "cctk_Arguments.h"
+#include "cctk_Parameters.h"
+
+#define Pi (4 * atan(1.d0))
+
+
+      subroutine Exact__Minkowski_gauge_wave(
+     $     x, y, z, t,
+     $     gdtt, gdtx, gdty, gdtz, 
+     $     gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
+     $     gutt, gutx, guty, gutz, 
+     $     guxx, guyy, guzz, guxy, guyz, guzx)
+
+      implicit none
+      DECLARE_CCTK_PARAMETERS
+      DECLARE_CCTK_FUNCTIONS
+
+      CCTK_REAL x, y, z, t
+      CCTK_REAL gdtt, gdtx, gdty, gdtz, 
+     $       gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
+     $       gutt, gutx, guty, gutz, 
+     $       guxx, guyy, guzz, guxy, guyz, guzx
+
+      logical firstcall
+
+      CCTK_REAL a, o, H, d, fs
+      CCTK_REAL zero,half,one
+
+      data firstcall /.true./
+      save firstcall, a, o, d, fs
+
+C     Numbers.
+
+      zero = 0.0d0
+      half = 0.5d0
+      one  = 1.0d0
+
+C     Get parameters of the exact solution.
+
+      if (firstcall) then
+         a  = Minkowski_gauge_wave__amplitude
+         o  = Minkowski_gauge_wave__omega
+         d  = Minkowski_gauge_wave__lambda
+         fs = Minkowski_gauge_wave__phase
+
+         firstcall = .false.
+      end if
+
+C     How should the wave look like.
+      if (CCTK_Equals(Minkowski_gauge_wave__what_fn,"sin").eq.1) then
+        d = Minkowski_gauge_wave__lambda * half / Pi
+        if (Minkowski_gauge_wave__diagonal.ne.0) then
+          H = one - a * sin((x-y)/d - o*t/d)
+        else
+          H = one - a * sin((x-o*t)/d - fs)
+        end if
+      elseif (CCTK_Equals(Minkowski_gauge_wave__what_fn,"expsin").eq.1) then
+        H = exp(a*sin(x/d)*cos(t/d))
+      elseif (CCTK_Equals(Minkowski_gauge_wave__what_fn,"Gaussian").eq.1) then
+        H = one - a*dexp(-(x-t)**2/d**2)
+      end if
+
+C     write metric.
+
+      if (Minkowski_gauge_wave__diagonal .eq. 1) then
+
+        gdxx = half * H + half
+        gdxy = -half* H + half
+        gdyy = half * H + half
+
+        guxx = half / H + half
+        guxy =-half / H + half
+        guyy = half / H + half
+
+      else
+
+        gdxx = H
+        gdxy = zero
+        gdyy = one
+
+        guxx = one/H
+        guxy = zero
+        guyy = one
+
+      end if
+      
+      gdtt = - H
+      gdtx = zero
+      gdty = zero
+      gdtz = zero
+
+      gdzx = zero
+      gdyz = zero
+      gdzz = one
+
+C     and upper metric.
+
+      gutt = - one/H
+      gutx = zero
+      guty = zero
+      gutz = zero
+
+      guyz = zero
+      guzx = zero
+      guzz = one
+
+      return
+      end
