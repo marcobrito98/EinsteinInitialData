@@ -1,0 +1,58 @@
+####################################################
+#  Initial data for boostrotation, evolving with ADM
+####################################################
+
+# Required thorns
+
+ActiveThorns = "time pugh cartgrid3d einstein adm exact ioascii ioutil iobasic"
+
+# Grid
+
+driver::global_nx = 21
+driver::global_ny = 21
+driver::global_nz = 21
+
+grid::type = "byrange"
+grid::xmin = 0.0
+grid::xmax = 1.0
+grid::ymin = 0.0
+grid::ymax = 1.0
+grid::zmin = 0.0
+grid::zmax = 1.0
+
+cactus::cctk_initial_time = 1.0
+cactus::cctk_itlast       = 20
+ 
+time::dtfac = 0.25
+
+# Initial data 
+
+einstein::initial_data = "exact"
+
+exact::exactmodel = "boostrot"
+
+exact::boostrotstrength     = 0.1
+exact::boostrotscale        = 2.0
+exact::boostrotsafedistance = 1.e-2
+
+# Evolution
+
+einstein::evolution_system = "adm"
+
+# Gauge
+
+einstein::slicing = "static"
+einstein::shift   = "exact"
+
+# Output
+
+IOBasic::outInfo_every = 1
+IOBasic::outInfo_vars  = "einstein::gxx"
+
+IOBasic::outScalar_every =  1
+IOBasic::outScalar_vars  = "einstein::gxx einstein::gyy einstein::gzz"
+
+IOASCII::out1D_every =  1
+IOASCII::out1D_vars  = "einstein::gxx einstein::gyy einstein::gzz"
+
+
