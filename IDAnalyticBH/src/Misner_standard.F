@@ -84,7 +84,7 @@ c     -------------------------------
          r2 = sqrt(x**2+y**2+(z-coth)**2)
          psi = psi + csch*(one/r1 + one/r2)
 
-         if (use_conformal_derivs) then
+         if (use_conformal_derivs == 1) then
             psix = psix + (-(x/r2**3)-x/r1**3)*csch
             psiy = psiy + (-(y/r2**3)-y/r1**3)*csch
             psiz = psiz + (-((z-coth)/r2**3)-(z + coth)/r1**3)*csch

@@ -60,7 +60,7 @@ c     --------------------------------------------
                
 c              Only calculate derivatives of psi if required
 c              ---------------------------------------------
-               if (use_conformal_derivs) then
+               if (use_conformal_derivs == 1) then
 
                  call MisnerEvalPsi(xval+nm_eps,yval,zval,tmp1)
                  call MisnerEvalPsi(xval-nm_eps,yval,zval,tmp2)
