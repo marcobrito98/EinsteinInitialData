@@ -2,41 +2,26 @@
 # $Header$
 
 # Source files in this directory
-SRCS = ParamCheck.c \
-       exactinitialize.F \
-       exactgauge.F \
-       exactboundary.F \
-       exactdata.F \
-       exactmetric.F \
-       boostrotmetric.F \
-       finkelstein.F \
-       kerrschild.F \
-       flatschwarz.F \
-       starschwarz.F \
-       bowl.F \
-       novikov.F \
-       minkowski.F \
-       fakebinary.F \
-       multiBH.F \
-       flatfunny.F \
-       flatshift.F \
-       bianchiI.F \
-       rob-wal.F \
-       godel.F \
-       kerrcart.F \
-       desitter.F \
-       kasner_l.F \
-       milne.F \
-       exactblendbound.F \
-       exactcartblendbound.F \
-       slice_initialize.F \
-       slice_evolve.F \
-       slice_data.F \
-       linextraponebound.F \
-       Startup.c \
-       GaugeWave.F
-#      ComparisonSolutions.F Comparison.c
+SRCS = ParamCheck.c			\
+       Startup.c			\
+       decode_pars.F			\
+       initialize.F			\
+					\
+       slice_initialize.F		\
+       slice_evolve.F			\
+       slice_data.F			\
+					\
+       gauge.F				\
+       Bona_Masso_data.F		\
+       metric.F				\
+					\
+       boundary.F			\
+       blended_boundary.F		\
+       xyz_blended_boundary.F		\
+       linear_extrap_one_bndry.F
 
-# Subdirectories containing source files
-SUBDIRS = include
-
+# Subdirectories containing source files to be compiled
+# n.b. ./include/ contains source fragments to be included in other
+#      thorns for calculating T_mu_nu, but these source fragments
+#      do *not* go in the SUBDIRS list here
+SUBDIRS = metrics

@@ -53,13 +53,16 @@ void Exact_ParamCheck(CCTK_ARGUMENTS);
    @calls     
    @calledby   
    @history 
- 
+   @hdate      Tue Jun 11 18:25:49 CEST 2002
+   @hauthor    Jonathan Thornburg
+   @desc       Add a test that we're not trying to set the shift
+               with storage *not* present for it
+   @enddesc
    @endhistory 
  
  @@*/
 void Exact_ParamCheck(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS;
   DECLARE_CCTK_PARAMETERS;
 
   if(! CCTK_EQUALS(metric_type, "physical"))
@@ -67,11 +70,11 @@ void Exact_ParamCheck(CCTK_ARGUMENTS)
     CCTK_PARAMWARN("Unknown ADMBase::metric_type - known types are \"physical\"");
   }
 
-  if(CCTK_EQUALS(shift_evolution_method, "exact") && ! CCTK_EQUALS(initial_shift, "exact"))
+  if ( CCTK_EQUALS(shift_evolution_method, "exact")
+       && CCTK_EQUALS(initial_shift, "none") )
   {
-    CCTK_PARAMWARN("Exact shift evolution requires exact shift initial data");
+    CCTK_PARAMWARN("can't set the shift if there's no storage for it!");
   }
-
 }
 
 /********************************************************************

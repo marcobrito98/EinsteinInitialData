@@ -1,10 +1,11 @@
 C     Extract Cauchy data from the slice x^A(x^i) stored in slicex,
 C     slicey, slicez, slicet, and calculate dx^A/dt.
+C $Header$
 
 #include "cctk.h"
 #include "cctk_Arguments.h"
 
-      subroutine slice_data(CCTK_ARGUMENTS)
+      subroutine Exact__slice_data(CCTK_ARGUMENTS)
 
       implicit none
 
@@ -55,7 +56,8 @@ C     Calculate first derivatives of slice coordinates.
 
 C     Now we need the exact solution metric in the preferred coordinates x^A.
 
-               call exactmetric(
+               call Exact__metric(
+     $              decoded_exact_model,
      $              slicex(i,j,k), slicey(i,j,k), slicez(i,j,k), 
      $              slicet(i,j,k),
      $              gd(4,4), gd(1,4), gd(2,4), gd(3,4),
@@ -162,7 +164,8 @@ C     with an editor (hint for proofreading).
 C     Calculate g_AB,C. Need to sum explicitly over C. Do this with 
 C     the editor.
 
-               call exactmetric(
+               call Exact__metric(
+     $              decoded_exact_model,
      $              slicex(i,j,k)+ex_eps, slicey(i,j,k), slicez(i,j,k), 
      $              slicet(i,j,k),
      $              gd_p(4,4), gd_p(1,4), gd_p(2,4), gd_p(3,4),
@@ -171,7 +174,8 @@ C     the editor.
      $              gu(4,4), gu(1,4), gu(2,4), gu(3,4),
      $              gu(1,1), gu(2,2), gu(3,3), 
      $              gu(1,2), gu(2,3), gu(1,3))
-               call exactmetric(
+               call Exact__metric(
+     $              decoded_exact_model,
      $              slicex(i,j,k)-ex_eps, slicey(i,j,k), slicez(i,j,k), 
      $              slicet(i,j,k),
      $              gd_m(4,4), gd_m(1,4), gd_m(2,4), gd_m(3,4),
@@ -186,7 +190,8 @@ C     the editor.
                   end do
                end do
 
-               call exactmetric(
+               call Exact__metric(
+     $              decoded_exact_model,
      $              slicex(i,j,k), slicey(i,j,k)+ex_eps, slicez(i,j,k), 
      $              slicet(i,j,k),
      $              gd_p(4,4), gd_p(1,4), gd_p(2,4), gd_p(3,4),
@@ -195,7 +200,8 @@ C     the editor.
      $              gu(4,4), gu(1,4), gu(2,4), gu(3,4),
      $              gu(1,1), gu(2,2), gu(3,3), 
      $              gu(1,2), gu(2,3), gu(1,3))
-               call exactmetric(
+               call Exact__metric(
+     $              decoded_exact_model,
      $              slicex(i,j,k), slicey(i,j,k)-ex_eps, slicez(i,j,k), 
      $              slicet(i,j,k),
      $              gd_m(4,4), gd_m(1,4), gd_m(2,4), gd_m(3,4),
@@ -210,7 +216,8 @@ C     the editor.
                   end do
                end do
 
-               call exactmetric(
+               call Exact__metric(
+     $              decoded_exact_model,
      $              slicex(i,j,k), slicey(i,j,k), slicez(i,j,k)+ex_eps, 
      $              slicet(i,j,k),
      $              gd_p(4,4), gd_p(1,4), gd_p(2,4), gd_p(3,4),
@@ -219,7 +226,8 @@ C     the editor.
      $              gu(4,4), gu(1,4), gu(2,4), gu(3,4),
      $              gu(1,1), gu(2,2), gu(3,3), 
      $              gu(1,2), gu(2,3), gu(1,3))
-               call exactmetric(
+               call Exact__metric(
+     $              decoded_exact_model,
      $              slicex(i,j,k), slicey(i,j,k), slicez(i,j,k)-ex_eps, 
      $              slicet(i,j,k),
      $              gd_m(4,4), gd_m(1,4), gd_m(2,4), gd_m(3,4),
@@ -234,7 +242,8 @@ C     the editor.
                   end do
                end do
 
-               call exactmetric(
+               call Exact__metric(
+     $              decoded_exact_model,
      $              slicex(i,j,k), slicey(i,j,k), slicez(i,j,k), 
      $              slicet(i,j,k)+ex_eps,
      $              gd_p(4,4), gd_p(1,4), gd_p(2,4), gd_p(3,4),
@@ -243,7 +252,8 @@ C     the editor.
      $              gu(4,4), gu(1,4), gu(2,4), gu(3,4),
      $              gu(1,1), gu(2,2), gu(3,3), 
      $              gu(1,2), gu(2,3), gu(1,3))
-               call exactmetric(
+               call Exact__metric(
+     $              decoded_exact_model,
      $              slicex(i,j,k), slicey(i,j,k), slicez(i,j,k), 
      $              slicet(i,j,k)-ex_eps,
      $              gd_m(4,4), gd_m(1,4), gd_m(2,4), gd_m(3,4),
@@ -302,30 +312,30 @@ C     Calculate K_ij.
 
 C     Synchronize and bound slicetmp2, which contains dx^A/dt.
 
-      call linextraponebound(CCTK_ARGUMENTS,slicetmp2x)
-      call linextraponebound(CCTK_ARGUMENTS,slicetmp2y)
-      call linextraponebound(CCTK_ARGUMENTS,slicetmp2z)
-      call linextraponebound(CCTK_ARGUMENTS,slicetmp2t)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,slicetmp2x)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,slicetmp2y)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,slicetmp2z)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,slicetmp2t)
  
       call CCTK_SyncGroup(ierr,cctkGH,"Exact::Exact_slicetemp2")
 
 C     Bound and synchronize the 3-metric and extrinsic curvature.
 
-      call linextraponebound(CCTK_ARGUMENTS,gxx)
-      call linextraponebound(CCTK_ARGUMENTS,gxy)
-      call linextraponebound(CCTK_ARGUMENTS,gxz)
-      call linextraponebound(CCTK_ARGUMENTS,gyy)
-      call linextraponebound(CCTK_ARGUMENTS,gyz)
-      call linextraponebound(CCTK_ARGUMENTS,gzz)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,gxx)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,gxy)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,gxz)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,gyy)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,gyz)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,gzz)
 
       call CCTK_SyncGroup(ierr,cctkGH,"admbase::metric")
 
-      call linextraponebound(CCTK_ARGUMENTS,kxx)
-      call linextraponebound(CCTK_ARGUMENTS,kxy)
-      call linextraponebound(CCTK_ARGUMENTS,kxz)
-      call linextraponebound(CCTK_ARGUMENTS,kyy)
-      call linextraponebound(CCTK_ARGUMENTS,kyz)
-      call linextraponebound(CCTK_ARGUMENTS,kzz)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,kxx)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,kxy)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,kxz)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,kyy)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,kyz)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,kzz)
 
       call CCTK_SyncGroup(ierr,cctkGH,"admbase::curv")
 

@@ -1,9 +1,10 @@
 C     Evolve the slice in the exact spacetime.
+C $Header$
 
 #include "cctk.h"
 #include "cctk_Arguments.h"
 
-      subroutine slice_evolve(CCTK_ARGUMENTS)
+      subroutine Exact__slice_evolve(CCTK_ARGUMENTS)
 
       implicit none
 
@@ -39,10 +40,10 @@ C     by slice_data.
 
 C     Synchronize and bound slice.
 
-      call linextraponebound(CCTK_ARGUMENTS,slicetmp1x)
-      call linextraponebound(CCTK_ARGUMENTS,slicetmp1y)
-      call linextraponebound(CCTK_ARGUMENTS,slicetmp1z)
-      call linextraponebound(CCTK_ARGUMENTS,slicetmp1t)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,slicetmp1x)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,slicetmp1y)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,slicetmp1z)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,slicetmp1t)
 
       call CCTK_SyncGroup(ierr,cctkGH,"Exact::Exact_slicetemp1")
 
@@ -73,7 +74,8 @@ C     Calculate first derivatives of slice coordinates.
 
 C     Now we need the exact solution metric in the preferred coordinates
 C     x^A. 
-               call exactmetric(
+               call Exact__metric(
+     $              decoded_exact_model,
      $              slicetmp1x(i,j,k), slicetmp1y(i,j,k), slicetmp1z(i,j,k), 
      $              slicetmp1t(i,j,k),
      $              gd(4,4), gd(1,4), gd(2,4), gd(3,4),
@@ -92,10 +94,10 @@ C     Calculate n^A and dx^A/dt
 
 C     Synchronize and bound slicetmp2, which contains dx^A/dt.
 
-      call linextraponebound(CCTK_ARGUMENTS,slicetmp2x)
-      call linextraponebound(CCTK_ARGUMENTS,slicetmp2y)
-      call linextraponebound(CCTK_ARGUMENTS,slicetmp2z)
-      call linextraponebound(CCTK_ARGUMENTS,slicetmp2t)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,slicetmp2x)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,slicetmp2y)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,slicetmp2z)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,slicetmp2t)
 
       call CCTK_SyncGroup(ierr,cctkGH,"Exact::Exact_slicetemp2")
 
@@ -108,20 +110,17 @@ C Leapfrog step.
 
 C     Synchronize and bound slice.
 
-      call linextraponebound(CCTK_ARGUMENTS,slicex)
-      call linextraponebound(CCTK_ARGUMENTS,slicey)
-      call linextraponebound(CCTK_ARGUMENTS,slicez)
-      call linextraponebound(CCTK_ARGUMENTS,slicet)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,slicex)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,slicey)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,slicez)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,slicet)
 
       call CCTK_SyncGroup(ierr,cctkGH,"Exact::Exact_slice")
 
 C     Extract Cauchy data at the new position, and store dxA/dt 
 C     for use in the next Lax step.
 
-      call slice_data(CCTK_ARGUMENTS)
+      call Exact__slice_data(CCTK_ARGUMENTS)
 
       return
       end
-
-
-

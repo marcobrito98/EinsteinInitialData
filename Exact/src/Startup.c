@@ -1,9 +1,11 @@
+/* startup routine for Exact thorn */
+/* $Header$ */
 
 #include "cctk.h"
 #include "cctk_Parameters.h"
 #include "CactusEinstein/CoordGauge/src/Slicing.h"
 
-void Exact_RegisterSlicing(void) 
+void Exact__RegisterSlicing(void) 
 {
   int handle;
   handle=Einstein_RegisterSlicing("exact");
