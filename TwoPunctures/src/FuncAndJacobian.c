@@ -326,6 +326,14 @@ F_of_v (CCTK_POINTER_TO_CONST cctkGH,
       }
       if (do_residuum_debug_output)
       {
+        indx = Index (0, i, j, 0, nvar, n1, n2, n3);
+        al = Pih * (2 * i + 1) / n1;
+        A = -cos (al);
+        be = Pih * (2 * j + 1) / n2;
+        B = -cos (be);
+        AB_To_XR (nvar, A, B, &X, &R, U);
+        C_To_c (nvar, X, R, &x, &r, U);
+        rx3_To_xyz (nvar, x, r, 0.0, &y, &z, U);
         r_plus = sqrt ((x - par_b) * (x - par_b) + y * y + z * z);
         r_minus = sqrt ((x + par_b) * (x + par_b) + y * y + z * z);
         psi =
@@ -334,11 +342,11 @@ F_of_v (CCTK_POINTER_TO_CONST cctkGH,
         psi4 = psi2 * psi2;
         psi7 = psi * psi2 * psi4;
         fprintf(debugfile, "%.8g %.8g %.8g %.8g %.8g %.8g\n", x, y, A, B,
-           U.d11[0] +
-           U.d22[0] +
-           U.d33[0]
-           + 2.0 * Pi / psi2/psi * sources[Index(0,i,j,k,1,n1,n2,n3)],
-           U.d0[0]
+           U.d11[indx] +
+           U.d22[indx] +
+           U.d33[indx]
+           + 2.0 * Pi / psi2/psi * sources[indx],
+           U.d0[indx]
            );
       }
     }

@@ -59,32 +59,28 @@ void set_initial_guess(CCTK_POINTER_TO_CONST cctkGH,
         rx3_To_xyz (nvar, s_x[i3D], r, phi, &(s_y[i3D]), &(s_z[i3D]), U);
       }
   Set_Initial_Guess_for_u(cctkGH, n1*n2*n3, v.d0, s_x, s_y, s_z);
-  
-  if (do_initial_debug_output)
-    debug_file=fopen("initial.dat", "w");
   for (i = 0; i < n1; i++)
     for (j = 0; j < n2; j++)
-    {
       for (k = 0; k < n3; k++)
       {
-        indx=Index(0,i,j,k,1,n1,n2,n3);
-        tmp_r= s_x[indx]*s_x[indx]+
-               s_y[indx]*s_y[indx]+
-               s_z[indx]*s_z[indx];
-        v.d0[indx]/=-tmp_r/((sqrt(tmp_r)+10)*(sqrt(tmp_r)+10))+1;
+        indx = Index(0,i,j,k,1,n1,n2,n3);
+        v.d0[indx]/=(-cos(Pih * (2 * i + 1) / n1)-1.0);
       }
-      indx=Index(0,i,j,0,1,n1,n2,n3);
-      if (do_initial_debug_output)
-      {
-        fprintf(debug_file, "%.8g %.8g %.8g %.8g %.8g\n", s_x[indx], s_y[indx],
-                v.d0[indx],
-                v.d0[indx]*(-cos(Pih * (2 * i + 1) / n1)-1.0),
-                (-cos(Pih * (2 * i + 1) / n1)-1.0));
-      }
-    }
-  if (do_initial_debug_output)
-    fclose(debug_file);
   Derivatives_AB3 (nvar, n1, n2, n3, v);
+  if (do_initial_debug_output)
+  {
+    debug_file=fopen("initial.dat", "w");
+    for (i = 0; i < n1; i++)
+      for (j = 0; j < n2; j++)
+      {
+        fprintf(debug_file, "%.8g %.8g %.8g %.8g %.8g\n",
+                s_x[indx], s_y[indx],
+                v.d0[indx],
+                (-cos(Pih * (2 * i + 1) / n1)-1.0),
+                v.d1[indx]);
+      }
+    fclose(debug_file);
+  }
   free(s_z);
   free(s_y);
   free(s_x);
@@ -124,7 +120,6 @@ TwoPunctures (CCTK_ARGUMENTS)
     if (use_external_initial_guess)
     {
       set_initial_guess(cctkGH, v);
-      F_of_v (cctkGH, nvar, n1, n2, n3, v, F, u);
     }
 
     Newton (cctkGH, nvar, n1, n2, n3, v, Newton_tol, Newton_maxit);
