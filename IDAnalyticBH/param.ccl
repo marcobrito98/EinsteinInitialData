@@ -113,6 +113,7 @@ EXTENDS KEYWORD initial_data ""
 EXTENDS KEYWORD initial_lapse ""
 {
   "schwarz" :: "Set lapse to Schwarzschild"
+  "cadez"   :: "Set initial lapse to Cadez"
 }
 
 EXTENDS BOOLEAN use_conformal ""
