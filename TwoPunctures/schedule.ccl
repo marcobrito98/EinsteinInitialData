@@ -1,7 +1,14 @@
 # Schedule definitions for thorn TwoPunctures
 # $Header$
 
+if (keep_u_around) {
+  STORAGE: puncture_u
+}
+
+
+
 SCHEDULE TwoPunctures IN ADMBase_InitialData
 {
   LANG: C
+  STORAGE: puncture_u
 } "Create puncture black hole initial data"
