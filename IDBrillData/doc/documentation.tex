@@ -1,0 +1,142 @@
+% Thorn documentation template
+\documentclass{article}
+\begin{document}
+
+\title{IDBrillData}
+\author{Carsten Gundlach}
+\date{6 September 1999}
+\maketitle
+
+\abstract{This thorn creates initial data for Brill wave spacetimes.
+It can create both axisymmetric data (in a 3D cartesian grid), as
+well as data with an angular dependency.}
+
+\section{Purpose}
+
+The purpose of this thorn is to create initial data for a Brill wave
+spacetime.  It does so by starting from a three--metric of the form
+originally considered by Brill
+\begin{equation}
+ds^2 = \Psi^4 \left[ e^{2q} \left( d\rho^2 + dz^2 \right)
++ \rho^2 d\phi^2 \right] =\Psi^4 \hat{ds}^{2},
+\label{eqn:brillmetric}
+\end{equation}
+where $q$ is a free function subject to certain regularity and
+fall-off conditions and $Psi$ is a conformal factor to be solved for.
+
+The thorn considers several different forms of the function $q$
+depending on certain parameters that will be described below.
+Substituting the metric above into the Hamiltonian constraint results
+in an elliptic equation for the conformal factor $Psi$ that can be
+solved numerically once the function $q$ has been specified. The
+initial data is also assumed to be time-symmetric, so the momentum
+constraints are trivially satisfied.
+
+The thorn is activated by choosing the standard Cactus parameter
+``initial\_data'' in one of the following two ways:
+
+\begin{itemize}
+  
+\item initial\_data = ``brilldata'': Axisymmetric Brill wave initial data
+  (but calculated in a cartesian grid!).
+  
+\item initial\_data = ``brilldata3D'': Brill wave initial data with an
+  angular dependency.
+
+\end{itemize}
+
+
+\section{Parameters for the thorn}
+
+The thorn is controlled by the following parameters:
+
+\begin{itemize}
+
+\item brill\_q (INT):  Form of the function $q$ [0,1,2] (default 2):
+
+\begin{itemize}
+
+\item brill\_q = 0:
+\[
+q = a \; \frac{\rho^{2+b}}{r^2} \left( \frac{z}{\sigma_z} \right)^2
+e^{-(\rho - \rho_0^2)}
+\]
+
+\item  brill\_q = 1:
+\[
+q = a \left( \frac{\rho}{\sigma_\rho} \right)^b \frac{1}{1 + \left[
+\left( r^2 - r_0^2 \right) / \sigma_r^2 \right]^{c/2}}
+\]
+
+\item  brill\_q = 2:
+\[
+q = a \left( \frac{\rho}{\sigma_\rho} \right)^b e^{-\left[
+\left( r^2 - r_0^2 \right) / \sigma_r^2 \right]^{c/2}}
+\]
+
+\item If one specifies 3D data (see above), the function $q$ is multiplied
+by an additional factor with an angular dependency:
+\[
+q \rightarrow q \left[ 1 + d \frac{\rho^m}{1 + e \rho^m}
+\cos^2 \left( n \phi + \phi_0 \right) \right]
+\]
+
+\end{itemize}
+
+\item brill\_a (REAL): Amplitude (default 0.0).
+
+\item brill\_b (REAL):  $b$ in above expressions (default 2.0).
+
+\item brill\_c (REAL):  $c$ in above expressions (default 2.0).
+
+\item brill\_d (REAL):  $d$ in above expressions (default 0.0).
+
+\item brill\_e (REAL):  $e$ in above expressions (default 1.0).
+
+\item brill\_m (REAL):  $m$ in above expressions (default 2.0).
+
+\item brill\_n (REAL):  $n$ in above expressions (default 2.0).
+
+\item brill\_r0 (REAL):  $r_0$ in above expressions (default 0.0).
+  
+\item brill\_rho0 (REAL):  $\rho_0$ in above expressions
+  (default 0.0).
+  
+\item brill\_phi0 (REAL):  $\phi_0$ in above expressions
+  (default 0.0).
+  
+\item brill\_sr (REAL):  $\sigma_r$ in above expressions
+  (default 1.0).
+  
+\item brill\_srho (REAL):  $\sigma_\rho$ in above
+  expressions (default 1.0).
+  
+\item savepsi (KEYWORD): Save conformal factor for output?
+  [``yes'',''no''] Normally, the conformal factor is calculated in the
+  grid function ``psi'', but this is set back to 1 at the end once the
+  physical metric has been constructed.  Setting this parameter to
+  ``yes'' copies the conformal factor to the grid function
+  ``brillpsi0'' before resetting it to 1 (default ``no'').
+
+\end{itemize}
+
+The elliptic solver is controlled by additional the parameters:
+
+\begin{itemize}
+  
+\item solver (KEYWORD): Elliptic solver used to solve the
+  hamiltonian constraint [sor/petsc/bam] (default ``sor'').
+  
+\item thresh (REAL): Threshold for elliptic solver (default
+  0.00001).
+
+\end{itemize}
+
+% Automatically created from the ccl files 
+% Do not worry for now.
+
+\include{interface}
+\include{param}
+\include{schedule}
+
+\end{document}

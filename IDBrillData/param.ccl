@@ -1,0 +1,119 @@
+# Parameter definitions for thorn IDBrillData
+
+shares:einstein
+
+EXTENDS KEYWORD initial_data ""
+{
+   "brilldata"   :: "Brill wave initial data"
+} ""
+
+
+private:
+
+# Parameters for elliptic solve
+
+KEYWORD solver "Which elliptic solver to use"
+{
+  "sor"    ::  "Use SOR solver"
+  "petsc"  ::  "Use PETSc solver"
+  "bam"    ::  "Use bam solver"
+} "sor"
+
+REAL thresh "How far (absolute norm) to go"
+{
+  0.0: :: "Positive number please"
+} 0.00001
+
+
+# Brill wave parameters
+
+BOOLEAN axisym "Axisymmetric initial data?"
+{
+} "yes"
+
+INT brill_q  "Form of function q [0,1,2]"
+{
+  0:2 :: "Only cases 0,1,2 defined at the moment"
+} 1
+
+REAL brill_a "Brill wave: Amplitude"
+{
+  : ::
+} 0.0
+
+REAL brill_b "Brill wave: rho^b"
+{
+  : :: 
+} 2.0
+
+REAL brill_c "Brill wave: (r^2 - r0^2)^(c/2)"
+{  
+  : ::
+} 2.0
+
+REAL brill_rho0 "Brill wave: radius of torus in rho"
+{
+  : ::
+} 0.0
+
+REAL brill_r0 "Brill wave: radius of torus in r"
+{
+  : ::
+} 0.0
+
+REAL brill_srho "Brill wave: sigma in rho"
+{
+  : ::
+} 1.0
+
+REAL brill_sr "Brill wave: sigma in r"
+{
+  : ::
+} 1.0
+
+# 3D Brill wave parameters
+
+REAL brill_d "3D Brill wave:  d rho^m cos^2(n (phi + phi0))"
+{
+  : ::
+} 0.0
+
+REAL brill_e "3D Brill wave:  d rho^m cos^2(n (phi + phi0))"
+{
+  : ::
+} 1.0
+
+REAL brill_m "3D Brill wave:  d rho^m cos^2(n (phi + phi0))"
+{
+  : ::
+} 2.0
+
+REAL brill_n "3D Brill wave:  d rho^m cos^2(n (phi + phi0))"
+{
+  : ::
+} 2.0
+
+REAL brill_phi0 "3D Brill wave:  d rho^m cos^2(n (phi + phi0))"
+{
+  : ::
+} 0.0
+
+KEYWORD outputpsi "Output conformal factor?"
+{
+ "yes" :: "Output brillpsi"
+ "no"  :: "Don't output brillpsi"
+}"yes"
+
+
+# Additional parameters
+
+REAL brill_eps "epsilon for finite differencing"
+{
+  0: :: "Positive please"
+} 1.e-6
+
+REAL brill_rhofudge "delta rho for axis fudge"
+{
+  0: :: "Positive please"
+} 1.e-6
+
