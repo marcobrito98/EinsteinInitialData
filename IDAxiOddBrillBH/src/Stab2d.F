@@ -6,7 +6,7 @@ c been made.
 c
       implicit none
 c
-      integer*4,intent(in) :: im,jm
+      integer,intent(in) :: im,jm
       real*8,intent(inout) :: cc(im,jm),cn(im,jm),cs(im,jm),
      $     ce(im,jm),cw(im,jm)
       real*8,intent(out) :: eps
@@ -79,7 +79,7 @@ c been made.
 c
       implicit none
 c     
-      integer*4,intent(in) :: im,jm
+      integer,intent(in) :: im,jm
       integer :: ncyc
       real*8,intent(out) :: cc(im*jm),cn(im*jm)
       real*8,intent(out) :: cs(im*jm),ce(im*jm)
@@ -244,7 +244,7 @@ c Be careful that the cs are zero on their outer boundary!!
 c
       implicit none
 c
-      integer*4,intent(in) :: im,jm
+      integer,intent(in) :: im,jm
       real*8,intent(out) :: cc(im*jm),cn(im*jm)
       real*8,intent(out) :: cs(im*jm),ce(im*jm)
       real*8,intent(out) :: cw(im*jm)
