@@ -69,7 +69,7 @@ REAL brill_a "Brill wave: Amplitude"
   : :: "Anything"
 } 0.0
 
-INT brill_b "Brill wave: rho^b"
+INT brill_b "Brill wave: used in exponent in rho"
 {
   : :: "Anything"
 } 2
