@@ -93,7 +93,7 @@ parameter:
 	 Note that the parameter is {\em not\/} "Goedel"!
 	 }%%%
 	\item[{\tt "BianchiI"}]
-		Bianchi type~I spacetime
+		Approximate Bianchi type~I spacetime
 	\item[{\tt "Kasner"}]
 		Kasner-like spacetime
 	\item[{\tt "Milne"}]
@@ -319,6 +319,15 @@ g_{ab} = \left[
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\subsection{Kerr spacetime in cartesian coordinates}
+
+\verb|Exact::exactmodel = "Kerr"| specifies Kerr spacetime in
+FIXME coordinates.
+
+FIXME: more detail needed from Mitica
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsection{Kerr-Schild form of boosted rotating black hole}
 
 \verb|Exact::exactmodel = "KerrSchild"| specifies Kerr spacetime in
@@ -361,15 +370,6 @@ k^a = - \frac{r(x\,dx + y\,dy) - a(x\,dy - y\,dx)}{r^2 + a^2}
       - dt
 \end{equation}
 is a null vector.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Kerr spacetime in cartesian coordinates}
-
-\verb|Exact::exactmodel = "Kerr"| specifies Kerr spacetime in
-FIXME coordinates.
-
-FIXME: more detail needed from Mitica
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -479,7 +479,7 @@ FIXME: more detail needed from Mitica
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Bianchi type~I spacetime}
+\subsection{Approximate Bianchi type~I spacetime}
 
 \verb|Exact::exactmodel = "BianchiI"| specifies an approximation to
 a Bianchi type~I spacetime.
