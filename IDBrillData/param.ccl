@@ -126,12 +126,6 @@ REAL brill_phi0 "3D Brill wave:  d rho^m cos^2(n (phi + phi0))"
   : :: "Anything"
 } 0.0
 
-KEYWORD outputpsi "Output conformal factor?"
-{
- "yes" :: "Output brillpsi"
- "no"  :: "Don't output brillpsi"
-}"yes"
-
 
 # Additional parameters
 
