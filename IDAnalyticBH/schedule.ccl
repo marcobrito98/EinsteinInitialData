@@ -2,6 +2,7 @@
 # $Header$
 
 if (CCTK_Equals(initial_data,"schwarzschild") ||
+    CCTK_Equals(initial_data,"kerr") ||
     CCTK_Equals(initial_data,"bl_bh") ||
     CCTK_Equals(initial_data,"misner_bh") ||
     CCTK_Equals(initial_data,"multiple_misner"))
@@ -19,6 +20,17 @@ if (CCTK_Equals(initial_data,"schwarzschild"))
    {
      LANG: C
    } "Construct initial data for a single Schwarzschild black hole"
+
+}
+
+if (CCTK_Equals(initial_data,"kerr")) 
+{ 
+	
+   STORAGE: confac
+   schedule KerrID at CCTK_INITIAL after InitialEinstein
+   {
+     LANG: C
+   } "Construct initial data for a single Kerr black hole"
 
 }
 

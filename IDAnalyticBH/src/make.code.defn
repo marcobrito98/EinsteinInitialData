@@ -4,6 +4,7 @@
 # Source files in this directory
 SRCS = 	ParamChecker.c\
 	Schwarzschild.c\
+	Kerr.c\
 	BrillLindquist.c\
         Misner_standard.c\
 	Misner_multiple.c\
