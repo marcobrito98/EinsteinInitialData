@@ -40,13 +40,15 @@ C $Header$
 
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
-C     Get parameters of the exact solution.
+C     Get parameters of the exact solution,
+C     and convert from parameter file spin parameter J/m^2
+C     to the J/m definition used in the code here.
 
       if (firstcall) then
          boostv = Kerr_KerrSchild__boost_v
          eps    = Kerr_KerrSchild__epsilon
          m      = Kerr_KerrSchild__mass
-         a      = Kerr_KerrSchild__spin
+         a      = m*Kerr_KerrSchild__spin
          firstcall = .false.
       end if
 
