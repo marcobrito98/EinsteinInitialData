@@ -12,11 +12,11 @@
 #
 #------------------------------------------------------------------------------
 
-!DESC "Evolution of Colliding Black Holes: Demo"
+!DESC "Evolution of Colliding Black Holes: Demo (C thorns only)"
 
 # These thorns must be compiled
 
-ActiveThorns = "Boundary ADM CartGrid3D Einstein IDanalyticBH IOBasic IOUtil IOASCII PsiKadelia Pugh Time"
+ActiveThorns = "Boundary EvolGRC CartGrid3D Einstein IDanalyticBH IOBasic IOUtil IOASCII Pugh Time"
  
 #------------------------------------------------------------------------------
 
@@ -32,8 +32,8 @@ cactus::cctk_final_time    = 30.0
 
 IOBasic::outInfo_vars      = "einstein::alp"
 IOBasic::outInfo_every     = 10
-IOASCII::out1D_vars        = "einstein::alp einstein::grr psikadelia::psi0re"
-IOASCII::out1D_every       = 10
+IOASCII::out1D_vars        = "einstein::alp einstein::grr"
+IOASCII::out1D_every       = 1
 
 #------------------------------------------------------------------------------
 # 
@@ -41,7 +41,7 @@ IOASCII::out1D_every       = 10
 #
 #------------------------------------------------------------------------------
 
-IO::outdir                 = "MisnerDemo"
+IO::outdir                 = "MisnerDemo-Simple"
 
 grid::domain               = "full"
 grid::type                 = "byrange"
@@ -60,8 +60,8 @@ einstein::initial_lapse	   = "one"
 idanalyticbh::mu           = 2.2
 
 adm::harmonic_f            = 2.0
-adm::bound                 = "radiative"      
-adm::method                = "stagleap"
+adm::bound                 = "flat"      
+adm::method                = "leapfrog"
 
 #------------------------------------------------------------------------------
 
