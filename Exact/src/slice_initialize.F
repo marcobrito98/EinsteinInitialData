@@ -28,7 +28,7 @@ C     Calculate Cauchy data and dx^A/dt.
 C     This tells the code that what we have set is the physical metric,
 C     not a conformally rescaled one.
 
-      conformal_state = NOCONFORMAL_METRIC
+      conformal_state = 0
       psi = 1.0D0
 
       return

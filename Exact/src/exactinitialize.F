@@ -5,7 +5,7 @@ C     in the Bona-Masso formalism, at an initial time.
 #include "cctk.h"
 #include "cctk_Parameters.h"
 #include "cctk_Arguments.h"
-#include "CactusEinstein/Einstein/src/Einstein.h"
+c #include "CactusEinstein/Einstein/src/Einstein.h"
 
       subroutine exactinitialize(CCTK_ARGUMENTS)
 
@@ -66,7 +66,7 @@ C     Set data pointwise.
 C     Tell the code there is no need to treat the conformal factor
 C     as a separate field. That is, we have set the physical metric here.
 
-      conformal_state = NOCONFORMAL_METRIC
+      conformal_state = 0
       psi = 1.d0
            
       return

@@ -53,9 +53,9 @@ C     Other parameters.
       doGij = (exblend_gs.eq.1)
 
       doLapse  = ((exblend_gauge.eq.1).and.
-     $            (CCTK_Equals("slicing","exact").ne.0))
+     $            (CCTK_Equals("lapse_evolution_method","exact").ne.0))
       doShift  = ((exblend_gauge.eq.1).and.
-     $            (CCTK_Equals(shift,"exact").ne.0))
+     $            (CCTK_Equals(shift_evolution_method,"exact").ne.0))
 
       if (exblend_width.lt.0) then 
          xblend = - exblend_width*dx

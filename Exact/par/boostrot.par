@@ -4,7 +4,7 @@
 
 # Required thorns
 
-ActiveThorns = "time pugh cartgrid3d einstein adm exact ioascii ioutil iobasic"
+ActiveThorns = "boundary pughreduce pughslab time pugh cartgrid3d admbase staticconformal admmacros coordgauge adm exact ioascii ioutil iobasic"
 
 # Grid
 
@@ -27,7 +27,9 @@ time::dtfac = 0.25
 
 # Initial data 
 
-einstein::initial_data = "exact"
+admbase::metric_type = "physical"
+#staticconformal::conformal_storage = "factor+derivs+2nd derivs"
+admbase::initial_data = "exact"
 
 exact::exactmodel = "boostrot"
 
@@ -37,22 +39,22 @@ exact::boostrotsafedistance = 1.e-2
 
 # Evolution
 
-einstein::evolution_system = "adm"
+admbase::evolution_method = "adm"
 
 # Gauge
 
-einstein::slicing = "static"
-einstein::shift   = "exact"
+admbase::lapse_evolution_method = "static"
+admbase::shift_evolution_method   = "exact"
 
 # Output
 
 IOBasic::outInfo_every = 1
-IOBasic::outInfo_vars  = "einstein::gxx"
+IOBasic::outInfo_vars  = "admbase::gxx"
 
 IOBasic::outScalar_every =  1
-IOBasic::outScalar_vars  = "einstein::gxx einstein::gyy einstein::gzz"
+IOBasic::outScalar_vars  = "admbase::gxx admbase::gyy admbase::gzz"
 
 IOASCII::out1D_every =  1
-IOASCII::out1D_vars  = "einstein::gxx einstein::gyy einstein::gzz"
+IOASCII::out1D_vars  = "admbase::gxx admbase::gyy admbase::gzz"
 
 

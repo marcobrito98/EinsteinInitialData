@@ -47,8 +47,8 @@ C     order numerical scheme.
 
 C     Set both lapse and shift.
 
-      if (((CCTK_Equals(slicing,"exact").ne.0).and.
-     $     (CCTK_Equals(shift,"exact").ne.0))
+      if (((CCTK_Equals(lapse_evolution_method,"exact").ne.0).and.
+     $     (CCTK_Equals(shift_evolution_method,"exact").ne.0))
      $     .or.
      $     ((CCTK_Equals(initial_lapse,"exact").ne.0).and.
      $     (CCTK_Equals(initial_shift,"exact").ne.0))) then
@@ -79,7 +79,7 @@ C     Set both lapse and shift.
 
 C     Set lapse only.
 
-      else if ((CCTK_Equals(slicing,"exact").ne.0)
+      else if ((CCTK_Equals(lapse_evolution_method,"exact").ne.0)
      $        .or. (CCTK_Equals(initial_lapse,"exact").ne.0)) then
 
          do k=1,nz
@@ -109,7 +109,7 @@ C     Set lapse only.
 
 C     Set shift only.
 
-      else if ((CCTK_Equals(shift,"exact").ne.0) 
+      else if ((CCTK_Equals(shift_evolution_method,"exact").ne.0) 
      $        .or. (CCTK_Equals(initial_shift,"exact").ne.0)) then
 
          do k=1,nz

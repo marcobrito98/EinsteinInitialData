@@ -18,7 +18,7 @@ if (CCTK_Equals(initial_data,"exact"))
 # but NOT evolving the slice afterwards.
 # Note we only need storage for the slice itself, and only at startup.
 
-if ( (CCTK_Equals(initial_data,"slice")) && ! (CCTK_Equals(evolution_system,"slice")) )
+if ( (CCTK_Equals(initial_data,"slice")) && ! (CCTK_Equals(evolution_method,"slice")) )
 {
   schedule slice_initialize at CCTK_INITIAL
   {
@@ -44,7 +44,7 @@ if ( (CCTK_Equals(initial_lapse,"exact")) || (CCTK_Equals(initial_shift,"exact")
 
 # During the evolution:
 
-if ( (CCTK_Equals(slicing,"exact")) || (CCTK_Equals(shift,"exact")) )
+if ( (CCTK_Equals(lapse_evolution_method,"exact")) || (CCTK_Equals(shift_evolution_method,"exact")) )
 {
   schedule Exact_RegisterSlicing at CCTK_STARTUP
   {
@@ -68,7 +68,7 @@ if ( (CCTK_Equals(slicing,"exact")) || (CCTK_Equals(shift,"exact")) )
 # happen as a failsafe, and Cactus should complain about not having an
 # evolution routine. Setting initial_data = "slice" on its own is ok though.
 
-if ( (CCTK_Equals(evolution_system,"slice")) && (CCTK_Equals(initial_data,"slice")) )
+if ( (CCTK_Equals(evolution_method,"slice")) && (CCTK_Equals(initial_data,"slice")) )
 {
   STORAGE: Exact_slice
   STORAGE: Exact_slicetemp1

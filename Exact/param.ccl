@@ -5,7 +5,7 @@
 
 shares: grid
 
-shares: einstein
+shares: admbase
 
 
 EXTENDS KEYWORD initial_data 
@@ -14,12 +14,12 @@ EXTENDS KEYWORD initial_data
   "slice"   :: "Initial data from exact solution on arbitrary slice"
 } ""
 
-EXTENDS KEYWORD slicing 
+EXTENDS KEYWORD lapse_evolution_method
 {
   "exact" :: "Use lapse from exact solution"
 } ""
 
-EXTENDS KEYWORD shift 
+EXTENDS KEYWORD shift_evolution_method
 {
   "exact" :: "Use shift from exact solution"
 } ""
@@ -34,7 +34,7 @@ EXTENDS KEYWORD initial_shift
   "exact"   :: "Initial shift from exact solution"
 } ""
 
-EXTENDS KEYWORD evolution_system 
+EXTENDS KEYWORD evolution_method
 {
   "slice" :: "Evolve arbitrary slice and  extract Cauchy data"
 } ""

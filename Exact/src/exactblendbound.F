@@ -51,9 +51,9 @@ C     Other parameters.
       doGij = (exblend_gs.eq.1)
 
       doLapse  = ((exblend_gauge.eq.1).and.
-     $            (CCTK_Equals(slicing,"exact").ne.0))
+     $            (CCTK_Equals(lapse_evolution_method,"exact").ne.0))
       doShift  = ((exblend_gauge.eq.1).and.
-     $            (CCTK_Equals(shift,"exact").ne.0))
+     $            (CCTK_Equals(shift_evolution_method,"exact").ne.0))
 
       call CCTK_CoordRange(ierr,cctkGH,xmn,xmx,-1,"x","cart3d")
       call CCTK_CoordRange(ierr,cctkGH,ymn,ymx,-1,"y","cart3d")
@@ -176,7 +176,7 @@ c     space thing...
                        intone(alp)
                     endif
 
-                    if (doShift.and.(shift_state.ne.SHIFT_INACTIVE)) then 
+                    if (doShift.and.(shift_state.ne.0)) then 
                        intone(betax)
                        intone(betay)
                        intone(betaz)
