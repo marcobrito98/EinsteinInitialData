@@ -1,12 +1,10 @@
 !DESC "1+log sliced 4 BL black holes, ADM, double leapfrog"
 
 #Required thorns
-ActiveThorns = "Boundary Time Einstein CartGrid3D pugh pughreduce ADM IDanalyticBH IOUtil iobasic"
+ActiveThorns = "Boundary Time ADMBase ADM ADMAnalysis CoordGauge ADMMacros SpaceMask StaticConformal CartGrid3D pugh pughreduce  IDanalyticBH IOUtil iobasic"
 
 # GENERAL 
 
-einstein::evolution_system = "ADM"     
- 
 driver::global_nx          = 20     
 driver::global_ny          = 20     
 driver::global_nz          = 20     
@@ -17,8 +15,10 @@ grid::domain               = "full"
 
 time::dtfac                =  0.25 
   
-einstein::slicing          = "1+log"
-einstein::initial_data     = "bl_bh" 
+admbase::metric_type      = "static conformal"
+admbase::evolution_method = "ADM"     
+admbase::lapse_evolution_method = "1+log"
+admbase::initial_data     = "bl_bh" 
 
 idanalyticbh::bl_nbh       = 4
 idanalyticbh::bl_x0_1      = 3.5
@@ -45,8 +45,7 @@ adm::method                = "leapfrog"
 IO::outdir               = "test_bl"
 IO::out_fileinfo         = "none"
 IOBasic::outInfo_every   = 1
-IOBasic::outInfo_vars    = "einstein::gxx einstein::psi"
+IOBasic::outInfo_vars    = "admbase::gxx staticconformal::psi"
 IOBasic::outScalar_every = 2
-IOBasic::outScalar_vars  = "einstein::grr einstein::psi"
+IOBasic::outScalar_vars  = "admanalysis::grr staticconformal::psi"
 
-##################################################################
