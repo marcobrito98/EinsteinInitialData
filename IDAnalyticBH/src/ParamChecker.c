@@ -114,8 +114,8 @@ void ParamChecker(CCTK_CARGUMENTS)
     CCTK_INFO("  (Not usually a good idea!)");
   }        
 
-  USE_CCTK_PARAMETERS
-  USE_CCTK_CARGUMENTS
+  
+  
 
 }
 
