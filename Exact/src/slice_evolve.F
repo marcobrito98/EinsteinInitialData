@@ -1,7 +1,7 @@
 C     Evolve the slice in the exact spacetime.
 
 #include "cctk.h"
-#include "cctk_arguments.h"
+#include "cctk_Arguments.h"
 
       subroutine slice_evolve(CCTK_FARGUMENTS)
 

@@ -4,8 +4,8 @@ C     exactmetric that calculates the spacetime metric and its
 C     inverse.
 
 #include "cctk.h"
-#include "cctk_parameters.h"
-#include "cctk_arguments.h"
+#include "cctk_Parameters.h"
+#include "cctk_Arguments.h"
 
       subroutine  exactdata(x, y, z, t,
      $     gxx, gyy, gzz, gxy, gyz, gxz,

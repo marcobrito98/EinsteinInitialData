@@ -1,7 +1,7 @@
 
 #include "cctk.h"
-#include "cctk_parameters.h"
-#include "cctk_arguments.h"
+#include "cctk_Parameters.h"
+#include "cctk_Arguments.h"
 
       subroutine exactboundary(CCTK_FARGUMENTS)
 

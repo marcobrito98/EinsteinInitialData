@@ -1,6 +1,6 @@
 
 #include "cctk.h"
-#include "cctk_parameters.h"
+#include "cctk_Parameters.h"
 #include "CactusEinstein/Einstein/src/Slicing.h"
 
 void Exact_RegisterSlicing(void) 

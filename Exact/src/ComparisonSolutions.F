@@ -1,5 +1,5 @@
 #include "cctk.h"
-#include "cctk_arguments.h"
+#include "cctk_Arguments.h"
 
       subroutine ComparisonMetric(CCTK_FARGUMENTS, 
      $     gxx_ex, gxy_ex, gxz_ex,

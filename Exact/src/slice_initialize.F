@@ -1,6 +1,6 @@
 
 #include "cctk.h"
-#include "cctk_arguments.h"
+#include "cctk_Arguments.h"
 #include "CactusEinstein/Einstein/src/Einstein.h"
 
       subroutine slice_initialize(CCTK_FARGUMENTS)

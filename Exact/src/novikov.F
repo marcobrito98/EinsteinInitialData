@@ -1,5 +1,5 @@
 #include "cctk.h"
-#include "cctk_parameters.h"
+#include "cctk_Parameters.h"
 
       subroutine novikov(
      $     x, y, z, t,

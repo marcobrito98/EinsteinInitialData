@@ -1,5 +1,5 @@
 #include "cctk.h"
-#include "cctk_arguments.h"
+#include "cctk_Arguments.h"
 
       subroutine linextraponebound(CCTK_FARGUMENTS,var)
 

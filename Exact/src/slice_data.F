@@ -2,7 +2,7 @@ C     Extract Cauchy data from the slice x^A(x^i) stored in slicex,
 C     slicey, slicez, slicet, and calculate dx^A/dt.
 
 #include "cctk.h"
-#include "cctk_arguments.h"
+#include "cctk_Arguments.h"
 
       subroutine slice_data(CCTK_FARGUMENTS)
 

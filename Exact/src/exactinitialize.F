@@ -3,8 +3,8 @@ C     Sets Cauchy data, lapse and shift, and what else is needed
 C     in the Bona-Masso formalism, at an initial time.
       
 #include "cctk.h"
-#include "cctk_parameters.h"
-#include "cctk_arguments.h"
+#include "cctk_Parameters.h"
+#include "cctk_Arguments.h"
 #include "CactusEinstein/Einstein/src/Einstein.h"
 
       subroutine exactinitialize(CCTK_FARGUMENTS)

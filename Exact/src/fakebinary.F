@@ -6,7 +6,7 @@ C     Einstein equations, has several characteristic features of a binary
 C     star system. See gr-qc/98......
 
 #include "cctk.h"
-#include "cctk_parameters.h"
+#include "cctk_Parameters.h"
 
       subroutine fakebinary(
      $     x, y, z, t,

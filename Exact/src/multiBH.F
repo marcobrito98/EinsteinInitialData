@@ -16,7 +16,7 @@ c     m_bh2,co_bh2x,co_bh2y,co_bh2z =  1.0,  2.0,0.0,0.0  #   locations
 c-----------------------------------------------------------------------
 
 #include "cctk.h"
-#include "cctk_parameters.h"
+#include "cctk_Parameters.h"
 
       subroutine  multi_BHs(
      $     x, y, z, t,
