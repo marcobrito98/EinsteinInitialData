@@ -16,13 +16,13 @@
 
 # These thorns must be compiled
 
-ActiveThorns = "einstein time adm iobasic ioutil ioascii pugh cartgrid3d boundary idlinearwaves"
+ActiveThorns = "einstein time adm iobasic ioutil ioascii pugh pughslab pughreduce cartgrid3d boundary idlinearwaves"
 
 #------------------------------------------------------------------------------
 
-# Number of grid points in each direction
+# Number of grid points in each direction (should be 100)
 
-driver::global_nsize       = 100
+driver::global_nsize       = 10
 
 # How many iterations
 
@@ -33,7 +33,7 @@ cactus::cctk_final_time    = 4.0
 iobasic::outinfo_every     = 10
 iobasic::outinfo_vars      = "einstein::grr"
 ioascii::out1d_every       = 10
-ioascii::out1d_vars        = "einstein::grr einstein::alp"
+ioascii::out1d_vars        ="einstein::grr einstein::alp"
 
 #------------------------------------------------------------------------------
 # 
@@ -53,14 +53,14 @@ einstein::evolution_system = "ADM"
 adm::method                = "stagleap"
 adm::bound                 = "radiative"
 adm::harmonic_f            = 2
-cd
+
 einstein::slicing          = "1+log"     
 einstein::initial_data     = "teukwaves"
 
 idlinearwaves::mvalue      = 2          
 idlinearwaves::parity      = "even"     
 idlinearwaves::packet      = "eppley"   
-idlinearwaves::wavesgoing  = "inout"       
+idlinearwaves::wavesgoing  = "both"       
 idlinearwaves::wavecenter  = 0.
 idlinearwaves::wavelength  = 2.
 
