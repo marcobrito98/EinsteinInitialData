@@ -16,8 +16,8 @@ grid::type         =  "byspacing"
 grid::dxyz         =  0.01
 grid::domain     =  "full"
 
-cctk_initial_time  =  0.     
-cctk_itlast        =  100      
+cactus::cctk_initial_time  =  0.     
+cactus::cctk_itlast        =  100      
 
 
 # Einstein 
