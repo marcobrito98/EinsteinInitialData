@@ -1,7 +1,7 @@
 !DESC "1+log sliced Misner black holes, ADM, double leapfrog"
 
 #Required thorns
-ActiveThorns = "Einstein CartGrid3D pugh ADM IDanalyticBH IOASCII IOUtil iobasic"
+ActiveThorns = "Time Einstein CartGrid3D pugh ADM IDanalyticBH IOUtil iobasic"
 
 # GENERAL 
 
@@ -15,15 +15,17 @@ grid::type                 = "byspacing"
 grid::dxyz                 =  0.8 
 grid::domain               = "full"
 
-einstein::dtfac            =  0.25   
+time::dtfac                =  0.25 
+  
 einstein::slicing          = "1+log"
-einstein::initial_data     = "misner_bh"
+einstein::initial_data     = "misner_bh" 
 
 idanalyticbh::mu           = 1.2
 
 cactus::cctk_itlast        = 10      
 
 adm::bound                 = "flat"      
+adm::method                = "leapfrog"
 
 IO::outdir           = "test_misner"
 IOBasic::outInfo_every   = 1
