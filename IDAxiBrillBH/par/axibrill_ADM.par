@@ -3,7 +3,7 @@
 ######################################################################
 
 #Required thorns
-ActiveThorns = "Time ADMconstraints PUGH PUGHSlab PUGHReduce PUGHInterp CartGrid3D Einstein ADM IDAxiBrillBH IOASCII IOUtil IOBasic"
+ActiveThorns = "Boundary Time ADMconstraints PUGH PUGHSlab PUGHReduce PUGHInterp CartGrid3D Einstein ADM IDAxiBrillBH IOASCII IOUtil IOBasic"
 
 pugh::enable_all_storage = "yes"
 
@@ -47,7 +47,7 @@ IO::outdir = "IDAxiBrillBH"
 
 IOBasic::outInfo_every = 2      
 IOASCII::out1d_every = 1
-IOBasic::outInfo_vars = "einstein"
-IOASCII::out1d_vars = "einstein::gxx einstein::kxx admconstraints::ADMconstraints einstein::grr einstein::alp"
+IOBasic::outInfo_vars = "einstein::gxx"
+IOASCII::out1d_vars = "einstein::gxx einstein::kxx admconstraints::ham einstein::grr einstein::alp"
 
 ##################################################################
