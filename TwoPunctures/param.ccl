@@ -113,3 +113,20 @@ REAL par_S_minus[3] "spin of the m- puncture"
 BOOLEAN use_sources "Use sources?"
 {
 } "no"
+
+BOOLEAN rescale_sources "If sources are used - rescale them after solving?"
+{
+} "yes"
+
+BOOLEAN use_external_initial_guess "Set initial guess by external function?"
+{
+} "no"
+
+BOOLEAN do_residuum_debug_output "Output debug information about the residuum"
+{
+} "no"
+
+BOOLEAN do_initial_debug_output "Output debug information about initial guess"
+{
+} "no"
+
