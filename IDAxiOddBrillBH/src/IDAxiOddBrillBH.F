@@ -64,7 +64,7 @@ c     Perhaps this and others should go into cctk.h
       integer :: npoints,handle,ierror
 
       pi = 4.0d0*atan(1.0d0)
-c     DON'T use integer*4
+c     DO NOT use integer*4
       ne = neta
       nq = ntheta
 
