@@ -12,21 +12,18 @@
 #
 #------------------------------------------------------------------------------
 
-
 !DESC "Evolution of Colliding Black Holes: Demo"
 
 
 # These thorns must be compiled
 
-ActiveThorns = "Boundary ADM_BSSN CartGrid3D Einstein IDanalyticBH IOBasic IOUtil IOASCII PsiKadelia Pugh Time"
+ActiveThorns = "Boundary ADM CartGrid3D Einstein IDanalyticBH IOBasic IOUtil IOASCII PsiKadelia Pugh Time"
  
-
 #------------------------------------------------------------------------------
 
-
-# Number of grid points in each direction
+# Number of grid points in each direction (must be around 100 or larger)
  
-driver::global_nsize       = 93
+driver::global_nsize       = 100
 
 # How many iterations 
 
@@ -35,7 +32,7 @@ cactus::cctk_final_time    = 30.0
 # What output and how often
 
 IOBasic::outInfo_vars      = "einstein::alp"
-IOBasic::outInfo_every     = 10 
+IOBasic::outInfo_every     = 10
 IOASCII::out1D_vars        = "einstein::alp einstein::grr psikadelia::psi0re"
 IOASCII::out1D_every       = 10
 
@@ -47,7 +44,7 @@ IOASCII::out1D_every       = 10
 #------------------------------------------------------------------------------
 
 
-IO::outdir                 = "BrillLindDemo"
+IO::outdir                 = "BrillLindDemo-Iso"
 
 grid::domain               = "full"
 grid::type                 = "byrange"
@@ -59,27 +56,22 @@ cactus::cctk_initial_time  = 0.
 time::dtfac                = 0.25 
  
 einstein::initial_data     = "bl_bh"  
-einstein::evolution_system = "ADM_BSSN"     
+einstein::evolution_system = "ADM"     
 einstein::slicing          = "1+log"
 einstein::initial_lapse	   = "one"
 
-idanalyticbh::bl_nbh       = 2
-idanalyticbh::bl_x0_1      = 0.0
-idanalyticbh::bl_y0_1      = 1.2
-idanalyticbh::bl_z0_1      = 0.0
-idanalyticbh::bl_M_1       = 1.0
+idanalyticbh::bl_nbh       =  2
+idanalyticbh::bl_x0_1      =  0.0
+idanalyticbh::bl_y0_1      =  0.0
+idanalyticbh::bl_z0_1      =  1.2
+idanalyticbh::bl_M_1       =  1.0
 idanalyticbh::bl_x0_2      =  0.0
-idanalyticbh::bl_y0_2      = -1.2
-idanalyticbh::bl_z0_2      =  0.0
+idanalyticbh::bl_y0_2      =  0.0
+idanalyticbh::bl_z0_2      = -1.2
 idanalyticbh::bl_M_2       =  1.5
 
-adm_bssn::harmonic_f       = 2.0
-adm_bssn::bound            = "radiative"      
-adm_bssn::method           = "icn"
-adm_bssn::ICN_itnum        = 3
-adm_bssn::evolveG          = "yes"
-adm_bssn::RfromH	   = "yes"
-adm_bssn::forceKzero	   = "no"
-adm_bssn::subtracttrA	   = "no"
+adm::harmonic_f            = 2.0
+adm::bound                 = "radiative"      
+adm::method                = "stagleap"
 
 
