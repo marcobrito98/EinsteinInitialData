@@ -2,7 +2,7 @@
 # $Header$
 
 # Source files in this directory
-SRCS = 	\
+SRCS = 	ParamCheck.c\
 	planewaves.F77\
 	teukwaves.F77
 

@@ -1,4 +1,4 @@
 # Interface definition for thorn IDLinearWaves
 
 implements: idlinearwaves
-inherits: einstein
+inherits: ADMBase StaticConformal Grid

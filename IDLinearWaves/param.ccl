@@ -1,6 +1,6 @@
 # Parameter definitions for thorn IDLinearWaves
 
-shares:einstein
+shares: ADMBase
 
 EXTENDS KEYWORD initial_data 
 {
@@ -8,9 +8,11 @@ EXTENDS KEYWORD initial_data
 "planewaves" :: "linear waves initial data- plane waves"
 }
 
-USES BOOLEAN use_conformal 
+USES KEYWORD metric_type 
 
-USES BOOLEAN use_conformal_derivs 
+shares: StaticConformal
+
+USES KEYWORD conformal_storage 
 
 private:
 
