@@ -34,9 +34,9 @@ distortedbhivp::c        = 0.5
 distortedbhivp::sigma    = 1.0
 distortedbhivp::etamax   = 6.0
 distortedbhivp::n        = 4
-distortedbhivp::ne       = 102
-distortedbhivp::nq       = 27
-distortedbhivp::np       = 27
+distortedbhivp::neta     = 102
+distortedbhivp::ntheta   = 27
+distortedbhivp::nphi     = 5
 interp::order            = 1
 
 

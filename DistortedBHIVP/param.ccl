@@ -46,17 +46,17 @@ INT n "sin^n theta in brill wave"
   *:* :: "No restriction"
 } 2
 
-INT ne "Eta resolution for solve"
+INT neta "Eta resolution for solve"
 {
   *:* :: "No restriction"
 } 202
 
-INT nq "Theta resolution for solve"
+INT ntheta "Theta resolution for solve"
 {
   *:* :: "No restriction"
 } 54
 
-INT np "Eta resolution for solve"
+INT nphi "Eta resolution for solve"
 {
   *:* :: "No restriction"
 } 5

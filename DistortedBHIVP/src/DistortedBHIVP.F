@@ -62,6 +62,7 @@ c     Perhaps this and others should go into cctk.h
       real*8 rmax,adm
       real*8,parameter :: dbh_eps = 1.0d-9
       real*8 pi
+      integer :: ne, nq, np
       integer :: nx,ny,nz
       integer i,j,k,ier,nquads,nocts,order
       integer npoints,handle,ierror
@@ -69,7 +70,12 @@ c     Perhaps this and others should go into cctk.h
       conformal_state = CONFORMAL_METRIC     
       
       pi = 4.0d0*atan(1.0d0)
-      
+
+c     DON'T use integer*4
+      ne = neta
+      nq = ntheta
+      np = nphi
+
 c     Set up the grid spacings
       nx = cctk_lsh(1)
       ny = cctk_lsh(2)
