@@ -2,7 +2,7 @@
 #!DESC "Initial data for axisymmetric distored black hole"
 ######################################################################
 
-ActiveThorns = "time ADMconstraints pugh interp cartgrid3d einstein ADM RotatingDBHIVP ioascii iobasic ioutil"
+ActiveThorns = "time ADMconstraints pugh pughreduce pughslab interp cartgrid3d einstein ADM RotatingDBHIVP ioascii iobasic ioutil"
 
 # GENERAL 
 
