@@ -104,7 +104,7 @@ parameter:
 \item[Miscellaneous spacetimes]\mbox{}\\[-\baselineskip]
 	\begin{description}
 	\item[{\tt "boostrot"}]
-		Boost rotation symmetric spacetime
+		Boost-rotation symmetric spacetime
 	\item[{\tt "starSchwarz"}]
 		Schwarzschild (constant density) star
 	\item[{\tt "bowl"}]
@@ -187,7 +187,7 @@ types of coordinates:
 \subsection{Schwarzschild Spacetime with Flat Spatial Metric}
 
 \verb|Exact::exactmodel = "flatSchwarz"| specifies Schwarzschild spacetime
-in coordinates chosen so the spatial metric is flat, then
+in Painleve-Gustrand coordinates (these have a {\em flat\/} 3-metric),
 transformed to the usual Cactus $(t,x,y,z)$ Cartesian-topology
 coordinates.  The only physics parameter is
 \begin{equation}
@@ -217,8 +217,6 @@ g_{ab} = \left[
 	 \end{array}
 	 \right]
 \end{equation}
-
-FIXME: get more info from Miguel
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -630,9 +628,13 @@ noone seems to know whether this is indeed a Milne (De~Milne?) spacetime.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Boost Rotation Symmetric Spacetime}
+\subsection{Boost-Rotation Symmetric Spacetime}
 
-FIXME: get info from Miguel
+\verb|Exact::exactmodel = "starSchwarz"| specifies a boost-rotation
+symmetric spacetime.  Pravda and Pravdov\'{a}, gr-qc/0003067, give a
+general review of boost-rotation symmetric spacetimes.
+
+FIXME: get more info from Miguel and Carsten
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
