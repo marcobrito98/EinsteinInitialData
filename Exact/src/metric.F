@@ -30,7 +30,7 @@ c arguments
 c local variables
       character*100 warn_buffer
 
-cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
 c
 c Minkowski spacetime
@@ -68,7 +68,7 @@ c
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz)
 
-cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
 c
 c black hole spacetimes
@@ -149,7 +149,7 @@ c
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz)
 
-cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
 c
 c cosmological spacetimes
@@ -251,7 +251,7 @@ c
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz)
 
-cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
 c
 c miscellaneous spacetimes
@@ -281,10 +281,10 @@ c
      $        gutt, gutx, guty, gutz,
      $        guxx, guyy, guzz, guxy, guyz, guxz)
 
-cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
       else
-         write (warn_buffer, '(a,i)')
+         write (warn_buffer, '(a,i8)')
      $         'Unknown decoded_exact_model = ', decoded_exact_model
          call CCTK_WARN(0, warn_buffer)
       endif
