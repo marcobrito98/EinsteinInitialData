@@ -30,6 +30,8 @@ void Schwarzschild(CCTK_ARGUMENTS)
   int make_conformal_derivs;
   int i, npoints;
 
+  CCTK_VInfo(CCTK_THORNSTRING,
+             "setting up Schwarzschild initial");
 
   /* Check if we should create and store conformal factor stuff */
   if(CCTK_EQUALS(metric_type, "static conformal"))

@@ -60,6 +60,9 @@ void KerrID(CCTK_ARGUMENTS)
   CCTK_REAL m=mass,a=a_Kerr,a_2=a*a,m2_a2=m*m-a_2;
   int make_conformal_derivs;
 
+  CCTK_VInfo(CCTK_THORNSTRING,
+             "setting up Kerr initial data");
+
   /* total number of points on this processor */
   npoints = cctk_lsh[0] * cctk_lsh[1] * cctk_lsh[2];
 
@@ -322,8 +325,3 @@ void KerrID(CCTK_ARGUMENTS)
   
   return;
 }
-
-
-
-
-

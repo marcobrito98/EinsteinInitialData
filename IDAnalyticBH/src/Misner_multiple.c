@@ -48,6 +48,9 @@ void Misner_multiple(CCTK_ARGUMENTS)
   const CCTK_REAL inv_nm_eps_squared = 1.0 / SQR(nm_eps);
   int make_conformal_derivs;
 
+  CCTK_VInfo(CCTK_THORNSTRING,
+             "setting up Misner initial data for %d black holes",
+             (int)misner_nbh);
 
   /* Check if we should create and store conformal factor stuff */
   if(CCTK_EQUALS(metric_type, "static conformal"))

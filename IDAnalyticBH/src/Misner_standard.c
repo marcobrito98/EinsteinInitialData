@@ -77,6 +77,8 @@ void Misner_standard(CCTK_ARGUMENTS)
   const CCTK_REAL zero = 0.0, one = 1.0, three = 3.0;
   int make_conformal_derivs;
 
+  CCTK_VInfo(CCTK_THORNSTRING,
+             "setting up Misner initial data");
 
   /* Check if we should create and store conformal factor stuff */
   if(CCTK_EQUALS(metric_type, "static conformal"))

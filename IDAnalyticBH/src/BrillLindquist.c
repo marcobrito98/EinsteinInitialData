@@ -48,6 +48,10 @@ void BrillLindquist(CCTK_ARGUMENTS)
   int i, npoints;
   int make_conformal_derivs;
 
+  CCTK_VInfo(CCTK_THORNSTRING,
+             "setting up Brill-Lindquist initial data for %d black holes",
+             (int)bl_nbh);
+
   /* Check if we should create and store conformal factor stuff */
   if(CCTK_EQUALS(metric_type, "static conformal"))
   {
