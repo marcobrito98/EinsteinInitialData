@@ -46,7 +46,7 @@
       
       INTEGER iin,iout
       REAL pi
-      REAL amplitude,ra,the,phi
+      REAL ra,the,phi
       REAL wave,wavep
       REAL kx,ky,kz,w
       REAL kxp,kyp,kzp,wp
@@ -54,11 +54,13 @@
 c     local arrays (scalars! Man, what a sweat!)
       REAL plus,minus,plusp,minusp,ain,aout
       
-      INTEGERE i,j,k
+      INTEGER i,j,k
+
+      INTEGER CCTK_Equals
 
       pi = 3.14159265358979d0
 
-      c     Wave characteristics
+c     Wave characteristics
 
 c     amplitude is declared by DECLARE_PARAMETER, for all other parameters
 c     we stick to the naming in the cactus3.2.0 version of cactus
@@ -106,7 +108,7 @@ c     precalc
       kzp = 2*pi*cos(the)/wavep
       wp = (kxp*kxp+kyp*kyp+kzp*kzp)**0.5
 
-      c  *************** plane waves ********************
+c  *************** plane waves ********************
       do k=1,sh(3)
          do j=1,sh(2)
             do i=1,sh(1)		 
@@ -141,7 +143,7 @@ c     the metric functions
 c     At this pint, the CAC3.2.0 version has some code for the dxgxx,....
 c     defined, how does CAC4.0 handles this without  #ifdef THORN_BONAMASSO ?
         
-        c  and finally the extrinsic curvatures
+c  and finally the extrinsic curvatures
 c       Joan: I removed the division by alp as the initialization
 c       of the lapse may take place later. This data is consistent
 c       for initial lapse equal one.

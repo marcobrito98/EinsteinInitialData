@@ -3,8 +3,8 @@
 friend:einstein
 
 EXTENDS KEYWORD initial_data ""
-"teukwaves" : "linear waves initialdata: Teukolsky waves"
-"planewave" : "linear waves initialdata: plane waves"
+"teukwaves" :: "linear waves initialdata: Teukolsky waves"
+"planewave" :: "linear waves initialdata: plane waves"
 }
 
 private:
@@ -66,6 +66,6 @@ KEYWORD wavesgoing "in and outgoing waves..."
 
 KEYWORD teuk_no_vee "Initialize Teuk. waves with V=0?"
 {
-  "no" : " Bona Masso setting"
-  "yes": " Bona Masso setting"
+  "no" :: "Bona Masso setting"
+  "yes":: "Bona Masso setting"
 } "no"

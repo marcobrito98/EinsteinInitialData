@@ -1,6 +1,6 @@
 # Schedule definitions for thorn IDLinearWaves
 
-if (CCTK_Equals(initaldata,"linearwaves")) 
+if (CCTK_Equals(initial_data,"linearwaves")) 
 {
   schedule LinearWaves at CCTK_INITIAL
   {
