@@ -17,6 +17,7 @@ C $Header$
       implicit none
 
       DECLARE_CCTK_PARAMETERS
+      DECLARE_CCTK_FUNCTIONS
 
       CCTK_REAL x, y, z, t
       CCTK_REAL gdtt, gdtx, gdty, gdtz, 
@@ -32,6 +33,12 @@ C $Header$
       data firstcall /.true./
       save firstcall, boostv, eps, m, a
 
+      integer R02_TOO_SMALL_WARN_LEVEL
+      parameter (R02_TOO_SMALL_WARN_LEVEL = 2)
+
+      character*100 warn_buffer
+
+cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
 C     Get parameters of the exact solution.
 
@@ -66,9 +73,16 @@ C     Spherical auxiliary coordinate r and angle theta in BH rest frame.
       r02 = 0.5d0 * (rho02 - a**2) 
      $     + sqrt(0.25d0 * (rho02 - a**2)**2 + a**2 * z0**2)
       if (r02 .lt. eps) then
-         write(6,*) 'r02 too small in kerrschild'
-         write(6,*) x0, y0, z0
-         write(6,*) rho02, a**2, r02
+         call CCTK_WARN(R02_TOO_SMALL_WARN_LEVEL,
+     $        'Kerr/Kerr-Schild: r02 is too small at relative position')
+
+         write(warn_buffer, '(a,f8.3, a,f8.3, a,f8.3)')
+     $        '                  x0=',x0, ' y0=',y0, ' z0=',z0
+         call CCTK_WARN(R02_TOO_SMALL_WARN_LEVEL, warn_buffer)
+
+         write(warn_buffer, '(a,f9.3, a,g12.3)')
+     $        '                  rho02=',rho02, ' ==> r02=',r02
+         call CCTK_WARN(R02_TOO_SMALL_WARN_LEVEL, warn_buffer)
       end if
       r02 = max(r02,eps)
       r0 = sqrt(r02)
