@@ -27,17 +27,17 @@ admconstraints::bound = "static"
 # MODEL 
 
 einstein::initial_data = "axioddbh"
-axiodd::brandt_seidel  = "yes"
+axiodd::brandt_seidel  = "no"
 axiodd::verbose        = "yes"
-axiodd::amp      = 2.0
-axiodd::eta0     = 2.0
+axiodd::amp      = 1.
+axiodd::eta0     = 0.0
 axiodd::sigma    = 1.0
 axiodd::byJ      = 0.0
-axiodd::n        = 3
+axiodd::n        = 5
 axiodd::etamax   = 6.0
-axiodd::neta     = 102
-axiodd::ntheta   = 27
-interp::order    = 1
+axiodd::neta     = 302
+axiodd::ntheta   = 54
+interp::order    = 2
 
 # GAUGE
 einstein::slicing    = "geodesic"  
