@@ -707,10 +707,10 @@ c
       in_arrays(4) = CCTK_PointerTo(dphipsisph)
       in_arrays(5) = CCTK_PointerTo(detaetapsisph)
       in_arrays(6) = CCTK_PointerTo(detaqpsisph)
-      in_arrays(6) = CCTK_PointerTo(detaphipsisph)
-      in_arrays(6) = CCTK_PointerTo(dqqpsisph)
-      in_arrays(6) = CCTK_PointerTo(dqphipsisph)
-      in_arrays(6) = CCTK_PointerTo(dphiphipsisph)
+      in_arrays(7) = CCTK_PointerTo(detaphipsisph)
+      in_arrays(8) = CCTK_PointerTo(dqqpsisph)
+      in_arrays(9) = CCTK_PointerTo(dqphipsisph)
+      in_arrays(10) = CCTK_PointerTo(dphiphipsisph)
 
       out_arrays(1) = CCTK_PointerTo(psi3d)
       out_arrays(2) = CCTK_PointerTo(detapsi3d)
@@ -718,10 +718,10 @@ c
       out_arrays(4) = CCTK_PointerTo(dphipsi3d)
       out_arrays(5) = CCTK_PointerTo(detaetapsi3d)
       out_arrays(6) = CCTK_PointerTo(detaqpsi3d)
-      out_arrays(6) = CCTK_PointerTo(detaphipsi3d)
-      out_arrays(6) = CCTK_PointerTo(dqqpsi3d)
-      out_arrays(6) = CCTK_PointerTo(dqphipsi3d)
-      out_arrays(6) = CCTK_PointerTo(dphiphipsi3d)
+      out_arrays(7) = CCTK_PointerTo(detaphipsi3d)
+      out_arrays(8) = CCTK_PointerTo(dqqpsi3d)
+      out_arrays(9) = CCTK_PointerTo(dqphipsi3d)
+      out_arrays(10) = CCTK_PointerTo(dphiphipsi3d)
 
       call CCTK_InterpLocalUniform (ierror, 3,
      $                              interp_handle, param_table_handle,
