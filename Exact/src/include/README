@@ -1,0 +1,19 @@
+Description of files in this directory
+======================================
+
+$Header$
+
+Scalar_CalcTmunu.inc
+Scalar_CalcTmunu_temps.inc
+	This declares temporary variables used by the code in
+	"Scalar_CalcTmunu.inc"
+
+param_defs.inc
+	This contains #define definitions for the various possible
+	values of decoded_exact_model ; if #defines are needed for
+	other decoded keyword/string parameters they should also
+	live here.
+
+slice_normal.h
+	Despite the file name, this actually contains Fortran (!) code,
+	to compute the normal vector to a slice.
