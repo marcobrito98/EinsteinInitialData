@@ -468,14 +468,15 @@ for each $i = 1$, $2$, $3$, $4$.
 \subsection{Pure-Radiation Robertson-Walker Cosmology}
 
 \verb|Exact::exactmodel = "Rob-Wal"| specifies a pure-radiation
-Robertson-Walker spacetie ($p = \third \rho$, $k=0$), as described in
+Robertson-Walker spacetime ($p = \third \rho$, $k=0$), as described in
 Hawking and Ellis section~5.3 and MTW section~27.11 (see also gr-qc/0110031),
 transformed to the usual Cactus $(t,x,y,z)$ Cartesian-topology coordinates.
-The only physics parameter is
-\begin{equation}
-a = \text{\tt Desitt\_a}
-\end{equation}
-(note the name!).
+The physics parameters are
+\begin{align}
+a &= \text{\tt Desitt\_a}						\\
+b &= \text{\tt Desitt\_b}						%%%\\
+\end{align}
+(note the names!).
 
 The general Robertson-Walker line element in $(t,r,\theta,\phi)$ coordinates
 is
@@ -490,7 +491,8 @@ ds^2 = -dt^2 + a t \left[ dr^2 + r^2 \, d\Omega^2 \right]
 
 This thorn also sets up the stress-energy tensor for this spacetime.
 
-FIXME: more detail needed from Mitica
+{\bf This solution doesn't work properly yet.  See Mitica Vulcanov for
+further information.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -500,10 +502,12 @@ FIXME: more detail needed from Mitica
 spacetime (a zero-pressure spatially-flat Robertson-Walker spacetime),
 as described in Hawking and Ellis section~5.3 and MTW section~27.11
 (see also gr-qc/0110031), transformed to the usual Cactus $(t,x,y,z)$
-Cartesian-topology coordinates.  The only physics parameter is
-\begin{equation}
-a = \text{\tt Desitt\_a}
-\end{equation}
+Cartesian-topology coordinates.  The physics parameters are
+\begin{align}
+a &= \text{\tt Desitt\_a}						\\
+b &= \text{\tt Desitt\_b}						%%%\\
+\end{align}
+(note the name!).
 
 The Einstein-De~Sitter spacetime is the special case
 $R(t) = \sqrt{a}\,t^{2/3}$, $k = 0$ of the more general Robertson-Walker
@@ -517,7 +521,8 @@ T_{tt} = \frac{1}{6 \pi t^2}
 \end{equation}
 This is properly set up by this thorn.
 
-FIXME: more detail needed from Mitica
+{\bf This solution doesn't work properly yet.  See Mitica Vulcanov for
+further information.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -535,7 +540,8 @@ a = \text{\tt Godel\_a}
 At present this thorn doesn't set up the stress-energy tensor;
 you have to do this ``by hand''.
 
-FIXME: more detail needed from Mitica
+{\bf This solution doesn't work properly yet.  See Mitica Vulcanov for
+further information.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -544,7 +550,11 @@ FIXME: more detail needed from Mitica
 \verb|Exact::exactmodel = "BianchiI"| specifies an approximation to
 a Bianchi type~I spacetime.
 
-FIXME: more detail needed from Mitica
+At present this thorn doesn't set up the stress-energy tensor;
+you have to do this ``by hand''.
+
+{\bf This solution doesn't work properly yet.  See Mitica Vulcanov for
+further information.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -584,15 +594,18 @@ T_{ab} = \diag \left[
 	 \end{array}
 	 \right]
 \end{equation}
-This is properly set up by this thorn.
 
-FIXME: verify this with Mitica
+{\bf At the moment only $T_{00}$ is set properly, the other
+components are (incorrectly) 0.  See Mitica Vulcanov for
+further information.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Milne Spacetime for Pre-Big-Bang Cosmology}
 
 \verb|Exact::exactmodel = "Milne"| specifies a De~Milne spacetime,
+as described by gr-qc/9802001 (see in particular reference~14, which
+in turn points to Zeldovich and Novikov volume~2 section~2.4):
 \begin{equation}
 g_{ab} = \left[
 	 \begin{array}{cccc}
@@ -608,7 +621,8 @@ where
 V = \frac{t^2}{1 + x^2 + y^2 + z^2}
 \end{equation}
 
-FIXME: more detail needed from Mitica
+{\bf The $g_{ab}$ given here is indeed what the code computes, but
+noone seems to know whether this is indeed a Milne (De~Milne?) spacetime.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -632,9 +646,10 @@ tensor is also properly set up.
 
 \subsection{Non-Einstein Bowl (``Bag of Gold'') Spacetime}
 
-\verb|Exact::exactmodel = "bowl"| specifies a ``bag of Gold'' metric.
-This is useful for testing purposes, but isn't a solution of the
-Einstein equations.  The physics parameters are
+\verb|Exact::exactmodel = "bowl"| specifies a ``bag of Gold'' metric,
+as described in gr-qc/9809004.  This is useful for testing purposes,
+but isn't a solution of the Einstein equations.  The physics parameters
+are
 \begin{align}
 a	& = \text{\tt bowl\_a}						\\
 \sigma	& = \text{\tt bowl\_s}						\\
