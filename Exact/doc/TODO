@@ -5,9 +5,17 @@ Ian Hawke:
 It would be nice to be able to output the difference between a
 numerical evolution and the exact solution.
 
+
 Sascha Husa:
 It would be nice if Exact could set up variables other than the ADM ones
 (indeed it appears to not even grok BSSN right now).
 
 The boundary setup needs to be generalized to handle ghost zones wider
 than 1 point.
+
+
+Peter Diener:
+There's no documented way to generate an entire exact spacetime
+(not just a t=0 slice).  The "slice_evolver.tex" stuff may be able
+to do this, but it looks complicated. :(  There ought to be a
+simple way of doing this!  (And it ought to be documented simply, too!)
