@@ -49,6 +49,11 @@ TwoPunctures (CCTK_ARGUMENTS)
     Newton (nvar, n1, n2, n3, v, Newton_tol, Newton_maxit);
 
     F_of_v (nvar, n1, n2, n3, v, F, u);
+    
+    /* print out ADM mass, eq.: \Delta M_ADM=2*r*u=4*b*V for A=1,B=0,phi=0 */
+    admMass = (par_m_plus + par_m_minus
+               - 4*par_b*PunctEvalAtArbitPosition(v.d0, 1, 0, 0, n1, n2, n3));
+    CCTK_VInfo (CCTK_THORNSTRING, "ADM mass is %g\n", admMass);
   }
 
   if (CCTK_EQUALS(grid_setup_method, "Taylor expansion"))
@@ -218,10 +223,4 @@ TwoPunctures (CCTK_ARGUMENTS)
     free_derivs (&u, ntotal);
     free_derivs (&v, ntotal);
   }
-
-
-  /* print out ADM mass, eq.: \Delta M_ADM=2*r*u=4*B*V for A=1,B=0,phi=0 */
-  admMass=par_m_plus+par_m_minus-
-          4*par_b*PunctEvalAtArbitPosition(v.d0, 1, 0, 0, n1, n2, n3);
-  CCTK_VInfo(CCTK_THORNSTRING,"ADM mass is %f\n",admMass);
 }
