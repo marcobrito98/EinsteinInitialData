@@ -42,6 +42,8 @@ idlinearwaves::wavesgoing = "both"
 
 IO::outdir               = "test_pw_ADM_leap"
 IO::out_fileinfo         = "none"
+IO::parfile_write        = "no"
+
 IOBasic::outScalar_every =  10      
 IOBasic::outScalar_vars  = "einstein::gzz einstein::kzz einstein::alp"
 IOASCII::out1D_every =  10      
