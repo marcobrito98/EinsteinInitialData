@@ -1,5 +1,5 @@
 implements: IDBrillData
-inherits: einstein
+inherits: einstein ellbase
 
 # Grid functions for linear elliptic equation.
 
