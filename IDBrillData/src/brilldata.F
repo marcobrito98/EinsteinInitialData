@@ -1,12 +1,11 @@
+
 #include "cctk.h" 
 #include "cctk_Parameters.h"
 #include "cctk_Arguments.h"
 
-      subroutine brilldata(CCTK_FARGUMENTS)
+#include "CactusEinstein/Einstein/src/Einstein.h"
 
-c     Author: Carsten Gundlach.
-c
-c     Driver routine for calculating Brill wave initial data.
+      subroutine brilldata(CCTK_FARGUMENTS)
 
       implicit none
 
@@ -14,12 +13,11 @@ c     Driver routine for calculating Brill wave initial data.
       DECLARE_CCTK_PARAMETERS
       DECLARE_CCTK_FUNCTIONS
 
-c     Declare arrays for the linear elliptic solver call:
+      integer Mlin_index,Nsrc_index,field_index,ierr
+      integer metpsi_index(7)
+      integer ierr
 
-      integer   Mlin_index,Nsrc_index,field_index,ierr
-      integer   metpsi_index(7)
-
-      CCTK_REAL AbsTol(3), RelTol(3)
+      CCTK_REAL AbsTol(3),RelTol(3)
 
 c     Set up background metric and coefficients for linear solve.
 
@@ -41,8 +39,8 @@ c     conformal factor.  First some preliminaries.
       call CCTK_VarIndex(metpsi_index(7),"einstein::psi")
 
       call CCTK_VarIndex(field_index,"IDBrillData::brillpsi")
-      call CCTK_VarIndex(Mlin_index,"IDBrillData::Mlinear")
-      call CCTK_VarIndex(Nsrc_index,"IDBrillData::Nsource")
+      call CCTK_VarIndex(Mlin_index, "IDBrillData::Mlinear")
+      call CCTK_VarIndex(Nsrc_index, "IDBrillData::Nsource")
 
       AbsTol(1)= brill_thresh
       AbsTol(2)= -1
@@ -83,9 +81,10 @@ c     Elliptic solver.
      .   field_index,Mlin_index,Nsrc_index,AbsTol,RelTol,"bam")
       end if
 
-c     Synchronize conformal factor.
+c     Synchronization and symmetry boundaries.
 
-      call CCTK_SyncGroup(cctkGH,"einstein::confac")
+      call CCTK_SyncGroup(cctkGH,"IDBrillData::brillconf")
+      call CartSymGN(ierr,cctkGH,"IDBrillData::brillconf")
 
 c     Reconstruct physical metric.
 
