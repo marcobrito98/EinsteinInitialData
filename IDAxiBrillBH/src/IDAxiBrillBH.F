@@ -112,7 +112,7 @@ c Initialize some arrays
 	qgrd(j) = (j-1.5)*dq
 	do i=1,neb
 	  etagrd(i) = (i-2)*deta
-#include "CactusEinstein2/IDAxiBrillBH/src/bhbrill.x"
+#include "CactusEinstein/IDAxiBrillBH/src/bhbrill.x"
 	enddo
       enddo
 c     Boundary conditions
@@ -295,12 +295,12 @@ c               psi(i,j,k) = psi2dv(i,j,k)*exp(-0.5*eta(i,j,k))
 c               detapsi2dv(i,j,k) = sign_eta(i,j,k)*detapsi2dv(i,j,k)
                
 c     psix = \partial psi / \partial x / psi
-#include "CactusEinstein2/IDAxiBrillBH/src/psi_1st_deriv.x"
+#include "CactusEinstein/IDAxiBrillBH/src/psi_1st_deriv.x"
                
 c               detaqpsi2dv(i,j,k) = sign_eta(i,j,k)*detaqpsi2dv(i,j,k)
                
 c     psixx = \partial^2\psi / \partial x^2 / psi
-#include "CactusEinstein2/IDAxiBrillBH/src/psi_2nd_deriv.x"
+#include "CactusEinstein/IDAxiBrillBH/src/psi_2nd_deriv.x"
             enddo
          enddo
       enddo
@@ -318,7 +318,7 @@ c THESE WERE ALREADY CALCULATED ABOVE !!!
 c               eta(i,j,k) = 0.5d0*dlog(x(i,j,k)**2+y(i,j,k)**2+z(i,j,k)**2) 
 c               q(i,j,k) = datan2(sqrt(x(i,j,k)**2+y(i,j,k)**2),z(i,j,k))
 c               phi(i,j,k) = datan2(y(i,j,k),x(i,j,k))
-#include "CactusEinstein2/IDAxiBrillBH/src/gij.x"
+#include "CactusEinstein/IDAxiBrillBH/src/gij.x"
             enddo
          enddo
       enddo
