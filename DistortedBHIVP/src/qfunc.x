@@ -12,8 +12,8 @@
 
 	qfqq(i,j,k) = amp*(-1.00000000000000d0+n)*n*(1.00000000
      $	000000d0+c*cos(phigrd(k))**2)*cos(qgrd(j))**2*(exp(-((etagrd(i)-eta0)**2/
-     $	sigma**2))+exp(-((etagrd(i)+eta0)**2/sigma**2)))*sin(qgrd(j))**(-2.
-     $	00000000000000d0+n)-amp*n*(1.00000000000000d0+c*cos(phigrd(k))
+     $	sigma**2))+exp(-((etagrd(i)+eta0)**2/sigma**2)))*sin(qgrd(j))**(-2
+     $	+n)-amp*n*(1.00000000000000d0+c*cos(phigrd(k))
      $	**2)*(exp(-((etagrd(i)-eta0)**2/sigma**2))+exp(-((etagrd(i)+eta0)**2
      $	/sigma**2)))*sin(qgrd(j))**n
 
