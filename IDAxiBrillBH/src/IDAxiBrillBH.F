@@ -68,6 +68,7 @@ c     Perhaps this and others should go into cctk.h
       integer :: nx,ny,nz
       integer i,j,k,nquads
       integer npoints,handle,ierror
+      integer neb, nqb
       
       pi = 4.0d0*atan(1.0d0)
       
@@ -86,13 +87,17 @@ c     Brill wave parameters
 c     Solve on this sized cartesian grid
 c     2D grid size NE x NQ
 c     Add 2 zones for boundaries...
-      ne = ne+2
-      nq = nq+2
+c     21/11/00 TR: dont change parameters in place
+c                  but keep a copy in local variables
+c                  Otherwise the changed parameters cause trouble
+c                  after recovery.
+      neb = ne+2
+      nqb = nq+2
       ! do I need to call free?
-      allocate(cc(ne,nq),ce(ne,nq),cw(ne,nq),cn(ne,nq),cs(ne,nq),
-     $     rhs(ne,nq),psi2d(ne,nq),detapsi2d(ne,nq),dqpsi2d(ne,nq),
-     $     detaetapsi2d(ne,nq),detaqpsi2d(ne,nq),dqqpsi2d(ne,nq),
-     $     etagrd(ne),qgrd(nq))
+      allocate(cc(neb,nqb),ce(neb,nqb),cw(neb,nqb),cn(neb,nqb),cs(neb,nqb),
+     $     rhs(neb,nqb),psi2d(neb,nqb),detapsi2d(neb,nqb),dqpsi2d(neb,nqb),
+     $     detaetapsi2d(neb,nqb),detaqpsi2d(neb,nqb),dqqpsi2d(neb,nqb),
+     $     etagrd(neb),qgrd(nqb))
       allocate(eta(nx,ny,nz),abseta(nx,ny,nz),sign_eta(nx,ny,nz),
      $     q(nx,ny,nz),phi(nx,ny,nz),
      $     psi2dv(nx,ny,nz),detapsi2dv(nx,ny,nz),dqpsi2dv(nx,ny,nz),
@@ -103,37 +108,37 @@ c Initialize some arrays
       detapsi2d = 0.0d0
 
       nquads = 2
-      dq = nquads*0.5*pi/(nq-2)
-      deta = etamax/(ne-3)
+      dq = nquads*0.5*pi/(nqb-2)
+      deta = etamax/(neb-3)
 
-      do j=1,nq
+      do j=1,nqb
 	qgrd(j) = (j-1.5)*dq
-	do i=1,ne
+	do i=1,neb
 	  etagrd(i) = (i-2)*deta
 #include "CactusEinstein/IDAxiBrillBH/src/bhbrill.x"
 	enddo
       enddo
 c     Boundary conditions
-      do j=1,nq
+      do j=1,nqb
 	ce(2,j)=ce(2,j)+cw(2,j)
 	cw(2,j)=0.0
 
-	cw(ne-1,j)=cw(ne-1,j)+ce(ne-1,j)
-	cc(ne-1,j)=cc(ne-1,j)-deta*ce(ne-1,j)
-	ce(ne-1,j)=0.0
+	cw(neb-1,j)=cw(neb-1,j)+ce(neb-1,j)
+	cc(neb-1,j)=cc(neb-1,j)-deta*ce(neb-1,j)
+	ce(neb-1,j)=0.0
 
       enddo
-      do i=1,ne
+      do i=1,neb
 	cc(i,2)=cc(i,2)+cs(i,2)
 	cs(i,2)=0.0
-	cc(i,nq-1)=cc(i,nq-1)+cn(i,nq-1)
-	cn(i,nq-1)=0.0
+	cc(i,nqb-1)=cc(i,nqb-1)+cn(i,nqb-1)
+	cn(i,nqb-1)=0.0
       enddo
 
 c     Do the solve
       print *, "     Calling axisymmetric solver"
-      call mgparm (levels,5,id5,id9,idi,idg,ne,nq)
-      call mg5 (ne,2,ne-1,nq,2,nq-1,
+      call mgparm (levels,5,id5,id9,idi,idg,neb,nqb)
+      call mg5 (neb,2,neb-1,nqb,2,nqb-1,
      $          cc,cn,cs,cw,ce,psi2d,rhs,
      $          id5,id9,idi,idg,1,axibheps,rmax,ier)
       print *, "     Solve complete"
@@ -147,8 +152,8 @@ c     be called if the IVP solve is not successful
       print *,'psi2d = ',maxval(psi2d),' ',minval(psi2d)
 
       ep2 = 0.0
-      do j=2,nq-1
-        do i=2,ne-1
+      do j=2,nqb-1
+        do i=2,neb-1
           ep1 = rhs(i,j)-psi2d(i,j)*cc(i,j)-psi2d(i,j+1)*cn(i,j)-psi2d(i,j-1)*cs(i,j)-
      &      psi2d(i+1,j)*ce(i,j)-psi2d(i-1,j)*cw(i,j)
           ep2 = max(abs(ep1),ep2)
@@ -157,17 +162,17 @@ c     be called if the IVP solve is not successful
       print *,'Resulting eps =',ep2
 
       ! what a pain all this is....
-      do j=1,nq
+      do j=1,nqb
          psi2d(1,j)=psi2d(3,j)
-         psi2d(ne,j)=-deta*psi2d(ne-1,j)+psi2d(ne-2,j)
+         psi2d(neb,j)=-deta*psi2d(neb-1,j)+psi2d(neb-2,j)
       enddo
-      do i=1,ne
+      do i=1,neb
         psi2d(i,1)=psi2d(i,2)
-        psi2d(i,nq)=psi2d(i,nq-1)
+        psi2d(i,nqb)=psi2d(i,nqb-1)
       enddo
 c      goto 111
-      do j=2,nq-1
-         do i=2,ne-1
+      do j=2,nqb-1
+         do i=2,neb-1
             dqpsi2d(i,j)=0.5*(psi2d(i,j+1)-psi2d(i,j-1))/dq
             dqqpsi2d(i,j)=(psi2d(i,j+1)+psi2d(i,j-1)-2.*psi2d(i,j))/dq**2
             detapsi2d(i,j)=sinh(0.5*etagrd(i))+0.5*(psi2d(i+1,j)-psi2d(i-1,j))/deta
@@ -175,46 +180,46 @@ c      goto 111
      $           (psi2d(i+1,j)+psi2d(i-1,j)-2.*psi2d(i,j))/deta**2
          enddo
       enddo
-      do j=1,nq
+      do j=1,nqb
         detapsi2d(1,j)=-detapsi2d(3,j)
-        detapsi2d(ne,j)=detapsi2d(ne-2,j) ! simplified
+        detapsi2d(neb,j)=detapsi2d(neb-2,j) ! simplified
 
         detaetapsi2d(1,j)=detaetapsi2d(3,j)
-        detaetapsi2d(ne,j)=detaetapsi2d(ne-2,j) ! simplified...
+        detaetapsi2d(neb,j)=detaetapsi2d(neb-2,j) ! simplified...
 
         dqqpsi2d(1,j)=dqqpsi2d(3,j)
-        dqqpsi2d(ne,j)=dqqpsi2d(ne-2,j) ! simplified
+        dqqpsi2d(neb,j)=dqqpsi2d(neb-2,j) ! simplified
 
         dqpsi2d(1,j)=dqpsi2d(3,j)
-        dqpsi2d(ne,j)=-dq*dqpsi2d(ne-1,j)+dqpsi2d(ne-2,j)
+        dqpsi2d(neb,j)=-dq*dqpsi2d(neb-1,j)+dqpsi2d(neb-2,j)
       enddo
-      do i=1,ne
+      do i=1,neb
         detapsi2d(i,1)=detapsi2d(i,2)
-        detapsi2d(i,nq)=detapsi2d(i,nq-1)
+        detapsi2d(i,nqb)=detapsi2d(i,nqb-1)
 
         detaetapsi2d(i,1)=detaetapsi2d(i,2)
-        detaetapsi2d(i,nq)=detaetapsi2d(i,nq-1)
+        detaetapsi2d(i,nqb)=detaetapsi2d(i,nqb-1)
 
         dqqpsi2d(i,1)=dqqpsi2d(i,2)
-        dqqpsi2d(i,nq)=dqqpsi2d(i,nq-1)
+        dqqpsi2d(i,nqb)=dqqpsi2d(i,nqb-1)
 
         dqpsi2d(i,1)=-dqpsi2d(i,2)
-        dqpsi2d(i,nq)=-dqpsi2d(i,nq-1)
+        dqpsi2d(i,nqb)=-dqpsi2d(i,nqb-1)
       enddo
-      do j=2,nq-1
-        do i=2,ne-1
+      do j=2,nqb-1
+        do i=2,neb-1
           detaqpsi2d(i,j)=0.5*(detapsi2d(i,j+1)-detapsi2d(i,j-1))/dq
         enddo
       enddo
-      do j=1,nq
+      do j=1,nqb
         detaqpsi2d(1,j)=-detaqpsi2d(3,j)
-        detaqpsi2d(ne,j)=detaqpsi2d(ne-2,j) ! simplified
+        detaqpsi2d(neb,j)=detaqpsi2d(neb-2,j) ! simplified
       enddo
       do i=1,ne
         detaqpsi2d(i,1)=-detaqpsi2d(i,2)
-        detaqpsi2d(i,nq)=-detaqpsi2d(i,nq-1)
+        detaqpsi2d(i,nqb)=-detaqpsi2d(i,nqb-1)
       enddo
-      do j=1,nq
+      do j=1,nqb
         psi2d(:,j)=psi2d(:,j)+2.*cosh(0.5*etagrd)
       enddo
 
@@ -252,7 +257,7 @@ c               phi(i,j,k)= datan2(y(i,j,k),x(i,j,k))
       npoints = nx*ny*nz
 
       call CCTK_Interp (ierror,cctkGH,handle,npoints,2,6,6,
-     $     ne,nq,abseta,q,
+     $     neb,nqb,abseta,q,
      $     CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
      $     etagrd(1),qgrd(1),deta,dq,
      $     psi2d,detapsi2d,dqpsi2d,detaetapsi2d,detaqpsi2d,dqqpsi2d,
@@ -313,13 +318,13 @@ c     Curvature
       
  111  continue
 c     Set ADM mass
-      i = ne-15
+      i = neb-15
       adm = 0.0
-      do j=2,nq-1
+      do j=2,nqb-1
         adm=adm+(psi2d(i,j)-(psi2d(i+1,j)-psi2d(i-1,j))/deta)*exp(0.5*
      $        etagrd(i))
       enddo
-      adm=adm/(nq-2)
+      adm=adm/(nqb-2)
       print *,'ADM mass: ',adm
       if (CCTK_Equals(initial_lapse,"schwarz")==1) then
          write (*,*)"Initial with schwarzschild-like lapse"
