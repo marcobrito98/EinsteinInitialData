@@ -1,7 +1,7 @@
 !DESC "1+log sliced Misner black holes, ADM, double leapfrog"
 
 #Required thorns
-ActiveThorns = "Boundary Time ADMBase ADM ADMAnalysis CoordGauge ADMMacros SpaceMask StaticConformal CartGrid3D pugh pughreduce  IDanalyticBH IOUtil iobasic"
+ActiveThorns = "Boundary Time ADMBase ADM ADMAnalysis CoordGauge ADMMacros SpaceMask StaticConformal CartGrid3D CoordBase pugh pughreduce  IDanalyticBH IOUtil iobasic"
 
 # GENERAL 
 
