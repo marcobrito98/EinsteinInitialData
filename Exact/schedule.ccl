@@ -1,23 +1,32 @@
 # Schedule definitions for thorn Exact
+# $Header$
 
 #######################################################################
 # PARAMCHECK
 #######################################################################
 
-schedule Exact_ParamCheck at CCTK_PARAMCHECK
+Schedule Exact_ParamCheck at PARAMCHECK
 {
-  LANG: C
-} "Check for sensible parameter combinations"
+LANG: C
+} "do consistency checks on our parameters"
 
 #######################################################################
 # INITIAL DATA
 #######################################################################
 
+# decode/copy parameters into grid scalars
+# (to share them properly so Calc_Tmunu code can see them even
+#  though it's compiled in other thorns)
+Schedule Exact__decode_pars at INITIAL
+{
+LANG: Fortran
+} "decode/copy thorn Exact parameters into grid scalars"
+
 # Initial data (g and K) from a trivial slice through an exact solution.
 
 if (CCTK_Equals(initial_data,"exact"))
 {
-  schedule exactinitialize at CCTK_INITIAL
+  schedule Exact__initialize at CCTK_INITIAL
   {
     LANG: Fortran
   } "Set initial data from exact solution on a trivial slice"
@@ -29,7 +38,7 @@ if (CCTK_Equals(initial_data,"exact"))
 
 if ( (CCTK_Equals(initial_data,"slice")) && ! (CCTK_Equals(evolution_method,"slice")) )
 {
-  schedule slice_initialize at CCTK_INITIAL
+  schedule Exact__slice_initialize at CCTK_INITIAL
   {
     STORAGE: Exact_slice
     LANG: Fortran
@@ -45,7 +54,7 @@ if ( (CCTK_Equals(initial_data,"slice")) && ! (CCTK_Equals(evolution_method,"sli
 
 if ( (CCTK_Equals(initial_lapse,"exact")) || (CCTK_Equals(initial_shift,"exact")) )
 {
-  schedule exactgauge at CCTK_INITIAL
+  schedule Exact__gauge at CCTK_INITIAL
   {
     LANG: Fortran
   } "Set initial lapse and/or shift from exact solution on a trivial slice"
@@ -55,13 +64,13 @@ if ( (CCTK_Equals(initial_lapse,"exact")) || (CCTK_Equals(initial_shift,"exact")
 
 if ( (CCTK_Equals(lapse_evolution_method,"exact")) || (CCTK_Equals(shift_evolution_method,"exact")) )
 {
-  schedule Exact_RegisterSlicing at CCTK_STARTUP
+  schedule Exact__RegisterSlicing at CCTK_STARTUP
   {
     LANG: C
   } "Register slicings"
 
-  schedule exactgauge at CCTK_PRESTEP
-  {    
+  schedule Exact__gauge at CCTK_PRESTEP
+  {
     LANG: Fortran
   } "Set evolution lapse and/or shift from exact solution on a trivial slice"
 }
@@ -83,12 +92,12 @@ if ( (CCTK_Equals(evolution_method,"slice")) && (CCTK_Equals(initial_data,"slice
   STORAGE: Exact_slicetemp1
   STORAGE: Exact_slicetemp2
 
-  schedule slice_initialize at CCTK_INITIAL
+  schedule Exact__slice_initialize at CCTK_INITIAL
   {
     LANG: Fortran
   } "Set initial data from exact solution on arbitrary slice"
 
-  schedule slice_evolve at CCTK_EVOL
+  schedule Exact__slice_evolve at CCTK_EVOL
   {
     LANG: Fortran
   } "Evolve arbitrary slice and extract Cauchy data"
@@ -100,10 +109,8 @@ if ( (CCTK_Equals(evolution_method,"slice")) && (CCTK_Equals(initial_data,"slice
 
 if (CCTK_Equals(overwrite_boundary,"exact"))
 {
-  schedule exactboundary at CCTK_POSTSTEP
+  schedule Exact__boundary at CCTK_POSTSTEP
   {
     LANG: Fortran
   } "Overwrite g and K on the boundary with exact solution data"
 }
-
-

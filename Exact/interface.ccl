@@ -2,17 +2,79 @@
 # $Header$
 
 implements: exact
-
 inherits: admbase grid coordgauge
+friend: ADMCoupling
 
-# For running with ADM
-# friend: ADM ADMConstraints
+# evolution thorns need to include these files
+# to get our terms in the stress-energy tensor
+INCLUDES SOURCE: Scalar_CalcTmunu.inc in CalcTmunu.inc
+INCLUDES       : Scalar_CalcTmunu_temps.inc in CalcTmunu_temps.inc
 
-# For running with BSSN
-# friend: ADM_BSSN ADMConstraints
+################################################################################
 
-# INCLUDES: Scalar_CalcTmunu.inc in CalcTmunu.inc
-# INCLUDES: Scalar_CalcTmunu_temps.inc in CalcTmunu_temps.inc
+#
+# copies of our parameters (with keywords decoded into integers)
+# for the use of the src/include/Scalar_CalcTmunu.inc code
+# (see comments in param.ccl for why we need this)
+#
+protected:
+
+int Exact_pars_int type=SCALAR
+{
+# ***** exact_model decoded to an integer
+decoded_exact_model
+
+# ***** parameters for models which have nonzero stress-energy tensor terms
+
+# parameters for Robertson-Walker spacetime
+Robertson_Walker___k
+Robertson_Walker___pressure
+} "parameters copied to grid scalars so CalcTmunu code sees them in evolution thorns"
+
+real Exact_pars_real type=SCALAR
+{
+# parameters for Schwarzschild-Lemaitre metric
+# (Schwarzschild black hole with cosmological constant)
+Schwarzschild_Lemaitre___Lambda
+Schwarzschild_Lemaitre___mass
+# parameters for Lemaitre-type spacetime
+Lemaitre___kappa
+Lemaitre___Lambda
+Lemaitre___epsilon0
+Lemaitre___R0
+# parameters for Robertson-Walker spacetime
+Robertson_Walker___R0
+Robertson_Walker___rho
+# parameters for de Sitter spacetime
+de_Sitter___scale
+# parameters for de Sitter spacetime with cosmological constant
+de_Sitter_Lambda___scale
+# parameters for anti-de Sitter spacetime with cosmological constant
+anti_de_Sitter_Lambda___scale
+# parameters for Bertotti spacetime
+Bertotti___Lambda
+# parameters for Kasner-like spacetime
+Kasner_like___q
+# parameters for generalized Kasner spacetime
+Kasner_generalized___p1
+Kasner_generalized___p2
+# parameters for constant density (Schwarzschild) star
+constant_density_star___mass
+constant_density_star___radius
+} "parameters copied to grid scalars so CalcTmunu code sees them in evolution thorns"
+
+################################################################################
+
+#
+# temp variable for some of the stress-energy tensor computations
+#
+protected:
+real robwal_var TYPE=GF
+{
+   raza
+} "Raza universului Robertson Walker"
+
+################################################################################
 
 private:
 
