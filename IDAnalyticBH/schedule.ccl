@@ -8,7 +8,7 @@ if (CCTK_Equals(initial_data,"schwarzschild") ||
 {
   schedule ParamChecker at CCTK_PARAMCHECK
   {
-    LANG: Fortran
+    LANG: C
   } "Construct parameters for analytic black hole solutions"
 }
 
@@ -17,7 +17,7 @@ if (CCTK_Equals(initial_data,"schwarzschild"))
 	
    schedule Schwarzschild at CCTK_INITIAL after InitialEinstein
    {
-     LANG: Fortran
+     LANG: C
    } "Construct initial data for a single Schwarzschild black hole"
 
 }
@@ -27,17 +27,17 @@ if (CCTK_Equals(initial_data,"bl_bh"))
    STORAGE: confac
    schedule BrillLindquist at CCTK_INITIAL
    {
-     LANG: Fortran
+     LANG: C
    } "Construct initial data for Brill Lindquist black holes"
 
 }
 
 if (CCTK_Equals(initial_data,"misner_bh")) 
 { 
-   STORAGE: confac, misner_workspace
+   STORAGE: confac
    schedule Misner_standard at CCTK_INITIAL
    {
-     LANG: Fortran
+     LANG: C
    } "Construct initial data for multiple Misner black holes"
 
 }
@@ -47,7 +47,7 @@ if (CCTK_Equals(initial_data,"multiple_misner_bh"))
    STORAGE: confac
    schedule Misner_multiple at CCTK_INITIAL
    {
-     LANG: Fortran
+     LANG: C
    } "Construct initial data for two Misner black holes"
 
 }

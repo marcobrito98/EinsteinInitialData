@@ -6,10 +6,10 @@ inherits: einstein
 
 private:
 
-real misner_workspace TYPE = GF
-{
-  csch,
-  coth,
-  r1,
-  r2
-} "Workspace arrays for Misner_standard"
+#real misner_workspace TYPE = GF
+#{
+#  csch,
+#  coth,
+#  r1,
+#  r2
+#} "Workspace arrays for Misner_standard"
