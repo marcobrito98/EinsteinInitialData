@@ -10,7 +10,7 @@ if (CCTK_Equals(initial_data,"distortedbh"))
     LANG: C
   } "Check Parameters"
 
-  schedule DistortedBHIVP at CCTK_INITIAL
+  schedule DistortedBHIVP IN ADMBase_InitialData
   {
     LANG: Fortran
   } "Construct DistortedBHIVP"
