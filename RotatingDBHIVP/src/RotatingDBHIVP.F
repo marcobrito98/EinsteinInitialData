@@ -39,8 +39,6 @@ c     Perhaps this and others should go into cctk.h
       integer CCTK_Equals
       
       real*8 deta,dq,dphi
-      real*8 psi3d,detapsi3d,dqpsi3d,dphipsi3d,detaetapsi3d,detaqpsi3d,
-     $     detaphipsi3d,dqqpsi3d,dqpsi3d,dqphipsi3d,dphiphipsi3d
       real*8, allocatable :: ac(:,:,:),ae(:,:,:),aw(:,:,:),an(:,:,:),
      $     as(:,:,:),aq(:,:,:),ab(:,:,:),rhs(:,:,:),Ksq(:,:,:),
      $     psisph(:,:,:),psip(:,:,:),psipp(:,:,:),detapsisph(:,:,:),
@@ -69,14 +67,13 @@ c     Perhaps this and others should go into cctk.h
      $     t11,t12,t13,t14,t15,t16
       real*8 gtil,dngtil,dnngtil,dnnngtil,dnnnngtil,dnnnnngtil,
      $     dnnnnnngtil,dnnnnnnngtil
-      real*8 eta,abseta,q,phi,rhsmax,rmax,get3d,adm
+      real*8 rhsmax,rmax,get3d,adm
       real*8,parameter :: rbh_tol = 1.0d-7,rbh_eps = 1.0d-10
       integer,parameter :: itmax = 30 
-      real*8 r,pi
+      real*8 pi
       integer :: nx,ny,nz
-      integer i,j,k,ier,nquads,nocts,order,ntries
+      integer i,j,k,it,ier,nquads,nocts,order,ntries
       integer npoints,handle,ierror
-      integer i,j,k,it,ier,nquads,nocts,order
 
       conformal_state = CONFORMAL_METRIC    
       
