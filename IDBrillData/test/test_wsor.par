@@ -26,8 +26,8 @@ idbrilldata::gundlach_a 			= 5.0
 
 # Elliptic solver.
 
-idbrilldata::brill_solver 			= "sor"
-idbrilldata::brill_bound               		= "robin"
+idbrilldata::solver 				= "sor"
+idbrilldata::bound               		= "robin"
 idbrilldata::sor_maxit				= 100
 # Warning -- since this doesn't converge for so few iterations, the
 # result will depend on number of cpus, even beyond the sor tolerance
