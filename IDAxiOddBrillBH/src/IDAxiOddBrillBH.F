@@ -61,11 +61,15 @@ c     Perhaps this and others should go into cctk.h
       real*8,parameter :: rbh_tol = 1.0d-7,rbh_eps = 1.0d-10
       integer,parameter :: itmax = 50 
       real*8 pi,zero,one,two
+      integer :: ne, nq
       integer :: nx,ny,nz
       integer :: i,j,k,it,ier,nquads,ntries
       integer :: npoints,handle,ierror
 
       pi = 4.0d0*atan(1.0d0)
+c     DON'T use integer*4
+      ne = neta
+      nq = ntheta
 
 c     Set up the grid spacings
       nx = cctk_lsh(1)
