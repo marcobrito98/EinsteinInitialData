@@ -36,7 +36,7 @@
       DECLARE_PARAMETERS
 
       integer i
-      REAL, dimension(4) :: hole_mass, hole_x0, hole_y0, hole_z0
+      CCTK_REAL, dimension(4) :: hole_mass, hole_x0, hole_y0, hole_z0
 
 
 c     Put parameters into arrays for following calculations

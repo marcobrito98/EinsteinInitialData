@@ -19,12 +19,12 @@
 #include <math.h>
 
 int nbholes;
-Double mu;
+CCTK_REAL mu;
 
 /* Basic data about a brill-lindquist black hole term. */
 struct bhole {
-  Double x,y;
-  Double mass;
+  CCTK_REAL x,y;
+  CCTK_REAL mass;
 
   /* i gives either the number of the seed
      black hole we are starting with, or
@@ -38,10 +38,10 @@ struct bhole {
 /* The seed black holes. */
 struct bhole bholes[MAXBHOLES];
 
-Double csch(Double mu) {
+CCTK_REAL csch(CCTK_REAL mu) {
   return 1.0/sinh(mu); 
 }
-Double coth(Double mu) {
+CCTK_REAL coth(CCTK_REAL mu) {
   return cosh(mu)/sinh(mu); 
 }
 
@@ -61,7 +61,7 @@ Double coth(Double mu) {
 
 void iso(struct bhole *a1, struct bhole *a2, struct bhole *a3) 
 {
-  Double rad,radtwo;
+  CCTK_REAL rad,radtwo;
   radtwo=(
       (a1->x - a2->x)*(a1->x - a2->x)+
       (a1->y - a2->y)*(a1->y - a2->y)
@@ -122,11 +122,11 @@ void fill_iso(struct bhole *b, int n)
 
 @@*/
 
-void FORTRAN_NAME(Misner_init)(int *n, Double *mu, int *terms) 
+void FORTRAN_NAME(Misner_init)(int *n, CCTK_REAL *mu, int *terms) 
 {
 
   int i;
-  Double pi,ang;
+  CCTK_REAL pi,ang;
 
   assert((nbholes=*n) < MAXBHOLES);
 
@@ -163,10 +163,10 @@ void FORTRAN_NAME(Misner_init)(int *n, Double *mu, int *terms)
 
 @@*/
 
-Double eval_bh_psi(struct bhole *b, Double x, Double y, Double z) 
+CCTK_REAL eval_bh_psi(struct bhole *b, CCTK_REAL x, CCTK_REAL y, CCTK_REAL z) 
 {
   int i;
-  Double res;
+  CCTK_REAL res;
   res = 0.0;
   if(b->isos != 0) 
   {
@@ -198,7 +198,7 @@ Double eval_bh_psi(struct bhole *b, Double x, Double y, Double z)
 
 @@*/
 
-void FORTRAN_NAME(MisnerEvalPsi)(Double *x, Double *y, Double *z, Double *res) 
+void FORTRAN_NAME(MisnerEvalPsi)(CCTK_REAL *x, CCTK_REAL *y, CCTK_REAL *z, CCTK_REAL *res) 
 {
   int i;
   *res = 1;
