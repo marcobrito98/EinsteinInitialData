@@ -33,9 +33,9 @@ void MisnerEvalPsi(CCTK_REAL x, CCTK_REAL y, CCTK_REAL z, CCTK_REAL *res);
    @endhistory 
 
 @@*/
-void Misner_multiple(CCTK_CARGUMENTS)
+void Misner_multiple(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_CARGUMENTS
+  DECLARE_CCTK_ARGUMENTS
   DECLARE_CCTK_PARAMETERS
 
   int i, j, k;
@@ -216,9 +216,6 @@ void Misner_multiple(CCTK_CARGUMENTS)
     }
   }
 
-  return;
-
-  
-  
+  return;  
 
 }

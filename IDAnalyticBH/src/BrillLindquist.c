@@ -34,9 +34,9 @@
 
 @@*/
 
-void BrillLindquist(CCTK_CARGUMENTS)
+void BrillLindquist(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_CARGUMENTS
+  DECLARE_CCTK_ARGUMENTS
   DECLARE_CCTK_PARAMETERS
 
   int n;

@@ -57,9 +57,9 @@
    @endpar
 
 @@*/
-void Misner_standard(CCTK_CARGUMENTS)
+void Misner_standard(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_CARGUMENTS
+  DECLARE_CCTK_ARGUMENTS
   DECLARE_CCTK_PARAMETERS
 
   int i,j,k;
