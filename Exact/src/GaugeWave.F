@@ -58,7 +58,7 @@ C     How should the wave look like.
 
         if (GW_diagonal.ne.0) then
 
-          H = one - a * sin((x-y)/sqrt(2.d0)/d - o*t/d)
+          H = one - a * sin((x-y)/d - o*t/d)
  
         else
 
@@ -66,9 +66,9 @@ C     How should the wave look like.
 
         end if
 
-      elseif (CCTK_Equals(GW_H,"exp").eq.1) then
+      elseif (CCTK_Equals(GW_H,"expsin").eq.1) then
 
-        H = exp(a*(x/d-o*t))
+        H = exp(a*sin(x/d)*cos(t/d))
 
       elseif (CCTK_Equals(GW_H,"gau").eq.1) then
 
