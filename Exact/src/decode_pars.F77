@@ -58,6 +58,8 @@ c Minkowski spacetime
 	     decoded_exact_model = EXACT__Minkowski_funny
 	elseif (CCTK_Equals(exact_model, "Minkowski/gauge wave") .ne. 0) then
 	     decoded_exact_model = EXACT__Minkowski_gauge_wave
+	elseif (CCTK_Equals(exact_model, "Minkowski/shifted gauge wave") .ne. 0) then
+	     decoded_exact_model = EXACT__Minkowski_shifted_gauge_wave
 	elseif (CCTK_Equals(exact_model, "Minkowski/conf wave") .ne. 0) then
 	     decoded_exact_model = EXACT__Minkowski_conf_wave
 

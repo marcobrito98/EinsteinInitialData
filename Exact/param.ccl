@@ -200,11 +200,12 @@ KEYWORD exact_model "The exact solution/coordinates used in thorn exact"
 #
 # Minkowski spacetime
 #
-"Minkowski"            :: "Minkowski spacetime"
-"Minkowski/shift"      :: "Minkowski spacetime with time-dependent shift vector"
-"Minkowski/funny"      :: "Minkowski spacetime in non-trivial spatial coordinates"
-"Minkowski/gauge wave" :: "Minkowski spacetime in gauge-wave coordinates"
-"Minkowski/conf wave"  :: "Minkowski spacetime with 'waves' in conformal factor"
+"Minkowski"                    :: "Minkowski spacetime"
+"Minkowski/shift"              :: "Minkowski spacetime with time-dependent shift vector"
+"Minkowski/funny"              :: "Minkowski spacetime in non-trivial spatial coordinates"
+"Minkowski/gauge wave"         :: "Minkowski spacetime in gauge-wave coordinates"
+"Minkowski/shifted gauge wave" :: "Minkowski spacetime in shifted gauge-wave coordinates"
+"Minkowski/conf wave"          :: "Minkowski spacetime with 'waves' in conformal factor"
 #
 # black hole spacetimes
 #

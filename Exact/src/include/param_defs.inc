@@ -30,11 +30,12 @@ c      of subroutines for the individual metric types!
 c
 
 c Minkowski spacetime
-#define EXACT__Minkowski		1
-#define EXACT__Minkowski_shift		2
-#define EXACT__Minkowski_funny		3
-#define EXACT__Minkowski_gauge_wave	4
-#define EXACT__Minkowski_conf_wave	5
+#define EXACT__Minkowski			1
+#define EXACT__Minkowski_shift			2
+#define EXACT__Minkowski_funny			3
+#define EXACT__Minkowski_gauge_wave		4
+#define EXACT__Minkowski_shifted_gauge_wave	5
+#define EXACT__Minkowski_conf_wave		6
 
 c black hole spacetimes
 #define EXACT__Schwarzschild_EF		10

@@ -77,6 +77,15 @@ c
      $        guxx, guyy, guzz, guxy, guyz, guxz,
      $        psi, Tmunu_flag)
 
+      elseif (decoded_exact_model .eq. EXACT__Minkowski_shifted_gauge_wave) then
+         call Exact__Minkowski_shifted_gauge_wave(
+     $        x, y, z, t,
+     $        gdtt, gdtx, gdty, gdtz,
+     $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
+     $        gutt, gutx, guty, gutz,
+     $        guxx, guyy, guzz, guxy, guyz, guxz,
+     $        psi, Tmunu_flag)
+
       elseif (decoded_exact_model .eq. EXACT__Minkowski_conf_wave) then
          call Exact__Minkowski_conf_wave(
      $        x, y, z, t,
