@@ -193,8 +193,8 @@ m = \text{\tt KerrSchild\_m}
 \end{equation}
 (note the name!).
 There is also a numerical parameter \verb|KerrSchild_eps| (again note
-the name!) which is used internally in the code; you can probably ignore
-it for most purposes.
+the name!) which is used to avoid division by zero if a grid point falls
+exactly at the origin; the default setting should be ok for most purposes.
 
 In the usual Cactus $(t,x,y,z)$ Cartesian-topology coordinates, the
 4-metric is
@@ -243,8 +243,8 @@ m = \text{\tt KerrSchild\_m}
 \end{equation}
 (note the name!).
 There is also a numerical parameter \verb|KerrSchild_eps| (again note
-the name!) which is used internally in the code; you can probably ignore
-it for most purposes.
+the name!) which is used to avoid division by zero if a grid point falls
+exactly at the origin; the default setting should be ok for most purposes.
 
 In the usual polar spherical $(t,r,\theta,\phi)$ coordinates, the 4-metric
 and ADM variables are
@@ -340,8 +340,9 @@ a & = \text{\tt KerrSchild\_a}						\\
 m & = \text{\tt KerrSchild\_m}						\\
 v & = \text{\tt KerrSchild\_boostv}					%%%\\
 \end{align}
-There is also a numerical parameter \verb|KerrSchild_eps| which is used
-internally in the code; you can probably ignore it for most purposes.
+There is also a numerical parameter \verb|KerrSchild_eps| which is
+used to avoid division by zero if a grid point falls exactly at the
+black hole center; the default setting should be ok for most purposes.
 
 Kerr-Schild coordinates use the same time slicing (\nb{} non-maximal!)
 and $z$~spatial coordinate as Kerr coordinates, but define new spatial
@@ -387,8 +388,9 @@ a_0	& = \text{\tt fakebinary\_a0}					\\
 \end{align}
 There are also algorithm parameters \verb|fakebinary_atype|,
 \verb|fakebinary_retarded|, and \verb|fakebinary_bround|.
-There is also a numerical parameter \verb|fakebinary_eps| which is used
-internally in the code; you can probably ignore it for most purposes.
+There is also a numerical parameter \verb|fakebinary_eps| which is
+used to avoid division by zero if a grid point falls exactly at either
+black hole's center; the default setting should be ok for most purposes.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
