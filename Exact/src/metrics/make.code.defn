@@ -6,36 +6,36 @@
 # ... if adding new files, please keep this list in the same order as the
 #     metrics in this thorn's param.ccl file
 #
-SRCS = Minkowski.F			\
-       Minkowski_funny.F		\
-       Minkowski_shift.F		\
-       Minkowski_gauge_wave.F		\
+SRCS = Minkowski.F77			\
+       Minkowski_funny.F77		\
+       Minkowski_shift.F77		\
+       Minkowski_gauge_wave.F77		\
 					\
-       Schwarzschild_EF.F		\
-       Schwarzschild_PG.F		\
-       Schwarzschild_Novikov.F		\
-       Kerr_BoyerLindquist.F		\
-       Kerr_KerrSchild.F		\
-       Schwarzschild_Lemaitre.F		\
-       multi_BH.F			\
-       Thorne_fakebinary.F		\
+       Schwarzschild_EF.F77		\
+       Schwarzschild_PG.F77		\
+       Schwarzschild_Novikov.F77	\
+       Kerr_BoyerLindquist.F77		\
+       Kerr_KerrSchild.F77		\
+       Schwarzschild_Lemaitre.F77	\
+       multi_BH.F77			\
+       Thorne_fakebinary.F77		\
 					\
-       Lemaitre.F			\
-       Robertson_Walker.F		\
-       de_Sitter.F			\
-       de_Sitter_Lambda.F		\
-       anti_de_Sitter_Lambda.F		\
-       Bianchi_I.F			\
-       Goedel.F				\
-       Bertotti.F			\
-       Kasner_like.F			\
-       Kasner_axisymmetric.F		\
-       Kasner_generalized.F		\
-       Milne.F				\
+       Lemaitre.F77			\
+       Robertson_Walker.F77		\
+       de_Sitter.F77			\
+       de_Sitter_Lambda.F77		\
+       anti_de_Sitter_Lambda.F77	\
+       Bianchi_I.F77			\
+       Goedel.F77			\
+       Bertotti.F77			\
+       Kasner_like.F77			\
+       Kasner_axisymmetric.F77		\
+       Kasner_generalized.F77		\
+       Milne.F77			\
 					\
-       boost_rotation_symmetric.F	\
-       bowl.F				\
-       constant_density_star.F
+       boost_rotation_symmetric.F77	\
+       bowl.F77				\
+       constant_density_star.F77
 
 # not fully implemented yet -- see Nina Jansen for details
-#      Alvi.F Alvidef.c
+#      Alvi.F77 Alvidef.c
