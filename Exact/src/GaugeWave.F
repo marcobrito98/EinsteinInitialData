@@ -2,6 +2,9 @@
 #include "cctk_Arguments.h"
 #include "cctk_Parameters.h"
 
+C    #define Pi 4 * atan(1.d0)
+C #define Pi 3.1415
+      
       subroutine  gauge_wave(
      $     x, y, z, t,
      $     gdtt, gdtx, gdty, gdtz, 
@@ -22,17 +25,12 @@
 
       logical firstcall
 
-      CCTK_REAL a, o, H, d
-      CCTK_REAL zero,half,one
+      CCTK_REAL a, o, H, half, d, fs
 
       data firstcall /.true./
-      save firstcall, a, o, half, d
+      save firstcall, a, o, half, d, fs
 
-C     Numbers.
-
-      zero = 0.0d0
-      half = 0.5d0
-      one  = 1.0d0
+      
 
 C     Get parameters of the exact solution.
 
@@ -40,71 +38,90 @@ C     Get parameters of the exact solution.
 
          a = GW_a
          o = GW_omega
-         d = GW_del
+         half = 1/2d0
+         d = GW_del / 8d0 / atan(1.d0)
+         fs = GW_phase_shift
 
          firstcall = .false.
 
       end if
 
-C     How should the wave look like.
-
+C     How should the wave look like
       if (CCTK_Equals(GW_H,"sin").eq.1) then
         
-        H = one - a*sin((x-t)/d)
+        if (GW_diagonal) then
+
+          H = 1 - a * sin((x-y)/sqrt(2.d0)/d - o*t/d)
+ 
+        else
+
+          H = 1 - a * sin((x-o*t)/d - fs )
+
+        end if
 
       elseif (CCTK_Equals(GW_H,"exp").eq.1) then
 
         H = exp(a*(x/d-o*t))
 
-      elseif (CCTK_Equals(GW_H,"gau").eq.1) then
-
-        H = one - a*dexp(-(x-t)**2/d**2)
-
       end if
 
-C     write metric.
+C     write metric      
 
-      if (GW_diagonal .eq. 1) then
+      if (GW_diagonal) then
+         gdxx = half + half *H 
+         gdyy = half + half *H 
+         gdxy = half - half *H  
+         gdzz = 1
+         gdzx = 0
+         gdyz = 0
 
-        gdxx = half * H + half
-        gdxy = -half* H + half
-        gdyy = half * H + half
+         gdtt = - H
+         gdtx = 0
+         gdty = 0
+         gdtz = 0
 
-        guxx = half / H + half
-        guxy =-half / H + half
-        guyy = half / H + half
+C     and upper metric
+
+         guxx = half + half / H 
+         guyy = half + half / H
+         guxy = half - half / H
+         guzz = 1
+         guyz = 0
+         guzx = 0
+      
+         gutt = - 1/H
+         gutx = 0
+         guty = 0
+         gutz = 0
 
       else
 
-        gdxx = H
-        gdxy = zero
-        gdyy = one
+         gdxx = H 
+         gdyy = 1
+         gdzz = 1
+         gdxy = 0 
+         gdzx = 0
+         gdyz = 0
 
-        guxx = one/H
-        guxy = zero
-        guyy = one
+         gdtt = - H
+         gdtx = 0
+         gdty = 0
+         gdtz = 0
 
+C     upper metric
+
+         guxx = 1/H
+         guyy = 1
+         guzz = 1
+         guxy = 0
+         guyz = 0
+         guzx = 0
+              
+         gutt = - 1/H
+         gutx = 0
+         guty = 0
+         gutz = 0
       end if
-      
-      gdtt = - H
-      gdtx = zero
-      gdty = zero
-      gdtz = zero
-
-      gdzx = zero
-      gdyz = zero
-      gdzz = one
-
-C     and upper metric.
-
-      gutt = - one/H
-      gutx = zero
-      guty = zero
-      gutz = zero
-
-      guyz = zero
-      guzx = zero
-      guzz = one
 
       return
       end
