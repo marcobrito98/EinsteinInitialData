@@ -1,15 +1,27 @@
-% Thorn documentation template
 \documentclass{article}
+
+% Use the Cactus ThornGuide style file
+% (Automatically used from Cactus distribution, if you have a 
+%  thorn without the Cactus Flesh download this from the Cactus
+%  homepage at www.cactuscode.org)
+\usepackage{../../../../doc/ThornGuide/cactus}
+
 \begin{document}
 
 \title{IDBrillData}
 \author{Carsten Gundlach, Gabrielle Allen}
 \date{$ $Date$ $}
+
 \maketitle
 
-\abstract{This thorn creates time symmetric initial data for Brill
+% Do not delete next line
+% START CACTUS THORNGUIDE
+
+\begin{abstract}
+This thorn creates time symmetric initial data for Brill
 wave spacetimes.  It can create both axisymmetric data (in a 3D
-cartesian grid), as well as data with an angular dependency.}
+cartesian grid), as well as data with an angular dependency.
+\end{abstract}
 
 \section{Purpose}
 
@@ -161,11 +173,7 @@ Cambridge, England, 1979), p. 275.
 
 \end{enumerate}
 
-% Automatically created from the ccl files 
-% Do not worry for now.
-
-\include{interface}
-\include{param}
-\include{schedule}
+% Do not delete next line
+% END CACTUS THORNGUIDE
 
 \end{document}
