@@ -75,6 +75,7 @@ KEYWORD exactmodel "The exact solution used in thorn exact"
   "desitter"    :: "DeSitter spacetime (R-W cosmology, near t=0, p=0)"
   "kasner"      :: "Kasner like spacetime"
   "milne"       :: "De Milne spacetime for pre-big-bang cosmology"
+  "gauge_wave"  :: "Carlos Bonas' suggestion of a gauge wave"
 } "minkowski"
 
 
@@ -424,3 +425,33 @@ REAL desitt_b "Parameter for DeSitter space-time"
 {
 0.0:1000.0 :: "Positive please"
 } 0.1
+
+
+#########################
+### GaugeWave Params  ###
+#########################
+
+KEYWORD GW_H "what function to use"
+{
+"sin" :: "1-a*sin(x)"
+"exp" :: "1-exp(x)"
+}"sin"
+ 
+REAL GW_a "amplitude of the wave"
+{
+*:: "anything (better smaller than 1)"
+}0.5
+  
+REAL GW_omega "amplitude of the wave"
+{
+*:: "anything"
+}1.0
+    
+BOOLEAN GW_diagonal "let the wave run diagonally across the grid"
+{
+}"no"
+   
+REAL GW_del "distance of waves"
+{
+*:: "anything"
+}0.5    
