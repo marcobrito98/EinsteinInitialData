@@ -29,27 +29,43 @@ decode_pars.F77
 	#defined in  include/param_defs.inc ).
 
 initialize.F77
-	This is the main top-level routine scheduled at INITIAL
-	to set up an initial slice.
-
-Bona_Masso_data.F77
-	This contains code to compute the Bona-Masso variables for
-	the initial data, making use of the subroutine Exact__metric()
-	to calculate the spacetime metric and its inverse.  Note that
-	this use of the Bona-Masso variables is independent of how
-	(or even if) we are evolving the Einstein equations -- here
-	the Bona-Masso variables are "just" used as intermediate variables.
-
-metric.F77
-	This contains the subroutine Exact__metric(); this decodes
-	the decoded_exact_model parameter and calls the appropriate
-	Exact__model_name_coords() subroutine to compute the 4-metric
-	and its inverse at a point.  See the metrics/ subdirectory
-	for these computations for the various models.
+	This contains the subroutine Exact__initialize(), which is
+	top-level routine scheduled at INITIAL to set up an initial
+	slice.  This basically just calls Exact__Bona_Masso_data()
+	at each grid point, discarding everything it computes other
+	than the 3-metric, the extrinsic curvature, and possibly
+	the conformal factor and its spatial derivatives.
 
 gauge.F77
 	This contains code to set the lapse/shift from an exact solution
-	at each time step of an evolution.
+	either on the initial slice, or at each time step of an evolution.
+	This works by calling  Exact__Bona_Masso_data()  at each grid
+	point, discarding everything it computes except the lapse and
+	the shift.
+
+Bona_Masso_data.F77
+	This contains the subroutine Exact__Bona_Masso_data(),
+	which computes the ADM variables (3-metric, extrinsic curvature,
+	lapse, shift) and some of their spatial derivatives
+	(1st derivatives of the 3-metric and the lapse,
+	2nd derivatives of the conformal factor and the shift vector)
+	by calling  Exact__metric()  and finite differencing.
+		[using a hard-coded 1.0e-6 grid spacing :( ]
+	Note that despite the name and comments referring to the
+	Bona-Masso variables, this subroutine doesn't appear to
+	actually use the Bona-Masso variables (!).
+
+boost.F77
+	This contains the subroutine Exact__metric(), which calls
+	Exact__metric_for_model() and then applies an optional
+	Lorentz boost to the resulting 4-metric and its inverse.
+
+metric.F77
+	This contains the subroutine Exact__metric_for_model(); this
+	decodes the decoded_exact_model parameter and calls the appropriate
+	Exact__<model_name>_<coords>() subroutine to compute the 4-metric
+	and its inverse at a point.  See the metrics/ subdirectory
+	for these computations for the various models.
 
 boundary.F77
 	This is the top-level routine scheduled at POSTSTEP to
