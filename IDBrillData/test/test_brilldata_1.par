@@ -34,7 +34,8 @@ ellsor::sor_bound				= "robin"
 
 # Output.
 
-IO::outdir = "test_brilldata_1"
+IO::outdir       = "test_brilldata_1"
+IO::out_fileinfo = "none"
 
 IOBasic::outInfo_every = 1
 IOBasic::outInfo_vars  = "idbrilldata::brillpsi"
@@ -44,4 +45,3 @@ IOBasic::outScalar_vars = "einstein::gxx einstein::gyy einstein::gzz einstein::g
 
 IOASCII::out1D_every = 1
 IOASCII::out1D_vars = "einstein::gxx einstein::gyy einstein::gzz einstein::gxy idbrilldata::brillpsi"
-
