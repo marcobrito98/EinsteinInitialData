@@ -27,4 +27,6 @@ TwoPunctures_ParamCheck (CCTK_ARGUMENTS)
   }
   else
     CCTK_INFO("Solving for BHs");
+  CCTK_VInfo(CCTK_THORNSTRING, "The two puncture-masses are %.16e and %.16e.\n",
+                               par_m_minus, par_m_plus);
 }
