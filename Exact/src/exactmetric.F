@@ -125,7 +125,15 @@ C     Call the corresponding routine.
      $        gutt, gutx, guty, gutz, 
      $        guxx, guyy, guzz, guxy, guyz, guxz)
 
-       
+      elseif (CCTK_Equals(exactmodel,"flatshift").eq.1) then
+
+         call flatshift(
+     $        x, y, z, t,
+     $        gdtt, gdtx, gdty, gdtz, 
+     $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
+     $        gutt, gutx, guty, gutz, 
+     $        guxx, guyy, guzz, guxy, guyz, guxz)
+
       elseif (CCTK_Equals(exactmodel,"bianchiI").eq.1) then
 
          call bianchiI(

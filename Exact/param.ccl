@@ -70,6 +70,7 @@ KEYWORD exactmodel "The exact solution used in thorn exact"
   "bowl"        :: "Non-Einstein bowl (bag-of-gold) spacetime"
   "fakebinary"  :: "Non-Einstein fake-binary of Thorn et al"
   "flatfunny"   :: "Minkowski spacetime in non-trivial spatial coordinates"
+  "flatshift"   :: "Minkowski spacetime in non-trivial slices with shift"
   "bianchiI"    :: "Bianchi I spacetime"
   "rob-wal"     :: "Robertson-Walker cosmology (near t= 0,pure radiation case)"
   "godel"       :: "Godel spacetime"
@@ -369,8 +370,20 @@ REAL flatfunny_s "Width of gaussian"
 0.0: :: "Positive please"
 } 1.0
 
+# Parameters for flatshift.
+
+REAL flatshift_a "Amplitude of gaussian"
+{
+:1 :: "Anything goes"
+} 0.0
+
+REAL flatshift_s "Width of gaussian"
+{
+0.0: :: "Positive please"
+} 1.0
 
 # Parameters for Kasner_like metric
+
 REAL kasner_q "...  "
 {
 0.0:100 :: "Can be also negativ, but here is ...     "
@@ -378,6 +391,7 @@ REAL kasner_q "...  "
 
 
 # Parameters for bianchiI
+
 REAL bia "Parameter for bianchi I space-time"
 {
 0.0:1.7 :: "Positive please"
