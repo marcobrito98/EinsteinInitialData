@@ -218,4 +218,8 @@ void Misner_multiple(CCTK_CARGUMENTS)
   }
 
   return;
+
+  USE_CCTK_PARAMETERS
+  USE_CCTK_CARGUMENTS
+
 }

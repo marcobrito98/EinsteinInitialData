@@ -26,11 +26,7 @@ void Schwarzschild(CCTK_CARGUMENTS)
   CCTK_REAL tmp;
   CCTK_REAL r_squared;
 
-  CCTK_REAL t1,r0;
-
   int i,j,k;
-  int is,js,ks,ie,je,ke;
-  CCTK_REAL inval;
   int nx,ny,nz;
   int index;
 
@@ -152,4 +148,8 @@ void Schwarzschild(CCTK_CARGUMENTS)
   }
     
   return;
+
+  USE_CCTK_PARAMETERS
+  USE_CCTK_CARGUMENTS
+
 }
