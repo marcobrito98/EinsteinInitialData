@@ -7,8 +7,8 @@ C Copyright/License: unknown
 C
 
 #include "cctk.h"
-#include "cctk_Arguments.h"
 #include "cctk_Parameters.h"
+#include "cctk_Functions.h"
 
 #define Pi (4 * atan(1.d0))
 

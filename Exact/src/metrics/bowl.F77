@@ -54,6 +54,7 @@ c $Header$
 
 #include "cctk.h"
 #include "cctk_Parameters.h"
+#include "cctk_Functions.h"
 
       subroutine Exact__bowl(
      $     x, y, z, t,

@@ -6,6 +6,7 @@ C $Header$
 #include "cctk.h"
 #include "cctk_Parameters.h"
 #include "cctk_Arguments.h"
+#include "cctk_Functions.h"
 
       subroutine Exact__gauge(CCTK_ARGUMENTS)
 
@@ -54,7 +55,7 @@ C     Grid parameters.
 
 C     This code used to set  t = time + dt/2  to get 2nd order accuracy,
 C     but this leads to the initial data being set at the wrong time. :(
-C     In the context of MoL, we want to set variables at the standrd Cactus
+C     In the context of MoL, we want to set variables at the standard Cactus
 C     time (cctk_time), because MoL takes care of calling us at each MoL
 C     iteration, and updating the field variables appropriately.
 C

@@ -8,8 +8,8 @@ C and thus does *NOT* work with the "arbitrary slice evolver" option
 C of this thorn.
 
 #include "cctk.h"
-#include "cctk_Arguments.h"
 #include "cctk_Parameters.h"
+#include "cctk_Functions.h"
 
 #define Pi (4 * atan(1.d0))
 

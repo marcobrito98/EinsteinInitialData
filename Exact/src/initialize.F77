@@ -6,6 +6,7 @@ C $Header$
 #include "cctk.h"
 #include "cctk_Parameters.h"
 #include "cctk_Arguments.h"
+#include "cctk_Functions.h"
 
       subroutine Exact__initialize(CCTK_ARGUMENTS)
 
@@ -125,9 +126,9 @@ C     Save the conformal factor if wanted
       
 C     Tell the code there is no need to treat the conformal factor
 C     as a separate field. That is, we have set the physical metric here.
-c     Commented out in einstein revamp, now Exact doesnot inherit anything
+c     Commented out in einstein revamp, now Exact does not inherit anything
 c     about the conformal factor
-c     Now ot does again (see above, knarf)
+c     Now it does again (see above, knarf)
 
       return
       end

@@ -9,6 +9,7 @@ C
 
 #include "cctk.h"
 #include "cctk_Arguments.h"
+#include "cctk_Functions.h"
 #include "Exact.inc"
 
       subroutine Exact__slice_evolve(CCTK_ARGUMENTS)

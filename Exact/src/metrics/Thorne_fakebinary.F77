@@ -9,6 +9,7 @@ C $Header$
 
 #include "cctk.h"
 #include "cctk_Parameters.h"
+#include "cctk_Functions.h"
 
       subroutine Exact__Thorne_fakebinary(
      $     x, y, z, t,
