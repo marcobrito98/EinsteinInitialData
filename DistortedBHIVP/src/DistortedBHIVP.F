@@ -565,7 +565,7 @@ c     Compute eta,q,phi at the each points of cartesian grid
          enddo
       enddo
       
-      call CCTK_GetInterpHandle (handle, "simple_local")
+      call CCTK_InterpHandle (handle, "simple_local")
       
       npoints = nx*ny*nz
 
