@@ -9,8 +9,8 @@
  @@*/
 
 #include "cctk.h"
-#include "declare_arguments.h"
-#include "declare_parameters.h"
+#include "cctk_arguments.h"
+#include "cctk_parameters.h"
 
 #include "CactusEinstein/Einstein/src/Einstein.h"
 
@@ -34,7 +34,7 @@
       implicit none
 
       DECLARE_CCTK_FARGUMENTS
-      DECLARE_PARAMETERS
+      DECLARE_CCTK_PARAMETERS
 
       integer CCTK_Equals
 
