@@ -4,6 +4,18 @@ $Header$
 
 ----------------------------------------
 
+Jonathan Thornburg:
+* make the hard-wired 1.0e-6 finite differencing grid spacing in
+   Bona_Masso_data.F77  a parameter
+* Are we setting the initial data at the right time level
+  (there are comments in  gauge.F77  that we're half-a-time-step off)?
+  Is this still a problem now that we always use MoL?
+  Do we still need to support the non-MoL case?
+* add options to set ALL time levels of initial data, not just the
+  current level
+
+----------------------------------------
+
 Ian Hawke:
 It would be nice to be able to output the difference between a
 numerical evolution and the exact solution.
