@@ -3,7 +3,7 @@
 ######################################################################
 
 #Required thorns
-ActiveThorns = "time ADMconstraints pugh cartgrid3d einstein ADM AxiBrillBHIVP ioascii ioutil"
+ActiveThorns = "time ADMconstraints pugh pughslab pughreduce cartgrid3d einstein ADM IDAxiBrillBH ioascii ioutil interp iobasic"
 
 pugh::enable_all_storage = "yes"
 
@@ -17,7 +17,7 @@ driver::global_nz =  20
 
 grid::type = "byspacing"
 grid::dxyz = 0.2
-grid::symmetry = "octant"
+grid::domain = "octant"
 
 time::dtfac         =     0.25   
 
@@ -29,27 +29,25 @@ adm::bound = "flat"
 
 # MODEL 
 einstein::initial_data = "axibrillbh"
-axibrillbhivp::axibrillbh_amp = 0.5
-axibrillbhivp::axibrillbh_eta0 = 0.0
-axibrillbhivp::axibrillbh_sigma = 1.0
-axibrillbhivp::axibrillbh_etamax = 6.0
-axibrillbhivp::axibrillbh_n = 2
-axibrillbhivp::axibrillbh_ne = 302
-axibrillbhivp::axibrillbh_nq = 54
-axibrillbhivp::axibrillbh_intorder = 1
+idaxibrillbh::amp = 0.5
+idaxibrillbh::eta0 = 0.0
+idaxibrillbh::sigma = 1.0
+idaxibrillbh::etamax = 6.0
+idaxibrillbh::n = 2
+idaxibrillbh::ne = 302
+idaxibrillbh::nq = 54
 
 # GAUGE
-adm::slicing       =    "geodesic"  
+einstein::slicing       =    "geodesic"  
 
 
 # OUTPUT ########################################################
 
-IO::IO_outdir = "AxiBrillBHIVP"
+IO::outdir = "IDAxiBrillBH"
 
-IO::IO_0Devery         =     2      
-IO::info_every = 1
-IOASCII::output_info = "einstein"
-IOASCII::output0D = "einstein::gxx einstein::kxx admconstraints::ADMconstraints
-                einstein::grr einstein::alp"
+IOBasic::outInfo_every = 2      
+IOASCII::out1d_every = 1
+IOBasic::outInfo_vars = "einstein"
+IOASCII::out1d_vars = "einstein::gxx einstein::kxx admconstraints::ADMconstraints einstein::grr einstein::alp"
 
 ##################################################################
