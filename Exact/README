@@ -34,10 +34,16 @@ Compilation
 On some systems (notably the AEI Xeons using the Intel compilers) this
 thorn only compiles if you use the Cactus (perl) preprocessor, i.e. you
 need to configure with
-
-gmake foo-config CPP='$${PERL} $${CCTK_HOME}/lib/sbin/cpp.pl'
-
+   gmake foo-config CPP='$${PERL} $${CCTK_HOME}/lib/sbin/cpp.pl'
 (along with any other configuration options).
+
+This thorn is mostly written in Fortran 77, with a few files in C
+and Fortran 90.  At present Fortran 90 is only used for the "arbitrary slice"
+option (see the thorn guide for details).  If this option isn't needed,
+then by changing a single line in  src/include/Exact.inc  (see the comments
+there for details) you can #ifdef-out the Fortran 90 code, allowing the
+rest of this thorn to be compiled on a system with no Fortran 90 compiler
+available.
 
 
 Copyright
