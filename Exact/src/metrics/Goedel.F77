@@ -35,11 +35,10 @@ c output arguments
 
 c local static variables
       logical firstcall
-      data firstcall /.true./
-      save firstcall
- 
-c local variables
       CCTK_REAL arad
+      data firstcall /.true./
+      save firstcall, arad
+ 
 
 C This is a vacuum spacetime with no cosmological constant
       Tmunu_flag = .false.

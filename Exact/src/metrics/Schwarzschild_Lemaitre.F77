@@ -35,11 +35,12 @@ c output arguments
 
 c local static variables
       logical firstcall
+      CCTK_REAL lam, mas
       data firstcall /.true./
-      save firstcall
+      save firstcall, lam, mas
 
 c local variables
-      CCTK_REAL lam, mas, r2, ppp, unu, doi
+      CCTK_REAL r2, ppp, unu, doi
 
 C This model has a cosmological constant
       Tmunu_flag = .true.

@@ -43,7 +43,6 @@ c local static variables
       save firstcall, eps, mass
 
 c local variables
-      CCTK_REAL radius
       CCTK_REAL r,c,psi4
 
       CCTK_REAL nov_dr_drmax, nov_rmax, nov_r

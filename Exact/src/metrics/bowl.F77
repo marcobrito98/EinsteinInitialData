@@ -89,6 +89,7 @@ c local static variables
 
 c local variables
       integer type
+      character*100 warn_buffer
 
       CCTK_REAL r,r2,rr2
       CCTK_REAL xr,yr,zr,xr2,yr2,zr2
@@ -119,7 +120,9 @@ c     Get parameters of the metric.
          else if (CCTK_Equals(bowl__shape,"Fermi").ne.0) then
             type = 2
          else
-            call CCTK_WARN(0,"Unknown parameter bowl__shape")
+            write (warn_buffer, '(a,a,a)')
+     $            'Unknown bowl__shape = "', bowl__shape, '"'
+            call CCTK_WARN(0, warn_buffer)
          end if
 
          if (bowl__evolve.eq.1) then
@@ -188,6 +191,11 @@ c        I use the same trick as above.
 
          fac = one - two/(dexp(4.0d0*r) + dexp(-4.0d0*r))
          rr2 = (one - a*fac/(one + dexp(-s*(r-c)))/r)**2
+
+      else
+         write (warn_buffer, '(a,i)')
+     $         'Unknown type = ', type
+         call CCTK_WARN(0, warn_buffer)
 
       end if
 

@@ -44,6 +44,7 @@ c local static variables
 
 c local variables
       CCTK_REAL H
+      character*100 warn_buffer
 
 c constants
       CCTK_REAL zero,half,one
@@ -75,6 +76,11 @@ C     How should the wave look like.
         H = exp(a*sin(x/d)*cos(t/d))
       elseif (CCTK_Equals(Minkowski_gauge_wave__what_fn,"Gaussian").eq.1) then
         H = one - a*dexp(-(x-t)**2/d**2)
+      else
+        write (warn_buffer, '(a,a,a)')
+     $        'Unknown Minkowski_gauge_wave__what_fn = "',
+     $         Minkowski_gauge_wave__what_fn, '"'
+        call CCTK_WARN(0, warn_buffer)
       end if
 
 C     write metric.
