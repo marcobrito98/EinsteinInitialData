@@ -27,6 +27,9 @@ c arguments
      $     gutt, gutx, guty, gutz,
      $     guxx, guyy, guzz, guxy, guyz, guxz, rama
 
+c local variables
+      character*100 warn_buffer
+
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
 c
@@ -281,7 +284,9 @@ c
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
       else
-         call CCTK_WARN(0,"Unknown value of decoded_exact_model")
+         write (warn_buffer, '(a,i)')
+     $         'Unknown decoded_exact_model = ', decoded_exact_model
+         call CCTK_WARN(0, warn_buffer)
       endif
 
       return
