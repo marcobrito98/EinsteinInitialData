@@ -5,7 +5,7 @@ if (CCTK_Equals(initial_data,"brilldata"))
 {
 
   STORAGE: brillconf
-  STORAGE: linearelliptic
+  STORAGE: brillelliptic
 
   schedule BrilData_InitSymBound at CCTK_BASEGRID
   {
