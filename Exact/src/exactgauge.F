@@ -1,3 +1,7 @@
+C     This routine sets the lapse and/or shift by calling a routine
+C     that does it pointwise. Note that it could be easily modified
+C     to set the Bona-Masso variables B_xx etc. 
+
 #include "cctk.h"
 #include "cctk_Parameters.h"
 #include "cctk_Arguments.h"
@@ -43,8 +47,11 @@ C     order numerical scheme.
 
 C     Set both lapse and shift.
 
-      if ((CCTK_Equals(slicing,"exact").ne.0).and.
-     .    (CCTK_Equals(shift,"exact").ne.0)) then
+      if (((CCTK_Equals(slicing,"exact").ne.0).and.
+     $     (CCTK_Equals(shift,"exact").ne.0))
+     $     .or.
+     $     ((CCTK_Equals(initial_lapse,"exact").ne.0).and.
+     $     (CCTK_Equals(initial_shift,"exact").ne.0))) then
 
          do k=1,nz
             do j=1,ny
@@ -72,7 +79,8 @@ C     Set both lapse and shift.
 
 C     Set lapse only.
 
-      else if (CCTK_Equals(slicing,"exact").ne.0) then
+      else if ((CCTK_Equals(slicing,"exact").ne.0)
+     $        .or. (CCTK_Equals(initial_lapse,"exact").ne.0)) then
 
          do k=1,nz
             do j=1,ny
@@ -101,7 +109,8 @@ C     Set lapse only.
 
 C     Set shift only.
 
-      else if (CCTK_Equals(shift,"exact").ne.0) then
+      else if ((CCTK_Equals(shift,"exact").ne.0) 
+     $        .or. (CCTK_Equals(initial_shift,"exact").ne.0)) then
 
          do k=1,nz
             do j=1,ny
@@ -128,6 +137,8 @@ C     Set shift only.
             end do
          end do
 
+      else
+         call CCTK_WARN(1,'exactgauge has been called without doing anything')
       end if
 
       return
