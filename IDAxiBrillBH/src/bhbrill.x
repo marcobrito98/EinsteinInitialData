@@ -19,8 +19,14 @@
         o19 = -(o15*o18)
         o20 = o16 + o17 + o19
         o21 = exp(o20)
-        o22 = -2.00000000000000d0 + n
-        o23 = o8**o22
+        i22 = -2 + n
+c       The next lines causes a floating point exception on Alphas,
+c       if o22 is 0.0 but o8 is negative.
+c       This is because of y**x = exp(x*ln(y)).
+c       Changing the type of the exponent to integer fixes the problem.
+c        o22 = -2.00000000000000d0 + n
+c        o23 = o8**o22
+        o23 = o8**i22
         o24 = n**2
         o25 = 2.00000000000000d0*etagrd(i)*eta0*o15
         o26 = o16 + o19 + o25

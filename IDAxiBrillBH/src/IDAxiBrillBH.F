@@ -62,6 +62,7 @@ c     Perhaps this and others should go into cctk.h
       real*8 o70,o71,o72,o73,o74,o75,o76,o77,o78,o79
       real*8 o80,o81,o82,o83,o84,o85,o86,o87,o88,o89
       real*8 o90,o91,o92,o93,o94,o95,o96,o97,o98,o99
+      integer i22
       real*8 pi
       real*8 adm
       integer :: nx,ny,nz
