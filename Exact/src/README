@@ -19,7 +19,7 @@ ParamCheck.c
 	This is scheduled at PARAMCHECK to do some basic consistency
 	checks on the parameters.
 
-decode_pars.F
+decode_pars.F77
 	This is scheduled at INITIAL to decode/copy our parameters
 	into protected grid scalars, for the benefit of the stress-energy
 	tensor code in "include/Scalar_CalcTmunu.inc".  In particular,
@@ -27,11 +27,11 @@ decode_pars.F
 	the integer  decoded_exact_model  (which has one of the values
 	#defined in  include/param_defs.inc ).
 
-initialize.F
+initialize.F77
 	This is the main top-level routine scheduled at INITIAL
 	to set up an initial slice.
 
-Bona_Masso_data.F
+Bona_Masso_data.F77
 	This contains code to compute the Bona-Masso variables for
 	the initial data, making use of the subroutine Exact__metric()
 	to calculate the spacetime metric and its inverse.  Note that
@@ -39,23 +39,23 @@ Bona_Masso_data.F
 	(or even if) we are evolving the Einstein equations -- here
 	the Bona-Masso variables are "just" used as intermediate variables.
 
-metric.F
+metric.F77
 	This contains the subroutine Exact__metric(); this decodes
 	the decoded_exact_model parameter and calls the appropriate
 	Exact__model_name_coords() subroutine to compute the 4-metric
 	and its inverse at a point.  See the metrics/ subdirectory
 	for these computations for the various models.
 
-gauge.F
+gauge.F77
 	This contains code to set the lapse/shift from an exact solution
 	at each time step of an evolution.
 
-boundary.F
+boundary.F77
 	This is the top-level routine scheduled at POSTSTEP to
 	implement exact-solution boundary conditions.
 
-blended_boundary.F
-xyz_blended_boundary.F
+blended_boundary.F77
+xyz_blended_boundary.F77
 	These files implement the blended boundary conditions described
 	in "doc/slice_evolver.tex".
 
