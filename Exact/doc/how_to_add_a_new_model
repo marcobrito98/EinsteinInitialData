@@ -1,7 +1,7 @@
 ************************************************
 ***** How to Add a New Model to this Thorn *****
 ************************************************
-$Header: /usr/local/svn/cvs-repositories/numrelcvs/AEIThorns/Exact/doc/how_to_add_a_new_model,v 1.3 2003-01-28 14:49:40 knarf Exp $
+$Header: /usr/local/svn/cvs-repositories/numrelcvs/AEIThorns/Exact/doc/how_to_add_a_new_model,v 1.4 2003-01-28 15:04:14 knarf Exp $
 
 A general note:  Please keep the sections for various models in the
 same order in all the files.  This makes it _much_ easier for people
@@ -48,6 +48,10 @@ Then you need to modify...
 	It's probably easiest to start with a copy of an existing file and
 	modify it to compute your new metric -- that will help you get all
 	the "boilerplate" code right.
+  One additional information about the conformal factor which is passed
+  to the function: It is preset to 1.0 or 0.0 according to the fact if
+  it is wanted or not. If you want to have a physical metric, just do not
+  change it.
   src/metrics/make.code.defn:
 	Add the new file name to the list of files to be compiled.
 
