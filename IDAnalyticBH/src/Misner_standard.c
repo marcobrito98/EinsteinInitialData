@@ -75,7 +75,7 @@ void Misner_standard(CCTK_ARGUMENTS)
   CCTK_INT powfac;
   CCTK_INT adm_mass;
   const CCTK_REAL zero = 0.0, one = 1.0, three = 3.0;
-  int make_conformal_derivs;
+  int make_conformal_derivs = 0;
 
   CCTK_VInfo(CCTK_THORNSTRING,
              "setting up Misner initial data");
@@ -101,14 +101,10 @@ void Misner_standard(CCTK_ARGUMENTS)
     else
     {
       CCTK_VWarn(0, __LINE__, __FILE__, CCTK_THORNSTRING,
-"Misner_Standard(): impossible value for conformal_storage=\"%s\"!");
-								/*NOTREACHED*/
+"Misner_Standard(): impossible value for conformal_storage=\"%s\"!",
+		 conformal_storage);				/*NOTREACHED*/
     }
   }      
-  else
-  {
-    make_conformal_derivs = 0;
-  }
 
   /* total number of points on this processor */
   npoints = cctk_lsh[0] * cctk_lsh[1] * cctk_lsh[2];

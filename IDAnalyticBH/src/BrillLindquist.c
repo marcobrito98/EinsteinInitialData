@@ -46,7 +46,7 @@ void BrillLindquist(CCTK_ARGUMENTS)
   CCTK_REAL xval, yval, zval;
   CCTK_REAL x_2, y_2, z_2;
   int i, npoints;
-  int make_conformal_derivs;
+  int make_conformal_derivs = 0;
 
   CCTK_VInfo(CCTK_THORNSTRING,
              "setting up Brill-Lindquist initial data for %d black holes",
@@ -73,13 +73,9 @@ void BrillLindquist(CCTK_ARGUMENTS)
     else
     {
       CCTK_VWarn(0, __LINE__, __FILE__, CCTK_THORNSTRING,
-"BrillLindquist(): impossible value for conformal_storage=\"%s\"!");
-								/*NOTREACHED*/
+"BrillLindquist(): impossible value for conformal_storage=\"%s\"!",
+		 conformal_storage);				/*NOTREACHED*/
     }
-  }      
-  else
-  {
-    make_conformal_derivs = 0;
   }
 
 

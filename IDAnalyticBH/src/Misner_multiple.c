@@ -46,7 +46,7 @@ void Misner_multiple(CCTK_ARGUMENTS)
   const CCTK_REAL nm_eps             = 1e-6;   /* finite differencing step*/
   const CCTK_REAL halved_inv_nm_eps  = 0.5 / nm_eps;
   const CCTK_REAL inv_nm_eps_squared = 1.0 / SQR(nm_eps);
-  int make_conformal_derivs;
+  int make_conformal_derivs = 0;
 
   CCTK_VInfo(CCTK_THORNSTRING,
              "setting up Misner initial data for %d black holes",
@@ -73,13 +73,9 @@ void Misner_multiple(CCTK_ARGUMENTS)
     else
     {
       CCTK_VWarn(0, __LINE__, __FILE__, CCTK_THORNSTRING,
-"Misner_multiple(): impossible value for conformal_storage=\"%s\"!");
-								/*NOTREACHED*/
+"Misner_multiple(): impossible value for conformal_storage=\"%s\"!",
+		 conformal_storage);				/*NOTREACHED*/
     }
-  }      
-  else
-  {
-    make_conformal_derivs = 0;
   }
 
 

@@ -58,7 +58,7 @@ void KerrID(CCTK_ARGUMENTS)
   CCTK_REAL d2Rdxx,d2Rdxy,d2Rdxz,d2Rdyy,d2Rdyz,d2Rdzz;
   CCTK_REAL d2qdxx,d2qdxy,d2qdxz,d2qdyy,d2qdyz,d2qdzz;
   CCTK_REAL m=mass,a=a_Kerr,a_2=a*a,m2_a2=m*m-a_2;
-  int make_conformal_derivs;
+  int make_conformal_derivs = 0;
 
   CCTK_VInfo(CCTK_THORNSTRING,
              "setting up Kerr initial data");
@@ -99,13 +99,10 @@ void KerrID(CCTK_ARGUMENTS)
     else
     {
       CCTK_VWarn(0, __LINE__, __FILE__, CCTK_THORNSTRING,
-"KerrID(): impossible value for conformal_storage=\"%s\"!");	/*NOTREACHED*/
+"KerrID(): impossible value for conformal_storage=\"%s\"!",
+		 conformal_storage);				/*NOTREACHED*/
     }
   }      
-  else
-  {
-    make_conformal_derivs = 0;
-  }
 
 
   /* printf("npoints: %i\n",npoints); */

@@ -27,7 +27,7 @@ void Schwarzschild(CCTK_ARGUMENTS)
 
   const CCTK_REAL zero = 0.0, one = 1.0, two = 2.0, three = 3.0;
   CCTK_REAL tmp, r_squared, r_cubed;
-  int make_conformal_derivs;
+  int make_conformal_derivs = 0;
   int i, npoints;
 
   CCTK_VInfo(CCTK_THORNSTRING,
@@ -54,14 +54,10 @@ void Schwarzschild(CCTK_ARGUMENTS)
     else
     {
       CCTK_VWarn(0, __LINE__, __FILE__, CCTK_THORNSTRING,
-"Schwarzschild(): impossible value for conformal_storage=\"%s\"!");
-								/*NOTREACHED*/
+"Schwarzschild(): impossible value for conformal_storage=\"%s\"!",
+		 conformal_storage);				/*NOTREACHED*/
     }
   }      
-  else
-  {
-    make_conformal_derivs = 0;
-  }
 
 
   npoints = cctk_lsh[0] * cctk_lsh[1] * cctk_lsh[2];
