@@ -43,7 +43,7 @@ idlinearwaves::wavesgoing = "both"
 
 # Output
 
-IO::outdir               = "test_pw_ADM_leap"
+IO::out_dir               = "test_pw_ADM_leap"
 IO::out_fileinfo         = "none"
 IO::parfile_write        = "no"
 
@@ -60,3 +60,6 @@ IOBasic::outInfo_every = 5
 IOBasic::outInfo_vars = "admbase::gzz"
 
 ##################################################################
+
+# do not use the new scheme for names of output files
+IO::new_filename_scheme = "no"

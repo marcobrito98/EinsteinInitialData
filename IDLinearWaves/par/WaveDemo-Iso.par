@@ -44,10 +44,10 @@ ioascii::out1d_vars        = "einstein::grr einstein::alp"
 
 isosurfacer::dataport           = 5557 
 isosurfacer::controlport        = 5558 
-isosurfacer::output_format      = "SOCK"
-isosurfacer::output_var         = "psikadelia::psi0re"
+IsoSurfacer::out_format      = "SOCK"
+IsoSurfacer::out_vars         = "psikadelia::psi0re"
 isosurfacer::isovalue           = 0.5
-isosurfacer::output_frequency   = 1 
+IsoSurfacer::out_every   = 1 
 
 httpd::port                 = 7050
 
@@ -81,6 +81,6 @@ idlinearwaves::wavesgoing  = "both"
 idlinearwaves::wavecenter  = 0.
 idlinearwaves::wavelength  = 2.
 
-io::outdir                 = "WaveDemo-Iso"
+IO::out_dir                 = "WaveDemo-Iso"
 
 

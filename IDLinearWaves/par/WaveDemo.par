@@ -64,6 +64,6 @@ idlinearwaves::wavesgoing  = "both"
 idlinearwaves::wavecenter  = 0.
 idlinearwaves::wavelength  = 2.
 
-io::outdir                 = "WaveDemo"
+IO::out_dir                 = "WaveDemo"
 
 
