@@ -23,7 +23,7 @@ cactus::cctk_itlast 				= 0
 # Brill wave initial data
 
 ADMBase::initial_data 				= "brilldata"
-ADMBase::metric_type				= "static conformal"
+ADMBase::metric_type				= "physical"
 
 # Brill wave parameters
 
