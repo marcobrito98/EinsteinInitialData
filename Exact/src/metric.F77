@@ -110,6 +110,15 @@ c
      $        guxx, guyy, guzz, guxy, guyz, guxz,
      $        psi, Tmunu_flag)
 
+      elseif (decoded_exact_model .eq. EXACT__Schwarzschild_BL) then
+         call Exact__Schwarzschild_BL(
+     $        x, y, z, t,
+     $        gdtt, gdtx, gdty, gdtz,
+     $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
+     $        gutt, gutx, guty, gutz,
+     $        guxx, guyy, guzz, guxy, guyz, guxz,
+     $        psi, Tmunu_flag)
+
       elseif (decoded_exact_model .eq. EXACT__Schwarzschild_Novikov) then
          call Exact__Schwarzschild_Novikov(x,y,z,t,
      $        gdtt, gdtx, gdty, gdtz,

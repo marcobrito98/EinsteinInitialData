@@ -210,6 +210,7 @@ KEYWORD exact_model "The exact solution/coordinates used in thorn exact"
 #
 "Schwarzschild/EF"     :: "Schwarzschild spacetime in Eddington-Finkelstein coordinates"
 "Schwarzschild/PG"     :: "Schwarzschild spacetime in Painleve-Gullstrand coordinates"
+"Schwarzschild/BL"     :: "Schwarzschild spacetime in Brill-Lindquist coordinates"
 "Schwarzschild/Novikov":: "Schwarzschild spacetime in Novikov coordinates"
 "Schwarzschild-Lemaitre":: "Schwarzschild metric in Schwarzschild coordinates, with cosmological constant"
 "Kerr/Boyer-Lindquist" :: "Kerr spacetime in Boyer-Lindquist coordinates"
@@ -387,6 +388,22 @@ REAL Schwarzschild_PG__epsilon "Schwarzschild/PG: numerical fudge"
 
 ################################################################################
 
+#
+# parameters for Schwarzschild metric in Brill-Lindquist coordinates
+#
+
+REAL Schwarzschild_BL__mass "Schwarzschild/BL: BH mass"
+{
+(0.0:*  ::  "any real number > 0.0"
+} 1.0
+
+REAL Schwarzschild_BL__epsilon "Schwarzschild/BL: numerical fudge"
+{
+0.0:*  ::  "any real number >= 0.0"
+} 1.e-16
+
+################################################################################
+
 # parameters for Schwarzschild metric in Novikov coordinates
 
 REAL Schwarzschild_Novikov__mass "Schwarzschild/Novikov: BH mass"
@@ -457,6 +474,30 @@ REAL Kerr_KerrSchild__spin \
 {
 -1.0:1.0 :: "dimensionless spin parameter a = J/m^2 for Kerr black hole"
 } 0.6
+
+REAL Kerr_KerrSchild__x \
+  "Kerr/Kerr-Schild: x-coordinate of black hole"
+{
+(*:*) :: ""
+} 0.0
+
+REAL Kerr_KerrSchild__y \
+  "Kerr/Kerr-Schild: y-coordinate of black hole"
+{
+(*:*) :: ""
+} 0.0
+
+REAL Kerr_KerrSchild__z \
+  "Kerr/Kerr-Schild: z-coordinate of black hole"
+{
+(*:*) :: ""
+} 0.0
+
+REAL Kerr_KerrSchild__t \
+  "Kerr/Kerr-Schild: time offset of black hole"
+{
+(*:*) :: ""
+} 0.0
 
 ################################################################################
 

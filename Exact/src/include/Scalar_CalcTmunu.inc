@@ -51,6 +51,8 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 c        no stress-energy tensor in this model
        elseif (decoded_exact_model .eq. EXACT__Schwarzschild_PG) then
 c        no stress-energy tensor in this model
+       elseif (decoded_exact_model .eq. EXACT__Schwarzschild_BL) then
+c        no stress-energy tensor in this model
        elseif (decoded_exact_model .eq. EXACT__Schwarzschild_Novikov) then
 c        no stress-energy tensor in this model
        elseif (decoded_exact_model .eq. EXACT__Kerr_BoyerLindquist) then

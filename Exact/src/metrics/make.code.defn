@@ -14,6 +14,7 @@ SRCS = Minkowski.F77			\
 					\
        Schwarzschild_EF.F77		\
        Schwarzschild_PG.F77		\
+       Schwarzschild_BL.F77		\
        Schwarzschild_Novikov.F77	\
        Kerr_BoyerLindquist.F77		\
        Kerr_KerrSchild.F77		\

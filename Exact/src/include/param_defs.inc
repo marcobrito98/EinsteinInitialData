@@ -39,13 +39,14 @@ c Minkowski spacetime
 c black hole spacetimes
 #define EXACT__Schwarzschild_EF		10
 #define EXACT__Schwarzschild_PG		11
-#define EXACT__Schwarzschild_Novikov	12
-#define EXACT__Kerr_BoyerLindquist	13
-#define EXACT__Kerr_KerrSchild		14
-#define EXACT__Schwarzschild_Lemaitre	15
-#define EXACT__multi_BH			16
-#define EXACT__Alvi			17
-#define EXACT__Thorne_fakebinary	18
+#define EXACT__Schwarzschild_BL		12
+#define EXACT__Schwarzschild_Novikov	13
+#define EXACT__Kerr_BoyerLindquist	14
+#define EXACT__Kerr_KerrSchild		15
+#define EXACT__Schwarzschild_Lemaitre	16
+#define EXACT__multi_BH			17
+#define EXACT__Alvi			18
+#define EXACT__Thorne_fakebinary	19
 
 c cosmological spacetimes
 #define EXACT__Lemaitre			50

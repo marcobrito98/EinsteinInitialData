@@ -66,10 +66,10 @@ C     t0 is never used, but is here for illustration, and we introduce
 C     x0 and y0 also only for clarity.
 C     Note that z0 = 0 means z = vt for the BH.
 
-      t0 = gamma * (t - boostv * z)
-      z0 = gamma * (z - boostv * t)
-      x0 = x
-      y0 = y
+      t0 = gamma * ((t - Kerr_KerrSchild__t) - boostv * (z - Kerr_KerrSchild__z))
+      z0 = gamma * ((z - Kerr_KerrSchild__z) - boostv * (t - Kerr_KerrSchild__t))
+      x0 = x - Kerr_KerrSchild__x
+      y0 = y - Kerr_KerrSchild__y
 
 C     Coordinate distance to center of black hole. Note it moves!
 

@@ -43,9 +43,6 @@ c@@*/
 	DECLARE_CCTK_PARAMETERS
 	DECLARE_CCTK_FUNCTIONS
 
-c local variables
-	character*100 warn_buffer
-
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
 c
@@ -69,6 +66,8 @@ c black hole spacetimes
 	     decoded_exact_model = EXACT__Schwarzschild_EF
 	elseif (CCTK_Equals(exact_model, "Schwarzschild/PG") .ne. 0) then
 	     decoded_exact_model = EXACT__Schwarzschild_PG
+	elseif (CCTK_Equals(exact_model, "Schwarzschild/BL") .ne. 0) then
+	     decoded_exact_model = EXACT__Schwarzschild_BL
 	elseif (CCTK_Equals(exact_model, "Schwarzschild/Novikov") .ne. 0) then
 	     decoded_exact_model = EXACT__Schwarzschild_Novikov
 	elseif (CCTK_Equals(exact_model, "Kerr/Boyer-Lindquist") .ne. 0) then
@@ -121,9 +120,7 @@ c miscellaneous spacetimes
 	elseif (CCTK_Equals(exact_model, "constant density star") .ne. 0) then
 	     decoded_exact_model = EXACT__constant_density_star
 	else
-	     write (warn_buffer, '(a,a,a)')
-     $		   'Unknown exact_model = "', exact_model, '"'
-	     call CCTK_WARN(0, warn_buffer)
+	     call CCTK_WARN(0, "Unknown exact_model")
 	endif
 
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
