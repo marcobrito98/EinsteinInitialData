@@ -59,64 +59,64 @@ INT brill_q  "Form of function q [0,1,2]"
 
 REAL brill_a "Brill wave: Amplitude"
 {
-  : ::
+  : :: "Anything"
 } 0.0
 
 REAL brill_b "Brill wave: rho^b"
 {
-  : :: 
+  : :: "Anything"
 } 2.0
 
 REAL brill_c "Brill wave: (r^2 - r0^2)^(c/2)"
 {  
-  : ::
+  : :: "Anything"
 } 2.0
 
 REAL brill_rho0 "Brill wave: radius of torus in rho"
 {
-  : ::
+  : :: "Anything"
 } 0.0
 
 REAL brill_r0 "Brill wave: radius of torus in r"
 {
-  : ::
+  : :: "Anything" 
 } 0.0
 
 REAL brill_srho "Brill wave: sigma in rho"
 {
-  : ::
+  : :: "Anything"
 } 1.0
 
 REAL brill_sr "Brill wave: sigma in r"
 {
-  : ::
+  : :: "Anything"
 } 1.0
 
 # 3D Brill wave parameters
 
 REAL brill_d "3D Brill wave:  d rho^m cos^2(n (phi + phi0))"
 {
-  : ::
+  : :: "Anything"
 } 0.0
 
 REAL brill_e "3D Brill wave:  d rho^m cos^2(n (phi + phi0))"
 {
-  : ::
+  : :: "Anything"
 } 1.0
 
 REAL brill_m "3D Brill wave:  d rho^m cos^2(n (phi + phi0))"
 {
-  : ::
+  : :: "Anything"
 } 2.0
 
 REAL brill_n "3D Brill wave:  d rho^m cos^2(n (phi + phi0))"
 {
-  : ::
+  : :: "Anything"
 } 2.0
 
 REAL brill_phi0 "3D Brill wave:  d rho^m cos^2(n (phi + phi0))"
 {
-  : ::
+  : :: "Anything"
 } 0.0
 
 KEYWORD outputpsi "Output conformal factor?"
