@@ -72,7 +72,7 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       kappa = sqrt(143.0d0/pi)/12288.0d0
       
       if (wavecenter.ne.0.) then
-         call CCTK_Warn(0,"Teukwaves: wavecenter must be 
+         call CCTK_WARN(0,"Teukwaves: wavecenter must be 
      &   zero for time symmetry")
       endif
  
@@ -534,29 +534,29 @@ c     parity
                endif
                
 c     time symmetry
-               hxx(i,j,k) = drx**2*teuk_hrr+2.*drx*dtx*teuk_hrt
+               kxx(i,j,k) = drx**2*teuk_hrr+2.*drx*dtx*teuk_hrt
      &              +2.*drx*dpx*teuk_hrp+dtx**2*teuk_htt
      &              +2.*dtx*dpx*teuk_htp+dpx**2*teuk_hpp
                
-               hyy(i,j,k) = dry**2*teuk_hrr+2.*dry*dty*teuk_hrt
+               kyy(i,j,k) = dry**2*teuk_hrr+2.*dry*dty*teuk_hrt
      &              +2.*dry*dpy*teuk_hrp+dty**2*teuk_htt
      &              +2.*dty*dpy*teuk_htp+dpy**2*teuk_hpp
                
-               hzz(i,j,k) = drz**2*teuk_hrr+2.*drz*dtz*teuk_hrt
+               kzz(i,j,k) = drz**2*teuk_hrr+2.*drz*dtz*teuk_hrt
      &              +2.*drz*dpz*teuk_hrp+dtz**2*teuk_htt
      &              +2.*dtz*dpz*teuk_htp+dpz**2*teuk_hpp
                
-               hxy(i,j,k) = drx*dry*teuk_hrr+(drx*dty+dtx*dry)*teuk_hrt
+               kxy(i,j,k) = drx*dry*teuk_hrr+(drx*dty+dtx*dry)*teuk_hrt
      &              +(drx*dpy+dpx*dry)*teuk_hrp
      &              +dtx*dty*teuk_htt+(dtx*dpy+dpx*dty)*teuk_htp+
      &              dpx*dpy*teuk_hpp
                
-               hxz(i,j,k) = drx*drz*teuk_hrr+(drx*dtz+dtx*drz)*teuk_hrt
+               kxz(i,j,k) = drx*drz*teuk_hrr+(drx*dtz+dtx*drz)*teuk_hrt
      &              +(drx*dpz+dpx*drz)*teuk_hrp
      &              +dtx*dtz*teuk_htt+(dtx*dpz+dpx*dtz)*teuk_htp+
      &              dpx*dpz*teuk_hpp
                
-               hyz(i,j,k) = dry*drz*teuk_hrr+(dry*dtz+dty*drz)*teuk_hrt
+               kyz(i,j,k) = dry*drz*teuk_hrr+(dry*dtz+dty*drz)*teuk_hrt
      &              +(dry*dpz+dpy*drz)*teuk_hrp
      &              +dty*dtz*teuk_htt+(dty*dpz+dpy*dtz)*teuk_htp+
      &              dpy*dpz*teuk_hpp
