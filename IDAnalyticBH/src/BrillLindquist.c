@@ -254,9 +254,6 @@ void BrillLindquist(CCTK_CARGUMENTS)
     }
   }
 
-  return;
-
-  
-  
+  return (0);
 
 }
