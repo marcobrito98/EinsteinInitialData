@@ -151,7 +151,7 @@ c       Joan: I removed the division by alp as the initialization
 c       of the lapse may take place later. This data is consistent
 c       for initial lapse equal one.
 	
-	hxx(i,j,k) = amplitude*
+	kxx(i,j,k) = amplitude*
      &  (cos(the)**2*cos(phi)**2*
      &  (iin*(-w*sin(plus)*exp(-(plusp)**2) -
      &  2.d0*wp*plusp*cos(plus)*exp(-(plusp)**2)) + 
@@ -164,7 +164,7 @@ c       for initial lapse equal one.
      &  2.d0*wp*minusp*cos(minus)*exp(-(minusp)**2))))/(-2.d0)
 
 	
-	hxy(i,j,k) = amplitude*
+	kxy(i,j,k) = amplitude*
      &  (cos(the)**2*sin(phi)*cos(phi)*
      &  (iin*(-w*sin(plus)*exp(-(plusp)**2) -
      &  2.d0*wp*plusp*cos(plus)*exp(-(plusp)**2)) + 
@@ -177,7 +177,7 @@ c       for initial lapse equal one.
      &  2.d0*wp*minusp*cos(minus)*exp(-(minusp)**2))))/(-2.d0)
 
 	
-	hxz(i,j,k) = amplitude*
+	kxz(i,j,k) = amplitude*
      &  (sin(the)*cos(the)*cos(phi)*
      &  (iin*(-w*sin(plus)*exp(-(plusp)**2) -
      &  2.d0*wp*plusp*cos(plus)*exp(-(plusp)**2)) + 
@@ -185,7 +185,7 @@ c       for initial lapse equal one.
      &  2.d0*wp*minusp*cos(minus)*exp(-(minusp)**2))))/(-2.d0)
 
 	
-	hyy(i,j,k) = amplitude*
+	kyy(i,j,k) = amplitude*
      &  (cos(the)**2*sin(phi)**2*
      &  (iin*(-w*sin(plus)*exp(-(plusp)**2) -
      &  2.d0*wp*plusp*cos(plus)*exp(-(plusp)**2)) + 
@@ -198,7 +198,7 @@ c       for initial lapse equal one.
      &  2.d0*wp*minusp*cos(minus)*exp(-(minusp)**2))))/(-2.d0)
 
 	
-	hyz(i,j,k) = amplitude*
+	kyz(i,j,k) = amplitude*
      &  (-sin(the)*cos(the)*sin(phi)*
      &  (iin*(-w*sin(plus)*exp(-(plusp)**2) -
      &  2.d0*wp*plusp*cos(plus)*exp(-(plusp)**2)) + 
@@ -206,7 +206,7 @@ c       for initial lapse equal one.
      &  2.d0*wp*minusp*cos(minus)*exp(-(minusp)**2))))/(-2.d0)
 
 	 
-	hzz(i,j,k) = amplitude*
+	kzz(i,j,k) = amplitude*
      &  (sin(the)**2*
      &  (iin*(-w*sin(plus)*exp(-(plusp)**2) -
      &  2.d0*wp*plusp*cos(plus)*exp(-(plusp)**2)) + 
