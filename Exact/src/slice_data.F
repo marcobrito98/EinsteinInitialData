@@ -12,6 +12,7 @@ C     slicey, slicez, slicet, and calculate dx^A/dt.
 
       integer i, j, k, l, m, n, p, q, s
       integer nx,ny,nz
+      integer ierr
 
       CCTK_REAL s1d(4,3), nd(4), nu(4), norm, gd(4,4), gu(4,4), g3(3,3),
      $   gd_p(4,4), gd_m(4,4), gd1d(4,4,4), s2d(4,3,3), k3(3,3), 
