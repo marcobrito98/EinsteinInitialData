@@ -17,7 +17,6 @@ C     once the conformal factor has been found.
 
       integer i,j,k
       integer nx,ny,nz
-      integer CCTK_Equals
 
       CCTK_REAL x1,y1,z1,rho1,rho2
       CCTK_REAL brillq,psi4,e2q,rhofudge

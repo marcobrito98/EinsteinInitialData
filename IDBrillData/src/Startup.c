@@ -3,9 +3,9 @@
 
 #include "Symmetry.h"
 
-void BrilData_InitSymBound(CCTK_CARGUMENTS)
+void BrilData_InitSymBound(CCTK_ARGUMENTS)
 { 
-  DECLARE_CCTK_CARGUMENTS
+  DECLARE_CCTK_ARGUMENTS
   int sym[3];
 
   sym[0] = 1;
@@ -14,6 +14,5 @@ void BrilData_InitSymBound(CCTK_CARGUMENTS)
   
   SetCartSymmetry(cctkGH, sym,"IDBrillData::brillpsi");
 
-  
-
-}
+  return;
+} 
