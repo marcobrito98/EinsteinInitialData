@@ -6,7 +6,9 @@
 
 \begin{document}
 \title{Exact}
-\author{Code by many different people,	\\
+\author{Original code by C Gundlach and Miguel Alcubierre, \\
+exact
+solutions added by many other people,	\\
 	this documentation by Jonathan Thornburg}
 %
 % We want CVS to expand the Id keyword on the next line, but we don't
@@ -23,7 +25,11 @@ of exact spacetimes/coordinates, and even some non-Einstein
 spcetimes/coordinates.  It's easy to add more spacetimes/coordinates:
 all you have to supply is the 4-metric $g_{ab}$ and the inverse 4-metric
 $g^{ab}$, this thorn automagically calculates all the ADM variables
-from these.
+from these. Optionally, the ADM variables can be calculated on an
+arbitrary slice through the spacetime, using arbitrary coordinates on
+the slice. Given a lapse and shift, the slice can be evolved through
+the exact solution, in order to check on an evolution code, or in
+order to test gauge conditions without the need for an evolution code.
 	 }  
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -95,6 +101,13 @@ As a general policy, this thorn includes only cases where the full
 with that if needed) is known throughout the spacetime.  Cases where
 this is only known on one specific slice, should live in separate
 initial data thorns.
+
+Optionally, the ADM variables can be calculated on an arbitrary slice
+through the spacetime, using arbitrary coordinates on the slice. Given
+a lapse and shift, the slice can be evolved through the exact
+solution, in order to check on an evolution code, or in order to test
+gauge conditions without the need for an evolution code. This is
+documented in slice\_evolver.tex (which you should find in Exact/doc).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -694,12 +707,24 @@ These parameters are useful to hide the spherical symmetry of the metric.
 
 \section{Acknowledgments}
 
-Many different people have contributed code to this thorn.
-Jonathan Thornburg wrote most of this documentation in May 2002 based
-on the comments in the code, some reverse-engineering, and querying
-various people about how the code works.  The description of the
-Kastor-Traschen maximally charged multi-BH solutions is adapted from
-the file \verb|KTsol.tex| in this same directory, by Hisa-aki Shinkai.
+The original code, including the boostrot metric and the slice
+evolver, was written by C Gundlach and Miguel Alcubierre. Many
+different people have contributed exact solutions.  Jonathan Thornburg
+wrote most of this documentation in May 2002 based on the comments in
+the code, some reverse-engineering, and querying various people about
+how the code works.  The description of the Kastor-Traschen maximally
+charged multi-BH solutions is adapted from the file \verb|KTsol.tex|
+in this same directory, by Hisa-aki Shinkai.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%
+% Automatically created from the ccl files 
+% Do not worry for now.
+%
+\include{interface}
+\include{param}
+\include{schedule}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
