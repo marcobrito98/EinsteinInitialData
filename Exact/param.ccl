@@ -365,7 +365,9 @@ REAL Kerr_BoyerLindquist__mass "Kerr/Boyer-Lindquist: BH mass"
 # parameters for Kerr metric in Kerr-Schild coordinates
 #
 
-REAL Kerr_KerrSchild__boost_v "Kerr/Kerr-Schild: boost velocity of black hole"
+# the black hole is boosted in the z direction with this velocity,
+# i.e. the black hole is located at x=0, y=0, and z=vt
+REAL Kerr_KerrSchild__boost_v "Kerr/Kerr-Schild: boost velocity of black hole in z direction"
 {
 (-1:1)  ::  "any real number with absolute value < 1"
 } 0.0
