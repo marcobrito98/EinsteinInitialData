@@ -18,7 +18,7 @@ USES BOOLEAN use_conformal_derivs ""
 
 private:
 
-REAL amplitude "Amplitude of the wave: both for teuk and plane")
+REAL amplitude "Amplitude of the wave: both for teuk and plane"
 {
   0: :: "positive amplitude"
 } 0.001
