@@ -21,7 +21,8 @@ Mitica Vulcanov <vulcan@aei.mpg.de> is the maintainer for the
 Schwarzschild-Lemaitre solution and all the cosmological solutions.
 
 For more details see the comments in the param.ccl file, and the
-documentation in the directory doc.
+documentation in the directory doc.  For instructions on how to add
+a new model, see doc/how_to_add_a_new_model.
 
 Note that the June 2002 revisions to this thorn included renaming
 most of the parameters.  The perl script  par/convert-par.pl  will
