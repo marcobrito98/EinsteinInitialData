@@ -8,11 +8,11 @@ EXTENDS KEYWORD initial_data ""
 "planewaves" :: "linear waves initial data- plane waves"
 }
 
-EXTENDS BOOLEAN use_conformal ""
+USES BOOLEAN use_conformal ""
 {
 }
 
-EXTENDS BOOLEAN use_conformal_derivs ""
+USES BOOLEAN use_conformal_derivs ""
 {
 }
 
