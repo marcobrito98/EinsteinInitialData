@@ -69,6 +69,7 @@ c     Need include file from Einstein
       real*8,parameter :: rbh_tol = 1.0d-7,rbh_eps = 1.0d-10
       integer,parameter :: itmax = 30 
       real*8 pi
+      integer :: ne,nq,np
       integer :: nx,ny,nz
       integer i,j,k,it,ier,nquads,nocts,order,ntries
       integer npoints,handle,ierror
@@ -76,6 +77,11 @@ c     Need include file from Einstein
       conformal_state = CONFORMAL_METRIC    
       
       pi = 4.0d0*atan(1.0d0)
+
+c     DON'T use integer*4
+      ne = neta
+      nq = ntheta
+      np = nphi
 
 c     Set up the grid spacings
       nx = cctk_lsh(1)
