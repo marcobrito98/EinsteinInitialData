@@ -50,7 +50,7 @@ IOBasic::outScalar_vars  = "einstein::metric dmconstraints::ham"
 IOBasic::outInfo_every   = 1
 
 IOASCII::out1d_every     = 1
-IOASCII::out1D_vars      = "einstein::shift einstein::metric einstein::lapse admconstraints::ham einstein::psi"
+IOASCII::out1D_vars      = "einstein::shift einstein::metric admconstraints::ham einstein::psi"
 
 ##################################################################
 
