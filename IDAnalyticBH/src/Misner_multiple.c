@@ -33,6 +33,7 @@ void Misner_multiple(CCTK_ARGUMENTS);
                Set up initial data for multiple Misner black holes
    @enddesc 
    @calls      MisnerEvalPsi
+   @history
    @hdate Fri Apr 26 10:04:05 2002 @hauthor Tom Goodale
    @hdesc Changed to use new StaticConformal stuff
    @endhistory 
