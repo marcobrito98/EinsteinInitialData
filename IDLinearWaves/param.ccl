@@ -4,8 +4,9 @@ shares: ADMBase
 
 EXTENDS KEYWORD initial_data 
 {
-"teukwaves"  :: "linear waves initial data- Teukolsky waves"
-"planewaves" :: "linear waves initial data- plane waves"
+"teukwaves"           :: "linear waves initial data- Teukolsky waves"
+"planewaves"          :: "linear waves initial data- plane waves"
+"standing_planewaves" :: "linear waves initial data- standing plane waves"
 }
 
 USES KEYWORD metric_type 
