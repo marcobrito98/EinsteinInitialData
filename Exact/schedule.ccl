@@ -1,31 +1,55 @@
 # Schedule definitions for thorn Exact
-# $Header$
 
+#######################################################################
+# INITIAL DATA
+#######################################################################
 
-# Initial data from exact solution.
+# Initial data (g and K) from a trivial slice through an exact solution.
 
-if ((CCTK_Equals(initial_data,"exact")) || (CCTK_Equals(initial_lapse,"exact")))
+if (CCTK_Equals(initial_data,"exact"))
 {
   schedule exactinitialize at CCTK_INITIAL
   {
     LANG: Fortran
-  } "Set initial data from exact solution"
+  } "Set initial data and/or gauge from exact solution on a trivial slice"
 }
 
+# Initial data from an arbitrary slice through an exact solution, 
+# but NOT evolving the slice afterwards.
+# Note we only need storage for the slice itself, and only at startup.
 
-# Exact lapse and/or shift.
+if ( (CCTK_Equals(initial_data,"slice")) && ! (CCTK_Equals(evolution_system,"slice")) )
+{
+  schedule slice_initialize at CCTK_INITIAL
+  {
+    STORAGE: Exact_slice
+    LANG: Fortran
+  } "Set initial data from exact solution on arbitrary slice"
+}
 
-if ((CCTK_Equals(slicing,"exact")) || (CCTK_Equals(shift,"exact")))
+#######################################################################
+# LAPSE AND SHIFT
+#######################################################################
+
+# Lapse and/or shift from a trivial slice through an exact solution.
+# At the initial time:
+
+if ( (CCTK_Equals(initial_lapse,"exact")) || (CCTK_Equals(initial_shift,"exact")) )
+{
+  schedule exactgauge at CCTK_POSTINITIAL
+  {
+    LANG: Fortran
+  } "Set initial lapse and/or shift from exact solution"
+}
+
+# During the evolution:
+
+if ( (CCTK_Equals(slicing,"exact")) || (CCTK_Equals(shift,"exact")) )
 {
   schedule Exact_RegisterSlicing at CCTK_STARTUP
   {
     LANG: C
   } "Register slicings"
-
-  schedule exactgauge at CCTK_POSTINITIAL
-  {
-    LANG: Fortran
-  } "Set initial lapse and/or shift from exact solution"
 
   schedule exactgauge at CCTK_PRESTEP
   {
@@ -33,10 +57,18 @@ if ((CCTK_Equals(slicing,"exact")) || (CCTK_Equals(shift,"exact")))
   } "Set evolution lapse and/or shift from exact solution"
 }
 
+#######################################################################
+# EVOLUTION
+#######################################################################
 
-# The slice evolver.
+# Fake the evolution of g and K by evolving the slice and 
+# reading them off from the slice again. We need the slice and two
+# temporary copies throughout. Note that if we set evolution_system 
+# = "slice" without also setting initial_data = "slice", nothing will
+# happen as a failsafe, and Cactus should complain about not having an
+# evolution routine. Setting initial_data = "slice" on its own is ok though.
 
-if ((CCTK_Equals(initial_data,"slice")) || (CCTK_Equals(evolution_system,"slice")))
+if ( (CCTK_Equals(evolution_system,"slice")) && (CCTK_Equals(initial_data,"slice")) )
 {
   STORAGE: Exact_slice
   STORAGE: Exact_slicetemp1
@@ -46,12 +78,23 @@ if ((CCTK_Equals(initial_data,"slice")) || (CCTK_Equals(evolution_system,"slice"
   {
     LANG: Fortran
   } "Set initial data from exact solution on arbitrary slice"
-}
 
-if (CCTK_Equals(evolution_system,"slice"))
-{
   schedule slice_evolve at CCTK_EVOL
   {
     LANG: Fortran
-  } "Evolve arbitrary slice and  extract Cauchy data"
+  } "Evolve arbitrary slice and extract Cauchy data"
 }
+
+#######################################################################
+# BOUNDARY DATA
+#######################################################################
+
+if (CCTK_Equals(overwrite_boundary,"exact"))
+{
+  schedule exactboundary at CCTK_POSTSTEP
+  {
+    LANG: Fortran
+  } "Overwrite g and K on the boundary with exact solution data"
+}
+
+
