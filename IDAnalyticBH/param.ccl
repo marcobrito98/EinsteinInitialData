@@ -107,7 +107,7 @@ REAL bl_M_4 "Mass of 4th BL hole"
 } 1.0
 
 
-shares:einstein
+shares: ADMBase
 
 EXTENDS KEYWORD initial_data 
 {
@@ -130,11 +130,9 @@ EXTENDS KEYWORD initial_shift
   "Kerr"  :: "Set shift to Kerr"
 }
 
-EXTENDS BOOLEAN use_conformal 
-{
-}
+USES KEYWORD metric_type 
 
-EXTENDS BOOLEAN use_conformal_derivs 
-{
-}
+shares: StaticConformal
+
+USES KEYWORD conformal_storage
 

@@ -6,17 +6,17 @@
       Check parameters for black hole initial data and give some
       information
    @enddesc 
+   @version $Header$
  @@*/
+
+#include "cctk.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
-#include "cctk.h"
 #include "cctk_Arguments.h"
 #include "cctk_Parameters.h"
-
-#include "CactusEinstein/Einstein/src/Einstein.h"
 
 static const char *rcsid = "$Header$";
 
@@ -34,7 +34,8 @@ void ParamChecker(CCTK_ARGUMENTS);
    @enddesc 
    @calls     
    @history 
- 
+   @hdate Fri Apr 26 09:48:24 2002 @hauthor Tom Goodale
+   @hdesc Modified to new ADMBase and StaticConformal stuff 
    @endhistory 
 
 @@*/
@@ -45,6 +46,14 @@ void ParamChecker(CCTK_ARGUMENTS)
   DECLARE_CCTK_PARAMETERS
 
   char *message;
+
+  /* Do we know how to deal with this type of metric ? */
+  if(! CCTK_EQUALS(metric_type, "physical") &&
+     ! CCTK_EQUALS(metric_type, "static conformal"))
+  {
+    CCTK_PARAMWARN("Unknown ADMBase::metric_type - known types are \"physical\" and \"static conformal\"");
+  }
+
 
   if (CCTK_Equals(initial_data,"schwarzschild") == 1)
   {
@@ -115,10 +124,11 @@ void ParamChecker(CCTK_ARGUMENTS)
    *     ---------------------------------------
    */
   
-  if (use_conformal == 1)
+  if (CCTK_EQUALS(metric_type, "static conformal"))
   {
     CCTK_INFO("Black hole initial data uses conformal metric");
-    if (use_conformal_derivs == 1)
+    if (CCTK_EQUALS(conformal_storage,"factor+derivs") ||
+        CCTK_EQUALS(conformal_storage,"factor+derivs+2nd derivs"))
     {
       CCTK_INFO("  and conformal derivatives");
     }
@@ -133,8 +143,4 @@ void ParamChecker(CCTK_ARGUMENTS)
     CCTK_INFO("  (Not usually a good idea!)");
   }        
 
-  
-  
-
 }
-

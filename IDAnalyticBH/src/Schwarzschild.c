@@ -8,14 +8,12 @@
    @version   $Id$
  @@*/
 
+#include "cctk.h"
+
 #include <string.h>
 
-#include "cctk.h"
 #include "cctk_Arguments.h"
 #include "cctk_Parameters.h"
-
-/* Need include file from Einstein */
-#include "CactusEinstein/Einstein/src/Einstein.h"
 
 static const char *rcsid = "$Header$";
 CCTK_FILEVERSION(CactusEinstein_IDAnalyticBH_Schwarzschild_c)
@@ -36,10 +34,11 @@ void Schwarzschild(CCTK_ARGUMENTS)
   npoints = cctk_lsh[0] * cctk_lsh[1] * cctk_lsh[2];
 
   /*     conformal metric flag */
-  if(use_conformal == 1)
+  if(CCTK_EQUALS(metric_type, "static conformal") &&
+     (CCTK_EQUALS(conformal_storage,"factor+derivs") ||
+      CCTK_EQUALS(conformal_storage,"factor+derivs+2nd derivs")))
   {
-
-    *conformal_state = CONFORMAL_METRIC;
+    *conformal_state = 2;
 
     for (i = 0; i < npoints; i++)
     {
@@ -73,8 +72,6 @@ void Schwarzschild(CCTK_ARGUMENTS)
   }
   else
   {
-    *conformal_state = NOCONFORMAL_METRIC;
-
     for (i = 0; i < npoints; i++)
     {
       r_squared = r[i] * r[i];
@@ -86,7 +83,7 @@ void Schwarzschild(CCTK_ARGUMENTS)
       gyz[i] = zero;
     }
   }
-
+  
   /*     If the initial lapse is not one ... */
   if (CCTK_Equals(initial_lapse,"schwarz"))
   {

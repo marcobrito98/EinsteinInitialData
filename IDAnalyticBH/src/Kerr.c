@@ -5,17 +5,17 @@
    @desc 
       Set up initial data for a spinning black holes
    @enddesc 
+   @version $Header$
  @@*/
+
+#include "cctk.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
-#include "cctk.h"
 #include "cctk_Arguments.h"
 #include "cctk_Parameters.h"
-
-#include "CactusEinstein/Einstein/src/Einstein.h"
 
 static const char *rcsid = "$Header$";
 
@@ -24,6 +24,21 @@ CCTK_FILEVERSION(CactusEinstein_IDAnalyticBH_Kerr_c)
 
 void KerrID(CCTK_ARGUMENTS);
 
+ /*@@
+   @routine    KerrID
+   @date       August 2000
+   @author     John Baker
+   @desc 
+   Create Kerr Initital data
+   @enddesc 
+   @calls     
+   @calledby   
+   @history 
+   @hdate Fri Apr 26 10:04:05 2002 @hauthor Tom Goodale
+   @hdesc Changed to use new StaticConformal stuff
+   @endhistory 
+ 
+ @@*/
 void KerrID(CCTK_ARGUMENTS)
 {
   DECLARE_CCTK_ARGUMENTS
@@ -44,7 +59,8 @@ void KerrID(CCTK_ARGUMENTS)
   CCTK_REAL d2Rdxx,d2Rdxy,d2Rdxz,d2Rdyy,d2Rdyz,d2Rdzz;
   CCTK_REAL d2qdxx,d2qdxy,d2qdxz,d2qdyy,d2qdyz,d2qdzz;
   CCTK_REAL m=mass,a=a_Kerr,a_2=a*a,m2_a2=m*m-a_2;
-  
+  int make_conformal_derivs;
+
   /* total number of points on this processor */
   npoints = cctk_lsh[0] * cctk_lsh[1] * cctk_lsh[2];
 
@@ -58,7 +74,26 @@ void KerrID(CCTK_ARGUMENTS)
     do_shift=1;    
     CCTK_INFO("Initialise with Kerr shift");
   }
-  
+
+
+  /* Check if we should create and store conformal factor stuff */
+  if(CCTK_EQUALS(metric_type, "static conformal"))
+  {
+    if(CCTK_EQUALS(conformal_storage,"factor+derivs"))
+    {
+      *conformal_state = 2;
+      make_conformal_derivs = 1;
+    }
+    else if(CCTK_EQUALS(conformal_storage,"factor+derivs+2nd derivs"))
+    {
+      *conformal_state = 3;
+      make_conformal_derivs = 1;
+    }
+  }      
+  else
+  {
+    make_conformal_derivs = 0;
+  }
 
   /* printf("npoints: %i\n",npoints); */
   for(i = 0; i < npoints; i++)
@@ -132,7 +167,11 @@ void KerrID(CCTK_ARGUMENTS)
 
     /* Now we set the cactus variables */
     psi [i] = Phi;
-    if(do_lapse)alp[i]=lapse;
+
+    if(do_lapse)
+    {
+      alp[i]=lapse;
+    }
 
     /* transform to cartesian coordinates */
     dRdx=xx/R;           
@@ -144,7 +183,7 @@ void KerrID(CCTK_ARGUMENTS)
     djdx=-yy/rho_2;       
     djdy=xx/rho_2;      
 
-    if(use_conformal_derivs)
+    if(make_conformal_derivs)
     {
       d2Rdxx=(1-xx*xx/R_2)/R;
       d2Rdxy=-xx*yy/R_3;
@@ -168,18 +207,21 @@ void KerrID(CCTK_ARGUMENTS)
       psiy[i] = dRdy*Phi_R + dqdy*Phi_q;
       psiz[i] = dRdz*Phi_R + dqdz*Phi_q;
 
-      psixx[i] = dRdx*dRdx*Phi_RR + d2Rdxx*Phi_R + dqdx*dqdx*Phi_qq 
-      + d2qdxx*Phi_q + 2*dRdx*dqdx*Phi_Rq;
-      psixy[i] = dRdy*dRdx*Phi_RR + d2Rdxy*Phi_R + dqdy*dqdx*Phi_qq 
-      + d2qdxy*Phi_q + (dRdx*dqdy+dRdy*dqdx)*Phi_Rq;
-      psixz[i] = dRdz*dRdx*Phi_RR + d2Rdxz*Phi_R + dqdz*dqdx*Phi_qq 
-      + d2qdxz*Phi_q + (dRdx*dqdz+dRdz*dqdx)*Phi_Rq;
-      psiyy[i] = dRdy*dRdy*Phi_RR + d2Rdyy*Phi_R + dqdy*dqdy*Phi_qq 
-      + d2qdyy*Phi_q + 2*dRdy*dqdy*Phi_Rq;
-      psiyz[i] = dRdz*dRdy*Phi_RR + d2Rdyz*Phi_R + dqdz*dqdy*Phi_qq 
-      + d2qdyz*Phi_q + (dRdy*dqdz+dRdz*dqdy)*Phi_Rq;
-      psizz[i] = dRdz*dRdz*Phi_RR + d2Rdzz*Phi_R + dqdz*dqdz*Phi_qq 
-      + d2qdzz*Phi_q + 2*dRdz*dqdz*Phi_Rq;
+      if(*conformal_state > 2)
+      {
+        psixx[i] = dRdx*dRdx*Phi_RR + d2Rdxx*Phi_R + dqdx*dqdx*Phi_qq 
+            + d2qdxx*Phi_q + 2*dRdx*dqdx*Phi_Rq;
+        psixy[i] = dRdy*dRdx*Phi_RR + d2Rdxy*Phi_R + dqdy*dqdx*Phi_qq 
+            + d2qdxy*Phi_q + (dRdx*dqdy+dRdy*dqdx)*Phi_Rq;
+        psixz[i] = dRdz*dRdx*Phi_RR + d2Rdxz*Phi_R + dqdz*dqdx*Phi_qq 
+            + d2qdxz*Phi_q + (dRdx*dqdz+dRdz*dqdx)*Phi_Rq;
+        psiyy[i] = dRdy*dRdy*Phi_RR + d2Rdyy*Phi_R + dqdy*dqdy*Phi_qq 
+            + d2qdyy*Phi_q + 2*dRdy*dqdy*Phi_Rq;
+        psiyz[i] = dRdz*dRdy*Phi_RR + d2Rdyz*Phi_R + dqdz*dqdy*Phi_qq 
+            + d2qdyz*Phi_q + (dRdy*dqdz+dRdz*dqdy)*Phi_Rq;
+        psizz[i] = dRdz*dRdz*Phi_RR + d2Rdzz*Phi_R + dqdz*dqdz*Phi_qq 
+            + d2qdzz*Phi_q + 2*dRdz*dqdz*Phi_Rq;
+      }
 
     /*     Cactus convention
      *     -----------------
@@ -189,12 +231,16 @@ void KerrID(CCTK_ARGUMENTS)
       psix[i]  *= inv_psi;
       psiy[i]  *= inv_psi;
       psiz[i]  *= inv_psi;
-      psixx[i] *= inv_psi;
-      psixy[i] *= inv_psi;
-      psixz[i] *= inv_psi;
-      psiyy[i] *= inv_psi;
-      psiyz[i] *= inv_psi;
-      psizz[i] *= inv_psi;
+
+      if(*conformal_state > 2)
+      {
+        psixx[i] *= inv_psi;
+        psixy[i] *= inv_psi;
+        psixz[i] *= inv_psi;
+        psiyy[i] *= inv_psi;
+        psiyz[i] *= inv_psi;
+        psizz[i] *= inv_psi;
+      }
     }
 
     /* metric */
@@ -239,7 +285,7 @@ void KerrID(CCTK_ARGUMENTS)
    *     ---------------------------------
    */
   
-  if (*conformal_state != CONFORMAL_METRIC)
+  if(CCTK_EQUALS(metric_type, "physical"))
   {
     for(i = 0; i < npoints; i++)
     {

@@ -2,7 +2,7 @@
 # $Header$
 
 implements: idanalyticbh
-inherits: einstein
+inherits: ADMBase, StaticConformal, Grid
 
 private:
 

@@ -25,10 +25,13 @@ if (CCTK_Equals(initial_data,"schwarzschild"))
 
 if (CCTK_Equals(initial_data,"kerr")) 
 { 
-	
-   STORAGE: confac
+
+# The Kerr stuff uses the conformal factor internally, so
+# so make sure that the conformal factor has storage during
+# this routine
    schedule KerrID at CCTK_INITIAL after InitialEinstein
-   {
+   {	
+     STORAGE: confac
      LANG: C
    } "Construct initial data for a single Kerr black hole"
 
@@ -36,9 +39,12 @@ if (CCTK_Equals(initial_data,"kerr"))
 
 if (CCTK_Equals(initial_data,"bl_bh")) 
 { 
-   STORAGE: confac
+# The Brill-Lindquist stuff uses the conformal factor internally, so
+# so make sure that the conformal factor has storage during
+# this routine
    schedule BrillLindquist at CCTK_INITIAL
    {
+     STORAGE: confac
      LANG: C
    } "Construct initial data for Brill Lindquist black holes"
 
@@ -46,9 +52,12 @@ if (CCTK_Equals(initial_data,"bl_bh"))
 
 if (CCTK_Equals(initial_data,"misner_bh")) 
 { 
-   STORAGE: confac
+# The Misner stuff uses the conformal factor internally, so
+# so make sure that the conformal factor has storage during
+# this routine
    schedule Misner_standard at CCTK_INITIAL
    {
+     STORAGE: confac
      LANG: C
    } "Construct initial data for two Misner black holes"
 
