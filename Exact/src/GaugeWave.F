@@ -54,7 +54,7 @@ C     How should the wave look like
       end if
 
 C     write metric      
-      if (GW_diagonal) then
+      if (GW_diagonal .eq. 1) then
 
         gdxx = half * H + half
         gdxy = -half* H + half
