@@ -186,6 +186,8 @@ The following models are currently supported:%%%
 		Minkowski spacetime in non-trivial spatial coordinates
 	\item[{\tt "Minkowski/gauge wave"}]
 		Minkowski spacetime in gauge-wave coordinates
+	\item[{\tt "Minkowski/conf wave"}]
+		Minkowski spacetime with sinus in conformal factor
 	\end{description}
 \item[Black hole spacetimes]\forcelinebreak
 	\begin{description}
@@ -427,6 +429,21 @@ conditions, to see whether the code is able to cope with that.
 The tricky part is to make the wave fit the grid exactly (otherwise the
 periodic boundary wouldn't make sence), especially in the diagonal case.
 
+\subsection{Minkowski Spacetime with sinus in conformal factor}
+
+This spacetime just puts a sinus in the conformal factor and the metric
+is calculated to be Minkowski.\\
+You have three parameters:
+\begin{itemize}
+ \item Minkowski\_conf\_wave\_\_amplitude ($a$)
+ \item Minkowski\_conf\_wave\_\_wavelength ($l$)
+ \item Minkowski\_conf\_wave\_\_direction ($d$)
+\end{itemize}
+These control $\Psi$ in the following form:
+\begin{equation}
+ \Psi=a\sin\left(\frac{2\pi}{l}D\right)+1
+\end{equation}
+Here $D$ is x, y or z according to d of 0, 1 or 2.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Black Hole Spacetimes}
