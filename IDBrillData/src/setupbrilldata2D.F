@@ -14,7 +14,7 @@
 
 #include "CactusEinstein/Einstein/src/Einstein.h"
 
-      subroutine setupbrilldata2D(CCTK_FARGUMENTS)
+      subroutine setupbrilldata2D(CCTK_ARGUMENTS)
 
 c     Set up axisymmetric Brill data for elliptic solve. The elliptic
 c     equation we need to solve is:
@@ -31,7 +31,7 @@ c       f
 
       implicit none
 
-      DECLARE_CCTK_FARGUMENTS
+      DECLARE_CCTK_ARGUMENTS
       DECLARE_CCTK_PARAMETERS
 
       integer i,j,k

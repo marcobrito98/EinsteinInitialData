@@ -14,11 +14,11 @@
 
 #include "CactusEinstein/Einstein/src/Einstein.h"
 
-      subroutine finishbrilldata(CCTK_FARGUMENTS)
+      subroutine finishbrilldata(CCTK_ARGUMENTS)
 
       implicit none
 
-      DECLARE_CCTK_FARGUMENTS
+      DECLARE_CCTK_ARGUMENTS
       DECLARE_CCTK_PARAMETERS
 
       integer i,j,k

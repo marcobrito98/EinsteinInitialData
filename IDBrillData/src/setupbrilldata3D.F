@@ -14,7 +14,7 @@
 
 #include "CactusEinstein/Einstein/src/Einstein.h"
 
-      subroutine setupbrilldata3D(CCTK_FARGUMENTS)
+      subroutine setupbrilldata3D(CCTK_ARGUMENTS)
 
 c     Set up 3D Brill data for elliptic solve.  The elliptic
 c     equation we need to solve is:
@@ -40,7 +40,7 @@ c      c        \         z      rho                    phi          phi    /
 
       implicit none
 
-      DECLARE_CCTK_FARGUMENTS
+      DECLARE_CCTK_ARGUMENTS
       DECLARE_CCTK_PARAMETERS
 
       integer CCTK_Equals

@@ -15,11 +15,11 @@
 #include "CactusEinstein/Einstein/src/Einstein.h"
 #include "CactusElliptic/EllBase/src/EllBase.h"
 
-      subroutine brilldata(CCTK_FARGUMENTS)
+      subroutine brilldata(CCTK_ARGUMENTS)
 
       implicit none
 
-      DECLARE_CCTK_FARGUMENTS
+      DECLARE_CCTK_ARGUMENTS
       DECLARE_CCTK_PARAMETERS
       DECLARE_CCTK_FUNCTIONS
 
@@ -59,9 +59,9 @@ c     Get indices for grid functions.
 c     Set up background metric and coefficients for linear solve.
 
       if (axisym.eq.1) then
-         call setupbrilldata2D(CCTK_FARGUMENTS)
+         call setupbrilldata2D(CCTK_ARGUMENTS)
       else
-         call setupbrilldata3D(CCTK_FARGUMENTS)
+         call setupbrilldata3D(CCTK_ARGUMENTS)
       end if
 
 c     Tolerances for elliptic solve.
@@ -111,7 +111,7 @@ c     Synchronization and symmetry boundaries.
 
 c     Reconstruct physical metric.
 
-      call finishbrilldata(CCTK_FARGUMENTS)
+      call finishbrilldata(CCTK_ARGUMENTS)
 
       return
       end
