@@ -90,7 +90,7 @@ void Schwarzschild(CCTK_ARGUMENTS)
   /*     If the initial lapse is not one ... */
   if (CCTK_Equals(initial_lapse,"schwarz"))
   {
-    CCTK_INFO("Initialise with schwarzschild lapse");
+    CCTK_INFO("Initialise with Schwarzschild lapse");
 
     for (i = 0; i < npoints; i++)
     {

@@ -21,6 +21,9 @@ static const char *rcsid = "$Header$";
 
 CCTK_FILEVERSION(CactusEinstein_IDAnalyticBH_Kerr_c)
 
+
+void KerrID(CCTK_ARGUMENTS);
+
 void KerrID(CCTK_ARGUMENTS)
 {
   DECLARE_CCTK_ARGUMENTS
@@ -34,22 +37,24 @@ void KerrID(CCTK_ARGUMENTS)
   CCTK_REAL Phi4,fourPhi3,Phi,Chi2;
   CCTK_REAL Phi_R,Phi_RR,Phi_Rq,Phi_q,Phi_qq;
   CCTK_REAL Phi4_R,Phi4_RR,Phi4_Rq,Phi4_q,Phi4_qq;
-  /* CCTK_REAL gRR,gqq,gjj; */
-  CCTK_REAL Krj,KRj,Kqj;
+  /* CCTK_REAL Krj,gRR,gqq,gjj; */
+  CCTK_REAL KRj,Kqj;
+  
   CCTK_REAL dRdx,dRdy,dRdz,dqdx,dqdy,dqdz,djdx,djdy;
   CCTK_REAL d2Rdxx,d2Rdxy,d2Rdxz,d2Rdyy,d2Rdyz,d2Rdzz;
   CCTK_REAL d2qdxx,d2qdxy,d2qdxz,d2qdyy,d2qdyz,d2qdzz;
   CCTK_REAL m=mass,a=a_Kerr,a_2=a*a,m2_a2=m*m-a_2;
   
-
   /* total number of points on this processor */
   npoints = cctk_lsh[0] * cctk_lsh[1] * cctk_lsh[2];
 
-  if (CCTK_Equals(initial_lapse,"Kerr")){
+  if (CCTK_Equals(initial_lapse,"Kerr"))
+  {
     do_lapse=1;    
     CCTK_INFO("Initialise with Kerr lapse");
   }
-  if (CCTK_Equals(initial_shift,"Kerr")){
+  if (CCTK_Equals(initial_shift,"Kerr"))
+  {
     do_shift=1;    
     CCTK_INFO("Initialise with Kerr shift");
   }
@@ -70,7 +75,6 @@ void KerrID(CCTK_ARGUMENTS)
     cth_2=cth*cth;
     sth_2=rho_2/R_2;
     sth=rho/R;
-
 
     /* Special to Kerr */
     rK=R+m+m2_a2/4/R;
@@ -140,7 +144,8 @@ void KerrID(CCTK_ARGUMENTS)
     djdx=-yy/rho_2;       
     djdy=xx/rho_2;      
 
-    if(use_conformal_derivs){
+    if(use_conformal_derivs)
+    {
       d2Rdxx=(1-xx*xx/R_2)/R;
       d2Rdxy=-xx*yy/R_3;
       d2Rdxz=-xx*zz/R_3;
@@ -211,7 +216,8 @@ void KerrID(CCTK_ARGUMENTS)
     kzz[i] = 0;
 
     /*    probable convention to define conformal extrinsic curvature:
-	  if (*conformal_state == CONFORMAL_METRIC){
+	  if (*conformal_state == CONFORMAL_METRIC)
+	  {
 	  tmp=Psi*Psi;
 	  kxx[i] *=tmp;
 	  kxy[i] *=tmp;
@@ -221,7 +227,8 @@ void KerrID(CCTK_ARGUMENTS)
       }*/
 
     /* shift */
-    if(do_shift){
+    if(do_shift)
+    {
       betax[i]=-yy*shift_phi;
       betay[i]=xx*shift_phi;
       betaz[i]=0;
@@ -232,8 +239,10 @@ void KerrID(CCTK_ARGUMENTS)
    *     ---------------------------------
    */
   
-  if (*conformal_state != CONFORMAL_METRIC){
-    for(i = 0; i < npoints; i++){
+  if (*conformal_state != CONFORMAL_METRIC)
+  {
+    for(i = 0; i < npoints; i++)
+    {
       /* if((i/1000)*1000==i||i>35930)printf("i=%i\n",i); */
       tmp=psi[i];tmp*=tmp;tmp*=tmp;
       gxx[i] *= tmp;
@@ -255,8 +264,6 @@ void KerrID(CCTK_ARGUMENTS)
     memset (psizz, 0, npoints * sizeof (CCTK_REAL));
   }
   
-  printf("Kerr done.\n");
- 
   return;
 }
 
