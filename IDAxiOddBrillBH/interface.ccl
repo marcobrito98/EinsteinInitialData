@@ -2,8 +2,28 @@
 # $Header$
 
 implements: axiodd
-inherits: einstein
+inherits: einstein driver
 
-#public:
+
+private:
+
+real sph_to_car_coord type = GF
+{
+eta,
+abseta,
+sign_eta,
+q,
+phi
+} "coordinate range"
+
+real sph_to_car_psi type = GF
+{
+ psi2d,
+ detapsi2d,
+ dqpsi2d,
+ detaetapsi2d,
+ detaqpsi2d,
+ dqqpsi2d
+ } "psi"
 
 

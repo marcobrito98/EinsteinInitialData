@@ -2,7 +2,8 @@
 # $Header$
 
 if (CCTK_Equals(initial_data,"axioddbh")) 
-{
+{ 
+  STORAGE: sph_to_car_coord, sph_to_car_psi
   schedule IDAxiOddBrillBH at CCTK_INITIAL
   {
     LANG: Fortran

@@ -44,16 +44,12 @@ c     Perhaps this and others should go into cctk.h
      $     detapsisph(:,:),dqpsisph(:,:),detaetapsisph(:,:),
      $     detaqpsisph(:,:),dqqpsisph(:,:),
      $     etagrd(:),qgrd(:)
-      real*8, allocatable :: eta(:,:,:),abseta(:,:,:),sign_eta(:,:,:),
-     $     q(:,:,:),phi(:,:,:)
-      real*8, allocatable :: psi2d(:,:,:),detapsi2d(:,:,:),
-     $     dqpsi2d(:,:,:),detaetapsi2d(:,:,:),
-     $     detaqpsi2d(:,:,:),dqqpsi2d(:,:,:)
       real*8 o1,o2,o3,o4,o5,o6,o7,o8,o9,o10,
      $     o11,o12,o13,o14,o15,o16,o17,o18,o19,
      $     o20,o21,o22,o23,o24,o25,o26,o27,o28,o29,
      $     o30,o31,o32,o33,o34,o35,o36,o37,o38,o39,
-     $     o40,o41,o42,o43,o44,o45,o46,o47,o48,o49,o50,o51
+     $     o40,o41,o42,o43,o44,o45,o46,o47,o48,o49,
+     $     o50,o51
       real*8 t1,t2,t3,t4
       real*8 gtil,dngtil,dnngtil,dnnngtil,dnnnngtil,dnnnnngtil,
      $     dnnnnnngtil,dnnnnnnngtil
@@ -61,6 +57,7 @@ c     Perhaps this and others should go into cctk.h
       real*8,parameter :: rbh_tol = 1.0d-7,rbh_eps = 1.0d-10
       integer,parameter :: itmax = 50 
       real*8 pi,zero,one,two
+      CCTK_REAL :: xmin,xmax,ymin,ymax,zmin,zmax
       integer :: ne, nq
       integer :: nx,ny,nz
       integer :: i,j,k,it,ier,nquads,ntries
@@ -100,11 +97,6 @@ c
      $     ddpsi2dv(ne,nq),detapsisph(ne,nq),dqpsisph(ne,nq),
      $     detaetapsisph(ne,nq),detaqpsisph(ne,nq),dqqpsisph(ne,nq),
      $     etagrd(ne),qgrd(nq))
-      allocate(eta(nx,ny,nz),abseta(nx,ny,nz),sign_eta(nx,ny,nz),
-     $     q(nx,ny,nz),phi(nx,ny,nz),
-     $     psi2d(nx,ny,nz),detapsi2d(nx,ny,nz),dqpsi2d(nx,ny,nz),
-     $     detaetapsi2d(nx,ny,nz),detaqpsi2d(nx,ny,nz),
-     $     dqqpsi2d(nx,ny,nz))
 c     
 c     Initialize some array
 c     
@@ -391,7 +383,13 @@ c     Compute eta,q,phi at the each points of cartesian grid
       enddo
 
       call CCTK_GetInterpHandle (handle, "simple_local")
-      
+     
+c     Find the local origin of the spatial coordinates
+c     ------------------------------------------------
+      call CCTK_CoordLocalRange(ierror,cctkGH,xmin,xmax,"x")
+      call CCTK_CoordLocalRange(ierror,cctkGH,ymin,ymax,"y")
+      call CCTK_CoordLocalRange(ierror,cctkGH,zmin,zmax,"z")
+
       npoints = nx*ny*nz
       
       call CCTK_Interp (ierror,cctkGH,handle,npoints,2,6,6,
@@ -471,7 +469,7 @@ c     Set ADM mass
       print *,'ADM mass: ',adm
 
 c     Set Angular momentum
-
+      print*,'Angular momentum parameter: a/m = ', byJ/(adm**2)
 c      i = ne-15
 c      Jmom = 0.0
 c      do j=2,nq-1
@@ -489,10 +487,8 @@ c      print *,'Angular momentum: ',Jmom
       
       deallocate(ac,ae,aw,an,as,rhs,ksq,psi2dv,dpsi2dv,ddpsi2dv,
      $     detapsisph,dqpsisph,detaetapsisph,detaqpsisph,dqqpsisph,
-     $     etagrd,qgrd,
-     $     eta,abseta,sign_eta,q,phi,psi2d,detapsi2d,dqpsi2d,
-     $     detaetapsi2d,detaqpsi2d,dqqpsi2d)
-
+     $     etagrd,qgrd)
+      
       return
       end
       
