@@ -20,6 +20,8 @@ Driver::global_nz		= 35
 
 ADMBase::initial_data		= "twopunctures"
 
+TwoPunctures::keep_u_around     = yes
+
 TwoPunctures::npoints_A         = 20
 TwoPunctures::npoints_B         = 20
 TwoPunctures::npoints_phi       = 12
@@ -37,8 +39,7 @@ TwoPunctures::par_S_minus[0]    = -1.0
 TwoPunctures::par_S_minus[2]    =  1.0
 
 ADMBase::metric_type		= "static conformal"
-#StaticConformal::conformal_storage = "factor+derivs+2nd derivs"
-StaticConformal::conformal_storage = "factor"
+StaticConformal::conformal_storage = "factor+derivs+2nd derivs"
 
 ADMBase::lapse_evolution_method	= "static"
 ADMBase::initial_lapse		= "one"
@@ -47,7 +48,7 @@ IO::out_dir			= $parfile
 IO::out_fileinfo		= "axis labels"
 
 IOBasic::outScalar_every	= 1
-IOBasic::outScalar_vars		= "staticconformal::psi admbase::metric admbase::curv"
+IOBasic::outScalar_vars		= "staticconformal::psi admbase::metric admbase::curv TwoPunctures::puncture_u"
 
 IOASCII::out1D_every		= 1
-IOASCII::out1D_vars		= "staticconformal::psi admbase::metric admbase::curv"
+IOASCII::out1D_vars		= "staticconformal::psi admbase::metric admbase::curv TwoPunctures::puncture_u"
