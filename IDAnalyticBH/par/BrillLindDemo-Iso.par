@@ -18,11 +18,12 @@
 
 # These thorns must be compiled
 
-ActiveThorns = "Boundary ADM_BSSN CartGrid3D Einstein IDanalyticBH IOBasic IOUtil IOASCII PsiKadelia Pugh Time"
+ActiveThorns = "Boundary ADM_BSSN CartGrid3D Einstein IDanalyticBH IOBasic IOUtil IOASCII PsiKadelia IsoSurfacer http netgeometry Pugh Time"
  
 
 #------------------------------------------------------------------------------
 
+pugh::enable_all_storage
 
 # Number of grid points in each direction
  
@@ -34,10 +35,33 @@ cactus::cctk_final_time    = 30.0
 
 # What output and how often
 
-IOBasic::outInfo_vars      = "einstein::alp"
-IOBasic::outInfo_every     = 10 
+IOBasic::outInfo_vars      = "einstein::alp psikadelia::psi0re"
+IOBasic::outInfo_every     = 1 
 IOASCII::out1D_vars        = "einstein::alp einstein::grr psikadelia::psi0re"
 IOASCII::out1D_every       = 10
+
+#------------------------------------------------------------------------------
+# 
+# IsoSurfacer
+#
+#------------------------------------------------------------------------------
+
+# IsoSurfacer parameters:
+#  - the variable to compute the isosurface from
+#  - the isosurface level
+#  - the output format
+#  - frequency , first iteration, resolution of output, uniq_vertices flag
+
+IsoSurfacer::isosurfacer = "{(einstein::psi0re) (0.999,1.001) (SOCK) (1, 1, 1, 1)}"
+IsoSurfacer::allow_empty_sends = "yes"
+
+http::port                  = 7050
+
+NetGeometry::port           = 7051
+NetGeometry::tcpwindowsize  = 1048576
+
+# A list of hosts to which announce the remote viz when it starts up.
+NetGeometry::amira_announce = "lux.aei-potsdam.mpg.de"
 
 
 #------------------------------------------------------------------------------
