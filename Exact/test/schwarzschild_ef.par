@@ -26,6 +26,7 @@ time::dtfac = 0.25
 
 # Initial data
 ADMBase::initial_data  = "exact"
+ADMBase::initial_lapse = "exact"
 ADMBase::initial_shift = "exact"
 Exact::exact_model = "Schwarzschild/EF"
 
