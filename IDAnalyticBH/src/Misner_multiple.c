@@ -38,86 +38,73 @@ void Misner_multiple(CCTK_ARGUMENTS)
   DECLARE_CCTK_ARGUMENTS
   DECLARE_CCTK_PARAMETERS
 
-  int i, j, k;
+  int i, npoints;
   CCTK_REAL xval, yval, zval;
-  CCTK_REAL one, zero, tmp0, tmp1, tmp2, tmp3, tmp4;
-  CCTK_REAL nm_eps = 0.000001;   /* finite differencing step*/
+  CCTK_REAL inv_psi, tmp0, tmp1, tmp2, tmp3, tmp4;
+  const CCTK_REAL nm_eps             = 1e-6,   /* finite differencing step*/
+                  halved_inv_nm_eps  = 5e+5,
+                  inv_nm_eps_squared = 1e+12;
+  const CCTK_REAL one = 1.0;
 
-  int nx,ny,nz;
-  int index;
-
-  nx = cctk_lsh[0];
-  ny = cctk_lsh[1];
-  nz = cctk_lsh[2];
-
-  one  = 1.0;
-  zero = 0.0;
+  npoints = cctk_lsh[0] * cctk_lsh[1] * cctk_lsh[2];
 
   /*     Initialize C global variables
    *     -----------------------------
    */
 
-  Misner_init(misner_nbh,mu,nmax);
+  Misner_init(misner_nbh, mu, nmax);
 
   /*     Get value of psi pointwise from a C function
    *     --------------------------------------------
    */
-  for(k=0; k < nz; k++)
+
+  for(i = 0; i < npoints; i++)
   {
-    for(j=0; j < ny; j++)
+    xval = x[i];
+    yval = y[i];
+    zval = z[i];
+
+    MisnerEvalPsi(xval, yval, zval, &tmp0);
+    psi[i] = tmp0;
+           
+    /*              Only calculate derivatives of psi if required
+     *              ---------------------------------------------
+     */
+    if (use_conformal_derivs)
     {
-      for(i=0; i < nx; i++)
-      {
-        index = CCTK_GFINDEX3D(cctkGH, i,j,k);
+      MisnerEvalPsi(xval+nm_eps,yval,zval,&tmp1);
+      MisnerEvalPsi(xval-nm_eps,yval,zval,&tmp2);
+      psix[i] = (tmp1-tmp2) * halved_inv_nm_eps;
+      psixx[i] = (tmp1+tmp2-2.0*tmp0) * inv_nm_eps_squared;
 
-        xval = x[index];
-        yval = y[index];
-        zval = z[index];
+      MisnerEvalPsi(xval,yval+nm_eps,zval,&tmp1);
+      MisnerEvalPsi(xval,yval-nm_eps,zval,&tmp2);
+      psiy[i]  = (tmp1-tmp2) * halved_inv_nm_eps;
+      psiyy[i] = (tmp1+tmp2-2.0*tmp0) * inv_nm_eps_squared;
 
-        MisnerEvalPsi(xval,yval,zval,&tmp0);
-        psi[index] = tmp0;
-               
-        /*              Only calculate derivatives of psi if required
-         *              ---------------------------------------------
-         */
-        if (use_conformal_derivs == 1)
-        {
-          MisnerEvalPsi(xval+nm_eps,yval,zval,&tmp1);
-          MisnerEvalPsi(xval-nm_eps,yval,zval,&tmp2);
-          psix[index] = 0.5*(tmp1-tmp2)/nm_eps;
-          psixx[index] = (tmp1+tmp2-2.0*tmp0)/SQR(nm_eps);
+      MisnerEvalPsi(xval,yval,zval+nm_eps,&tmp1);
+      MisnerEvalPsi(xval,yval,zval-nm_eps,&tmp2);
+      psiz[i] = (tmp1-tmp2) * halved_inv_nm_eps;
+      psizz[i] = (tmp1+tmp2-2.0*tmp0) * inv_nm_eps_squared;
 
-          MisnerEvalPsi(xval,yval+nm_eps,zval,&tmp1);
-          MisnerEvalPsi(xval,yval-nm_eps,zval,&tmp2);
-          psiy[index]  = 0.5*(tmp1-tmp2)/nm_eps;
-          psiyy[index] = (tmp1+tmp2-2.0*tmp0)/SQR(nm_eps);
+      MisnerEvalPsi(xval+nm_eps,yval+nm_eps,zval,&tmp1);
+      MisnerEvalPsi(xval+nm_eps,yval-nm_eps,zval,&tmp2);
+      MisnerEvalPsi(xval-nm_eps,yval+nm_eps,zval,&tmp3);
+      MisnerEvalPsi(xval-nm_eps,yval-nm_eps,zval,&tmp4);
+      psixy[i] = 0.25*(tmp1-tmp2-tmp3+tmp4) * inv_nm_eps_squared;
 
-          MisnerEvalPsi(xval,yval,zval+nm_eps,&tmp1);
-          MisnerEvalPsi(xval,yval,zval-nm_eps,&tmp2);
-          psiz[index] = 0.5*(tmp1-tmp2)/nm_eps;
-          psizz[index] = (tmp1+tmp2-2.0*tmp0)/SQR(nm_eps);
+      MisnerEvalPsi(xval,yval+nm_eps,zval+nm_eps,&tmp1);
+      MisnerEvalPsi(xval,yval-nm_eps,zval+nm_eps,&tmp2);
+      MisnerEvalPsi(xval,yval+nm_eps,zval-nm_eps,&tmp3);
+      MisnerEvalPsi(xval,yval-nm_eps,zval-nm_eps,&tmp4);
+      psiyz[i] = 0.25*(tmp1-tmp2-tmp3+tmp4) * inv_nm_eps_squared;
 
-          MisnerEvalPsi(xval+nm_eps,yval+nm_eps,zval,&tmp1);
-          MisnerEvalPsi(xval+nm_eps,yval-nm_eps,zval,&tmp2);
-          MisnerEvalPsi(xval-nm_eps,yval+nm_eps,zval,&tmp3);
-          MisnerEvalPsi(xval-nm_eps,yval-nm_eps,zval,&tmp4);
-          psixy[index] = 0.25*(tmp1-tmp2-tmp3+tmp4)/SQR(nm_eps);
+      MisnerEvalPsi(xval+nm_eps,yval,zval+nm_eps,&tmp1);
+      MisnerEvalPsi(xval+nm_eps,yval,zval-nm_eps,&tmp2);
+      MisnerEvalPsi(xval-nm_eps,yval,zval+nm_eps,&tmp3);
+      MisnerEvalPsi(xval-nm_eps,yval,zval-nm_eps,&tmp4);
+      psixz[i] = 0.25*(tmp1-tmp2-tmp3+tmp4) * inv_nm_eps_squared;
 
-          MisnerEvalPsi(xval,yval+nm_eps,zval+nm_eps,&tmp1);
-          MisnerEvalPsi(xval,yval-nm_eps,zval+nm_eps,&tmp2);
-          MisnerEvalPsi(xval,yval+nm_eps,zval-nm_eps,&tmp3);
-          MisnerEvalPsi(xval,yval-nm_eps,zval-nm_eps,&tmp4);
-          psiyz[index] = 0.25*(tmp1-tmp2-tmp3+tmp4)/SQR(nm_eps);
-
-          MisnerEvalPsi(xval+nm_eps,yval,zval+nm_eps,&tmp1);
-          MisnerEvalPsi(xval+nm_eps,yval,zval-nm_eps,&tmp2);
-          MisnerEvalPsi(xval-nm_eps,yval,zval+nm_eps,&tmp3);
-          MisnerEvalPsi(xval-nm_eps,yval,zval-nm_eps,&tmp4);
-          psixz[index] = 0.25*(tmp1-tmp2-tmp3+tmp4)/SQR(nm_eps);
-
-        }
-
-      }
     }
   }
 
@@ -125,27 +112,21 @@ void Misner_multiple(CCTK_ARGUMENTS)
    *     ------------------
    */
 
-  if (use_conformal_derivs == 1)
+  if (use_conformal_derivs)
   {
-    for(k=0; k < nz; k++)
+    for(i = 0; i < npoints; i++)
     {
-      for(j=0; j < ny; j++)
-      {
-        for(i=0; i < nx; i++)
-        {
-          index = CCTK_GFINDEX3D(cctkGH, i,j,k);
-          
-          psix[index]  /= psi[index];
-          psiy[index]  /= psi[index];
-          psiz[index]  /= psi[index];
-          psixx[index] /= psi[index];
-          psixy[index] /= psi[index];
-          psixz[index] /= psi[index];
-          psiyy[index] /= psi[index];
-          psiyz[index] /= psi[index];
-          psizz[index] /= psi[index];
-        }
-      }
+      inv_psi = one / psi[i];
+
+      psix[i]  *= inv_psi;
+      psiy[i]  *= inv_psi;
+      psiz[i]  *= inv_psi;
+      psixx[i] *= inv_psi;
+      psixy[i] *= inv_psi;
+      psixz[i] *= inv_psi;
+      psiyy[i] *= inv_psi;
+      psiyz[i] *= inv_psi;
+      psizz[i] *= inv_psi;
     }
   }
 
@@ -155,67 +136,35 @@ void Misner_multiple(CCTK_ARGUMENTS)
 
   if (*conformal_state == CONFORMAL_METRIC)
   {
-    for(k=0; k < nz; k++)
+    for(i = 0; i < npoints; i++)
     {
-      for(j=0; j < ny; j++)
-      {
-        for(i=0; i < nx; i++)
-        {
-          index = CCTK_GFINDEX3D(cctkGH, i,j,k);
-          
-          gxx[index] = one;
-          gyy[index] = one;
-          gzz[index] = one;
-          gxy[index] = zero;
-          gxz[index] = zero;
-          gyz[index] = zero;
-        }
-      }
+      gxx[i] = one;
+      gyy[i] = one;
+      gzz[i] = one;
     }
   }
   else 
   {
-    for(k=0; k < nz; k++)
+    for(i = 0; i < npoints; i++)
     {
-      for(j=0; j < ny; j++)
-      {
-        for(i=0; i < nx; i++)
-        {
-          index = CCTK_GFINDEX3D(cctkGH, i,j,k);
-          
-          gxx[index] = pow(psi[index],4);
-          gyy[index] = gxx[index];
-          gzz[index] = gxx[index];
-          gxy[index] = zero;
-          gxz[index] = zero;
-          gyz[index] = zero;
-        }
-      }
+      gxx[i] = pow(psi[i], 4);
+      gyy[i] = gxx[i];
+      gzz[i] = gxx[i];
     }
   }
+  memset (gxy, 0, npoints * sizeof (gxy [0]));
+  memset (gxz, 0, npoints * sizeof (gxz [0]));
+  memset (gyz, 0, npoints * sizeof (gyz [0]));
 
   /*     Time-symmetric data
    *     -------------------
    */
 
-  for(k=0; k < nz; k++)
-  {
-    for(j=0; j < ny; j++)
-    {
-      for(i=0; i < nx; i++)
-      {
-        index = CCTK_GFINDEX3D(cctkGH, i,j,k);
-          
-        kxx[index] = zero;
-        kyy[index] = zero;
-        kzz[index] = zero;
-        kxy[index] = zero;
-        kxz[index] = zero;
-        kyz[index] = zero;
-      }
-    }
-  }
-
-  return;  
+  memset (kxx, 0, npoints * sizeof (kxx [0]));
+  memset (kyy, 0, npoints * sizeof (kyy [0]));
+  memset (kzz, 0, npoints * sizeof (kzz [0]));
+  memset (kxy, 0, npoints * sizeof (kxy [0]));
+  memset (kxz, 0, npoints * sizeof (kxz [0]));
+  memset (kyz, 0, npoints * sizeof (kyz [0]));
 
 }
