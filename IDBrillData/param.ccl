@@ -6,7 +6,7 @@ shares: ADMBase
 EXTENDS KEYWORD initial_data 
 {
    "brilldata"   :: "Brill wave initial data"
-} ""
+}
 
 USES KEYWORD metric_type
 
