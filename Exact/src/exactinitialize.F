@@ -12,6 +12,7 @@ C     in the Bona-Masso formalism, at an initial time.
       implicit none
 
       DECLARE_CCTK_FARGUMENTS
+      DECLARE_CCTK_PARAMETERS
 
       integer i,j,k
       integer nx,ny,nz
@@ -20,7 +21,7 @@ C     in the Bona-Masso formalism, at an initial time.
       CCTK_REAL gxxjunk, gyyjunk, gzzjunk,
      $     gxyjunk, gyzjunk, gxzjunk,
      $     kxxjunk, kyyjunk, kzzjunk, 
-     $     kxyjunk, kyzjunk, kxzjunk,
+     $     kxyjunk, kyzjunk, kxzjunk
 
       CCTK_REAL alpjunk, axjunk, ayjunk, azjunk, 
      $     betaxjunk, betayjunk, betazjunk,
