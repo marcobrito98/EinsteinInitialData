@@ -30,28 +30,45 @@ void Schwarzschild(CCTK_ARGUMENTS)
 
   const CCTK_REAL zero = 0.0, one = 1.0, two = 2.0, three = 3.0;
   CCTK_REAL tmp, r_squared, r_cubed;
+  int make_conformal_derivs;
   int i, npoints;
 
-  npoints = cctk_lsh[0] * cctk_lsh[1] * cctk_lsh[2];
 
-  /*     conformal metric flag */
+  /* Check if we should create and store conformal factor stuff */
   if(CCTK_EQUALS(metric_type, "static conformal"))
   {
-    int make_conformal_derivs;
-
-    *conformal_state = 1;
-
-    if(CCTK_EQUALS(conformal_storage,"factor+derivs"))
+    if      (CCTK_EQUALS(conformal_storage,"factor"))
+    {
+      *conformal_state = 1;
+      make_conformal_derivs = 0;
+    }
+    else if (CCTK_EQUALS(conformal_storage,"factor+derivs"))
     {
       *conformal_state = 2;
       make_conformal_derivs = 1;
     }
-    else if(CCTK_EQUALS(conformal_storage,"factor+derivs+2nd derivs"))
+    else if (CCTK_EQUALS(conformal_storage,"factor+derivs+2nd derivs"))
     {
       *conformal_state = 3;
       make_conformal_derivs = 1;
     }
+    else
+    {
+      CCTK_VWarn(0, __LINE__, __FILE__, CCTK_THORNSTRING,
+"Schwarzschild(): impossible value for conformal_storage=\"%s\"!");
+								/*NOTREACHED*/
+    }
+  }      
+  else
+  {
+    make_conformal_derivs = 0;
+  }
 
+
+  npoints = cctk_lsh[0] * cctk_lsh[1] * cctk_lsh[2];
+
+  if(CCTK_EQUALS(metric_type, "static conformal"))
+  {
     for (i = 0; i < npoints; i++)
     {
       /*        Compute conformal factor */
