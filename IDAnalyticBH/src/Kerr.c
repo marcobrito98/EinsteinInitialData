@@ -32,12 +32,12 @@ void KerrID(CCTK_ARGUMENTS)
   int i, do_lapse=0, do_shift=0;
   int npoints;
   CCTK_REAL rK,R,cth,cth_2,sth,sth_2,r_2,R_2,R_3,rho,rho_2,xx,yy,zz;
-  CCTK_REAL Sigma,Delta,sqrt_Delta,p2,lapse,beta_phi,shift_phi;
+  CCTK_REAL Sigma,sqrt_Delta,p2,lapse,beta_phi,shift_phi;
   CCTK_REAL tmp, inv_psi;
   CCTK_REAL Phi4,fourPhi3,Phi,Chi2;
   CCTK_REAL Phi_R,Phi_RR,Phi_Rq,Phi_q,Phi_qq;
   CCTK_REAL Phi4_R,Phi4_RR,Phi4_Rq,Phi4_q,Phi4_qq;
-  /* CCTK_REAL Krj,gRR,gqq,gjj; */
+  /* CCTK_REAL Delta,Krj,gRR,gqq,gjj; */
   CCTK_REAL KRj,Kqj;
   
   CCTK_REAL dRdx,dRdy,dRdz,dqdx,dqdy,dqdz,djdx,djdy;
@@ -80,7 +80,7 @@ void KerrID(CCTK_ARGUMENTS)
     rK=R+m+m2_a2/4/R;
     r_2=rK*rK;
     sqrt_Delta=R-m2_a2/4/R;
-    Delta=sqrt_Delta*sqrt_Delta;
+    /*Delta=sqrt_Delta*sqrt_Delta;*/
     Sigma=r_2+a_2*cth_2;
     beta_phi=-2*m*rK*a*sth_2/Sigma;
     p2=a_2+r_2-a*beta_phi;
