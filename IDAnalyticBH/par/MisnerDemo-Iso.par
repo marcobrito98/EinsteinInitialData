@@ -16,7 +16,7 @@
 
 # These thorns must be compiled
 
-ActiveThorns = "Boundary ADM CartGrid3D Einstein IDanalyticBH IOBasic IOUtil IOASCII PsiKadelia IsoSurfacer httpd httpdextra Pugh pughreduce pughslab Time"
+ActiveThorns = "Boundary ADM CartGrid3D CoordBase Einstein IDanalyticBH IOBasic IOUtil IOASCII PsiKadelia IsoSurfacer httpd httpdextra Pugh pughreduce pughslab Time"
  
 #------------------------------------------------------------------------------
 
