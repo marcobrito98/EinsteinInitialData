@@ -1,3 +1,12 @@
+/*@@
+  @file      setupbrilldata3D.F
+  @date      October 1998
+  @author    Miguel Alcubierre
+  @desc
+             Set up non-axisymmetric Brill data for elliptic solve.
+  @enddesc
+  @version   $Header$
+@@*/
 
 #include "cctk.h" 
 #include "cctk_Parameters.h"
@@ -7,13 +16,11 @@
 
       subroutine setupbrilldata3D(CCTK_FARGUMENTS)
 
-c     Author: Miguel Alcubierre, October 1998.
-c
 c     Set up 3D Brill data for elliptic solve.  The elliptic
 c     equation we need to solve is:
 c
 c     __
-c     \/  psi  =  psi R  /  8
+c     \/  psi  -  psi R  /  8  =  0
 c       c              c
 c
 c     where:
@@ -26,9 +33,9 @@ c      c
 c
 c     The Ricci scalar for the conformal metric turns out to be:
 c
-c             /  -2q    2      2             -2            2       2      \
-c     R  =  2 | e    ( d q  + d   q )  +  rho   ( 3 (d   q)  +  2 d   q ) |
-c      c      \         z      rho                    phi          phi    /
+c               /  -2q    2      2             -2            2       2      \
+c     R  =  - 2 | e    ( d q  + d   q )  +  rho   ( 3 (d   q)  +  2 d   q ) |
+c      c        \         z      rho                    phi          phi    /
 
 
       implicit none
@@ -39,6 +46,9 @@ c      c      \         z      rho                    phi          phi    /
       integer CCTK_Equals
       integer i,j,k
       integer nx,ny,nz
+      integer ierr
+
+      integer, dimension(3) :: sym
 
       CCTK_REAL x1,y1,z1,rho1,rho2
       CCTK_REAL phi,phif,e2q
@@ -105,7 +115,19 @@ c     Set up conformal metric.
       gxz = zero
       gyz = zero
 
-c     Set up coefficient Mlinear = - (1/8) Rc.
+c     Define the symmetries for the brill GFs.
+
+      sym(1) = 1
+      sym(2) = 1
+      sym(3) = 1
+
+      call SetCartSymVN(ierr,cctkGH,sym,'idbrilldata::brillMlinear')
+      call SetCartSymVN(ierr,cctkGH,sym,'idbrilldata::brillNsource')
+
+c     Set up coefficient arrays for elliptic solve.
+c     Notice that the Cactus conventions are:
+c     __
+c     \/ psi +  Mlinear*psi  +  Nsource  =  0
 
       do k=1,nz
          do j=1,ny
@@ -126,7 +148,7 @@ c              Find M using centered differences over a small
 c              interval.
 
                if (rho1.gt.rhofudge) then
-                  brillMlinear(i,j,k) = - 0.25D0/e2q
+                  brillMlinear(i,j,k) = 0.25D0/e2q
      .                 *(brillq(rho1,z1+eps,phi) 
      .                 + brillq(rho1,z1-eps,phi) 
      .                 + brillq(rho1+eps,z1,phi) 
@@ -134,7 +156,7 @@ c              interval.
      .                 - 4.0D0*brillq(rho1,z1,phi))
      .                 / eps**2
                else
-                  brillMlinear(i,j,k) = - 0.25D0/e2q
+                  brillMlinear(i,j,k) = 0.25D0/e2q
      .                 *(brillq(rho1,z1+eps,phi) 
      .                 + brillq(rho1,z1-eps,phi) 
      .                 + two*brillq(eps,z1,phi) 
@@ -148,7 +170,7 @@ c              must always be true otherwise the function
 c              is not regular on the axis.
 
                if (rho1.gt.rhofudge) then
-                  brillMlinear(i,j,k) = brillMlinear(i,j,k) - 0.25D0/rho2
+                  brillMlinear(i,j,k) = brillMlinear(i,j,k) + 0.25D0/rho2
      .               *(three*0.25D0*(brillq(rho1,z1,phi+eps)
      .               - brillq(rho1,z1,phi-eps))**2
      .               + two*(brillq(rho1,z1,phi+eps)
@@ -163,6 +185,11 @@ c              is not regular on the axis.
 c     Set coefficient Nsource = 0.
 
       brillNsource = zero
+
+c     Synchronization and boundaries.
+
+      call CCTK_SyncGroup(cctkGH,'idbrilldata::brillelliptic')
+      call ADM_Boundary(cctkGH,'idbrilldata::brillelliptic')
 
       return
       end

@@ -1,3 +1,12 @@
+/*@@
+  @file      brilldata.F
+  @date
+  @author    Carsten Gundlach (Cactus 4, Miguel Alcubierre)
+  @desc
+             Construct Brill wave initial data.
+  @enddesc
+  @version   $Header$
+@@*/
 
 #include "cctk.h" 
 #include "cctk_Parameters.h"
@@ -15,24 +24,35 @@
       DECLARE_CCTK_FUNCTIONS
 
       integer ipsi,iMcoeff,iNcoeff
+      integer metpsi_index(7)
       integer ierr
 
       CCTK_REAL AbsTol(3),RelTol(3)
 
+c     Get indices for metric.
+
+      call CCTK_VarIndex(metpsi_index(1), "einstein::gxx")
+      call CCTK_VarIndex(metpsi_index(2), "einstein::gxy")
+      call CCTK_VarIndex(metpsi_index(3), "einstein::gxz")
+      call CCTK_VarIndex(metpsi_index(4), "einstein::gyy")
+      call CCTK_VarIndex(metpsi_index(5), "einstein::gyz")
+      call CCTK_VarIndex(metpsi_index(6), "einstein::gzz")
+      call CCTK_VarIndex(metpsi_index(7), "einstein::psi")
+
 c     Get indices for grid functions.
 
-      call CCTK_VarIndex(ipsi   , "idbrilldata::brillpsi")
-      if (ipsi .lt. 0) then
+      call CCTK_VarIndex(ipsi,"idbrilldata::brillpsi")
+      if (ipsi.lt.0) then
 	call CCTK_WARN(0,"Grid variable index for iphi not found")
       end if
 
-      call CCTK_VarIndex(iMcoeff, "idbrilldata::brillMlinear")
-      if (iMcoeff .lt. 0) then
+      call CCTK_VarIndex(iMcoeff,"idbrilldata::brillMlinear")
+      if (iMcoeff.lt.0) then
 	call CCTK_WARN(0,"Grid variable index for Mcoeff not found")
       end if
 
-      call CCTK_VarIndex(iNcoeff, "idbrilldata::brillNsource")
-      if (iNcoeff .lt. 0) then
+      call CCTK_VarIndex(iNcoeff,"idbrilldata::brillNsource")
+      if (iNcoeff.lt.0) then
 	call CCTK_WARN(0,"Grid variable index for Ncoeff not found")
       end if
 
@@ -54,39 +74,31 @@ c     Tolerances for elliptic solve.
       RelTol(2)= -1
       RelTol(3)= -1
 
+c     Boundaries.
+
+      call Ell_SetRealKey(ierr,1.0d0,"EllLinConfMetric::Bnd::Robin::inf")
+      call Ell_SetIntKey(ierr,1,"EllLinConfMetric::Bnd::Robin::falloff")
+
 c     Elliptic solver.
 
-      if (axisym.eq.1) then
-
-         call Ell_SetRealKey(ierr, 1.0d0, "EllLinFlat::Bnd::Robin::inf")
-         call Ell_SetIntKey (ierr, 1,     "EllLinFlat::Bnd::Robin::falloff")
-
-         if (CCTK_EQUALS(brill_solver,"sor")) then
-            call Ell_LinFlatSolver(ierr,cctkGH,ipsi,
-     .      iMcoeff,iNcoeff,AbsTol,RelTol,"sor")
-         end if
-
-         if (CCTK_EQUALS(brill_solver,"petsc")) then
-            call Ell_LinFlatSolver(ierr,cctkGH,ipsi,
-     .      iMcoeff,iNcoeff,AbsTol,RelTol,"petsc")
-         end if
-
-         if (CCTK_EQUALS(brill_solver,"bam")) then
-            call Ell_LinFlatSolver(ierr,cctkGH,ipsi,
-     .      iMcoeff,iNcoeff,AbsTol,RelTol,"bam")
-         end if
-
-      else
-
+      if (CCTK_EQUALS(brill_solver,"sor")) then
+         call Ell_LinConfMetricSolver(ierr,cctkGH, 
+     .   metpsi_index,ipsi,iMcoeff,iNcoeff,AbsTol,RelTol,"sor")
+      else if (CCTK_EQUALS(brill_solver,"petsc")) then
+         call Ell_LinConfMetricSolver(ierr,cctkGH, 
+     .   metpsi_index,ipsi,iMcoeff,iNcoeff,AbsTol,RelTol,"petsc")
+      else if (CCTK_EQUALS(brill_solver,"bam")) then
+         call Ell_LinConfMetricSolver(ierr,cctkGH, 
+     .   metpsi_index,ipsi,iMcoeff,iNcoeff,AbsTol,RelTol,"bam")
       end if
 
 c     Check for errors.
 
-      if (ierr .eq. ELL_SUCCESS) then
+      if (ierr.eq.ELL_SUCCESS) then
         call CCTK_INFO("Leaving elliptic solver: solve successful")
-      else if (ierr .eq. ELL_NOCONVERGENCE) then
+      else if (ierr.eq.ELL_NOCONVERGENCE) then
 	call CCTK_INFO("Leaving elliptic solver: solver failed to converge")
-      else if (ierr .eq. ELL_NOSOLVER) then
+      else if (ierr.eq.ELL_NOSOLVER) then
 	call CCTK_INFO("Elliptic solver not found")
       else 
         call CCTK_INFO("Leaving elliptic solver: solve failed")	

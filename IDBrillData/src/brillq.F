@@ -1,11 +1,19 @@
+/*@@
+  @file      brilldata.F
+  @date
+  @author    Carsten Gundlach, Miguel Alcubierre.
+  @desc
+             Construct Brill wave q function.
+  @enddesc
+  @version   $Header$
+@@*/
+
 #include "cctk.h" 
 #include "cctk_Parameters.h"
 #include "cctk_Arguments.h"
 
       function brillq(rho,z,phi)
 
-C     Authors:  Carsten Gundlach, Miguel Alcubierre.
-C
 C     Calculates the function q that appear in the conformal
 C     metric for Brill waves:
 C

@@ -1,3 +1,12 @@
+/*@@
+  @file      finishbrilldata.F
+  @date
+  @author    Carsten Gundlach (Cactus 4, Miguel Alcubierre)
+  @desc
+             Reconstruct metric from conformal factor.
+  @enddesc
+  @version   $Header$
+@@*/
 
 #include "cctk.h" 
 #include "cctk_Parameters.h"
@@ -22,22 +31,22 @@
 
       external brillq
 
-C     Numbers.
+c     Numbers.
 
       zero = 0.0D0
 
-C     Set up grid size.
+c     Set up grid size.
 
       nx = cctk_lsh(1)
       ny = cctk_lsh(2)
       nz = cctk_lsh(3)
 
-C     Parameters.
+c     Parameters.
 
       rhofudge = brill_rhofudge
       
-C     Replace flat metric left over from elliptic solve by
-C     Brill metric calculated from q and Psi.
+c     Replace flat metric left over from elliptic solve by
+c     Brill metric calculated from q and Psi.
 
       do k=1,nz
          do j=1,ny
@@ -55,31 +64,31 @@ C     Brill metric calculated from q and Psi.
                psi4 = brillpsi(i,j,k)**4
                e2q  = dexp(2.d0*brillq(rho1,z1,phi))
 
-C              Fudge division by rho^2 on axis. (Physically, y^/rho^2,
-C              x^2/rho^2 and xy/rho^2 are of course regular.)
-C              Transform Brills form of the physical metric to Cartesian
-C              coordinates via
-C
-C              e^2q (drho^2 + dz^2) + rho^2 dphi^2 =
-C              e^2q (dx^2 + dy^2 + dz^2) + (1-e^2q) (xdy-ydx)^2/rho^2
-C
-C              The individual coefficients can be read off as
+c              Fudge division by rho^2 on axis. (Physically, y^/rho^2,
+c              x^2/rho^2 and xy/rho^2 are of course regular.)
+c              Transform Brills form of the physical metric to Cartesian
+c              coordinates via
+c
+c              e^2q (drho^2 + dz^2) + rho^2 dphi^2 =
+c              e^2q (dx^2 + dy^2 + dz^2) + (1-e^2q) (xdy-ydx)^2/rho^2
+c
+c              The individual coefficients can be read off as
 
                if (rho1 .gt. rhofudge) then
 
-                  gzz(i,j,k) = psi4*e2q
                   gxx(i,j,k) = psi4*(e2q + (1.d0 - e2q)*y1**2/rho2)
                   gyy(i,j,k) = psi4*(e2q + (1.d0 - e2q)*x1**2/rho2)
+                  gzz(i,j,k) = psi4*e2q
                   gxy(i,j,k) = - psi4*(1.d0 - e2q)*x1*y1/rho2
 
                else
 
-C                 This fudge assumes that q = O(rho^2) near the axis. Which
-C                 it should be, or the data will be singular.
+c                 This fudge assumes that q = O(rho^2) near the axis. Which
+c                 it should be, or the data will be singular.
 
-                  gzz(i,j,k) = psi4 
-                  gxx(i,j,k) = psi4 
-                  gyy(i,j,k) = psi4 
+                  gxx(i,j,k) = psi4
+                  gyy(i,j,k) = psi4
+                  gzz(i,j,k) = psi4
                   gxy(i,j,k) = zero
 
                end if
@@ -88,12 +97,12 @@ C                 it should be, or the data will be singular.
          end do
       end do
 
-C     In any case,
+c     In any case,
 
       gxz = zero
       gyz = zero
 
-C     Vanishing extrinsic curvature completes the Cauchy data.
+c     Vanishing extrinsic curvature completes the Cauchy data.
 
       kxx = zero
       kyy = zero
