@@ -9,6 +9,10 @@ EXTENDS KEYWORD initial_data
    "brilldata"   :: "Brill wave initial data"
 } ""
 
+EXTENDS BOOLEAN use_conformal 
+{
+}
+
 
 private:
 
@@ -133,6 +137,11 @@ REAL brill_rhofudge "delta rho for axis fudge"
 {
   0: :: "Positive please"
 } 0.00001
+
+INT sor_maxit "Maximum number of iterations"
+{
+0:* :: "Positive"
+} 100
 
 
 
