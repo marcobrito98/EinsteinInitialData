@@ -69,7 +69,7 @@ constant_density_star___radius
 # temp variable for some of the stress-energy tensor computations
 #
 protected:
-real robwal_var TYPE=GF
+real Exact_robwal_var TYPE=GF
 {
    raza
 } "Raza universului Robertson Walker"

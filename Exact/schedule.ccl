@@ -1,6 +1,16 @@
 # Schedule definitions for thorn Exact
 # $Header$
 
+# these are just grid scalars, so there's no harm in leaving storage
+# for them on all the time
+STORAGE: Exact_pars_int
+STORAGE: Exact_pars_real
+
+# This is a grid function, so turning storage for on all the time
+# is painful.  But this thorn's src/include/Scalar_CalcTmunu.inc
+# code *does* use it...
+STORAGE: Exact_robwal_var
+
 #######################################################################
 # PARAMCHECK
 #######################################################################
