@@ -16,7 +16,7 @@
 
 # These thorns must be compiled
 
-ActiveThorns = "Boundary ADM CartGrid3D CoordBase SymBase Einstein IDanalyticBH IOBasic IOUtil IOASCII PsiKadelia IsoSurfacer httpd httpdextra Pugh pughreduce pughslab Time"
+ActiveThorns = "Boundary ADM CartGrid3D CoordBase SymBase ADMBase StaticConformal CoordGauge ADMAnalysis ADMMacros IDanalyticBH IOBasic IOUtil IOASCII PsiKadelia IsoSurfacer httpd socket httpdextra Pugh pughreduce pughslab Time"
  
 #------------------------------------------------------------------------------
 
@@ -30,9 +30,9 @@ cactus::cctk_final_time    = 30.0
 
 # What output and how often
 
-IOBasic::outInfo_vars      = "einstein::alp"
+IOBasic::outInfo_vars      = "admbase::alp"
 IOBasic::outInfo_every     = 10
-IOASCII::out1D_vars        = "einstein::alp einstein::grr psikadelia::psi0re"
+IOASCII::out1D_vars        = "admbase::alp admanalysis::grr psikadelia::psi0re"
 IOASCII::out1D_every       = 10
 
 #------------------------------------------------------------------------------
@@ -67,10 +67,10 @@ cactus::cctk_initial_time  = 0.
 
 time::dtfac                = 0.25 
  
-einstein::initial_data     = "misner_bh"  
-einstein::evolution_system = "ADM"     
-einstein::slicing          = "1+log"
-einstein::initial_lapse	   = "one"
+admbase::metric_type      = "static conformal"
+admbase::evolution_method = "ADM"
+admbase::lapse_evolution_method = "1+log"
+admbase::initial_data     = "misner_bh"  
 
 idanalyticbh::mu           = 2.2
 
