@@ -14,6 +14,10 @@ c     It is obviously not a vacuum solution, so if someone
 c     wants to evolve it, we will need to add here the
 c     matter variables.  For the moment, only the metric
 c     is given.
+
+C     OK, I added the matter variables 
+C     (see include/Scalar_CalcTmunu.inc) - Mitica Vulcanov 
+
 c
 c     The metric is given as a conformally flat metric.
 c     Turns out that in the original areal radius, the
@@ -103,6 +107,8 @@ c     Find metric components.
       gdzx = zero
 
 c     Find inverse metric.
+
+      gutt = -one/psi4
 
       gutx = zero
       guty = zero
