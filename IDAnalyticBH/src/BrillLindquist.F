@@ -71,7 +71,7 @@ c     Initialize to zero and then use +=
 c     ----------------------------------
       psi = 1.0D0
 
-      if (use_conformal_derivs) then
+      if (use_conformal_derivs == 1) then
 
         psix = 0.0D0
         psiy = 0.0D0
@@ -93,7 +93,7 @@ c     ------------
      &0+y**2+2.D0*y*hole_y0(i)+hole_y0(i)**2.D0+z**2+2.D0*z*hole_z0(i)+h
      &ole_z0(i)**2.D0)/2.D0
 
-      if (use_conformal_derivs) then
+      if (use_conformal_derivs == 1) then
 
       Psix = Psix-hole_mass(i)/sqrt(x**2+2.D0*x*hole_x0(i)+hole_x0(i)**2
      &.D0+y**2+2.D0*y*hole_y0(i)+hole_y0(i)**2.D0+z**2+2.D0*z*hole_z0(i)
