@@ -20,6 +20,16 @@ USES KEYWORD conformal_storage
 
 PRIVATE:
 
+BOOLEAN verbose "Print screen output while solving"
+{
+} "no"
+
+BOOLEAN keep_u_around "Keep the variable u around after solving"
+{
+} "no"
+
+
+
 INT npoints_A "Number of coefficients in the compactified radial direction"
 {
   4:* :: ""
