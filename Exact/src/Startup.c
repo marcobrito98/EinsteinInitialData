@@ -2,10 +2,18 @@
 /* $Header$ */
 
 #include "cctk.h"
+#include "cctk_Arguments.h"
 #include "cctk_Parameters.h"
 #include "CactusEinstein/CoordGauge/src/Slicing.h"
 
-void Exact__RegisterSlicing(void) 
+/*
+ * prototypes for scheduled routines
+ */
+void Exact__RegisterSlicing(CCTK_ARGUMENTS);
+
+/******************************************************************************/
+
+void Exact__RegisterSlicing(CCTK_ARGUMENTS) 
 {
   int handle;
   handle=Einstein_RegisterSlicing("exact");
