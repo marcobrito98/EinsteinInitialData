@@ -18,6 +18,8 @@
 
 #include "CactusEinstein/Einstein/src/Einstein.h"
 
+void ParamChecker(CCTK_ARGUMENTS);
+
  /*@@
    @routine    ParamChecker
    @date       March 1999
