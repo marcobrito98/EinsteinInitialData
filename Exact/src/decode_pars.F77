@@ -86,7 +86,7 @@ c black hole spacetimes
 c cosmological spacetimes
 	elseif (CCTK_Equals(exact_model, "Lemaitre") .ne. 0) then
 	     decoded_exact_model = EXACT__Lemaitre
-C this metric doesn't work and has been moved to ../archive/
+C this metric doesnt work and has been moved to ../archive/
 CC	elseif (CCTK_Equals(exact_model, "Robertson-Walker") .ne. 0) then
 CC	     decoded_exact_model = EXACT__Robertson_Walker
 	elseif (CCTK_Equals(exact_model, "de Sitter") .ne. 0) then
@@ -146,7 +146,7 @@ c
 
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 CCC
-CCC this metric doesn't work and has been moved to ../archive/
+CCC this metric doesnt work and has been moved to ../archive/
 CCc
 CCc parameters for Robertson-Walker spacetime
 CCc

@@ -3,7 +3,7 @@ C $Header$
 
 C
 C Note that this code ignores any conformal factor set by the model,
-C and thus won't work for models which try to set a conformal factor.
+C and thus wont work for models which try to set a conformal factor.
 C At present "Minkowski/conf wave" is the only such model.
 C
 
