@@ -39,7 +39,7 @@ c locals
       CCTK_REAL rin1,rin2,rout,x1,x2, r1, r2, r3, results(10)
 
 C this is a vacuum solution with no cosmological constant
-C ==> it doesn't set the stress-energy tensor
+C ==> it does not set the stress-energy tensor
       Tmunu_flag = .false.
 
       if (firstcall) then

@@ -139,7 +139,7 @@ c     Get parameters of the metric.
 
 c     Multiply the bowl strength "a" with a time evolution factor.
 c     The time evolution factor is taken to be a Fermi step centered
-c     in `t0' and with a width `st'.  The size of this step is always
+c     in "t0" and with a width "st".  The size of this step is always
 c     1 so that far in the past we will always have flat space, and
 c     far in the future we will have the static bowl.
 

@@ -56,8 +56,8 @@ c constants
       CCTK_REAL zero,one
       parameter (zero=0.0d0, one=1.0d0)
 
-C This model doesn't set the stress-energy tensor
-C FIXME: should it?  I.e. isn't there a nonzero Maxwell tensor here?
+C This model does not set the stress-energy tensor
+C FIXME: should it?  I.e. isn"t there a nonzero Maxwell tensor here?
       Tmunu_flag = .false.
 
 c     Get parameters of the exact solution.
