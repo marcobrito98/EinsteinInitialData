@@ -7,6 +7,8 @@
    @enddesc 
  @@*/
 
+#include <math.h>
+
 #include "cctk.h"
 #include "cctk_arguments.h"
 #include "cctk_parameters.h"
