@@ -33,10 +33,7 @@ c       f
       DECLARE_CCTK_PARAMETERS
 
       integer i,j,k
-      integer nx,ny,nz
       integer ierr
-
-      integer, dimension(3) :: sym
 
       CCTK_REAL x1,y1,z1,rho1
       CCTK_REAL brillq,eps
@@ -50,53 +47,34 @@ c     Numbers.
       zero = 0.0D0
       one  = 1.0D0
 
-c     Set up grid size.
-
-      nx = cctk_lsh(1)
-      ny = cctk_lsh(2)
-      nz = cctk_lsh(3)
-
 c     Epsilon for finite differencing.
 
       eps = cctk_delta_space(1)
-
-c     Initialize psi.
-
-      brillpsi = one
-
-c     Initialize metric.
-
-      gxx = one
-      gyy = one
-      gzz = one
-
-      gxy = zero
-      gxz = zero
-      gyz = zero
-
-c     Define the symmetries for the brill GFs.
-
-      sym(1) = 1
-      sym(2) = 1
-      sym(3) = 1
-
-      call SetCartSymVN(ierr,cctkGH,sym,'idbrilldata::brillMlinear')
-      call SetCartSymVN(ierr,cctkGH,sym,'idbrilldata::brillNsource')
 
 c     Set up coefficient arrays for elliptic solve.
 c     Notice that the Cactus conventions are:
 c     __
 c     \/ psi +  Mlinear*psi  +  Nsource  =  0
 
-      do k=1,nz
-         do j=1,ny
-            do i=1,nx
+      do k=1,cctk_lsh(3)
+         do j=1,cctk_lsh(2)
+            do i=1,cctk_lsh(1)
 
                x1 = x(i,j,k)
                y1 = y(i,j,k)
                z1 = z(i,j,k)
 
-               rho1 = dsqrt(x1**2 + y1**2)
+               rho1 = dsqrt(x1*x1 + y1*y1)
+
+               brillpsi(i,j,k) = one
+
+               gxx(i,j,k) = one
+               gyy(i,j,k) = one
+               gzz(i,j,k) = one
+
+               gxy(i,j,k) = zero
+               gxz(i,j,k) = zero
+               gyz(i,j,k) = zero
 
 c              Centered derivatives. Note that here we may be calling brillq
 c              with a small negative rho, but that should be ok as long as
@@ -116,17 +94,15 @@ c              will not be regular on the axis.
      .              + brillq(rhom,z1,zero)
      .              - 4.0D0*brillq(rho1,z1,zero))/eps**2
 
+               brillNsource(i,j,k) = zero
+
             end do
          end do
       end do
 
-c     Set coefficient Nsource = 0.
-
-      brillNsource = zero
-
 c     Synchronization and boundaries.
 
-      call CCTK_SyncGroup(ierr,cctkGH,'idbrilldata::brillelliptic')
+c      call CCTK_SyncGroup(ierr,cctkGH,'idbrilldata::brillelliptic')
       call CartSymGN(ierr,cctkGH,'idbrilldata::brillelliptic')
 
       return

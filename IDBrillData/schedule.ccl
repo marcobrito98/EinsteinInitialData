@@ -1,7 +1,7 @@
 # Schedule definitions for thorn IDBrillData
 # $Header$
 
-if (CCTK_Equals(initial_data,"brilldata"))
+if (CCTK_Equals(initial_data,"brilldata") || CCTK_Equals(initial_data,"brilldata2D"))
 {
 
   STORAGE: brillconf

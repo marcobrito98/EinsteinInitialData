@@ -43,21 +43,12 @@ c      c        \         z      rho                    phi          phi    /
       DECLARE_CCTK_FUNCTIONS
 
       integer i,j,k
-      integer nx,ny,nz
       integer ierr
-
-      integer, dimension(3) :: sym
 
       CCTK_REAL x1,y1,z1,rho1,rho2
       CCTK_REAL phi,phif,e2q
       CCTK_REAL brillq,rhofudge,eps
       CCTK_REAL zero,one,two,three
-
-c     Set up grid size.
-
-      nx = cctk_lsh(1)
-      ny = cctk_lsh(2)
-      nz = cctk_lsh(3)
 
 c     Define numbers
 
@@ -74,77 +65,43 @@ c     Epsilon for finite differencing.
 
       eps = cctk_delta_space(1)
 
-c     Initialize psi.
-
-      brillpsi = one
-
-      do k=1,nz
-         do j=1,ny
-            do i=1,nx
+      do k=1,cctk_lsh(3)
+         do j=1,cctk_lsh(2)
+            do i=1,cctk_lsh(1)
 
                x1 = x(i,j,k)
                y1 = y(i,j,k)
                z1 = z(i,j,k)
 
-               rho2 = x1**2 + y1**2
+               rho2 = x1*x1 + y1*y1
                rho1 = dsqrt(rho2)
-
                phi = phif(x1,y1)
 
                e2q  = dexp(two*brillq(rho1,z1,phi))
 
-               if (rho1.gt.rhofudge) then
-                  gxx(i,j,k) = e2q + (one - e2q)*y1**2/rho2
-                  gyy(i,j,k) = e2q + (one - e2q)*x1**2/rho2
-                  gzz(i,j,k) = e2q
-                  gxy(i,j,k) = - (one - e2q)*x1*y1/rho2
-               else
-                  gxx(i,j,k) = one 
-                  gyy(i,j,k) = one 
-                  gzz(i,j,k) = one
-                  gxy(i,j,k) = zero
-               end if
+c              Initialise psi
 
-            end do
-         end do
-      end do
+               brillpsi(i,j,k) = one
 
-      gxz = zero
-      gyz = zero
-
-c     Define the symmetries for the brill GFs.
-
-      sym(1) = 1
-      sym(2) = 1
-      sym(3) = 1
-
-      call SetCartSymVN(ierr,cctkGH,sym,'idbrilldata::brillMlinear')
-      call SetCartSymVN(ierr,cctkGH,sym,'idbrilldata::brillNsource')
-
-c     Set up coefficient arrays for elliptic solve.
-c     Notice that the Cactus conventions are:
-c     __
-c     \/ psi +  Mlinear*psi  +  Nsource  =  0
-
-      do k=1,nz
-         do j=1,ny
-            do i=1,nx
-
-               x1 = x(i,j,k)
-               y1 = y(i,j,k)
-               z1 = z(i,j,k)
-
-               rho2 = x1**2 + y1**2
-               rho1 = dsqrt(rho2)
-
-               phi  = phif(x1,y1)
-
-               e2q = dexp(two*brillq(rho1,z1,phi))
+c              Set up metric and coefficient arrays for elliptic solve.
+c              Notice that the Cactus conventions are:
+c              __
+c              \/ psi +  Mlinear*psi  +  Nsource  =  0
 
 c              Find M using centered differences over a small
 c              interval.
 
+c              Here we assume that for very small rho, the
+c              phi derivatives are essentially zero.  This
+c              must always be true otherwise the function
+c              is not regular on the axis.
+
                if (rho1.gt.rhofudge) then
+
+                  gxx(i,j,k) = e2q + (one - e2q)*y1*y1/rho2
+                  gyy(i,j,k) = e2q + (one - e2q)*x1*x1/rho2
+                  gzz(i,j,k) = e2q
+                  gxy(i,j,k) = - (one - e2q)*x1*y1/rho2
 
                   brillMlinear(i,j,k) = 0.25D0/e2q
      .                 *(brillq(rho1,z1+eps,phi) 
@@ -154,7 +111,19 @@ c              interval.
      .                 - 4.0D0*brillq(rho1,z1,phi))
      .                 / eps**2
 
+                  brillMlinear(i,j,k) = brillMlinear(i,j,k) + 0.25D0/rho2
+     .               *(three*0.25D0*(brillq(rho1,z1,phi+eps)
+     .               - brillq(rho1,z1,phi-eps))**2
+     .               + two*(brillq(rho1,z1,phi+eps)
+     .               - two*brillq(rho1,z1,phi)
+     .               + brillq(rho1,z1,phi-eps)))/eps**2
+
                else
+
+                  gxx(i,j,k) = one 
+                  gyy(i,j,k) = one 
+                  gzz(i,j,k) = one
+                  gxy(i,j,k) = zero
 
                   brillMlinear(i,j,k) = 0.25D0/e2q
      .                 *(brillq(rho1,z1+eps,phi) 
@@ -165,32 +134,21 @@ c              interval.
 
                end if
 
-c              Here I assume that for very small rho, the
-c              phi derivatives are essentially zero.  This
-c              must always be true otherwise the function
-c              is not regular on the axis.
+               gxz(i,j,k) = zero
+               gyz(i,j,k) = zero
 
-               if (rho1.gt.rhofudge) then
-                  brillMlinear(i,j,k) = brillMlinear(i,j,k) + 0.25D0/rho2
-     .               *(three*0.25D0*(brillq(rho1,z1,phi+eps)
-     .               - brillq(rho1,z1,phi-eps))**2
-     .               + two*(brillq(rho1,z1,phi+eps)
-     .               - two*brillq(rho1,z1,phi)
-     .               + brillq(rho1,z1,phi-eps)))/eps**2
-               end if
+c              Set coefficient Nsource = 0
+               brillNsource(i,j,k) = zero
 
             end do
          end do
       end do
 
-c     Set coefficient Nsource = 0.
-
-      brillNsource = zero
 
 c     Synchronization and boundaries.
 
-      call CCTK_SyncGroup(ierr,cctkGH,'idbrilldata::brillelliptic')
-      call CartSymGN(ierr,cctkGH,'idbrilldata::brillelliptic')
+c      call CCTK_SyncGroup(ierr,cctkGH,'idbrilldata::brillelliptic')
+c      call CartSymGN(ierr,cctkGH,'idbrilldata::brillelliptic')
 
       return
       end

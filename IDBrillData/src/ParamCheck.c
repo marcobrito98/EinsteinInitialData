@@ -52,7 +52,9 @@ void IDBrillData_ParamChecker(CCTK_ARGUMENTS)
   if( ! CCTK_Equals(metric_type, "physical") && 
       ! CCTK_Equals(metric_type, "static conformal"))
   {
-    CCTK_PARAMWARN("Unknown ADMBase::metric_type - known types are \"physical\" and \"static conformal\"");
+    CCTK_VParamWarn("Unknown ADMBase::metric_type (%s): "
+		    "known types are \"physical\" and \"static conformal\"",
+		    metric_type);
   }
 
   if (CCTK_Equals(metric_type, "static conformal"))
@@ -72,6 +74,33 @@ void IDBrillData_ParamChecker(CCTK_ARGUMENTS)
   {
     CCTK_INFO("  ... using physical metric");
   }
+
+  if (CCTK_Equals(initial_data,"brilldata"))
+  {
+    CCTK_INFO("  ... using full 3D solver");
+  }
+  else if (CCTK_Equals(initial_data,"brilldata2D"))
+  {
+    CCTK_INFO("  ... using reduced 2D solver");
+    if (brill3d_d != 0.0)
+    {
+      CCTK_WARN(0,"But 3D parameter brill3d_d set for the 2D solver !?!");
+    }
+  }
+
+  if (CCTK_Equals(q_function,"exp"))
+  {
+    CCTK_INFO("  ... Exponential brill function");
+  }
+  else if (CCTK_Equals(q_function,"eppley"))
+  {
+    CCTK_INFO("  ... generalised Eppley Brill function");
+  }
+  else if (CCTK_Equals(q_function,"exp"))
+  {
+    CCTK_INFO("  ... Gundlach-Holz Brill function");
+  }
+
 }
 
 /********************************************************************

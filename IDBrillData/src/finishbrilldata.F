@@ -55,7 +55,7 @@ c     Brill metric calculated from q and Psi.
                y1 = y(i,j,k)
                z1 = z(i,j,k)
 
-               rho2 = x1**2 + y1**2
+               rho2 = x1*x1 + y1*y1
                rho1 = dsqrt(rho2)
 
                phi = phif(x1,y1)
@@ -74,8 +74,8 @@ c              The individual coefficients can be read off as
 
                if (rho1.gt.rhofudge) then
 
-                  gxx(i,j,k) = (e2q + (one - e2q)*y1**2/rho2)
-                  gyy(i,j,k) = (e2q + (one - e2q)*x1**2/rho2)
+                  gxx(i,j,k) = (e2q + (one - e2q)*y1*y1/rho2)
+                  gyy(i,j,k) = (e2q + (one - e2q)*x1*x1/rho2)
                   gzz(i,j,k) = e2q
                   gxy(i,j,k) = - (one - e2q)*x1*y1/rho2
 

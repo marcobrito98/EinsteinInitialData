@@ -3,13 +3,13 @@
 \begin{document}
 
 \title{IDBrillData}
-\author{Carsten Gundlach}
-\date{6 September 1999}
+\author{Carsten Gundlach, Gabrielle Allen}
+\date{$Date$}
 \maketitle
 
-\abstract{This thorn creates initial data for Brill wave spacetimes.
-It can create both axisymmetric data (in a 3D cartesian grid), as
-well as data with an angular dependency.}
+\abstract{This thorn creates time symmetric initial data for Brill
+wave spacetimes.  It can create both axisymmetric data (in a 3D
+cartesian grid), as well as data with an angular dependency.}
 
 \section{Purpose}
 
@@ -22,40 +22,38 @@ ds^2 = \Psi^4 \left[ e^{2q} \left( d\rho^2 + dz^2 \right)
 \label{eqn:brillmetric}
 \end{equation}
 where $q$ is a free function subject to certain regularity and
-fall-off conditions and $\Psi$ is a conformal factor to be solved for.
+fall-off conditions, $\rho=\sqrt{x^2+y^2}$ and $\Psi$ is a conformal
+factor to be solved for.
+
+Substituting this metric into the Hamiltonian constraint gives an
+elliptic equation for the conformal factor $\Psi$ which is then
+numerically solved for a given function $q$:
+\begin{equation}
+\hat{\nabla} \Psi - \frac{\Psi}{8} \hat{R} = 0
+\end{equation}
+where the conformal Ricci scalar is found to be
+\begin{eqnarray}
+\hat{R} = -2 \left(e^{-2q} (\partial^2_z q + \partial^2_\rho q) + 
+\frac{1}{\rho^2} (3 (\partial_\phi q)^2 + 2 \partial_\phi q)\right)
+\end{eqnarray}
+Assuming the initial data to be time symmetric means that the momentum
+constraints are trivially satisfied.
 
 The thorn considers several different forms of the function $q$
 depending on certain parameters that will be described below.
-Substituting the metric above into the Hamiltonian constraint results
-in an elliptic equation for the conformal factor $\Psi$ that can be
-solved numerically once the function $q$ has been specified. The
-initial data is also assumed to be time-symmetric, so the momentum
-constraints are trivially satisfied.
 
-% [[ DPR: The code does not use these two different initial_data
-% keywords, but the axisym parameter instead.  It should probably use
-% the two different initial_data values.  I have changed the doc below
-% to correspond with the current code: ]]
+Brill initial data is activated by choosing the {\tt CactusEinstein/ADMBase}
+parameter {\tt initial\_data} to be {\tt brilldata}.
 
-The thorn is activated by choosing the CactusEinstein/ADMBase parameter
-``initial\_data'' to be:
-%in one of the following two ways:
+In the case of axisymmetry, the Hamiltonian constraint can be written
+as an elliptic equation for $\Psi$ with just the flat space Laplacian,
+\begin{equation}
+\nabla_{flat} \Psi + \frac{\Psi}{4} (\partial_z^2 q + \partial_\rho^2 q) = 0
+\end{equation}
+If the initial data is chosen to be {\tt
+ADMBase::initial\_data = "brilldata2D"} then this elliptic equation
+is solved rather than the equation above.
 
-\begin{itemize}
-  
-\item initial\_data = ``brilldata'': %Axisymmetric 
-Brill wave initial data
-%  (but calculated in a cartesian grid!).
-  
-%\item initial\_data = ``brilldata3D'': Brill wave initial data with an
-%  angular dependency.
-
-\end{itemize}
-
-To choose axisymmetric data, set the parameter {\tt axisym} to true
-(the default).  Note that the data is computed on a cartesian grid in
-any event.  {\tt axisym = "no"} adds an angular dependence factor,
-which is detailed below.
 
 \section{Parameters for the thorn}
 
@@ -128,13 +126,22 @@ The elliptic solver is controlled by the additional parameters:
 
 \begin{itemize}
   
-\item solver (KEYWORD): Elliptic solver used to solve the
-  hamiltonian constraint [sor/petsc/bam] (default ``sor'').
+\item {\tt solver} (KEYWORD): Elliptic solver used to solve the
+  hamiltonian constraint [sor/petsc/bam] (default "sor").
   
-\item thresh (REAL): Threshold for elliptic solver (default
+\item {\tt thresh} (REAL): Threshold for elliptic solver (default
   0.00001).
 
 \end{itemize}
+
+\section{Notes}
+
+Thorn {\tt IDBrillData} understands both the {\tt physical} and {\tt
+static conformal} {\tt metric\_type}. In the case of a conformal
+metric being chosen, the conformal factor is set to $\Psi$. Currently
+the derivatives of the conformal factor are not calculated, so that
+only {\tt staticconformal::conformal\_storage = "factor"} is
+supported.
 
 % Automatically created from the ccl files 
 % Do not worry for now.
