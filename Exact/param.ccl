@@ -53,6 +53,7 @@ KEYWORD exactmodel "The exact solution used in thorn exact"
   "multiBH"     :: Maximally charged multi BH solutions
   "bowl"        :: Non-Einstein bowl (bag-of-gold) spacetime
   "fakebinary"  :: Non-Einstein fake-binary of Thorn et al
+  "flatfunny"   :: Minkowski spacetime in non-trivial spatial coordinates
 } "minkowski"
 
 
@@ -333,4 +334,14 @@ REAL co_bh4z "z coord of black hole 4"
 } 0.0
 
 
+# Parameters for flatfunny.
 
+REAL flatfunny_a "Amplitude of gaussian"
+{
+0.0:1.0 :: "Positive and smaller than 1 please"
+} 0.0
+
+REAL flatfunny_s "Width of gaussian"
+{
+0.0: :: "Positive please"
+} 1.0
