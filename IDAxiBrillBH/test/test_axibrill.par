@@ -2,7 +2,7 @@
 !DESC "Initial data for axisymmetric distored black hole"
 ######################################################################
 
-ActiveThorns = "time iobasic ADMconstraints pugh interp cartgrid3d einstein ADM IDAxiBrillBH ioascii ioutil"
+ActiveThorns = "time iobasic ADMconstraints pugh pughreduce interp cartgrid3d einstein ADM IDAxiBrillBH ioascii ioutil"
 
 #pugh::enable_all_storage = "yes"
 #cactus::cctk_show_banners = 0
