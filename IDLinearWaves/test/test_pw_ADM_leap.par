@@ -3,7 +3,7 @@
 #########################################################
 
 # Required thorns
-ActiveThorns = "time ADMconstraints pugh cartgrid3d einstein ADM IDLinearWaves
+ActiveThorns = "time pugh cartgrid3d einstein ADM IDLinearWaves
  ioascii ioutil iobasic"
 
 # GENERAL 
