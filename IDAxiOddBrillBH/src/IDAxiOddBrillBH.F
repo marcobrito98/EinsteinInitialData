@@ -32,9 +32,7 @@ c@@*/
       
       DECLARE_CCTK_ARGUMENTS
       DECLARE_CCTK_PARAMETERS
-
-c     Perhaps this and others should go into cctk.h
-      integer CCTK_Equals   
+      DECLARE_CCTK_FUNCTIONS
 
       real*8 deta,dq
       real*8, allocatable :: ac(:,:),ae(:,:),aw(:,:),an(:,:),as(:,:),
@@ -61,6 +59,15 @@ c     Perhaps this and others should go into cctk.h
       integer :: i,j,k,it,ier,nquads,ntries
       integer :: npoints,handle,ierror
       integer make_conformal_derivs
+
+      integer       param_table_handle, interp_handle
+      character(30) options_string
+      CCTK_REAL,    dimension(2) :: coord_origin, coord_delta
+      CCTK_POINTER, dimension(2) :: interp_coords
+      CCTK_POINTER, dimension(6) :: in_arrays, out_arrays
+      CCTK_INT,     dimension(2) :: in_array_dims
+      CCTK_INT,     dimension(6), parameter :: type_codes = CCTK_VARIABLE_REAL
+
 
       pi = 4.0d0*atan(1.0d0)
 c     DO NOT use integer*4
@@ -415,36 +422,50 @@ c     ------------------------------------------------
 
       npoints = nx*ny*nz
 
-c     Interpolator handle.
-
-      handle = -1
-
-      if (interpolation_order .eq. 1) then
-        call CCTK_InterpHandle (handle, "first-order uniform cartesian")
-      else if (interpolation_order .eq. 2) then
-        call CCTK_InterpHandle (handle, "second-order uniform cartesian")
-      else if (interpolation_order .eq. 3) then
-        call CCTK_InterpHandle (handle, "third-order uniform cartesian")
+!     Parameter table and interpolator handles.
+      options_string = "order = " // char(ichar('0') + interpolation_order)
+      call Util_TableCreateFromString (param_table_handle, options_string)
+      if (param_table_handle .lt. 0) then
+        call CCTK_WARN(0,"Cannot create parameter table for interpolator")
       endif
 
-      if (handle .lt. 0) then
-        call CCTK_WARN (0, "Couldn't get handle for interpolation operator")
+      call CCTK_InterpHandle (interp_handle, "uniform cartesian")
+      if (interp_handle .lt. 0) then
+        call CCTK_WARN(0,"Cannot get handle for interpolation ! Forgot to activate an implementation providing interpolation operators ??")
       endif
-      
-      call CCTK_InterpLocal  (ierror,cctkGH,handle,npoints,2,6,6,
-     $     ne,nq,etagrd,qgrd,
-     $     CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
-     $     abseta,q,
-     $     CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
-     $     psi2dv,detapsisph,dqpsisph,detaetapsisph,detaqpsisph,
-     $     dqqpsisph,
-     $     CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
-     $     CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
-     $     psi2d,detapsi2d,dqpsi2d,detaetapsi2d,detaqpsi2d,
-     $     dqqpsi2d,
-     $     CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,
-     $     CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL,CCTK_VARIABLE_REAL)
-      
+
+!     fill in the input/output arrays for the interpolator
+      coord_origin(1) = etagrd(1)
+      coord_origin(2) = qgrd(1)
+      coord_delta(1)  = etagrd(2) - etagrd(1)
+      coord_delta(2)  = qgrd(2) - qgrd(1)
+
+      interp_coords(1) = CCTK_PointerTo(abseta)
+      interp_coords(2) = CCTK_PointerTo(q)
+
+      in_array_dims(1) = ne; in_array_dims(2) = nq
+
+      in_arrays(1) = CCTK_PointerTo(psi2dv)
+      in_arrays(2) = CCTK_PointerTo(detapsisph)
+      in_arrays(3) = CCTK_PointerTo(dqpsisph)
+      in_arrays(4) = CCTK_PointerTo(detaetapsisph)
+      in_arrays(5) = CCTK_PointerTo(detaqpsisph)
+      in_arrays(6) = CCTK_PointerTo(dqqpsisph)
+
+      out_arrays(1) = CCTK_PointerTo(psi2d)
+      out_arrays(2) = CCTK_PointerTo(detapsi2d)
+      out_arrays(3) = CCTK_PointerTo(dqpsi2d)
+      out_arrays(4) = CCTK_PointerTo(detaetapsi2d)
+      out_arrays(5) = CCTK_PointerTo(detaqpsi2d)
+      out_arrays(6) = CCTK_PointerTo(dqqpsi2d)
+
+      call CCTK_InterpLocalUniform (ierror, 2,
+     $                              interp_handle, param_table_handle,
+     $                              coord_origin, coord_delta,
+     $                              npoints, type_codes(1), interp_coords,
+     $                              6, in_array_dims, type_codes, in_arrays,
+     $                              6, type_codes, out_arrays)
+
       psi = psi2d * exp(-0.5 * eta)
       detapsi2d = sign_eta * detapsi2d
       detaqpsi2d = sign_eta * detaqpsi2d
