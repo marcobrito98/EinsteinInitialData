@@ -31,8 +31,9 @@ C $Header$
       CCTK_REAL det, uxx, uxy, uxz, uyy, uyz, uzz
       CCTK_REAL vxe,vye,vze,sav
 
-      CCTK_REAL :: dx,dy,dz,time
-      CCTK_REAL :: ierr,xmx,xmn,ymx,ymn,zmx,zmn,rmx
+      CCTK_REAL dx,dy,dz,time
+      CCTK_REAL xmx,xmn,ymx,ymn,zmx,zmn,rmx
+      integer ierr
 
 C     Grid parameters.
 
