@@ -47,6 +47,18 @@ INT npoints_phi "Number of coefficients in the phi direction"
 
 
 
+REAL Newton_tol "Tolerance for Newton solver"
+{
+  (0:*) :: ""
+} 1.0e-10
+
+INT Newton_maxit "Maximum number of Newton iterations"
+{
+  0:* :: ""
+} 5
+
+
+
 REAL par_b "x coordinate of the m+ puncture"
 {
   (0.0:*) :: ""

@@ -5,10 +5,10 @@ ActiveThorns = "PUGH PUGHReduce PUGHSlab"
 ActiveThorns = "IOASCII IOBasic IOUtil"
 ActiveThorns = "ADMBase StaticConformal"
 ActiveThorns = "ADMConstraints ADMCoupling ADMMacros SpaceMask"
-ActiveThorns = "TwoPunctures"
+ActiveThorns = "IDPuncture TATelliptic TATJacobi TATMG TATPETSc"
 
 Cactus::cctk_itlast		= 0
-
+ 
 Time::dtfac			= 0.25
 
 Grid::type			= "byrange"
@@ -23,25 +23,25 @@ Driver::global_nx		= 35
 Driver::global_ny		= 35
 Driver::global_nz		= 35
 
-ADMBase::initial_data		= "twopunctures"
+ADMBase::initial_data		= "puncture"
 
-TwoPunctures::keep_u_around     = yes
+IDPuncture::verbose		= "yes"
 
-TwoPunctures::npoints_A         = 20
-TwoPunctures::npoints_B         = 20
-TwoPunctures::npoints_phi       = 12
+IDPuncture::bhm1		=  1.5
+IDPuncture::bhx1		=  1.5
+IDPuncture::bhpy1		=  2.0
+IDPuncture::bhsy1		=  0.5
+IDPuncture::bhsz1		= -0.5
 
-TwoPunctures::par_b             =  1.5
+IDPuncture::bhm2		=  1.0
+IDPuncture::bhx2		= -1.5
+IDPuncture::bhpy2		= -2.0
+IDPuncture::bhsx2		= -1.0
+IDPuncture::bhsz2		= -1.0
 
-TwoPunctures::par_m_plus        =  1.5
-TwoPunctures::par_P_plus[1]     =  2.0
-TwoPunctures::par_S_plus[1]     =  0.5
-TwoPunctures::par_S_plus[2]     = -0.5
+IDPuncture::bound		= "robin"
 
-TwoPunctures::par_m_minus       =  1.0
-TwoPunctures::par_P_minus[1]    = -2.0
-TwoPunctures::par_S_minus[0]    = -1.0
-TwoPunctures::par_S_minus[2]    = -1.0
+IDPuncture::solver		= "TATPETSc"
 
 ADMBase::metric_type		= "static conformal"
 StaticConformal::conformal_storage = "factor+derivs+2nd derivs"
@@ -49,11 +49,16 @@ StaticConformal::conformal_storage = "factor+derivs+2nd derivs"
 ADMBase::lapse_evolution_method	= "static"
 ADMBase::initial_lapse		= "one"
 
+TATJacobi::verbose		= yes
+
+TATPETSc::verbose		= yes
+TATPETsc::options		= "-snes_monitor -get_total_flops"
+  
 IO::out_dir			= $parfile
 IO::out_fileinfo		= "axis labels"
 
 IOBasic::outScalar_every	= 1
-IOBasic::outScalar_vars		= "staticconformal::psi admbase::metric admbase::curv admconstraints::hamiltonian admconstraints::momentum TwoPunctures::puncture_u"
+IOBasic::outScalar_vars		= "staticconformal::psi admbase::metric admbase::curv admconstraints::hamiltonian admconstraints::momentum idpuncture::u idpuncture::M idpuncture::N"
 
 IOASCII::out1D_every		= 1
-IOASCII::out1D_vars		= "staticconformal::psi admbase::metric admbase::curv admconstraints::hamiltonian admconstraints::momentum TwoPunctures::puncture_u"
+IOASCII::out1D_vars		= "staticconformal::psi admbase::metric admbase::curv admconstraints::hamiltonian admconstraints::momentum idpuncture::u idpuncture::M idpuncture::N"

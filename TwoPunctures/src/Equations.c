@@ -67,8 +67,8 @@ BY_KKofxyz (double x, double y, double z)
                  + np_Pp * n_plus[i] * n_plus[j]) / r2_plus
 	+ 1.5 * (par_P_minus[i] * n_minus[j] + par_P_minus[j] * n_minus[i]
 		 + nm_Pm * n_minus[i] * n_minus[j]) / r2_minus
-	- 3.0 * (np_Sp[i] * n_plus[j] + np_Sp[j] * n_plus[j]) / r3_plus
-	- 3.0 * (nm_Sm[i] * n_minus[j] + nm_Sm[i] * n_minus[j]) / r3_minus;
+	- 3.0 * (np_Sp[i] * n_plus[j] + np_Sp[j] * n_plus[i]) / r3_plus
+	- 3.0 * (nm_Sm[i] * n_minus[j] + nm_Sm[j] * n_minus[i]) / r3_minus;
       if (i == j)
 	Aij -= +1.5 * (np_Pp / r2_plus + nm_Pm / r2_minus);
       AijAij += Aij * Aij;
@@ -124,8 +124,8 @@ BY_Aijofxyz (double x, double y, double z, double Aij[3][3])
 		 + np_Pp * n_plus[i] * n_plus[j]) / r2_plus
 	+ 1.5 * (par_P_minus[i] * n_minus[j] + par_P_minus[j] * n_minus[i]
 		 + nm_Pm * n_minus[i] * n_minus[j]) / r2_minus
-	- 3.0 * (np_Sp[i] * n_plus[j] + np_Sp[j] * n_plus[j]) / r3_plus
-	- 3.0 * (nm_Sm[i] * n_minus[j] + nm_Sm[i] * n_minus[j]) / r3_minus;
+	- 3.0 * (np_Sp[i] * n_plus[j] + np_Sp[j] * n_plus[i]) / r3_plus
+	- 3.0 * (nm_Sm[i] * n_minus[j] + nm_Sm[j] * n_minus[i]) / r3_minus;
       if (i == j)
 	Aij[i][j] -= +1.5 * (np_Pp / r2_plus + nm_Pm / r2_minus);
     }

@@ -43,6 +43,9 @@ double PunctEvalAtArbitPosition (double *v, double A, double B, double phi,
 void calculate_derivs (int i, int j, int k, int ivar, int nvar, int n1,
 		       int n2, int n3, derivs v, derivs vv);
 double interpol (double a, double b, double c, derivs v);
+double PunctTaylorExpandAtArbitPosition (int ivar, int nvar, int n1,
+                                         int n2, int n3, derivs v, double x,
+                                         double y, double z);
 double PunctIntPolAtArbitPosition (int ivar, int nvar, int n1,
 				   int n2, int n3, derivs v, double x,
 				   double y, double z);

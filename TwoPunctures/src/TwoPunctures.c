@@ -32,17 +32,20 @@ TwoPunctures (CCTK_ARGUMENTS)
   int nvar = 1, n1 = npoints_A, n2 = npoints_B, n3 = npoints_phi;
 
   int i, j, k, ntotal = n1 * n2 * n3 * nvar;
-  double *F;
-  derivs u, v;
+  static double *F = NULL;
+  static derivs u, v;
 
-  F = dvector (0, ntotal - 1);
-  allocate_derivs (&u, ntotal);
-  allocate_derivs (&v, ntotal);
+  if (! F) {
+    /* Solve only when called for the first time */
+    F = dvector (0, ntotal - 1);
+    allocate_derivs (&u, ntotal);
+    allocate_derivs (&v, ntotal);
 
-  CCTK_INFO ("Solving puncture equation");
-  Newton (nvar, n1, n2, n3, v, 1.e-10, 5);
+    CCTK_INFO ("Solving puncture equation");
+    Newton (nvar, n1, n2, n3, v, Newton_tol, Newton_maxit);
 
-  F_of_v (nvar, n1, n2, n3, v, F, u);
+    F_of_v (nvar, n1, n2, n3, v, F, u);
+  }
 
   CCTK_INFO ("Interpolating result");
   if (CCTK_EQUALS(metric_type, "static conformal")) {
@@ -71,8 +74,10 @@ TwoPunctures (CCTK_ARGUMENTS)
         const double r_minus
           = sqrt(pow2(x[ind] + par_b) + pow2(y[ind]) + pow2(z[ind]));
         
-        const double U = PunctIntPolAtArbitPosition
+        const double U = PunctTaylorExpandAtArbitPosition
 	  (0, nvar, n1, n2, n3, v, x[ind], y[ind], z[ind]);
+/*         const double U = PunctIntPolAtArbitPosition */
+/* 	  (0, nvar, n1, n2, n3, v, x[ind], y[ind], z[ind]); */
         const double psi1 = 1
           + 0.5 * par_m_plus / r_plus
           + 0.5 * par_m_minus / r_minus + U;
@@ -158,7 +163,7 @@ TwoPunctures (CCTK_ARGUMENTS)
             psizz[ind] = pzz / static_psi;
           }
 
-        } /* if conformal-state>0 */
+        } /* if conformal-state > 0 */
           
         puncture_u[ind] = U;
 
@@ -180,7 +185,10 @@ TwoPunctures (CCTK_ARGUMENTS)
     }
   }
 
-  free_dvector (F, 0, ntotal - 1);
-  free_derivs (&u, ntotal);
-  free_derivs (&v, ntotal);
+  if (0) {
+    /* Keep the result around for the next time */
+    free_dvector (F, 0, ntotal - 1);
+    free_derivs (&u, ntotal);
+    free_derivs (&v, ntotal);
+  }
 }

@@ -1,5 +1,6 @@
 // TwoPunctures:  File  "FuncAndJacobian.c"
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -13,6 +14,11 @@
 #define FAC sin(al)*sin(be)*sin(al)*sin(be)*sin(al)*sin(be)
 //#define FAC sin(al)*sin(be)*sin(al)*sin(be)
 //#define FAC 1
+
+static inline double min (double const x, double const y)
+{
+  return x<y ? x : y;
+}
 
 // -------------------------------------------------------------------------------
 int
@@ -648,18 +654,65 @@ interpol (double a, double b, double c, derivs v)
 }
 
 // -------------------------------------------------------------------------------
-// Calculates the value of v at an arbitrary position (A,B,phi)
+// Calculates the value of v at an arbitrary position (x,y,z)
+double
+PunctTaylorExpandAtArbitPosition (int ivar, int nvar, int n1,
+                                  int n2, int n3, derivs v, double x, double y,
+                                  double z)
+{
+  DECLARE_CCTK_PARAMETERS;
+  double xs, ys, zs, rs2, phi, X, R, A, B, al, be, aux1, aux2, a, b, c,
+    result, Ui;
+  int i, j, k;
+  derivs vv;
+  allocate_derivs (&vv, 1);
+
+  xs = x / par_b;
+  ys = y / par_b;
+  zs = z / par_b;
+  rs2 = ys * ys + zs * zs;
+  phi = atan2 (z, y);
+  if (phi < 0)
+    phi += 2 * Pi;
+
+  aux1 = 0.5 * (xs * xs + rs2 - 1);
+  aux2 = sqrt (aux1 * aux1 + rs2);
+  X = asinh (sqrt (aux1 + aux2));
+  R = asin (min(1.0, sqrt (-aux1 + aux2)));
+  if (x < 0)
+    R = Pi - R;
+
+  A = 2 * tanh (0.5 * X) - 1;
+  B = tan (0.5 * R - Piq);
+  al = Pi - acos (A);
+  be = Pi - acos (B);
+
+  i = rint (al * n1 / Pi - 0.5);
+  j = rint (be * n2 / Pi - 0.5);
+  k = rint (0.5 * phi * n3 / Pi);
+  
+  a = al - Pi * (i + 0.5) / n1;
+  b = be - Pi * (j + 0.5) / n2;
+  c = phi - 2 * Pi * k / n3;
+
+  calculate_derivs (i, j, k, ivar, nvar, n1, n2, n3, v, vv);
+  result = interpol (a, b, c, vv);
+  free_derivs (&vv, 1);
+
+  Ui = (A - 1) * result;
+
+  return Ui;
+}
+
+// -------------------------------------------------------------------------------
+// Calculates the value of v at an arbitrary position (x,y,z)
 double
 PunctIntPolAtArbitPosition (int ivar, int nvar, int n1,
 			    int n2, int n3, derivs v, double x, double y,
 			    double z)
 {
   DECLARE_CCTK_PARAMETERS;
-  double xs, ys, zs, rs2, phi, X, R, A, B, al, be, aux1, aux2, a, b, c,
-    result, Us, Ui;
-  int i, j, k;
-  derivs vv;
-  allocate_derivs (&vv, 1);
+  double xs, ys, zs, rs2, phi, X, R, A, B, aux1, aux2, result, Ui;
 
   xs = x / par_b;
   ys = y / par_b;
@@ -678,67 +731,12 @@ PunctIntPolAtArbitPosition (int ivar, int nvar, int n1,
 
   A = 2 * tanh (0.5 * X) - 1;
   B = tan (0.5 * R - Piq);
-  al = Pi - acos (A);
-  be = Pi - acos (B);
 
-  i = rint (al * n1 / Pi - 0.5);
-  j = rint (be * n2 / Pi - 0.5);
-  k = rint (0.5 * phi * n3 / Pi);
+  result = PunctEvalAtArbitPosition (v.d0, A, B, phi, n1, n2, n3);
 
-  a = al - Pi * (i + 0.5) / n1;
-  b = be - Pi * (j + 0.5) / n2;
-  c = phi - 2 * Pi * k / n3;
-
-  calculate_derivs (i, j, k, ivar, nvar, n1, n2, n3, v, vv);
-  result = interpol (a, b, c, vv);
-  free_derivs (&vv, 1);
-
-//      Us = (A-1)*PunctEvalAtArbitPosition(v.d0, A, B, phi, n1, n2, n3);
   Ui = (A - 1) * result;
-//      printf("%e %e %e Us=%e Ui=%e 1-Ui/Us=%e\n",x,y,z,Us,Ui,1-Ui/Us);
 
   return Ui;
-
-/*	calculate_derivs(i+1, j,   k,   ivar, nvar, n1, n2, n3, v, vv, 2);
-	calculate_derivs(i,   j+1, k,   ivar, nvar, n1, n2, n3, v, vv, 3);
-	calculate_derivs(i+1, j+1, k,   ivar, nvar, n1, n2, n3, v, vv, 4);
-	calculate_derivs(i,   j,   k+1, ivar, nvar, n1, n2, n3, v, vv, 5);
-	calculate_derivs(i+1, j,   k+1, ivar, nvar, n1, n2, n3, v, vv, 6);
-	calculate_derivs(i,   j+1, k+1, ivar, nvar, n1, n2, n3, v, vv, 7);
-	calculate_derivs(i+1, j+1, k+1, ivar, nvar, n1, n2, n3, v, vv, 8);
-	v_intpol[2]=interpol(ha*(a-1),hb*b,    hp*c,    vv,2);
-	v_intpol[3]=interpol(ha*a,    hb*(b-1),hp*c,    vv,3);
-	v_intpol[4]=interpol(ha*(a-1),hb*(b-1),hp*c,    vv,4);
-	v_intpol[5]=interpol(ha*a,    hb*b,    hp*(c-1),vv,5);
-	v_intpol[6]=interpol(ha*(a-1),hb*b,    hp*(c-1),vv,6);
-	v_intpol[7]=interpol(ha*a,    hb*(b-1),hp*(c-1),vv,7);
-	v_intpol[8]=interpol(ha*(a-1),hb*(b-1),hp*(c-1),vv,8);
-	for(j=1;j<=8;j++)
-		printf("Value U[V] at origin:%16.15f\tj=%d\n",-2*v_intpol[j],j);*/
-/*	result = 0;
-	for(mi=i-npol; mi<=i+npol; mi++){
-		al_m  = Pih*(2*mi+1)/n1;
-		for(mj=j-npol; mj<=j+npol; mj++){
-			be_m  = Pih*(2*mj+1)/n2;  
-			for(mk=k-npol; mk<=k+npol; mk++){
-				phi_m = 2.*Pi*mk/n3;
-				g_m   = 1;
-				for(ni=i-npol; ni<=i+npol; ni++){
-					al_n  = Pih*(2*ni+1)/n1;
-					if(ni != mi) g_m *= (al - al_n)/(al_m - al_n);
-				}
-				for(nj=j-npol; nj<=j+npol; nj++){
-					be_n  = Pih*(2*nj+1)/n2;  
-					if(nj != mj) g_m *= (be - be_n)/(be_m - be_n);
-				}
-				for(nk=k-npol; nk<=k+npol; nk++){
-					phi_n = 2.*Pi*nk/n3;
-					if(nk != mk) g_m *= (phi-phi_n)/(phi_m - phi_n);
-				}
-				result += g_m*v.d0[Index(ivar,mi,mj,mk,nvar,n1,n2,n3)];
-			}
-		}
-	}	*/
 }
 
 // -------------------------------------------------------------------------------
