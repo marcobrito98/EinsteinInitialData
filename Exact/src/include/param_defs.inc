@@ -67,3 +67,6 @@ c miscelaneous spacetimes
 #define EXACT__boost_rotation_symmetric	80
 #define EXACT__bowl			81
 #define EXACT__constant_density_star	82
+
+c math
+#define EXACT__pi 3.14159265358979d0

@@ -66,7 +66,7 @@ c (Schwarzschild black hole with cosmological constant)
 c
        elseif (decoded_exact_model .eq. EXACT__Schwarzschild_Lemaitre) then
          razsch2=x(i,j,k)*x(i,j,k)+y(i,j,k)*y(i,j,k)+z(i,j,k)*z(i,j,k)
-         coefsch=-Schwarzschild_Lemaitre___Lambda/(8.0D0*pi)
+         coefsch=-Schwarzschild_Lemaitre___Lambda/(8.0D0*EXACT__pi)
          pppsch=1.0D0-2.0D0*Schwarzschild_Lemaitre___mass/sqrt(razsch2)
      &               -Schwarzschild_Lemaitre___Lambda*razsch2/3.0D0
          unusch=(1.0D0-pppsch)/pppsch/razsch2
@@ -102,16 +102,16 @@ c
           unu1 = sqrt(3.0D0*Lemaitre___Lambda)
      &           * CCTK_time * (Lemaitre___kappa+1.0D0) / (2.0D0)
           raz  = Lemaitre___R0*(cosh(unu1)
-     &                         + sqrt(1.0D0+8.0D0*pi*Lemaitre___epsilon0
+     &                         + sqrt(1.0D0+8.0D0*EXACT__pi*Lemaitre___epsilon0
      &                                               /Lemaitre___Lambda)
      &                           *sinh(unu1))
      &                        **(2.0D0/(3.0D0*Lemaitre___kappa+3.0D0)) 
           raz2 = raz*raz
-          treiori = -Lemaitre___Lambda*raz2/8.0D0/pi
+          treiori = -Lemaitre___Lambda*raz2/8.0D0/EXACT__pi
      &           +Lemaitre___epsilon0*Lemaitre___kappa
      &                              *raz**(-3.0D0*Lemaitre___kappa-1.0D0)
 
-          Ttt = Ttt + Lemaitre___Lambda/8.0D0/pi
+          Ttt = Ttt + Lemaitre___Lambda/8.0D0/EXACT__pi
      &              + Lemaitre___epsilon0*raz**(-3.0D0*(Lemaitre___kappa+1.0D0))
           Txx = Txx + treiori
           Tyy = Tyy + treiori
@@ -131,7 +131,7 @@ cc          rr2  = x(i,j,k)*x(i,j,k)+y(i,j,k)*y(i,j,k)+z(i,j,k)*z(i,j,k)
 cc
 cc          if (Robertson_Walker___pressure .gt. 0) then
 cc            aha1  = Robertson_Walker___k * (Robertson_Walker___R0**2)
-cc     &                                  / (8.0D0*pi*(raza(i,j,k)**2))
+cc     &                                  / (8.0D0*EXACT__pi*(raza(i,j,k)**2))
 cc            aha2 = Robertson_Walker___k/(1.0D0 - Robertson_Walker___k*rr2) 
 cc
 cc            Ttt =  Ttt + 3.0D0*aha1/(raza(i,j,k)*raza(i,j,k))
@@ -158,7 +158,7 @@ c
 c de Sitter spacetime
 c
         elseif (decoded_exact_model .eq. EXACT__de_Sitter) then
-          Ttt =  Ttt + 1.0D0/6.0D0/pi/(CCTK_time**2)
+          Ttt =  Ttt + 1.0D0/6.0D0/EXACT__pi/(CCTK_time**2)
           Ttx  = Ttx
           Tty  = Tty
           Ttz  = Ttz
@@ -175,7 +175,7 @@ c
 c de Sitter spacetime with cosmological constant
 c
         elseif (decoded_exact_model .eq. EXACT__de_Sitter_Lambda) then
-          aaaa = de_Sitter_Lambda___scale/(8.0D0*pi)
+          aaaa = de_Sitter_Lambda___scale/(8.0D0*EXACT__pi)
           bbbb = aaaa*exp(2.0D0*sqrt(de_Sitter_Lambda___scale/3.0D0)*CCTK_time)
 
           Ttt  = Ttt + aaaa
@@ -196,7 +196,7 @@ c anti-de Sitter spacetime with cosmological constant
 c
 
         elseif (decoded_exact_model .eq. EXACT__anti_de_Sitter_Lambda) then
-          aaaa1 = anti_de_Sitter_Lambda___scale/(8.0D0*pi)
+          aaaa1 = anti_de_Sitter_Lambda___scale/(8.0D0*EXACT__pi)
           bbbb1 = aaaa1*exp(2.0D0*sqrt(-anti_de_Sitter_Lambda___scale/3.0D0)
      &                           *x(i,j,k))
         
@@ -224,7 +224,7 @@ c
 c Bertotti spacetime
 c
         elseif (decoded_exact_model .eq. EXACT__Bertotti) then
-          bass  = Bertotti___Lambda/(8.0D0*pi)
+          bass  = Bertotti___Lambda/(8.0D0*EXACT__pi)
           term1 = bass*exp(2.0D0*sqrt(-Bertotti___Lambda)*x(i,j,k))
           term2 = bass*exp(2.0D0*sqrt(-Bertotti___Lambda)*z(i,j,k))
 
@@ -247,7 +247,7 @@ c
         elseif (decoded_exact_model .eq. EXACT__Kasner_like) then
 
           kkkk=Kasner_like___q*(2.0D0-3.0D0*Kasner_like___q)
-     &                        /(8.0D0*pi*(CCTK_time**2))
+     &                        /(8.0D0*EXACT__pi*(CCTK_time**2))
 
           Ttt  = Ttt + kkkk
           Ttx  = Ttx
@@ -275,7 +275,7 @@ c
         kkkk1 = (  Kasner_generalized___p1 - Kasner_generalized___p1**2
      &           + Kasner_generalized___p2 - Kasner_generalized___p2**2
      &           - Kasner_generalized___p1*Kasner_generalized___p2 )
-     &          / (8.0D0*pi*(CCTK_time**2))
+     &          / (8.0D0*EXACT__pi*(CCTK_time**2))
 
         Ttt  = Ttt + kkkk1
         Ttx  = Ttx
@@ -323,10 +323,10 @@ c
           if (rr.le.star_r) then
             unu = 3.0D0*sqrt(1.0D0-2.0D0*star_m/star_r)
             doi = sqrt(1.0D0-2.0D0*star_m*rr*rr/r3)
-            trei= star_m*(unu-3.0D0*doi)/(2*pi*(unu-doi)*r3)
+            trei= star_m*(unu-3.0D0*doi)/(2*EXACT__pi*(unu-doi)*r3)
             Ttt = Ttt + 3.0D0*star_m*
      &        (5.0D0-9.0D0*star_m/star_r - unu*doi
-     &        -star_m*rr*rr/r3)/(8.0D0*pi*r3)
+     &        -star_m*rr*rr/r3)/(8.0D0*EXACT__pi*r3)
             Txx = Txx -trei*(1.0D0+2.0D0*star_m*x(i,j,k)*x(i,j,k)/
      &      (doi*doi*r3))/2.0D0
             Tyy = Tyy -trei*(1.0D0+2.0D0*star_m*y(i,j,k)*y(i,j,k)/
