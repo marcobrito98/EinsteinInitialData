@@ -87,7 +87,7 @@ C     Get parameters at first call.
 
       end if
 
-      if (rho.lt.0) write(*,*) "Warning: negative rho in brillq:", rho
+      if (rho.lt.0) call CCTK_WARN(1,"Warning: negative rho in brillq:")
 
 C     Calculate q(rho,z) from a choice of forms. Type 0, 1 and 2 are those
 C     of Bruegmann.
@@ -122,8 +122,7 @@ C     smooth "pure quadrupole" q should be.
 
 C     Unknown type for q function.
 
-         write(*,*) "Unknown type of Brill function q."
-         STOP
+         call CCTK_WARN(0,"Unknown type of Brill function q.")
 
       end if
 
