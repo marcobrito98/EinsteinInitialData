@@ -569,30 +569,42 @@ c     time symmetry
       enddo
 
 c     initialize the conformal factor
-      if (use_conformal == 1) then
-         conformal_state = CONFORMAL_METRIC
+c   Check if we should create and store conformal factor stuff */
+      if (CCTK_EQUALS(metric_type, "static conformal")) then 
+
+         conformal_state = 1
+
+         if(CCTK_EQUALS(conformal_storage,"factor+derivs")) then
+
+            conformal_state = 2;
+
+         else if(CCTK_EQUALS(conformal_storage,"factor+derivs+2nd derivs")) then
+            conformal_state = 3;
+         end if
+
          do k=1,cctk_lsh(3)
             do j=1,cctk_lsh(2)
                do i=1,cctk_lsh(1)		 
 
                   psi(i,j,k)   = 1d0
-                  psix(i,j,k)  = 0d0
-                  psiy(i,j,k)  = 0d0
-                  psiz(i,j,k)  = 0d0    
-                  psixy(i,j,k) = 0d0
-                  psixz(i,j,k) = 0d0
-                  psiyz(i,j,k) = 0d0  
-                  psixx(i,j,k) = 0d0
-                  psiyy(i,j,k) = 0d0
-                  psizz(i,j,k) = 0d0
 
+                  if(conformal_state .gt. 1) then
+                     psix(i,j,k)  = 0d0
+                     psiy(i,j,k)  = 0d0
+                     psiz(i,j,k)  = 0d0    
+                  endif
+                  if(conformal_state .gt. 2) then
+                     psixy(i,j,k) = 0d0
+                     psixz(i,j,k) = 0d0
+                     psiyz(i,j,k) = 0d0  
+                     psixx(i,j,k) = 0d0
+                     psiyy(i,j,k) = 0d0
+                     psizz(i,j,k) = 0d0
+                  endif
                end do
             end do
          end do
-      else
-         conformal_state = NOCONFORMAL_METRIC
       end if
-
       
       return
       end 

@@ -1,7 +1,14 @@
 # Schedule definitions for thorn IDLinearWaves
 
+
+
 if (CCTK_Equals(initial_data,"planewaves")) 
 {
+  schedule IDLinearWaves_ParamChecker at CCTK_PARAMCHECK
+  {
+    LANG: C
+  } "Check that the metric_type is recognised"
+
   schedule planewaves at CCTK_INITIAL
   {
     LANG: Fortran
@@ -10,6 +17,11 @@ if (CCTK_Equals(initial_data,"planewaves"))
 
 if (CCTK_Equals(initial_data,"teukwaves")) 
 {
+  schedule IDLinearWaves_ParamChecker at CCTK_PARAMCHECK
+  {
+    LANG: C
+  } "Check that the metric_type is recognised"
+
   schedule teukwaves at CCTK_INITIAL
   {
     LANG: Fortran

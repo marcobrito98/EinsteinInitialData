@@ -3,7 +3,7 @@
 #########################################################
 
 # Required thorns
-ActiveThorns = "Boundary time pugh pughslab pughreduce cartgrid3d einstein ADM IDLinearWaves ioascii ioutil iobasic"
+ActiveThorns = "Boundary time pugh pughslab pughreduce cartgrid3d ADMBase ADM ADMMacros StaticConformal CoordGauge IDLinearWaves ioascii ioutil iobasic"
 
 # GENERAL 
 
@@ -22,12 +22,15 @@ cactus::cctk_itlast        =  100
 
 # Einstein 
 
-einstein::initial_data     = "planewaves"
-einstein::evolution_system = "ADM"     
+admbase::metric_type       =  "static conformal"
+admbase::initial_data      =  "planewaves"
+admbase::evolution_method  =  "ADM"     
 
 adm::method        =  "leapfrog" 
 adm::bound         =  "flat"
-einstein::slicing  =  "geodesic"  
+
+admbase::lapse_evolution_method  =  "coordgauge"  
+coordgauge::lapse_list           =  "geodesic"  
 
 # IDLinearwaves
 idlinearwaves::amplitude  = 0.001
@@ -45,15 +48,15 @@ IO::out_fileinfo         = "none"
 IO::parfile_write        = "no"
 
 IOBasic::outScalar_every =  10      
-IOBasic::outScalar_vars  = "einstein::gzz einstein::kzz einstein::alp"
+IOBasic::outScalar_vars  = "admbase::gzz admbase::kzz admbase::alp"
 IOASCII::out1D_every =  10      
-IOASCII::out1D_vars  = "einstein::gxx einstein::gxy einstein::gxz
-                        einstein::gyy einstein::gyz einstein::gzz
-                        einstein::kxx einstein::kxy einstein::kxz
-                        einstein::kyy einstein::kyz einstein::kzz"
+IOASCII::out1D_vars  = "admbase::gxx admbase::gxy admbase::gxz
+                        admbase::gyy admbase::gyz admbase::gzz
+                        admbase::kxx admbase::kxy admbase::kxz
+                        admbase::kyy admbase::kyz admbase::kzz"
 
 
 IOBasic::outInfo_every = 5
-IOBasic::outInfo_vars = "einstein::gzz"
+IOBasic::outInfo_vars = "admbase::gzz"
 
 ##################################################################
