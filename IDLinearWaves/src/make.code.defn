@@ -4,6 +4,7 @@
 # Source files in this directory
 SRCS = 	ParamCheck.c\
 	planewaves.F77\
+	sine_planewaves.F77\
 	standing_planewaves.F77\
 	teukwaves.F77
 
