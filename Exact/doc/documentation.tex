@@ -151,8 +151,16 @@ coordinates on the slice.  Given a lapse and shift computed by some
 other thorn(s), the slice can be evolved through the exact solution,
 in order to check on an evolution code, or in order to test gauge
 conditions without the need for an evolution code.  This option is
-documented in the file \verb|slice_evolver.tex| in the \verb|doc/|
-directory.
+documented in \verb|doc/slice_evolver.tex|.
+
+This thorn is mainly written in a mixture of Fortran~77 and Fortran~90;
+a few routines are written in C.  At present Fortran~90 is used only
+for the ``arbitrary slice'' option (described in the previous paragraph).
+If this option isn't needed, then the Fortran~90 code can all be
+\verb|#ifdef|-ed out, allowing this thorn to be compiled on a system
+having only Fortran~77 and C compilers (\ie{} no Fortran~90 compiler).
+This can be done by changing a single line in \verb|src/include/Exact.inc|;
+see the comments there for details.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

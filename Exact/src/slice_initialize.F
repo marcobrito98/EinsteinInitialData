@@ -3,12 +3,14 @@ C $Header$
 #include "cctk.h"
 #include "cctk_Parameters.h"
 #include "cctk_Arguments.h"
+#include "Exact.inc"
 
       subroutine Exact__slice_initialize(CCTK_ARGUMENTS)
-
       implicit none
-
       DECLARE_CCTK_ARGUMENTS
+
+c #define-ing the symbol EXACT_NO_F90 will turn this subroutine into a no-op
+#ifndef EXACT_NO_F90
       DECLARE_CCTK_PARAMETERS
 
 C     Initialize position of slice in exact solution spacetime.
@@ -33,7 +35,6 @@ c     about the conformal factor
 c      conformal_state = 0
 c      psi = 1.0D0
 
+#endif
       return
       end
-
-

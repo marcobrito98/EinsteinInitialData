@@ -4,11 +4,14 @@ C $Header$
 
 #include "cctk.h"
 #include "cctk_Arguments.h"
+#include "Exact.inc"
 
       subroutine Exact__slice_data(CCTK_ARGUMENTS)
       implicit none
       DECLARE_CCTK_ARGUMENTS
 
+c #define-ing the symbol EXACT_NO_F90 will turn this subroutine into a no-op
+#ifndef EXACT_NO_F90
       integer i, j, k, l, m, n, p, q, s
       integer nx,ny,nz
       integer ierr
@@ -336,6 +339,7 @@ C     Bound and synchronize the 3-metric and extrinsic curvature.
       call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,kzz)
 
       call CCTK_SyncGroup(ierr,cctkGH,"admbase::curv")
+#endif
 
       return
       end

@@ -4,7 +4,10 @@ C $Header$
 
 #include "cctk.h"
 #include "cctk_Arguments.h"
+#include "Exact.inc"
 
+c #define-ing the symbol EXACT_NO_F90 will turn this file into a no-op
+#ifndef EXACT_NO_F90
       subroutine Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,var)
 
       implicit none
@@ -142,3 +145,4 @@ C     8 corners.
 
       return
       end
+#endif

@@ -3,11 +3,14 @@ C $Header$
 
 #include "cctk.h"
 #include "cctk_Arguments.h"
+#include "Exact.inc"
 
       subroutine Exact__slice_evolve(CCTK_ARGUMENTS)
       implicit none
       DECLARE_CCTK_ARGUMENTS
 
+c #define-ing the symbol EXACT_NO_F90 will turn this subroutine into a no-op
+#ifndef EXACT_NO_F90
       integer i,j,k,m,n
       integer nx,ny,nz
       integer ierr
@@ -119,6 +122,7 @@ C     Extract Cauchy data at the new position, and store dxA/dt
 C     for use in the next Lax step.
 
       call Exact__slice_data(CCTK_ARGUMENTS)
+#endif
 
       return
       end

@@ -27,3 +27,6 @@ param_defs.inc
 slice_normal.inc
 	This contains a fragment of Fortran code to compute the
 	normal vector to a slice.
+
+Exact.inc
+	Misc Fortran definitions for the whole thorn.
