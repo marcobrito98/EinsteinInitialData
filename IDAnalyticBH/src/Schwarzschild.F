@@ -74,12 +74,12 @@ c     If the initial lapse is not one ...
       endif
       
 c     time symmetric initial slice
-      hxx = zero 
-      hxy = zero
-      hxz = zero
-      hyy = zero
-      hyz = zero
-      hzz = zero
+      kxx = zero 
+      kxy = zero
+      kxz = zero
+      kyy = zero
+      kyz = zero
+      kzz = zero
 
       return
       end subroutine Schwarzschild

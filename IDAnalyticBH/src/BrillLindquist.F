@@ -179,12 +179,12 @@ c     ----------------------------------
 
 c     Time-symmetric data
 c     -------------------
-      hxx = 0d0
-      hyy = 0d0
-      hzz = 0d0
-      hxy = 0d0 
-      hxz = 0d0  
-      hyz = 0d0   
+      kxx = 0d0
+      kyy = 0d0
+      kzz = 0d0
+      kxy = 0d0 
+      kxz = 0d0  
+      kyz = 0d0   
 
       return
       end
