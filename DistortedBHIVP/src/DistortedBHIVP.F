@@ -25,9 +25,6 @@ c
 c     @endhistory 
 c@@   */
 
-c     Need include file from Einstein
-#include "CactusEinstein/Einstein/src/Einstein.h"
-
       subroutine DistortedBHIVP(CCTK_ARGUMENTS)
 
       implicit none
@@ -60,8 +57,31 @@ c     Perhaps this and others should go into cctk.h
       integer :: nx,ny,nz
       integer i,j,k,ier,nquads,nocts,order
       integer npoints,handle,ierror
+      integer make_conformal_derivs
+
+c Check if we should create and store conformal factor stuff
+
+      if (CCTK_EQUALS(metric_type, "static conformal")) then
+
+         conformal_state = 1
       
-      conformal_state = CONFORMAL_METRIC     
+         if(CCTK_EQUALS(conformal_storage,"factor+derivs")) then
+         
+            conformal_state = 2
+            make_conformal_derivs = 1
+
+          else if (CCTK_EQUALS(conformal_storage,"factor+derivs+2nd derivs")) then
+          
+            conformal_state = 3
+            make_conformal_derivs = 1
+
+          endif
+          
+       else
+       
+         make_conformal_derivs = 0
+       
+       endif
       
       pi = 4.0d0*atan(1.0d0)
 
