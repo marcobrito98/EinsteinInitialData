@@ -194,7 +194,7 @@ c        I use the same trick as above.
          rr2 = (one - a*fac/(one + dexp(-s*(r-c)))/r)**2
 
       else
-         write (warn_buffer, '(a,i)')
+         write (warn_buffer, '(a,i8)')
      $         'Unknown type = ', type
          call CCTK_WARN(0, warn_buffer)
 
