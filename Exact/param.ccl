@@ -39,11 +39,26 @@ EXTENDS KEYWORD evolution_system ""
   "slice" :: "Evolve arbitrary slice and  extract Cauchy data"
 } ""
 
+EXTENDS KEYWORD evolution_system ""
+{
+  "slice" :: "Evolve arbitrary slice and  extract Cauchy data"
+} ""
+
 
 # In view of using this thorn in conjunction with other thorns
 # his parameters are declared global
 
 global:
+
+#This is a trial. 
+
+KEYWORD overwrite_boundary "Overwrite g and K on the boundary"
+{
+  "no" :: "Do nothing"
+  "exact" :: "Use boundary data from an exact solution on a trivial slice"
+} "no"
+
+private:
 
 # General parameters
 
