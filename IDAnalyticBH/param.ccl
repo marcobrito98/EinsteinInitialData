@@ -111,7 +111,7 @@ shares: ADMBase
 
 EXTENDS KEYWORD initial_data 
 {
-  "schwarzschild"      :: "One Schwarzshild black hole"
+  "schwarzschild"      :: "One Schwarzschild black hole"
   "bl_bh"              :: "Brill Lindquist black holes"
   "misner_bh"          :: "Misner black holes"
   "multiple_misner_bh" :: "Multiple Misner black holes"
