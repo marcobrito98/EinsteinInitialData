@@ -1,6 +1,6 @@
 !DESC "Demonstration file for Pablo/AutoPilot"
 
-ActiveThorns = "Time PsiKadelia ADMConstraints PUGH PUGHInterp PUGHReduce CartGrid3D Einstein ADM IDAxiBrillBH IOBasic IOFlexIO IOASCII IOUtil"
+ActiveThorns = "Pughslab FlexIO Boundary Time PsiKadelia ADMConstraints PUGH PUGHInterp PUGHReduce CartGrid3D Einstein ADM IDAxiBrillBH IOBasic IOFlexIO IOASCII IOUtil"
 
 
 # Parameters which will affect performance
@@ -23,15 +23,15 @@ iobasic::outInfo_vars    = "einstein::alp PsiKadelia::psi4re admconstraints::ham
 
 # OUTPUT Scalars reductions
 iobasic::outScalar_every = 1
-iobasic::outScalar_vars  = "einstein::alp einstein::metric admconstraints::admcontraints PsiKadelia::psi4re "
+iobasic::outScalar_vars  = "einstein::alp einstein::metric admconstraints::ham PsiKadelia::psi4re "
  
 # OUTPUT 1D ASCII
 ioascii::out1D_every     = 10
-ioascii::out1D_vars      = "einstein::alp einstein::metric admconstraints::admcontraints PsiKadelia::psi4re "
+ioascii::out1D_vars      = "einstein::alp einstein::metric admconstraints::ham PsiKadelia::psi4re "
  
 # OUTPUT 3D IEEEIO
 #ioflexio::out3D_every    = 10
-#ioflexio::out3D_vars     = "einstein::alp einstein::metric admconstraints::admcontraints PsiKadelia::psi4re "
+#ioflexio::out3D_vars     = "einstein::alp einstein::metric admconstraints::ham PsiKadelia::psi4re "
 
 # CHECKPOINT 
 IOFlexIO::checkpoint       = "yes"
@@ -50,7 +50,7 @@ IO::checkpoint_dir         = "pablo"
 
 # Parameters which should be OK 
 # -----------------------------
-IO::checkpoint_save        = 1
+IO::checkpoint_keep        = 1
 IO::checkpoint_file        = "checkpoint"
 einstein::evolution_system = "ADM"     
 grid::type                 = "byspacing"
