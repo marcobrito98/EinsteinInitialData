@@ -44,7 +44,6 @@ void BrillLindquist(CCTK_ARGUMENTS)
   CCTK_REAL hole_y0[MAX_HOLES], hole_z0[MAX_HOLES];
   CCTK_REAL tmp1, tmp2, tmp3;
   CCTK_REAL xval, yval, zval;
-  CCTK_REAL x_2, y_2, z_2;
   int i, npoints;
   int make_conformal_derivs = 0;
 
@@ -130,10 +129,6 @@ void BrillLindquist(CCTK_ARGUMENTS)
 
     psi[i] = 1.0;
 
-    x_2 = SQR(x[i]);
-    y_2 = SQR(y[i]);
-    z_2 = SQR(z[i]);
-
     xval = x[i];
     yval = y[i];
     zval = z[i];
@@ -145,10 +140,10 @@ void BrillLindquist(CCTK_ARGUMENTS)
        *     ------------
        */
 
-      tmp1 = sqrt(x_2+2.0*xval*hole_x0[n]+SQR(hole_x0[n])
-                 +y_2+2.0*yval*hole_y0[n]+SQR(hole_y0[n])
-                 +z_2+2.0*zval*hole_z0[n]+SQR(hole_z0[n])
-                 +1.0e-20);
+      tmp1 = sqrt(SQR(xval+hole_x0[n])
+                 +SQR(yval+hole_y0[n])
+                 +SQR(zval+hole_z0[n])
+                 +1.0e-10);
 
       psi[i] += hole_mass[n]/tmp1*0.5;
 
