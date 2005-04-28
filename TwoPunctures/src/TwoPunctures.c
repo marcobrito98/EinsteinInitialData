@@ -119,7 +119,7 @@ void set_initial_guess(CCTK_POINTER_TO_CONST cctkGH,
                 );
       }
     fprintf(debug_file, "\n\n");
-    for (int i=n2-10; i<n2; i++)
+    for (i=n2-10; i<n2; i++)
     {
       double d;
       indx = Index(0,0,i,0,1,n1,n2,n3);
@@ -129,12 +129,12 @@ void set_initial_guess(CCTK_POINTER_TO_CONST cctkGH,
                 s_x[indx], d);
     }
     fprintf(debug_file, "\n\n");
-    for (int i=n2-10; i<n2-1; i++)
+    for (i=n2-10; i<n2-1; i++)
     {
       double d;
       int ip= Index(0,0,i+1,0,1,n1,n2,n3);
       indx = Index(0,0,i,0,1,n1,n2,n3);
-      for (int j=-10; j<10; j++)
+      for (j=-10; j<10; j++)
       {
         d = PunctIntPolAtArbitPosition(0, nvar, n1, n2, n3, v,
                 s_x[indx]+(s_x[ip]-s_x[indx])*j/10,
