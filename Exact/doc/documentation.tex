@@ -80,7 +80,8 @@
 
 \author{Original code by Carsten Gundlach and Miguel Alcubierre, \\
         exact solutions added by many other people,	\\
-	this documentation by Jonathan Thornburg}
+	this documentation by Jonathan Thornburg,
+        and by other people}
 
 % The title of the document (not necessarily the name of the Thorn)
 \title{Thorn Guide for the {\bf Exact} Thorn}
@@ -212,6 +213,8 @@ Model Name
 	& --	& Minkowski spacetime in non-trivial spatial coordinates\\
 {\tt "Minkowski/gauge wave"}
 	& --	& Minkowski spacetime in gauge-wave coordinates		\\
+{\tt "Minkowski/shifted gauge wave"}
+	& --	& Minkowski spacetime in shifted gauge-wave coordinates	\\
 {\tt "Minkowski/conf wave"}
 	& --	& Minkowski spacetime with $\sin$ in conformal factor	\\[1ex]
 %
@@ -222,6 +225,8 @@ Model Name
 {\tt "Schwarzschild/PG"}
 	& --	& Schwarzschild spacetime in Painlev\'{e}-Gullstrand
 		  coordinates (these have a flat 3-metric)		\\
+{\tt "Schwarzschild/BL"}
+	& --	& Schwarzschild spacetime in Brill-Lindquist coordinates\\
 {\tt "Schwarzschild/Novikov"}
 	& --	& Schwarzschild spacetime in Novikov coordinates	\\
 {\tt "Kerr/Boyer-Lindquist"}
@@ -599,8 +604,9 @@ The line element is
 \begin{equation}
 ds^2=-H dt^2 +Hdx^2+dy^2+dz^2,
 \end{equation}
-where $H=H(x-t)$, for instance $H=1-a\sin\left((x-t)/\Lambda\right)$.
-This is flat space but the slice is a planar wave travelling along the x axis.
+where $H=H(x-t)$, for instance $H=1-A\sin\left((x-t)/\Lambda\right)$.
+This is a flat spacetime, but the slice is a planar wave travelling
+along the x axis.
 
 This thorn implements several possible choices for the $H$ function,
 controlled by the \verb|Minkowski_gauge_wave__what_fn| parameter:
@@ -631,6 +637,51 @@ For code testing, the idea is to test evolving this with periodic boundary
 conditions, to see whether the code is able to cope with that.
 The tricky part is to make the wave fit the grid exactly (otherwise the
 periodic boundary wouldn't make sence), especially in the diagonal case.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Minkowski Spacetime in shifted gauge-wave coordinates}
+
+\verb|Exact::exact_model = "Minkowski/shifted gauge wave"| specifies Minkowski
+spacetime with the ``shifted gauge-wave'' coordinates suggested by
+Jeff Winicour:
+The line element is
+\begin{equation}
+ds^2 = (H-1)\, dt^2 + (H+1)\, dx^2 - 2H\, dt\, dx + dy^2 + dz^2
+\end{equation}
+where $H=H(x-t)$, for instance $H=A\sin\left((x-t)/\Lambda\right)$.
+This is a flat spacetime, but the slice is a planar wave travelling
+along the x axis.
+
+This thorn implements one choice for the $H$ function, controlled by
+the \verb|Minkowski_gauge_wave__what_fn| parameter:
+\begin{eqnarray}
+H(x-t)	&=& 1 - A \sin \left(\frac{x-\omega t}{\Lambda} - \delta\right)
+\end{eqnarray}
+
+The parameters are
+\begin{itemize}
+\item	$A = \verb|Minkowski_gauge_wave__amplitude|$, the amplitude
+\item	$\omega = \verb|Minkowski_gauge_wave__omega|$, the angular frequency
+\item	$\lambda = \verb|Minkowski_gauge_wave__lambda|$, the wavelength
+\item	$\delta = \verb|Minkowski_gauge_wave__phase|$, the phase shift
+\end{itemize}
+A plane wave has $\omega = \pm \lambda$ for a wave that travels in the
+$x$ direction, and $\omega = \pm \lambda \sqrt{2}$ for a diagonal
+wave.
+
+If the Boolean parameter \verb|Minkowski_gauge_wave__diagonal| is
+true, then we make the gauge wave travel diagonally across the grid by
+the coordinate transformation
+\begin{eqnarray}
+x &=& \frac{1}{\sqrt{2}}(x^\prime - y^\prime)				\\
+y &=& \frac{1}{\sqrt{2}}(x^\prime + y^\prime)				%%%\\
+\end{eqnarray}
+For code testing, the idea is to test evolving this with periodic
+boundary conditions, to see whether the code is able to cope with
+that.  The tricky part is to make the wave fit the grid exactly
+(otherwise the periodic boundary wouldn't make sence), especially in
+the diagonal case.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -786,6 +837,36 @@ g_{ab} = \left[
 	 \end{array}
 	 \right]
 \end{equation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Schwarzschild spacetime in Brill--Lindquist coordinates}
+
+\verb|Exact::exact_model = "Schwarzschild/BL"| specifies Schwarzschild
+spacetime in Brill--Lindquist coordinates.  These coordinates have the
+interesting property that the spatial metric is conformally flat and
+time-symmetric for the initial data.  The only physics parameter is
+the black hole mass $m = \verb|Schwarzschild_BL__mass|$.
+
+There is also a numerical parameter \verb|Schwarzschild_BL__epsilon|
+which is used to avoid division by zero if a grid point falls exactly
+at the origin; the default setting should be ok for most purposes.
+
+In the usual Cactus $(t,x,y,z)$ Cartesian-topology coordinates, the
+4-metric is given by
+\begin{eqnarray}
+   \alpha & = & 1
+\\
+   \beta^i & = & 0
+\\
+   \gamma_{ij} & = & \Psi^4\, \delta_{ij}
+\end{eqnarray}
+with the conformal factor
+\begin{eqnarray}
+   \Psi & = & 1 + \frac{m}{2r}
+\end{eqnarray}
+where $r$ is the coordinate radius.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
