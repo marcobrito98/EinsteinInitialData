@@ -2,14 +2,6 @@ Things to do for this thorn
 ===========================
 $Header$
 
-----------------------------------------
-Jonathan Thornburg:
-*Every* model should be described in the thorn guide!
-As of Wed Apr 27 16:51:44 CEST 2005, the cvs logs show recent additions
-of "shifted gauge wave" and ""Schwarzschild/BL" solutions to param.ccl
-with no corresponding updates to documentation.tex. :( :(
-----------------------------------------
-
 Jonathan Thornburg:
 * make the hard-wired 1.0e-6 finite differencing grid spacing in
    Bona_Masso_data.F77  a parameter
