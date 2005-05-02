@@ -410,7 +410,7 @@ TwoPunctures (CCTK_ARGUMENTS)
     Rescale_Sources(cctkGH,
                     cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2],
                     x, y, z,
-                    psi,
+                    (*conformal_state > 0) ? psi : NULL,
                     gxx, gyy, gzz,
                     gxy, gxz, gyz);
   }
