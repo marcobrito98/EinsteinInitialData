@@ -48,7 +48,7 @@ C This model has a cosmological constant
           firstcall = .false.
       end if
 
-      am=exp(2.0D0*dsqrt(-arad/3.0D0)*x)   
+      am=exp(2.0D0*sqrt(-arad/3.0D0)*x)   
        
       gdtt = -am 
       gdtx = 0.0D0 

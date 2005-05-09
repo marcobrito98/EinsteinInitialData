@@ -66,9 +66,9 @@ c     Find transformation function.
       z2 = z**2
 
       r2 = x2 + y2 + z2
-      r  = dsqrt(r2)
+      r  = sqrt(r2)
 
-      f  = dexp(-r2/s**2)
+      f  = exp(-r2/s**2)
       fp = - two*r/s**2*f
 
 c     Give metric components.

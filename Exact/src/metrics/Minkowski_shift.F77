@@ -67,9 +67,9 @@ c     Find transformation function.
       z2 = z**2
 
       r2 = x2 + y2 + z2
-      r  = dsqrt(r2)
+      r  = sqrt(r2)
 
-      f    = a*dexp(-r2/s**2)
+      f    = a*exp(-r2/s**2)
       fp   = - two*f*r/s**2
       fpr  = fp/r
       fpr2 = fpr**2

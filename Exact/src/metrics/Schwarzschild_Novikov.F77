@@ -71,7 +71,7 @@ C     Get parameters of the exact solution.
       r = max(sqrt(x**2 + y**2 + z**2), eps)
 
 c     Find r.
-      r = dsqrt(x**2 + y**2 + z**2)
+      r = sqrt(x**2 + y**2 + z**2)
 
 c     Find conformal factor.
       c = mass/(two*r)
@@ -202,9 +202,9 @@ c     Evaluate tau as a function of r and rmax
       implicit none
       CCTK_REAL r, rmax
 
-      nov_tau=  rmax * dsqrt(0.5D0 * r * (1.0D0 - r / rmax)) +
+      nov_tau=  rmax * sqrt(0.5D0 * r * (1.0D0 - r / rmax)) +
      $     2.0D0 * (rmax / 2)**(3.0/2.0) *
-     $     acos (dsqrt(r/rmax))
+     $     acos (sqrt(r/rmax))
 
       return
       end

@@ -54,7 +54,7 @@ C This model has a cosmological constant
  
       r2 =x*x+y*y+z*z
 
-      ppp=1.0D0 -2.0D0*mas/dsqrt(r2) -r2*lam/3.0D0
+      ppp=1.0D0 -2.0D0*mas/sqrt(r2) -r2*lam/3.0D0
 
       unu=(1.0D0-ppp)/ppp/r2      
  

@@ -145,7 +145,7 @@ c     1 so that far in the past we will always have flat space, and
 c     far in the future we will have the static bowl.
 
       if (evolve) then
-         tfac = one/(one + dexp(-st*(t-t0)))
+         tfac = one/(one + exp(-st*(t-t0)))
       else
          tfac = one
       end if
@@ -155,7 +155,7 @@ c     far in the future we will have the static bowl.
 c     Find {r2,r}.
 
       r2 = (x/dx)**2 + (y/dy)**2 + (z/dz)**2
-      r  = dsqrt(r2)
+      r  = sqrt(r2)
 
 c     Find the form function rr2
 c
@@ -178,8 +178,8 @@ c        This goes smoothly to 0 at the origin, and climbs
 c        fast to a limiting value of 1 (at r=1 it is already
 c        equal to 0.96).
 
-         fac = one - two/(dexp(4.0d0*r) + dexp(-4.0d0*r))
-         rr2 = (one - a*fac*dexp(-((r-c)/s)**2)/r)**2
+         fac = one - two/(exp(4.0d0*r) + exp(-4.0d0*r))
+         rr2 = (one - a*fac*exp(-((r-c)/s)**2)/r)**2
 
       else if (type.eq.2) then
 
@@ -190,8 +190,8 @@ c
 c        Again, this doesnt really go to 1 at the origin, so
 c        I use the same trick as above.
 
-         fac = one - two/(dexp(4.0d0*r) + dexp(-4.0d0*r))
-         rr2 = (one - a*fac/(one + dexp(-s*(r-c)))/r)**2
+         fac = one - two/(exp(4.0d0*r) + exp(-4.0d0*r))
+         rr2 = (one - a*fac/(one + exp(-s*(r-c)))/r)**2
 
       else
          write (warn_buffer, '(a,i8)')

@@ -74,7 +74,7 @@ c     Get parameters of the metric.
 
 c     Find r.
 
-      r = dsqrt(x**2 + y**2 + z**2)
+      r = sqrt(x**2 + y**2 + z**2)
 
 c     Find conformal factor.
 

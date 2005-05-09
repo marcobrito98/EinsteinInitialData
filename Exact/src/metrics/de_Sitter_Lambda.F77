@@ -49,7 +49,7 @@ C ==> it sets the stress-energy tensor in the "CalcTmunu" code
           firstcall = .false.
       end if
 
-      am=exp(2.0D0*dsqrt(arad/3.0d0)*t)   
+      am=exp(2.0D0*sqrt(arad/3.0d0)*t)   
 
       gdtt = -1.d0 
       gdtx = 0.d0 

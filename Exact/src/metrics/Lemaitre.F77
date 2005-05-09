@@ -59,9 +59,9 @@ c this model sets the stress-energy tensor in the "CalcTmunu" code
 
        Pii = acos(-1.0D0)
 
-       unu = dsqrt(3.0D0*la)*t*(ka+1.0D0)/(2.0D0)
+       unu = sqrt(3.0D0*la)*t*(ka+1.0D0)/(2.0D0)
 
-       ra  = r0*(cosh(unu)+dsqrt(1.0D0+8.0D0*Pii*e0/la)*sinh(unu))**
+       ra  = r0*(cosh(unu)+sqrt(1.0D0+8.0D0*Pii*e0/la)*sinh(unu))**
      &       (2.0D0/(3.0D0*ka+3.0D0)) 
 
        ra2 = ra*ra  

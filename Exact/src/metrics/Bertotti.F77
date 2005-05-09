@@ -49,8 +49,8 @@ C ==> it sets the stress-energy tensor in the "CalcTmunu" code
           firstcall = .false.
       end if
 
-      unu=exp(2.0D0*dsqrt(-baza)*x)
-      doi=exp(2.0D0*dsqrt(-baza)*z)   
+      unu=exp(2.0D0*sqrt(-baza)*x)
+      doi=exp(2.0D0*sqrt(-baza)*z)   
 
        
       gdtt = -unu
