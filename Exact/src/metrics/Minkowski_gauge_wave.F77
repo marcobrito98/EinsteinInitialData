@@ -84,15 +84,15 @@ c$$$        H = exp(a*sin(x/d)*cos(t/d))
 
 C     write metric.
 
-      if (Minkowski_gauge_wave__diagonal .eq. 1) then
+      if (Minkowski_gauge_wave__diagonal.ne.0) then
 
-        gdxx = half * H + half
-        gdxy = -half* H + half
-        gdyy = half * H + half
+        gdxx =  half * H + half
+        gdxy = -half * H + half
+        gdyy =  half * H + half
 
-        guxx = half / H + half
-        guxy =-half / H + half
-        guyy = half / H + half
+        guxx =  half / H + half
+        guxy = -half / H + half
+        guyy =  half / H + half
 
       else
 
@@ -106,7 +106,7 @@ C     write metric.
 
       end if
       
-      gdtt = - H
+      gdtt = -H
       gdtx = zero
       gdty = zero
       gdtz = zero
@@ -117,7 +117,7 @@ C     write metric.
 
 C     and upper metric.
 
-      gutt = - one/H
+      gutt = -one / H
       gutx = zero
       guty = zero
       gutz = zero
