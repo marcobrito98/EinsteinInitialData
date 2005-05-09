@@ -23,7 +23,7 @@ c $Header$
 
       implicit none
       CCTK_INT decoded_exact_model
-      CCTK_INT psi_on
+      logical psi_on
       CCTK_REAL x, y, z, t,
      $       gxx, gyy, gzz, gxy, gyz, gxz,
      $       hxx, hyy, hzz, hxy, hyz, hxz,
@@ -74,11 +74,7 @@ C     ax is dN / dx / N (sic!)
 
 C     Save, if we have to provide the conformal factor
 
-      if (psi .gt. 0.0d0) then
-        psi_on=1
-      else
-        psi_on=0
-      end if
+      psi_on = psi .gt. 0.0d0
 
 C     Get the spacetime metric and its inverse at the base point.
 
@@ -135,7 +131,10 @@ C     Calculate x-derivatives.
       bxy = ((- guty_p / gutt_p) - (- guty_m / gutt_m)) / 4.d0 / eps
       bxz = ((- gutz_p / gutt_p) - (- gutz_m / gutt_m)) / 4.d0 / eps
 
-      psix = (psix_p - psix_m) / 2.0d0 / eps
+      if (psi_on) then
+         psix = (psix_p - psix_m) / 2.0d0 / eps
+      end if
+
 C     Calculate y-derivatives.
 
       call Exact__metric(
@@ -168,7 +167,10 @@ C     Calculate y-derivatives.
       byy = ((- guty_p / gutt_p) - (- guty_m / gutt_m)) / 4.d0 / eps
       byz = ((- gutz_p / gutt_p) - (- gutz_m / gutt_m)) / 4.d0 / eps
 
-      psiy = (psiy_p - psiy_m) / 2.0d0 / eps
+      if (psi_on) then
+         psiy = (psiy_p - psiy_m) / 2.0d0 / eps
+      end if
+
 C     Calculate z-derivatives.
 
       call Exact__metric(
@@ -201,7 +203,10 @@ C     Calculate z-derivatives.
       bzy = ((- guty_p / gutt_p) - (- guty_m / gutt_m)) / 4.d0 / eps
       bzz = ((- gutz_p / gutt_p) - (- gutz_m / gutt_m)) / 4.d0 / eps
 
-      psiz = (psiz_p - psiz_m) / 2.0d0 / eps
+      if (psi_on) then
+         psiz = (psiz_p - psiz_m) / 2.0d0 / eps
+      end if
+
 C     Calculate t-derivatives, and extrinsic curvature.
 
       call Exact__metric(
@@ -248,8 +253,9 @@ C     Calculate t-derivatives, and extrinsic curvature.
      $     + bxx * gxz + bxy * gyz + bxz * gzz
      $     + bzx * gxx + bzy * gxy + bzz * gxz) / alp
 
-C     Calculate second derivatives of the conformal factor 
-      if (psi_on .eq. 1) then
+C     Calculate second derivatives of the conformal factor
+
+      if (psi_on) then
         call Exact__metric(
      $     decoded_exact_model,
      $     x+eps+eps, y, z, t,
