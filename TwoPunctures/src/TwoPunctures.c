@@ -209,7 +209,18 @@ TwoPunctures (CCTK_ARGUMENTS)
     CCTK_INFO ("Solving puncture equation");
     /* initialise to 0 */
     for (j = 0; j < ntotal; j++)
+    {
       v.d0[j] = 0.0;
+      v.d1[j] = 0.0;
+      v.d2[j] = 0.0;
+      v.d3[j] = 0.0;
+      v.d11[j] = 0.0;
+      v.d12[j] = 0.0;
+      v.d13[j] = 0.0;
+      v.d22[j] = 0.0;
+      v.d23[j] = 0.0;
+      v.d33[j] = 0.0;
+    }
     /* call for external initial guess */
     if (use_external_initial_guess)
     {
