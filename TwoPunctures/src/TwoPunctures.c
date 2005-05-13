@@ -275,9 +275,9 @@ TwoPunctures (CCTK_ARGUMENTS)
 
 	const int ind = CCTK_GFINDEX3D (cctkGH, i, j, k);
         
-        const double r_plus
+        double r_plus
           = sqrt(pow2(x[ind] - par_b) + pow2(y[ind]) + pow2(z[ind]));
-        const double r_minus
+        double r_minus
           = sqrt(pow2(x[ind] + par_b) + pow2(y[ind]) + pow2(z[ind]));
         
         double U;
@@ -294,6 +294,10 @@ TwoPunctures (CCTK_ARGUMENTS)
         default:
           assert (0);
         }
+        if (r_plus < TP_Tiny)
+            r_plus = TP_Tiny;
+        if (r_minus < TP_Tiny)
+            r_minus = TP_Tiny;
         const double psi1 = 1
           + 0.5 * par_m_plus / r_plus
           + 0.5 * par_m_minus / r_minus + U;

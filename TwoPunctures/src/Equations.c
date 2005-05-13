@@ -88,6 +88,10 @@ BY_Aijofxyz (double x, double y, double z, double Aij[3][3])
 
   r2_plus = (x - par_b) * (x - par_b) + y * y + z * z;
   r2_minus = (x + par_b) * (x + par_b) + y * y + z * z;
+  if (r2_plus < TP_Tiny)
+    r2_plus = TP_Tiny;
+  if (r2_minus < TP_Tiny)
+    r2_minus = TP_Tiny;
   r_plus = sqrt (r2_plus);
   r_minus = sqrt (r2_minus);
   r3_plus = r_plus * r2_plus;
