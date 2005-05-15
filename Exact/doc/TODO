@@ -9,6 +9,8 @@ Jonathan Thornburg:
   (there are comments in  gauge.F77  that we're half-a-time-step off)?
   Is this still a problem now that we always use MoL?
   Do we still need to support the non-MoL case?
+[Note by Erik Schnetter, 2005-05-15: This is not an issue any more.
+Jonathan, please remove this item.]
 * add options to set ALL time levels of initial data, not just the
   current level
 
@@ -24,11 +26,19 @@ Sascha Husa:
 It would be nice if Exact could set up variables other than the ADM ones
 (indeed it appears to not even grok BSSN right now).
 
+[Note by Erik Schnetter, 2005-05-15: This is a misunderstanding by
+Sascha.  Thorn Exact works just fine with the BSSN variables.
+Jonathan, please remove this item.]
+
 ----------------------------------------
 
 Sascha Husa:
 The boundary setup needs to be generalized to handle ghost zones wider
 than 1 point.
+
+[Note by Erik Schnetter, 2005-05-15: This is a misunderstanding by
+Sascha.  Thorn Exact works just fine with more than one ghost zones or
+more than one boundary point.  Jonathan, please remove this item.]
 
 ----------------------------------------
 
@@ -52,4 +62,6 @@ Failing that, it could at least check if FishEye is active
   and cleanly report an error.
 ----------------------------------------
 It would be nice if Exact supported the "static conformal" metric type.
+[Note by Erik Schnetter, 2005-05-15: Thorn Exact works just fine with
+a static conformal factor.  Jonathan, please remove this item.]
 ----------------------------------------
