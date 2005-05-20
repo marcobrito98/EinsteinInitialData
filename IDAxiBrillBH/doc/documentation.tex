@@ -9,13 +9,15 @@
 \begin{document}
 
 \title{IDAxiBrillBH}
-\author{Paul Walker, Steve Brandt}
+\author{Paul Walker, Steve Brandt,\\some cleanups by Jonathan Thornburg}
 \date{$ $Date$ $}
 
 \maketitle
 
 % Do not delete next line
 % START CACTUS THORNGUIDE
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{abstract}
   Thorn IDAxiBrillBH provides analytic initial data for a vacuum
@@ -24,6 +26,8 @@
   provided for the 3-conformal metric, it's spatial derivatives, and
   extrinsic curvature.
 \end{abstract}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Purpose}
 
@@ -40,10 +44,10 @@ $\hat{\gamma}_{ab}$ is some chosen conformal three metric.
 The Hamiltonian constraint reduces to
 \begin{equation}
 \hat \Delta \psi = \frac{1}{8}\psi \hat R,
-\label{eqn:conformal_hamiltonian}
+\label{IDAxiBrillBH/eqn:conformal-hamiltonian}
 \end{equation}
-where $\hat \Delta$ is the covariant Laplacian and $\hat R$ is Ricci
-tensor for the conformal three metric. This form allows
+where $\hat \Delta$ is the covariant Laplacian and $\hat R$ is the
+Ricci tensor for the conformal three metric. This form allows
 us to choose an arbitrary conformal three metric, and then solve an
 elliptic equation for the conformal factor, therefore satisfying the
 constraint equations ($K_{ij} = 0$ trivially satisfies the momentum
@@ -52,13 +56,13 @@ constraints in vacuum).  This approach was used to create
 Bernstein extended this to the black hole spacetime.  Using
 spherical-polar coordinates, one can write the 3-metric,
 \begin{equation}
-\label{eqn:sph-cood}
+\label{IDAxiBrillBH/eqn:sph-coord}
 ds^2 = \psi^4 (e^{2q} (dr^2 + r^2 d \theta^2) + r^2 \sin \theta d
 \phi^2),
 \end{equation}
 where $q$ is the Brill ``packet'' which takes some functional form.
-Using this ansatz with (\ref{eqn:conformal_hamiltonian}) leads to
-an elliptic equation for $\psi$ which must be solved
+Using this ansatz with (\ref{IDAxiBrillBH/eqn:conformal-hamiltonian})
+leads to an elliptic equation for $\psi$ which must be solved
 numerically. Applying the isometry condition on $\psi$ at a finite
 radius, and applying $M/2r$ falloff conditions on $\psi$ at the
 outer boundary (the ``Robin'' condition), along with a packet which
@@ -68,15 +72,16 @@ an incident gravitational wave.  The choice of $q=0$ produces the
 Schwarzschild solution.   The typical $q$ function used in
 axisymmetry, and considered here in the non-rotating case, is 
 \begin{equation}
-q = Q_0 \sin \theta^n \left [ \exp\left(\frac{\eta -
+\label{IDAxiBrillBH/eqn:Q}
+q = Q_0 \sin^n \theta \left [ \exp\left(\frac{\eta -
       \eta_0^2}{\sigma^2}\right ) + \exp\left(\frac{\eta +
       \eta_0^2}{\sigma^2}\right ) \right ].
 \end{equation}
 Note regularity along the axis requires that the exponent $n$ must be
 even.  Choose a logarithmic radial coordinate $\eta$, which is
 related to the
-asymptoticlly flat coordinate $r$ by $\eta = ln (2r/m)$, where $m$ is a
-scale parameter.  One can rewrite (\ref{eqn:sph-cood}) as
+asymptoticlly flat coordinate $r$ by $\eta = \ln (2r/m)$, where $m$ is a
+scale parameter.  One can rewrite (\ref{IDAxiBrillBH/eqn:sph-coord}) as
 \begin{equation}
 ds^2 = \psi(\eta)^4 [ e^{2 q} (d \eta^2 +  d\theta^2) +  \sin^2
 \theta d\phi^2].
@@ -86,20 +91,20 @@ In the previous Bernstein work, the above $r$ is transformed to a
 logarithmic radial coordinate
 
 \begin{equation}
-\label{eta_coord}
+\label{IDAxiBrillBH/eta-coord}
 \eta = \ln{\frac{2r}{m}}.
 \end{equation}
 
 The scale parameter $m$ is equal to the mass of the Schwarzschild
 black hole, if $q=0$.  In this coordinate, the 3-metric is
 \begin{equation}
-\label{eqn:metric_brill_eta}
+\label{IDAxiBrillBH/eqn:metric-brill-eta}
 ds^2 = \tilde{\psi}^4 (e^{2q} (d\eta^2+d\theta^2)+\sin^2 \theta
 d\phi^2),
 \end{equation}
 and the Schwarzschild solution is 
 \begin{equation}
-\label{eqn:psi}
+\label{IDAxiBrillBH/eqn:psi}
 \tilde{\psi} = \sqrt{2M} \cosh (\frac{\eta}{2}).
 \end{equation}
 We also change the notation of $\psi$ for the conformal factor is same 
@@ -108,7 +113,7 @@ factor $r^{1/2}$ in the conformal factor.  Clearly $\psi(\eta)$ and
 $\psi$ differ by a factor of $\sqrt{r}$.  The Hamiltonian 
 constraint is
 \begin{equation}
-\label{eqn:ham}
+\label{IDAxiBrillBH/eqn:ham}
 \frac{\partial^2 \tilde{\psi}}{\partial \eta^2} + \frac{\partial^2
   \tilde{\psi}}{\partial \theta^2} + \cot \theta \frac{\partial
   \tilde{\psi}}{\partial \theta} = - \frac{1}{4} \tilde{\psi}
@@ -122,14 +127,14 @@ we substitute
 \delta \tilde{\psi} & = & \tilde{\psi}+\tilde{\psi}_0 \\
                     & = & \tilde{\psi}-\sqrt{2m} \cosh(\frac{\eta}{2}).
 \end{eqnarray}
-to the equation~(\ref{eqn:ham}), then we can linearize it as
+to the equation~(\ref{IDAxiBrillBH/eqn:ham}), then we can linearize it as
 \begin{equation}
 \frac{\partial^2 \delta\tilde{\psi}}{\partial \eta^2} + \frac{\partial^2
   \delta\tilde{\psi}}{\partial \theta^2} + \cot \theta \frac{\partial
   \delta\tilde{\psi}}{\partial \theta} = - \frac{1}{4}
 (\delta\tilde{\psi} + \tilde{\psi}_0) (\frac{\partial^2 q}{\partial
   \eta^2} + \frac{\partial^2 q}{\partial \theta^2} -1).
-\label{eqn:ham_linear}
+\label{IDAxiBrillBH/eqn:ham-linear}
 \end{equation}
 For the boundary conditions, we use for the inner boundary condition
 an isometry condition:
@@ -142,19 +147,84 @@ and outer boundary condition, a Robin condition:
 \tilde{\psi})|_{\eta=\eta_{max}} = 0.
 \end{equation}
 
-%  [[ DPR: What is this: ?? ]]
-%This thorn provides
-% \begin{enumerate}
-%  \item CactusEinstein
-% \end{enumerate}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Comments}
+\section{2-D Grid and Interpolation Parameters}
 
-We calculate equation~(\ref{eqn:ham_linear}) with spherical
-coordinates.  However, Cactus needs Cartesian coordinates.  Therefore,
-we interpolate $\psi$ to the Cartesian grid by using an interpolator.
-Note that the interpolator has linear, quadratic, and cubic
-interpolation.
+This thorn solves equation~(\ref{IDAxiBrillBH/eqn:ham-linear}) on a 2-D
+$(\eta,\theta)$ grid.  However, Cactus needs a 3-D grid, typically with
+Cartesian coordinates.  Therefore, this thorn interpolate $\psi$ and its
+$(\eta,\theta)$ derivatives to the Cartesian grid.
+
+The parameters \verb|neta| and \verb|nq| specify the resolution of
+this thorn's 2-D grid in $\eta$ and $\theta$ respectively.%%%
+\footnote{%%%
+	 Internally, this thorn uses ``$q$'' to refer
+	 to $\theta$ in Fortran code, with the $q$ function
+	 of~$(\protect\ref{IDAxiBrillBH/eqn:Q})$ being hidden
+	 in the Mathematica files (and not present in the Fortran
+	 code).  Noone seems to know \emph{why} the code does
+	 things this way\dots{}  Unfortunately, this renaming
+	 has leaked out into the parameter names\dots
+	 }%%%
+{}  The default values are a reasonable starting point, but you may
+need to increase them substantially if you need very high accuracy
+(very small constraint violations).
+
+To help judge what resolution may be needed, this thorn has an option
+to write out $\psi(\eta)$ and $\psi$ on the 2-D grid to an ASCII data file
+where it can be examined and/or plotted.  To do this, set the Boolean
+parameter \verb|output_psi2D|, and possibly also the string parameter
+\verb|output_psi2D_file_name|.
+
+This thorn uses the standard Cactus \verb|CCTK_InterpLocalUniform()|
+local interpolation system for this interpolation.  The interpolation
+operator is specified with the \verb|interpolator_name| parameter
+(this defaults to \verb|"uniform cartesian"|, the interpolation
+operator provided by thorn \textbf{CactusBase/LocalInterp}).
+
+The interpolation order and/or other parameters can be specified
+in either of two ways:%%%
+\footnote{%%%
+	 Notice that, for historical reasons, the
+	 interpolation parameter names are a bit
+	 inconsistent: \texttt{interpolat\underline{ion}\_order}
+	 versus \texttt{interpolat\underline{or}\_name}
+	 and \texttt{interpolat\underline{or}\_pars}.
+	 }%%%
+\begin{itemize}
+\item	The integer parameter \verb|interpolation_order| may be
+	used directly to specify the interpolation order.
+\item	More generally, the string parameter \verb|interpolator_pars|
+	may be set to any nonempty string (it defaults to the empty string).
+	If this is done, this parameter overrides \verb|interpolation_order|,
+	and explicitly specifies a parameter string for the interpolator.
+\end{itemize}
+Note that the default interpolator parameters specify \emph{linear}
+interpolation.  This is rather inaccurate, and (due to aliasing effects
+between the 2-D and 3-D grids) will give a fair bit of noise in the
+metric components.  You may want to specify a higher-order interpolator
+to reduce this noise.
+
+For example, for one test series where I (JT) needed very accurate
+initial data (I wanted the initial-data errors to be much less than
+the errors from 4th~order finite differencing on the 3-D Cactus grid),
+I had to use a resolution of $1000$ in $\eta$ and $2000$ in $\theta$,
+together with either 4th~order Lagrange or 3rd~order Hermite interpolation
+(provided by thorn \textbf{AEIThorns/AEILocalInterp}) to get sufficient
+accuracy.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Debugging Parameters}
+
+This thorn has options to print very detailed debugging information
+about internal quantities at selected grid points.  This is enabled
+by setting the integer parameter \verb|debug| to a positive value
+(the default is $0$, which means no debugging output).  See
+\verb|param.ccl| and the source code \verb|src/IDAxiBrillBH.F| for details.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \bibliographystyle{prsty}
 \begin{thebibliography}{10}
@@ -166,6 +236,8 @@ interpolation.
 \bibitem{Camarda97a}
   K. Camarda, Ph.D thesis University of Illinois Urbana-Champaign, (1998)
 \end{thebibliography}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Do not delete next line
 % END CACTUS THORNGUIDE
