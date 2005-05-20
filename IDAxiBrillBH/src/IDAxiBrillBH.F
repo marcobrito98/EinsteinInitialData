@@ -69,13 +69,13 @@ c@@*/
 
       integer, parameter :: max_string_length = 500
 
-      integer                        param_table_handle, interp_handle
-      character*max_string_length :: message_buffer
+      integer                         param_table_handle, interp_handle
+      character(max_string_length) :: message_buffer
 
-      integer                        fstring_length
-      character*max_string_length :: interpolator_name_fstring
-      character*max_string_length :: interpolator_pars_fstring
-      character*max_string_length :: output_psi2D_file_name_fstring
+      integer                         fstring_length
+      character(max_string_length) :: interpolator_name_fstring
+      character(max_string_length) :: interpolator_pars_fstring
+      character(max_string_length) :: output_psi2D_file_name_fstring
 
       CCTK_REAL,    dimension(2) :: coord_origin, coord_delta
       CCTK_POINTER, dimension(2) :: interp_coords
