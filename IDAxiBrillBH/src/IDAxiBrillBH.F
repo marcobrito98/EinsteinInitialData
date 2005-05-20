@@ -45,8 +45,7 @@ c@@*/
       real*8, allocatable :: psi2dv(:,:,:),detapsi2dv(:,:,:),
      $     dqpsi2dv(:,:,:),detaetapsi2dv(:,:,:),detaqpsi2dv(:,:,:),
      $     dqqpsi2dv(:,:,:)
-      parameter(axibheps = 1.0d-12)
-      real*8 ep1,ep2
+      real*8 error_at_this_grid_point,max_error_in_grid
       real*8 o1,o2,o3,o4,o5,o6,o7,o8,o9
       real*8 o10,o11,o12,o13,o14,o15,o16,o17,o18,o19
       real*8 o20,o21,o22,o23,o24,o25,o26,o27,o28,o29
@@ -60,13 +59,24 @@ c@@*/
       integer i22
       real*8 pi
       real*8 adm
+      real*8 exp_mhalf_eta, psi3d
       integer :: nx,ny,nz
       integer i,j,k,nquads
       integer npoints,ierror
       integer neb, nqb
+      integer posn
+      integer io_status
 
-      integer       param_table_handle, interp_handle
-      character(30) options_string
+      integer, parameter :: max_string_length = 500
+
+      integer                        param_table_handle, interp_handle
+      character*max_string_length :: message_buffer
+
+      integer                        fstring_length
+      character*max_string_length :: interpolator_name_fstring
+      character*max_string_length :: interpolator_pars_fstring
+      character*max_string_length :: output_psi2D_file_name_fstring
+
       CCTK_REAL,    dimension(2) :: coord_origin, coord_delta
       CCTK_POINTER, dimension(2) :: interp_coords
       CCTK_POINTER, dimension(6) :: in_arrays, out_arrays
@@ -81,31 +91,104 @@ c     Set up the grid spacings
       ny = cctk_lsh(2)
       nz = cctk_lsh(3)
 
-c     Solve on this sized cartesian grid
-c     2D grid size NE x NQ
-c     Add 2 zones for boundaries...
+c
+c ***** set up interpolator handle and parameter table *****
+c
+
+c
+c ... we do this now, rather than waiting till we need them,
+c     so any errors (eg user forgot to activate a suitable interpolator thorn)
+c     get printed right away, rather than making the user wait for them
+c ... n.b. we must first convert our C-style string parameters
+c     to Fortran strings
+c
+      call CCTK_FortranString(fstring_length,
+     $                        interpolator_name,
+     $                        interpolator_name_fstring)
+      call CCTK_InterpHandle(interp_handle,
+     $                       interpolator_name_fstring(1:fstring_length))
+      if (interp_handle .lt. 0) then
+        call CCTK_WARN(CCTK_WARN_ABORT, "Cannot get interpolator handle!  Did you forgot to activate a suitable local-interpolator thorn?")
+      endif
+
+c
+c build the interpolator parameter table from a suitable string:
+c if  interpolator_pars  is a nonempty string, use that, otherwise
+c use  "order=n"  where  n  is given by the  interpolation_order
+c parameter
+c
+      call CCTK_FortranString(fstring_length,
+     $                        interpolator_pars,
+     $                        interpolator_pars_fstring)
+      if (fstring_length .eq. 0) then
+         interpolator_pars_fstring
+     $         = "order=" // char(ichar('0') + interpolation_order)
+      endif
+      call Util_TableCreateFromString
+     $            (param_table_handle,
+     $             interpolator_pars_fstring(1:fstring_length))
+      if (param_table_handle .lt. 0) then
+        write(message_buffer, '(A,I)')
+     $      'failed to create interpolator param table: error code ',
+     $      param_table_handle
+        call CCTK_WARN(CCTK_WARN_ABORT, message_buffer)
+      endif
+
+c
+c ***** solve Brill-wave equation on 2D (eta,theta) grid *****
+c
+c The code uses the abbreviation 'q' for theta.  This is a bit confusing,
+c because this is *not* the same quantity as $q(\eta,\theta)$ described
+c in the thorn guide (which is is stored in the 3-D array q(nx,ny,nz)).
+c
+c The (eta,theta) grid spans the range
+c	eta   in [0,etamax] + ghost zones   (neb points, spacing deta)
+c	theta in [0,pi    ] + ghost zones   (nqb points, spacing dq  )
+c
+c     2D grid size NE x NQ, plus 2 zones for boundaries
+c
 c     21/11/00 TR: dont change parameters in place
 c                  but keep a copy in local variables
 c                  Otherwise the changed parameters cause trouble
 c                  after recovery.
+c
       neb = ne+2
       nqb = nq+2
-      ! do I need to call free?
-      allocate(cc(neb,nqb),ce(neb,nqb),cw(neb,nqb),cn(neb,nqb),cs(neb,nqb),
-     $     rhs(neb,nqb),psi2d(neb,nqb),detapsi2d(neb,nqb),dqpsi2d(neb,nqb),
-     $     detaetapsi2d(neb,nqb),detaqpsi2d(neb,nqb),dqqpsi2d(neb,nqb),
-     $     etagrd(neb),qgrd(nqb))
-      allocate(eta(nx,ny,nz),abseta(nx,ny,nz),sign_eta(nx,ny,nz),
-     $     q(nx,ny,nz),phi(nx,ny,nz),
-     $     psi2dv(nx,ny,nz),detapsi2dv(nx,ny,nz),dqpsi2dv(nx,ny,nz),
-     $     detaetapsi2dv(nx,ny,nz),detaqpsi2dv(nx,ny,nz),
-     $     dqqpsi2dv(nx,ny,nz))
+
+      allocate(          cc(neb,nqb))
+      allocate(          ce(neb,nqb))
+      allocate(          cw(neb,nqb))
+      allocate(          cn(neb,nqb))
+      allocate(          cs(neb,nqb))
+      allocate(         rhs(neb,nqb))
+      allocate(       psi2d(neb,nqb))
+      allocate(   detapsi2d(neb,nqb))
+      allocate(     dqpsi2d(neb,nqb))
+      allocate(detaetapsi2d(neb,nqb))
+      allocate(  detaqpsi2d(neb,nqb))
+      allocate(    dqqpsi2d(neb,nqb))
+
+      allocate(etagrd(neb))
+      allocate(  qgrd(nqb))
+
+      allocate(          eta(nx,ny,nz))
+      allocate(       abseta(nx,ny,nz))
+      allocate(     sign_eta(nx,ny,nz))
+      allocate(            q(nx,ny,nz))
+      allocate(          phi(nx,ny,nz))
+      allocate(       psi2dv(nx,ny,nz))
+      allocate(   detapsi2dv(nx,ny,nz))
+      allocate(     dqpsi2dv(nx,ny,nz))
+      allocate(detaetapsi2dv(nx,ny,nz))
+      allocate(  detaqpsi2dv(nx,ny,nz))
+      allocate(    dqqpsi2dv(nx,ny,nz))
+
 c Initialize some arrays
       psi2d = 1.0d0
       detapsi2d = 0.0d0
 
       nquads = 2
-      dq = nquads*0.5*pi/(nqb-2)
+      dq = nquads*0.5d0*pi/(nqb-2)
       deta = etamax/(neb-3)
 
       do j=1,nqb
@@ -115,7 +198,7 @@ c Initialize some arrays
 #include "CactusEinstein/IDAxiBrillBH/src/bhbrill.x"
         enddo
       enddo
-c     Boundary conditions
+c Boundary conditions
       do j=1,nqb
         ce(2,j)=ce(2,j)+cw(2,j)
         cw(2,j)=0.0
@@ -132,7 +215,8 @@ c     Boundary conditions
         cn(i,nqb-1)=0.0
       enddo
 
-c     Do the solve
+c Do the solve
+      axibheps = error_tolerance
       call CCTK_INFO("Calling axisymmetric solver")
 
       call mgparm (levels,5,id5,id9,idi,idg,neb,nqb)
@@ -142,45 +226,55 @@ c     Do the solve
 
       call CCTK_INFO("Solve complete")
 
-c     The solution is now available.
-c     Debugging is needed, a stop statement should
-c     be called if the IVP solve is not successful
-
+c
+c The solution is (hopefully) now available.
+c
       if(ier .ne. 0) then
-         call CCTK_WARN(0,"Solution to BH+Brill Wave not found")
+         write(message_buffer, '(A,I)')
+     $      'failed to solve elliptic equation: ier=', ier
+         call CCTK_WARN(CCTK_WARN_ABORT, message_buffer)
       end if
 
       print *,'rmax = ',rmax
       print *,'axibheps = ',axibheps
       print *,'psi2d = ',maxval(psi2d),' ',minval(psi2d)
 
-      ep2 = 0.0
+      max_error_in_grid = 0.0d0
       do j=2,nqb-1
         do i=2,neb-1
-          ep1 = rhs(i,j)-psi2d(i,j)*cc(i,j)-psi2d(i,j+1)*cn(i,j)-psi2d(i,j-1)*cs(i,j)-
-     &      psi2d(i+1,j)*ce(i,j)-psi2d(i-1,j)*cw(i,j)
-          ep2 = max(abs(ep1),ep2)
+          error_at_this_grid_point = rhs(i,j)
+     $                               - psi2d(i,j  )*cc(i,j)
+     $                               - psi2d(i,j+1)*cn(i,j)
+     $                               - psi2d(i,j-1)*cs(i,j)
+     $                               - psi2d(i+1,j)*ce(i,j)
+     $                               - psi2d(i-1,j)*cw(i,j)
+          max_error_in_grid = max(max_error_in_grid,
+     $                            abs(error_at_this_grid_point))
         enddo
       enddo
-      print *,'Resulting eps =',ep2
+      print *,'Resulting eps =',max_error_in_grid
 
+c Boundary conditions
       do j=1,nqb
-         psi2d(1,j)=psi2d(3,j)
-         psi2d(neb,j)=-deta*psi2d(neb-1,j)+psi2d(neb-2,j)
+         psi2d(1  ,j) = psi2d(3,j)
+         psi2d(neb,j) = - deta*psi2d(neb-1,j) + psi2d(neb-2,j)
       enddo
 
       do i=1,neb
-        psi2d(i,1)=psi2d(i,2)
-        psi2d(i,nqb)=psi2d(i,nqb-1)
+        psi2d(i,1  ) = psi2d(i,2)
+        psi2d(i,nqb) = psi2d(i,nqb-1)
       enddo
 
+c derivatives of psi
       do j=2,nqb-1
          do i=2,neb-1
-            dqpsi2d(i,j)=0.5*(psi2d(i,j+1)-psi2d(i,j-1))/dq
-            dqqpsi2d(i,j)=(psi2d(i,j+1)+psi2d(i,j-1)-2.*psi2d(i,j))/dq**2
-            detapsi2d(i,j)=sinh(0.5*etagrd(i))+0.5*(psi2d(i+1,j)-psi2d(i-1,j))/deta
-            detaetapsi2d(i,j)=0.5*cosh(0.5*etagrd(i))+
-     $           (psi2d(i+1,j)+psi2d(i-1,j)-2.*psi2d(i,j))/deta**2
+            dqpsi2d  (i,j) = 0.5d0*(psi2d(i,j+1)-psi2d(i,j-1))/dq
+            dqqpsi2d (i,j) = (psi2d(i,j+1)+psi2d(i,j-1)-2.0d0*psi2d(i,j))/dq**2
+            detapsi2d(i,j) = sinh(0.5d0*etagrd(i))
+     $                       + 0.5d0*(psi2d(i+1,j)-psi2d(i-1,j))/deta
+            detaetapsi2d(i,j)
+     $          = 0.5d0*cosh(0.5d0*etagrd(i))
+     $            + (psi2d(i+1,j)+psi2d(i-1,j)-2.0d0*psi2d(i,j))/deta**2
          enddo
       enddo
 
@@ -214,7 +308,7 @@ c     be called if the IVP solve is not successful
 
       do j=2,nqb-1
         do i=2,neb-1
-          detaqpsi2d(i,j)=0.5*(detapsi2d(i,j+1)-detapsi2d(i,j-1))/dq
+          detaqpsi2d(i,j)=0.5d0*(detapsi2d(i,j+1)-detapsi2d(i,j-1))/dq
         enddo
       enddo
 
@@ -229,13 +323,84 @@ c     be called if the IVP solve is not successful
       enddo
 
       do j=1,nqb
-        psi2d(:,j)=psi2d(:,j)+2.*cosh(0.5*etagrd)
+        psi2d(:,j)=psi2d(:,j)+2.0d0*cosh(0.5d0*etagrd)
       enddo
 
-c     Now evaluate each of the following at x(i,j,k), y(i,j,k) and
-c     z(i,j,k) where i,j,k go from 1 to nx,ny,nz
+      if (debug .ge. 6) then
+         print *, '### 2-D grid results (= inputs to interpolation) ###'
+         print *, 'effective 2-D grid size: neb,nqb =', neb,nqb
+         print *, 'debug_{ii,jj} =', debug_ii,debug_jj
+         print *, 'at this 2-D grid point...'
+         print *, '             eta =', etagrd(debug_ii)
+         print *, '       theta [q] =',   qgrd(debug_jj)
+         print *, '           psi2d =',        psi2d(debug_ii,debug_jj)
+         print *, '       detapsi2d =',    detapsi2d(debug_ii,debug_jj)
+         print *, '         dqpsi2d =',      dqpsi2d(debug_ii,debug_jj)
+         print *, '    detaetapsi2d =', detaetapsi2d(debug_ii,debug_jj)
+         print *, '      detaqpsi2d =',   detaqpsi2d(debug_ii,debug_jj)
+         print *, '        dqqpsi2d =',     dqqpsi2d(debug_ii,debug_jj)
+      endif
 
-c     Conformal factor
+c
+c write conformal factor psi on 2D grid to output file if requested
+c
+      if (output_psi2D .ne. 0) then
+         write (message_buffer, '(A,A,A)')
+     $         'writing 2D psi to "',
+     $            output_psi2D_file_name_fstring(1:fstring_length),
+     $         '"'
+         call CCTK_INFO(message_buffer)
+
+         call CCTK_FortranString(fstring_length,
+     $                           output_psi2D_file_name,
+     $                           output_psi2D_file_name_fstring)
+         open (9, iostat=io_status, status='replace',
+     $         file=output_psi2D_file_name_fstring)
+         if (io_status .ne. 0) then 
+            write (message_buffer, '(A,A,A,I)')
+     $            'error opening psi2D output file "',
+     $            output_psi2D_file_name_fstring(1:fstring_length),
+     $            '": io_status=', io_status
+            call CCTK_WARN(CCTK_WARN_ABORT, message_buffer)
+         endif
+
+         write (9, '(a)')
+     $         '# eta          theta (=q)     psi (2D)            psi (3D)'
+            do i = 1,neb
+            exp_mhalf_eta = exp(-0.5d0 * etagrd(i))
+               do j = 1,nqb
+               psi3d = psi2d(i,j) * exp_mhalf_eta
+               write (9, '(f12.8,a, f12.8,a, g20.10e3,a, g20.10e3)')
+     $               etagrd(i), ' ', qgrd(j), ' ',
+     $               psi2d(i,j), ' ', psi3d
+               end do
+            write (9, '(a)') ''
+            end do
+
+         close (9, iostat=io_status)
+         if (io_status .ne. 0) then 
+            write(message_buffer, '(A,I)')
+     $         'error closing psi2D output file: io_status=', io_status
+            call CCTK_WARN(CCTK_WARN_ABORT, message_buffer)
+         endif
+      endif
+
+
+
+c
+c ***** interpolate psi and its derivatives to the xyz grid positions *****
+c ***** and compute the ADM variables there *****
+c
+c More precisely, at this point we have q, psi, and psi's derivatives
+c on the (eta,theta) grid.  We want to interpolate these values to the
+c (eta,theta) locations of each of the (x,y,z) grid points.
+c
+c The (eta,theta) grid only spans the range eta >= 0, so we actually
+c interpolate using the (x,y,z) grid points' |eta| values, and fix
+c things up afterwords.
+c
+
+      call CCTK_INFO("interpolating solution to xyz grid points")
 
       eta = 0.5d0 * dlog (x**2 + y**2 + z**2)
       abseta = abs (eta)
@@ -245,60 +410,66 @@ c     Conformal factor
       do k=1,nz
          do j=1,ny
             do i=1,nx
-c               eta(i,j,k) = 0.5d0*dlog(x(i,j,k)**2+y(i,j,k)**2+z(i,j,k)**2)
-c               abseta(i,j,k) = abs(eta(i,j,k))
                if(eta(i,j,k) .lt. 0)then
                   sign_eta(i,j,k) = -1
                else
                   sign_eta(i,j,k) = 1
                endif
-c               q(i,j,k) = datan2(sqrt(x(i,j,k)**2+y(i,j,k)**2),z(i,j,k))
-c                                    TYPO HERE ???????????
-c                                                 |
-c                                                 |
-c               phi(i,j,k)= datan2(y(i,j,k),x(i,j,k))
             enddo
          enddo
       enddo
 
+      if (debug .ge. 6) then
+c posn = (0-origin) 1-D positionn of this point in interpolator arrays
+c        (this is useful because interpolator error messages refer to it)
+	 posn = (debug_i-1) + nx*(debug_j-1) + nx*ny*(debug_k-1)
+	 print *, '### 3-D interpolation coordinates and inputs ###'
+	 print *, '3-D grid size: n[xyz] =', nx,ny,nz
+	 print *, 'debug_[ijk] =', debug_i,debug_j,debug_k, '==> posn =', posn
+         print *, 'at this 3-D grid point, ...'
+	 print *, '        x =',      x(debug_i,debug_j,debug_k)
+	 print *, '        y =',      y(debug_i,debug_j,debug_k)
+	 print *, '        z =',      z(debug_i,debug_j,debug_k)
+	 print *, '      eta =',    eta(debug_i,debug_j,debug_k)
+	 print *, '   abseta =', abseta(debug_i,debug_j,debug_k)
+	 print *, 'theta [q] =',      q(debug_i,debug_j,debug_k)
+	 print *, '      phi =',    phi(debug_i,debug_j,debug_k)
+      endif
+
+c set up the interpolator array pointers
       npoints = nx*ny*nz
 
-!     Parameter table and interpolator handles.
-      options_string = "order = " // char(ichar('0') + interpolation_order)
-      call Util_TableCreateFromString (param_table_handle, options_string)
-      if (param_table_handle .lt. 0) then
-        call CCTK_WARN(0,"Cannot create parameter table for interpolator")
-      endif
-
-      call CCTK_InterpHandle (interp_handle, "uniform cartesian")
-      if (interp_handle .lt. 0) then
-        call CCTK_WARN(0,"Cannot get handle for interpolation ! Forgot to activate an implementation providing interpolation operators ??")
-      endif
-
-!     fill in the input/output arrays for the interpolator
       coord_origin(1) = etagrd(1)
-      coord_origin(2) = qgrd(1)
+      coord_origin(2) =   qgrd(1)
       coord_delta(1)  = etagrd(2) - etagrd(1)
-      coord_delta(2)  = qgrd(2) - qgrd(1)
+      coord_delta(2)  =   qgrd(2) -   qgrd(1)
+
+      if (debug .ge. 6) then
+         print *, '### 2-D grid origin:   eta=', coord_origin(1)
+         print *, '                     theta=', coord_origin(2)
+         print *, '              delta:   eta=', coord_delta(1)
+         print *, '                     theta=', coord_delta(2)
+      end if
 
       interp_coords(1) = CCTK_PointerTo(abseta)
       interp_coords(2) = CCTK_PointerTo(q)
 
-      in_array_dims(1) = neb; in_array_dims(2) = nqb
+      in_array_dims(1) = neb
+      in_array_dims(2) = nqb
 
-      in_arrays(1) = CCTK_PointerTo(psi2d)
-      in_arrays(2) = CCTK_PointerTo(detapsi2d)
-      in_arrays(3) = CCTK_PointerTo(dqpsi2d)
+      in_arrays(1) = CCTK_PointerTo(       psi2d)
+      in_arrays(2) = CCTK_PointerTo(   detapsi2d)
+      in_arrays(3) = CCTK_PointerTo(     dqpsi2d)
       in_arrays(4) = CCTK_PointerTo(detaetapsi2d)
-      in_arrays(5) = CCTK_PointerTo(detaqpsi2d)
-      in_arrays(6) = CCTK_PointerTo(dqqpsi2d)
+      in_arrays(5) = CCTK_PointerTo(  detaqpsi2d)
+      in_arrays(6) = CCTK_PointerTo(    dqqpsi2d)
 
-      out_arrays(1) = CCTK_PointerTo(psi2dv)
-      out_arrays(2) = CCTK_PointerTo(detapsi2dv)
-      out_arrays(3) = CCTK_PointerTo(dqpsi2dv)
+      out_arrays(1) = CCTK_PointerTo(       psi2dv)
+      out_arrays(2) = CCTK_PointerTo(   detapsi2dv)
+      out_arrays(3) = CCTK_PointerTo(     dqpsi2dv)
       out_arrays(4) = CCTK_PointerTo(detaetapsi2dv)
-      out_arrays(5) = CCTK_PointerTo(detaqpsi2dv)
-      out_arrays(6) = CCTK_PointerTo(dqqpsi2dv)
+      out_arrays(5) = CCTK_PointerTo(  detaqpsi2dv)
+      out_arrays(6) = CCTK_PointerTo(    dqqpsi2dv)
 
       call CCTK_InterpLocalUniform (ierror, 2,
      $                              interp_handle, param_table_handle,
@@ -306,24 +477,31 @@ c               phi(i,j,k)= datan2(y(i,j,k),x(i,j,k))
      $                              npoints, type_codes(1), interp_coords,
      $                              6, in_array_dims, type_codes, in_arrays,
      $                              6, type_codes, out_arrays)
+      if (ierror < 0) then
+        write(message_buffer, '(A,I)')
+     $      'error in interpolator: ierror=', ierror
+        call CCTK_WARN(CCTK_WARN_ABORT, message_buffer)
+      endif
 
       call Util_TableDestroy (ierror, param_table_handle)
 
-      psi = psi2dv * exp (-0.5 * eta)
+      if (debug .ge. 6) then
+         print *, '### interpolation results (at this 3-D grid point) ###'
+	 print *, '   psi2dv =', psi2dv(debug_i,debug_j,debug_k)
+      end if
+c
+c ***** compute the ADMBase conformal factor, its derivatives, *****
+c ***** metric, and extrinsic curvature from the interpolation output *****
+c
+      psi = psi2dv * exp (-0.5d0 * eta)
       detapsi2dv = sign_eta * detapsi2dv
       detaqpsi2dv = sign_eta * detaqpsi2dv
 
       do k=1,nz
          do j=1,ny
             do i=1,nx
-
-c               psi(i,j,k) = psi2dv(i,j,k)*exp(-0.5*eta(i,j,k))
-c               detapsi2dv(i,j,k) = sign_eta(i,j,k)*detapsi2dv(i,j,k)
-
 c     psix = \partial psi / \partial x / psi
 #include "CactusEinstein/IDAxiBrillBH/src/psi_1st_deriv.x"
-
-c               detaqpsi2dv(i,j,k) = sign_eta(i,j,k)*detaqpsi2dv(i,j,k)
 
 c     psixx = \partial^2\psi / \partial x^2 / psi
 #include "CactusEinstein/IDAxiBrillBH/src/psi_2nd_deriv.x"
@@ -331,25 +509,19 @@ c     psixx = \partial^2\psi / \partial x^2 / psi
          enddo
       enddo
 
-c     Conformal metric
-c     gxx = ...
-
-c     Derivatives of the metric
-c     dxgxx = 1/2 \partial gxx / \partial x
-
       do k=1,nz
          do j=1,ny
             do i=1,nx
-c THESE WERE ALREADY CALCULATED ABOVE !!!
-c               eta(i,j,k) = 0.5d0*dlog(x(i,j,k)**2+y(i,j,k)**2+z(i,j,k)**2)
-c               q(i,j,k) = datan2(sqrt(x(i,j,k)**2+y(i,j,k)**2),z(i,j,k))
-c               phi(i,j,k) = datan2(y(i,j,k),x(i,j,k))
+c     Conformal metric
+c       gxx = ...
+c     Derivatives of the metric (currently commented-out)
+c       dxgxx = 1/2 \partial gxx / \partial x
 #include "CactusEinstein/IDAxiBrillBH/src/gij.x"
             enddo
          enddo
       enddo
 
-c     Curvature
+c Extrinsic Curvature is identically zero
       kxx = 0.0D0
       kxy = 0.0D0
       kxz = 0.0D0
@@ -357,25 +529,41 @@ c     Curvature
       kyz = 0.0D0
       kzz = 0.0D0
 
-  111 continue
-c     Set ADM mass
+      if (debug .ge. 6) then
+         print *, '### final results (again at this 3-D grid point) ###'
+	 print *, '   psi =', psi(debug_i,debug_j,debug_k)
+	 print *, '   gxx =', gxx(debug_i,debug_j,debug_k)
+	 print *, '   gxy =', gxy(debug_i,debug_j,debug_k)
+	 print *, '   gxz =', gxz(debug_i,debug_j,debug_k)
+	 print *, '   gyy =', gyy(debug_i,debug_j,debug_k)
+	 print *, '   gyz =', gyz(debug_i,debug_j,debug_k)
+	 print *, '   gzz =', gzz(debug_i,debug_j,debug_k)
+      endif
+
+c
+c ***** diagnostics and final cleanup
+c
+
+c ADM mass
+      call CCTK_INFO("computing ADM mass")
       i = neb-15
-      adm = 0.0
+      adm = 0.0d0
       do j=2,nqb-1
-        adm=adm+(psi2d(i,j)-(psi2d(i+1,j)-psi2d(i-1,j))/deta)*exp(0.5*
-     $        etagrd(i))
+        adm = adm
+     $        + (psi2d(i,j)-(psi2d(i+1,j)-psi2d(i-1,j))/deta)
+     $          *exp(0.5d0*etagrd(i))
       enddo
       adm=adm/(nqb-2)
       print *,'ADM mass: ',adm
+
       if (CCTK_EQUALS(initial_lapse,"schwarz")) then
          write (*,*)"Initial with schwarzschild-like lapse"
-         write (*,*)"using alp = (2.*r - adm)/(2.*r+adm)."
-         alp = (2.*r - adm)/(2.*r+adm)
+         write (*,*)"using alp = (2r - adm)/(2r+adm)"
+         alp = (2.0d0*r - adm)/(2.0d0*r+adm)
       endif
 
-c      conformal_state = CONFORMAL_METRIC (What is CONFORMAL_METRIC?)
+c conformal_state = 'all' derivatives were calculated
       conformal_state = 3
-c     3 ==> 'all' derivatives were calculated
 
       deallocate(cc,ce,cw,cn,cs,rhs,psi2d,detapsi2d,dqpsi2d,
      $     detaetapsi2d,detaqpsi2d,dqqpsi2d,
