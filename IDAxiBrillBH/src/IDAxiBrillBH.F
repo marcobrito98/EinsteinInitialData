@@ -192,7 +192,7 @@ c Initialize some arrays
       deta = etamax/(neb-3)
 
       do j=1,nqb
-        qgrd(j) = (j-1.5)*dq
+        qgrd(j) = (j-1.5d0)*dq
         do i=1,neb
           etagrd(i) = (i-2)*deta
 #include "CactusEinstein/IDAxiBrillBH/src/bhbrill.x"
@@ -201,18 +201,18 @@ c Initialize some arrays
 c Boundary conditions
       do j=1,nqb
         ce(2,j)=ce(2,j)+cw(2,j)
-        cw(2,j)=0.0
+        cw(2,j)=0.0d0
 
         cw(neb-1,j)=cw(neb-1,j)+ce(neb-1,j)
         cc(neb-1,j)=cc(neb-1,j)-deta*ce(neb-1,j)
-        ce(neb-1,j)=0.0
+        ce(neb-1,j)=0.0d0
 
       enddo
       do i=1,neb
         cc(i,2)=cc(i,2)+cs(i,2)
-        cs(i,2)=0.0
+        cs(i,2)=0.0d0
         cc(i,nqb-1)=cc(i,nqb-1)+cn(i,nqb-1)
-        cn(i,nqb-1)=0.0
+        cn(i,nqb-1)=0.0d0
       enddo
 
 c Do the solve
@@ -522,12 +522,12 @@ c       dxgxx = 1/2 \partial gxx / \partial x
       enddo
 
 c Extrinsic Curvature is identically zero
-      kxx = 0.0D0
-      kxy = 0.0D0
-      kxz = 0.0D0
-      kyy = 0.0D0
-      kyz = 0.0D0
-      kzz = 0.0D0
+      kxx = 0.0d0
+      kxy = 0.0d0
+      kxz = 0.0d0
+      kyy = 0.0d0
+      kyz = 0.0d0
+      kzz = 0.0d0
 
       if (debug .ge. 6) then
          print *, '### final results (again at this 3-D grid point) ###'
