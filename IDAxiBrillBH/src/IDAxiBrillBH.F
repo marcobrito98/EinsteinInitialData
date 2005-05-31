@@ -128,7 +128,7 @@ c
      $            (param_table_handle,
      $             interpolator_pars_fstring(1:fstring_length))
       if (param_table_handle .lt. 0) then
-        write(message_buffer, '(A,I)')
+        write(message_buffer, '(A,I8)')
      $      'failed to create interpolator param table: error code ',
      $      param_table_handle
         call CCTK_WARN(CCTK_WARN_ABORT, message_buffer)
@@ -230,7 +230,7 @@ c
 c The solution is (hopefully) now available.
 c
       if(ier .ne. 0) then
-         write(message_buffer, '(A,I)')
+         write(message_buffer, '(A,I8)')
      $      'failed to solve elliptic equation: ier=', ier
          call CCTK_WARN(CCTK_WARN_ABORT, message_buffer)
       end if
@@ -357,7 +357,7 @@ c
          open (9, iostat=io_status, status='replace',
      $         file=output_psi2D_file_name_fstring)
          if (io_status .ne. 0) then 
-            write (message_buffer, '(A,A,A,I)')
+            write (message_buffer, '(A,A,A,I8)')
      $            'error opening psi2D output file "',
      $            output_psi2D_file_name_fstring(1:fstring_length),
      $            '": io_status=', io_status
@@ -379,7 +379,7 @@ c
 
          close (9, iostat=io_status)
          if (io_status .ne. 0) then 
-            write(message_buffer, '(A,I)')
+            write(message_buffer, '(A,I8)')
      $         'error closing psi2D output file: io_status=', io_status
             call CCTK_WARN(CCTK_WARN_ABORT, message_buffer)
          endif
@@ -478,7 +478,7 @@ c set up the interpolator array pointers
      $                              6, in_array_dims, type_codes, in_arrays,
      $                              6, type_codes, out_arrays)
       if (ierror < 0) then
-        write(message_buffer, '(A,I)')
+        write(message_buffer, '(A,I8)')
      $      'error in interpolator: ierror=', ierror
         call CCTK_WARN(CCTK_WARN_ABORT, message_buffer)
       endif
