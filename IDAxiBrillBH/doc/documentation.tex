@@ -78,21 +78,16 @@ q = Q_0 \sin^n \theta \left [ \exp\left(\frac{\eta -
       \eta_0^2}{\sigma^2}\right ) \right ].
 \end{equation}
 Note regularity along the axis requires that the exponent $n$ must be
-even.  Choose a logarithmic radial coordinate $\eta$, which is
-related to the
-asymptoticlly flat coordinate $r$ by $\eta = \ln (2r/m)$, where $m$ is a
-scale parameter.  One can rewrite (\ref{IDAxiBrillBH/eqn:sph-coord}) as
-\begin{equation}
-ds^2 = \psi(\eta)^4 [ e^{2 q} (d \eta^2 +  d\theta^2) +  \sin^2
-\theta d\phi^2].
-\end{equation}
-
-In the previous Bernstein work, the above $r$ is transformed to a
-logarithmic radial coordinate
-
+even.  Choosing a logarithmic radial coordinate
 \begin{equation}
 \label{IDAxiBrillBH/eta-coord}
 \eta = \ln{\frac{2r}{m}}.
+\end{equation}
+(where $m$ is a scale parameter), one can rewrite
+(\ref{IDAxiBrillBH/eqn:sph-coord}) as
+\begin{equation}
+ds^2 = \psi(\eta)^4 [ e^{2 q} (d \eta^2 +  d\theta^2) +  \sin^2
+\theta d\phi^2].
 \end{equation}
 
 The scale parameter $m$ is equal to the mass of the Schwarzschild
@@ -153,7 +148,7 @@ and outer boundary condition, a Robin condition:
 
 This thorn solves equation~(\ref{IDAxiBrillBH/eqn:ham-linear}) on a 2-D
 $(\eta,\theta)$ grid.  However, Cactus needs a 3-D grid, typically with
-Cartesian coordinates.  Therefore, this thorn interpolate $\psi$ and its
+Cartesian coordinates.  Therefore, this thorn interpolates $\psi$ and its
 $(\eta,\theta)$ derivatives to the Cartesian grid.
 
 The parameters \verb|neta| and \verb|nq| specify the resolution of
