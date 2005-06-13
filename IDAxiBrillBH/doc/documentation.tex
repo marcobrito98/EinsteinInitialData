@@ -222,7 +222,7 @@ stack, whose size depends on the $\eta$ and $\theta$ resolutions.
 For high resolutions these arrays may exceed system- and/or shell-imposed
 limits on the maximum stack size, causing the code to crash (core-dump).
 In an ideal world, someone would fix the offending code to allocate
-large arrays on the heap.  Unless/Until that happens, you can either
+large arrays on the heap.  Unless/until that happens, you can either
 use lower resolution :(, or try raising the operating-system and/or
 shell stack-size limits.
 For example, using \verb|tcsh| the shell command \verb|limit|
