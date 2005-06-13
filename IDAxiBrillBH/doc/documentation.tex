@@ -216,6 +216,21 @@ together with either 4th~order Lagrange or 3rd~order Hermite interpolation
 (provided by thorn \textbf{AEIThorns/AEILocalInterp}) to get sufficient
 accuracy.
 
+One problem with such high resolutions is that \textbf{IDAxiBrillBH}
+uses an internal multigrid solver which allocates local arrays on the
+stack, whose size depends on the $\eta$ and $\theta$ resolutions.
+For high resolutions these arrays may exceed system- and/or shell-imposed
+limits on the maximum stack size, causing the code to crash (core-dump).
+In an ideal world, someone would fix the offending code to allocate
+large arrays on the heap.  Unless/Until that happens, you can either
+use lower resolution :(, or try raising the operating-system and/or
+shell stack-size limits.
+For example, using \verb|tcsh| the shell command \verb|limit|
+shows the current limits, and \verb|limit stacksize unlimited|
+raises your limit to as much as the operating system will allow.
+Using \verb|bash| the corresponding commands are \verb|ulimit -a|
+and \verb|ulimit -s unlimited|.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Debugging Parameters}
