@@ -149,7 +149,14 @@ and outer boundary condition, a Robin condition:
 This thorn solves equation~(\ref{IDAxiBrillBH/eqn:ham-linear}) on a 2-D
 $(\eta,\theta)$ grid.  However, Cactus needs a 3-D grid, typically with
 Cartesian coordinates.  Therefore, this thorn interpolates $\psi$ and its
-$(\eta,\theta)$ derivatives to the Cartesian grid.
+$(\eta,\theta)$ derivatives to the Cartesian grid.  More precisely, for
+each Cactus grid point, this thorn calculates the corresponding $(\eta,\theta)$
+coordinates, and interpolates the 2-D solution to that point.
+
+[Note that since $\eta$ (defined by~$(\ref{IDAxiBrillBH/eta-coord})$)
+is a \emph{logarithmic} radial coordinate, this thorn will fail if
+there's a Cartesian grid point at the origin.  Use a staggered grid
+to work around this problem.]
 
 The parameters \verb|neta| and \verb|nq| specify the resolution of
 this thorn's 2-D grid in $\eta$ and $\theta$ respectively.%%%
