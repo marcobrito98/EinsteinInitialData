@@ -13,3 +13,16 @@ Part of this same change might also be to store the 2D elliptic results
 in Cactus grid arrays rather than native Fortran 90 arrays.  This would
 let us use standard Cactus I/O methods to output the 2D elliptic results
 instead of the hard-wired code we use right now.
+
+
+
+For each Cactus grid point, IDAxiBrillBH calculates
+  eta := |log(2r/m)|
+and uses this to interpolate into an internal grid.  This internal grid
+covers the range eta = 0 to etamax, where etamax defaults to 5.0.
+So... for m=1, r must lie in the range 0.00337 to 74.2, or else the
+computed  eta  value will fall outside the internal grid.
+
+It would be nice if this restriction could be lifted (eg allowing
+a grid point at the origin).  Maybe some sort of interpolation in real
+space (instead of in eta-space) to fill in the hole at the origin?
