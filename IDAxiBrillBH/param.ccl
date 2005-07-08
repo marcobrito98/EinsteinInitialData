@@ -167,3 +167,15 @@ INT interpolation_order "Order for interpolation" STEERABLE = ALWAYS
 {
 0:9 :: "any integer accepted by the interpolator"
 } 1
+
+############################################################
+
+#
+# ***** miscellaneous parameters *****
+#
+
+Boolean generate_StaticConformal_metric					\
+  "should we generate a StaticConformal conformal metric (true),	\
+   or a pure ADMBase physical metric (false)"
+{
+} true

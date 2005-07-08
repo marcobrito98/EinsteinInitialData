@@ -17,14 +17,21 @@
 % Do not delete next line
 % START CACTUS THORNGUIDE
 
+% Add all definitions used in this documentation here
+%   \def\mydef etc
+
+\def\thorn#1{\textbf{#1}}
+\def\arrangement#1{\textbf{#1}}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{abstract}
-  Thorn IDAxiBrillBH provides analytic initial data for a vacuum
+  Thorn \thorn{IDAxiBrillBH} provides analytic initial data for a vacuum
   black hole spacetime:  a single Schwarzschild black hole in
   isotropic coordinates plus Brill wave.  This initial data is
-  provided for the 3-conformal metric, it's spatial derivatives, and
-  extrinsic curvature.
+  provided for \thorn{ADMBase} 3-metric and extrinsic curvature,
+  and optionally also for the \thorn{StaticConformal} conformal
+  factor and its 1st and 2nd~spatial derivatives.
 \end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -216,7 +223,7 @@ together with either 4th~order Lagrange or 3rd~order Hermite interpolation
 (provided by thorn \textbf{AEIThorns/AEILocalInterp}) to get sufficient
 accuracy.
 
-One problem with such high resolutions is that \textbf{IDAxiBrillBH}
+One problem with such high resolutions is that \thorn{IDAxiBrillBH}
 uses an internal multigrid solver which allocates local arrays on the
 stack, whose size depends on the $\eta$ and $\theta$ resolutions.
 For high resolutions these arrays may exceed system- and/or shell-imposed
@@ -230,6 +237,21 @@ shows the current limits, and \verb|limit stacksize unlimited|
 raises your limit to as much as the operating system will allow.
 Using \verb|bash| the corresponding commands are \verb|ulimit -a|
 and \verb|ulimit -s unlimited|.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Physical or Conformal Metric}
+
+By default, \thorn{IDAxiBrillBH} generates initial data which uses
+a nontrivial static conformal factor (as defined by thorn
+\thorn{StaticConformal}).  This initial data includes both the
+conformal factor and its 1st and 2nd~spatial derivatives,
+so \thorn{IDAxiBrillBH} sets \verb|conformal_state| to 3.
+
+However, if the Boolean parameter \verb|generate_StaticConformal_metric|
+is set to \verb|false|, then \thorn{IDAxiBrillBH} generates a pure
+physical 3-metric (and sets \verb|conformal_state| to 0).  This is
+useful if you have other thorns which don't grok a conformal metric.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
