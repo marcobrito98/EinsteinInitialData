@@ -521,6 +521,21 @@ c       dxgxx = 1/2 \partial gxx / \partial x
          enddo
       enddo
 
+c convert to physical metric if StaticConformal isn't wanted
+      if (generate_StaticConformal_metric .eq. 0) then
+         call CCTK_INFO("converting to physical metric")
+         call ConfToPhysInPlace(nx, ny, nz,
+     $				psi,
+     $				gxx, gxy, gxz,
+     $				     gyy, gyz,
+     $				          gzz)
+c        record that we now have a physical metric
+         conformal_state = 0
+      else
+c        record that we computed psi and its 1st and 2nd derivatives
+         conformal_state = 3
+      end if
+
 c Extrinsic Curvature is identically zero
       kxx = 0.0d0
       kxy = 0.0d0
@@ -531,7 +546,12 @@ c Extrinsic Curvature is identically zero
 
       if (debug .ge. 6) then
          print *, '### final results (again at this 3-D grid point) ###'
-	 print *, '   psi =', psi(debug_i,debug_j,debug_k)
+         if (conformal_state .gt. 0) then
+            print *, '### ... conformal metric with'
+	    print *, '   psi =', psi(debug_i,debug_j,debug_k)
+         else
+            print *, '### ... physical metric with'
+         end if
 	 print *, '   gxx =', gxx(debug_i,debug_j,debug_k)
 	 print *, '   gxy =', gxy(debug_i,debug_j,debug_k)
 	 print *, '   gxz =', gxz(debug_i,debug_j,debug_k)
@@ -561,9 +581,6 @@ c ADM mass
          write (*,*)"using alp = (2r - adm)/(2r+adm)"
          alp = (2.0d0*r - adm)/(2.0d0*r+adm)
       endif
-
-c conformal_state = 'all' derivatives were calculated
-      conformal_state = 3
 
       deallocate(cc,ce,cw,cn,cs,rhs,psi2d,detapsi2d,dqpsi2d,
      $     detaetapsi2d,detaqpsi2d,dqqpsi2d,
