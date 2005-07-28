@@ -66,7 +66,7 @@ if ( (CCTK_Equals(initial_data,"slice")) && ! (CCTK_Equals(evolution_method,"sli
 
 if ( (CCTK_Equals(initial_lapse,"exact")) || (CCTK_Equals(initial_shift,"exact")) )
 {
-  schedule Exact__gauge in ADMBase_InitialGauge after Exact__decode_pars
+  schedule Exact__gauge in ADMBase_InitialData after Exact__decode_pars
   {
     LANG: Fortran
   } "Set initial lapse and/or shift from exact solution on a trivial slice"
@@ -82,14 +82,7 @@ if ( (CCTK_Equals(lapse_evolution_method,"exact")) || (CCTK_Equals(shift_evoluti
     OPTIONS: global
   } "Register slicings"
 
-  # Necessary if MoL is not used
   schedule Exact__gauge at CCTK_PRESTEP
-  {
-    LANG: Fortran
-  } "Set evolution lapse and/or shift from exact solution on a trivial slice"
-
-  # Necessary if MoL is used
-  schedule Exact__gauge in MoL_PostStep
   {
     LANG: Fortran
   } "Set evolution lapse and/or shift from exact solution on a trivial slice"
