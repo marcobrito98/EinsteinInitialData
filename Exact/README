@@ -39,9 +39,9 @@ need to configure with
       CPP=$${PERL} $${CCTK_HOME}/lib/sbin/cpp.pl
 in your ~/.cactus/config or other Cactus options file.
 
-[Note by Erik Schnetter, 2005-05-15: The adivce above is outdated.
-This issue is also treated in the Cactus FAQ.  Read it for more
-information.]
+[Note by Erik Schnetter, 2005-05-15: The adivce above is outdated and
+incorrect.  This issue is also treated in the Cactus FAQ.  Read it for
+more information.]
 
 This thorn is mostly written in Fortran 77, with a few files in C
 and Fortran 90.  At present Fortran 90 is only used for the "arbitrary slice"
