@@ -72,7 +72,7 @@ C     Debugging test.
                         write(6,*) m, n, gu(m,n)
                      end do
                   end do
-		  STOP
+                  call CCTK_WARN (0, "aborting")
                end if
 C     And now n^A = - 1/N g^AB n_B. (Sign so that it is future-pointing.)
                do m=1,4

@@ -69,7 +69,9 @@ C     Intermediate quantities.
 C     Make sure we are not sitting on one of the two source wordlines,
 C     given by x = y = 0, z = +/- sqrt(h^2 + t^2)
 
-      if (num / h**4 .le. numlim) stop 'too close to source wordline'
+      if (num / h**4 .le. numlim) then
+      	 call CCTK_WARN (0, "too close to source wordline")
+      end if
 
       div = 1.d0 / sqrt(num**3)
       f = d**2  * ((0.25d0 * (a + b)**2 - h**2)**2 
@@ -114,7 +116,7 @@ C     we only need to check that gdzz is positive.
          write(*,*) 'WARNING 3-metric not spacelike in boostrot at'
          write(*,*) 't =', t, 'z =', z
          write(*,*) 'x =', x, 'y =', y
-         pause
+	 call CCTK_WARN (0, "aborting")
       end if
 
 C     Calculate inverse metric. That is not too difficult as it is
@@ -123,8 +125,7 @@ c     in block-diagonal form.
       tmp = gdtt * gdzz - gdtz**2
 
       if (tmp .eq. 0.d0) then
-         write(*,*) 'boostrot metric inverse failed in tz plane'
-         STOP
+	 call CCTK_WARN (0, "boostrot metric inverse failed in tz plane")
       end if
 
       gutt = gdzz / tmp
@@ -134,8 +135,7 @@ c     in block-diagonal form.
       tmp = gdxx * gdyy - gdxy**2
 
       if (tmp .eq. 0.d0) then
-         write(*,*) 'boostrot metric inverse failed in xy plane'
-         STOP
+         call CCTK_WARN (0, "boostrot metric inverse failed in xy plane")
       end if
 
       guxx = gdyy / tmp

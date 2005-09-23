@@ -190,7 +190,7 @@ c     OK so 6 blending cases. If frac = 1 we get all exact
 
                   if (ninterps .eq. 0 .or. ninterps .gt. 3) then 
                      print *,"NINTERPS error", ninterps
-                     STOP
+                     call CCTK_WARN (0, "aborting")
                   endif
                      
                   sfrac = (xfrac + yfrac + zfrac) * oonints
