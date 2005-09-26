@@ -10,11 +10,13 @@ if (CCTK_Equals(initial_data,"brilldata") || CCTK_Equals(initial_data,"brilldata
   schedule IDBrillData_ParamChecker at CCTK_PARAMCHECK
   {
     LANG: C
+    OPTIONS: global
   } "Check that the metric_type is recognised"
 
-  schedule BrillData_InitSymBound at CCTK_BASEGRID
+  schedule BrillData_InitSymBound at CCTK_WRAGH
   {
     LANG: C
+    OPTIONS: global
   } "Set up symmetries for brillpsi"
 
   schedule brilldata in ADMBase_InitialData
