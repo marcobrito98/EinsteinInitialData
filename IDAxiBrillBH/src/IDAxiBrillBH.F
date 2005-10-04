@@ -391,12 +391,12 @@ c
 c ***** interpolate psi and its derivatives to the xyz grid positions *****
 c ***** and compute the ADM variables there *****
 c
-c More precisely, at this point we have q, psi, and psi's derivatives
+c More precisely, at this point we have q, psi, and the psi derivatives
 c on the (eta,theta) grid.  We want to interpolate these values to the
 c (eta,theta) locations of each of the (x,y,z) grid points.
 c
 c The (eta,theta) grid only spans the range eta >= 0, so we actually
-c interpolate using the (x,y,z) grid points' |eta| values, and fix
+c interpolate using the (x,y,z) grid points |eta| values, and fix
 c things up afterwords.
 c
 
@@ -521,7 +521,7 @@ c       dxgxx = 1/2 \partial gxx / \partial x
          enddo
       enddo
 
-c convert to physical metric if StaticConformal isn't wanted
+c convert to physical metric if StaticConformal is not wanted
       if (generate_StaticConformal_metric .eq. 0) then
          call CCTK_INFO("converting to physical metric")
          call ConfToPhysInPlace(nx, ny, nz,
