@@ -196,6 +196,7 @@ TwoPunctures (CCTK_ARGUMENTS)
   int nvar = 1, n1 = npoints_A, n2 = npoints_B, n3 = npoints_phi;
 
   int i, j, k, ntotal = n1 * n2 * n3 * nvar;
+  int percent;
   static double *F = NULL;
   static derivs u, v;
   double admMass;
@@ -272,6 +273,13 @@ TwoPunctures (CCTK_ARGUMENTS)
     {
       for (i = 0; i < cctk_lsh[0]; ++i)
       {
+        if (percent != 10*(i+j*cctk_lsh[0]+k*cctk_lsh[0]*cctk_lsh[1]) /
+                          (cctk_lsh[0] * cctk_lsh[1] * cctk_lsh[2]))
+        {
+            percent = 10*(i+j*cctk_lsh[0]+k*cctk_lsh[0]*cctk_lsh[1]) /
+                         (cctk_lsh[0] * cctk_lsh[1] * cctk_lsh[2]);
+            CCTK_VInfo(CCTK_THORNSTRING, "%3d%% done", percent*10);
+        }
 
 	const int ind = CCTK_GFINDEX3D (cctkGH, i, j, k);
         
@@ -298,9 +306,23 @@ TwoPunctures (CCTK_ARGUMENTS)
             r_plus = TP_Tiny;
         if (r_minus < TP_Tiny)
             r_minus = TP_Tiny;
-        const double psi1 = 1
+        double psi1 = 1
           + 0.5 * par_m_plus / r_plus
           + 0.5 * par_m_minus / r_minus + U;
+#define EXTEND(M,r) \
+          ( M * (3./8 * pow(r, 4.0) / pow(TP_Extend_Radius, 5.0) - \
+                 5./4 * pow(r, 2.0) / pow(TP_Extend_Radius, 3.0) + \
+                 15./8 / TP_Extend_Radius))
+        if (r_plus < TP_Extend_Radius) {
+          psi1 = 1
+             + 0.5 * EXTEND(par_m_plus,r_plus)
+             + 0.5 * par_m_minus / r_minus + U;
+        }
+        if (r_minus < TP_Extend_Radius) {
+          psi1 = 1
+             + 0.5 * EXTEND(par_m_minus,r_minus)
+             + 0.5 * par_m_plus / r_plus + U;
+        }
         double static_psi = 1;
         
         double Aij[3][3];
@@ -311,7 +333,6 @@ TwoPunctures (CCTK_ARGUMENTS)
           double xp, yp, zp, rp, ir;
           double s1, s3, s5;
           double p, px, py, pz, pxx, pxy, pxz, pyy, pyz, pzz;
-
           p = 1.0;
           px = py = pz = 0.0;
           pxx = pxy = pxz = 0.0;
@@ -322,7 +343,13 @@ TwoPunctures (CCTK_ARGUMENTS)
           yp = y[ind];
           zp = z[ind];
           rp = sqrt (xp*xp + yp*yp + zp*zp);
+          if (rp < TP_Tiny)
+              rp = TP_Tiny;
           ir = 1.0/rp;
+
+          if (rp < TP_Extend_Radius) {
+            ir = EXTEND(1., rp);
+          }
 
           s1 = 0.5*par_m_plus*ir;
           s3 = -s1*ir*ir;
@@ -346,7 +373,13 @@ TwoPunctures (CCTK_ARGUMENTS)
           yp = y[ind];
           zp = z[ind];
           rp = sqrt (xp*xp + yp*yp + zp*zp);
+          if (rp < TP_Tiny)
+              rp = TP_Tiny;
           ir = 1.0/rp;
+
+          if (rp < TP_Extend_Radius) {
+            ir = EXTEND(1., rp);
+          }
 
           s1 = 0.5*par_m_minus*ir;
           s3 = -s1*ir*ir;
@@ -408,14 +441,24 @@ TwoPunctures (CCTK_ARGUMENTS)
 /*                                / (1.0 + 0.5 * par_m_minus / r_minus)); */
 /*           alp[ind] = alp1 * alp2; */
           alp[ind] =
-            ((1.0 - 0.5 * par_m_plus / r_plus - 0.5 * par_m_minus / r_minus)
-             / (1.0 + 0.5 * par_m_plus / r_plus + 0.5 * par_m_minus / r_minus));
+            ((1.0 -0.5*par_m_plus/r_plus -0.5*par_m_minus/r_minus)
+            /(1.0 +0.5*par_m_plus/r_plus +0.5*par_m_minus/r_minus));
+
+          if (r_plus < TP_Extend_Radius) {
+            alp[ind] =
+              ((1.0 -0.5*EXTEND(par_m_plus, r_plus) -0.5*par_m_minus/r_minus)
+              /(1.0 +0.5*EXTEND(par_m_plus, r_plus) +0.5*par_m_minus/r_minus));
+          }
+          if (r_minus < TP_Extend_Radius) {
+            alp[ind] =
+              ((1.0 -0.5*EXTEND(par_m_minus, r_minus) -0.5*par_m_plus/r_plus)
+              /(1.0 +0.5*EXTEND(par_m_minus, r_minus) +0.5*par_m_plus/r_plus));
+          }
           
           if (averaged_lapse) {
             alp[ind] = 0.5 * (1.0 + alp[ind]);
           }
         }
-
       }
     }
   }
