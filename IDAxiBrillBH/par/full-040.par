@@ -8,7 +8,7 @@
 #
 # ***** output setup (also see below for more output stuff) *****
 #
-ActiveThorns = "IOUtil IOBasic"
+ActiveThorns = "IOUtil IOBasic LocalReduce"
 IOUtil::parfile_write = "no"
 IO::out_dir = $parfile
 
