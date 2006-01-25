@@ -16,7 +16,7 @@
 
 # These thorns must be compiled
 
-ActiveThorns = "Boundary ADM CartGrid3D CoordBase SymBase ADMBase StaticConformal CoordGauge ADMAnalysis ADMMacros IDanalyticBH IOBasic IOUtil IOASCII PsiKadelia IsoSurfacer httpd socket httpdextra Pugh pughreduce pughslab Time"
+ActiveThorns = "Boundary LocalReduce ADM CartGrid3D CoordBase SymBase ADMBase StaticConformal CoordGauge ADMAnalysis ADMMacros IDanalyticBH IOBasic IOUtil IOASCII PsiKadelia IsoSurfacer httpd socket httpdextra Pugh pughreduce pughslab Time"
  
 #------------------------------------------------------------------------------
 
