@@ -71,6 +71,11 @@ INT Newton_maxit "Maximum number of Newton iterations"
   0:* :: ""
 } 5
 
+REAL TP_epsilon "A small number to smooth out singularities at the puncture locations"
+{
+  0:* :: ""
+} 0.0
+
 REAL TP_Tiny "Tiny number to avoid nans near or at the pucture locations"
 {
   0:* :: "anything positive, usually very small"

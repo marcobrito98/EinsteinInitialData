@@ -12,16 +12,6 @@
 #include "TP_utilities.h"
 #include "TwoPunctures.h"
 
-static inline double pow2 (const double x)
-{
-  return x*x;
-}
-
-static inline double pow4 (const double x)
-{
-  return x*x*x*x;
-}
-
 void set_initial_guess(CCTK_POINTER_TO_CONST cctkGH,
                        derivs v)
 {
@@ -33,7 +23,6 @@ void set_initial_guess(CCTK_POINTER_TO_CONST cctkGH,
   CCTK_INT i, j, k, i3D, indx;
   derivs U;
   FILE *debug_file;
-  CCTK_REAL tmp_r;
 
   s_x    =calloc(n1*n2*n3, sizeof(CCTK_REAL));
   s_y    =calloc(n1*n2*n3, sizeof(CCTK_REAL));
@@ -196,7 +185,7 @@ TwoPunctures (CCTK_ARGUMENTS)
   int nvar = 1, n1 = npoints_A, n2 = npoints_B, n3 = npoints_phi;
 
   int i, j, k, ntotal = n1 * n2 * n3 * nvar;
-  int percent;
+  int percent10 = 0;
   static double *F = NULL;
   static derivs u, v;
   double admMass;
@@ -273,20 +262,20 @@ TwoPunctures (CCTK_ARGUMENTS)
     {
       for (i = 0; i < cctk_lsh[0]; ++i)
       {
-        if (percent != 10*(i+j*cctk_lsh[0]+k*cctk_lsh[0]*cctk_lsh[1]) /
-                          (cctk_lsh[0] * cctk_lsh[1] * cctk_lsh[2]))
+        if (percent10 != 10*(i+j*cctk_lsh[0]+k*cctk_lsh[0]*cctk_lsh[1]) /
+                            (cctk_lsh[0] * cctk_lsh[1] * cctk_lsh[2]))
         {
-            percent = 10*(i+j*cctk_lsh[0]+k*cctk_lsh[0]*cctk_lsh[1]) /
-                         (cctk_lsh[0] * cctk_lsh[1] * cctk_lsh[2]);
-            CCTK_VInfo(CCTK_THORNSTRING, "%3d%% done", percent*10);
+            percent10 = 10*(i+j*cctk_lsh[0]+k*cctk_lsh[0]*cctk_lsh[1]) /
+                           (cctk_lsh[0] * cctk_lsh[1] * cctk_lsh[2]);
+            CCTK_VInfo(CCTK_THORNSTRING, "%3d%% done", percent10*10);
         }
 
 	const int ind = CCTK_GFINDEX3D (cctkGH, i, j, k);
         
         double r_plus
-          = sqrt(pow2(x[ind] - par_b) + pow2(y[ind]) + pow2(z[ind]));
+          = sqrt(pow(x[ind] - par_b, 2) + pow(y[ind], 2) + pow(z[ind], 2));
         double r_minus
-          = sqrt(pow2(x[ind] + par_b) + pow2(y[ind]) + pow2(z[ind]));
+          = sqrt(pow(x[ind] + par_b, 2) + pow(y[ind], 2) + pow(z[ind], 2));
         
         double U;
         switch (gsm)
@@ -302,6 +291,8 @@ TwoPunctures (CCTK_ARGUMENTS)
         default:
           assert (0);
         }
+        r_plus = pow (pow (r_plus, 4) + pow (TP_epsilon, 4), 0.25);
+        r_minus = pow (pow (r_minus, 4) + pow (TP_epsilon, 4), 0.25);
         if (r_plus < TP_Tiny)
             r_plus = TP_Tiny;
         if (r_minus < TP_Tiny)
@@ -310,8 +301,8 @@ TwoPunctures (CCTK_ARGUMENTS)
           + 0.5 * par_m_plus / r_plus
           + 0.5 * par_m_minus / r_minus + U;
 #define EXTEND(M,r) \
-          ( M * (3./8 * pow(r, 4.0) / pow(TP_Extend_Radius, 5.0) - \
-                 5./4 * pow(r, 2.0) / pow(TP_Extend_Radius, 3.0) + \
+          ( M * (3./8 * pow(r, 4) / pow(TP_Extend_Radius, 5) - \
+                 5./4 * pow(r, 2) / pow(TP_Extend_Radius, 3) + \
                  15./8 / TP_Extend_Radius))
         if (r_plus < TP_Extend_Radius) {
           psi1 = 1
@@ -343,6 +334,7 @@ TwoPunctures (CCTK_ARGUMENTS)
           yp = y[ind];
           zp = z[ind];
           rp = sqrt (xp*xp + yp*yp + zp*zp);
+          rp = pow (pow (rp, 4) + pow (TP_epsilon, 4), 0.25);
           if (rp < TP_Tiny)
               rp = TP_Tiny;
           ir = 1.0/rp;
@@ -373,6 +365,7 @@ TwoPunctures (CCTK_ARGUMENTS)
           yp = y[ind];
           zp = z[ind];
           rp = sqrt (xp*xp + yp*yp + zp*zp);
+          rp = pow (pow (rp, 4) + pow (TP_epsilon, 4), 0.25);
           if (rp < TP_Tiny)
               rp = TP_Tiny;
           ir = 1.0/rp;
@@ -420,19 +413,19 @@ TwoPunctures (CCTK_ARGUMENTS)
           
         puncture_u[ind] = U;
 
-        gxx[ind] = pow4 (psi1 / static_psi);
+        gxx[ind] = pow (psi1 / static_psi, 4);
         gxy[ind] = 0;
         gxz[ind] = 0;
-        gyy[ind] = pow4 (psi1 / static_psi);
+        gyy[ind] = pow (psi1 / static_psi, 4);
         gyz[ind] = 0;
-        gzz[ind] = pow4 (psi1 / static_psi);
+        gzz[ind] = pow (psi1 / static_psi, 4);
 
-        kxx[ind] = Aij[0][0] / pow2(psi1);
-        kxy[ind] = Aij[0][1] / pow2(psi1);
-        kxz[ind] = Aij[0][2] / pow2(psi1);
-        kyy[ind] = Aij[1][1] / pow2(psi1);
-        kyz[ind] = Aij[1][2] / pow2(psi1);
-        kzz[ind] = Aij[2][2] / pow2(psi1);
+        kxx[ind] = Aij[0][0] / pow(psi1, 2);
+        kxy[ind] = Aij[0][1] / pow(psi1, 2);
+        kxz[ind] = Aij[0][2] / pow(psi1, 2);
+        kyy[ind] = Aij[1][1] / pow(psi1, 2);
+        kyz[ind] = Aij[1][2] / pow(psi1, 2);
+        kzz[ind] = Aij[2][2] / pow(psi1, 2);
 
         if (antisymmetric_lapse || averaged_lapse) {
 /*           const double alp1 = ((1.0 - 0.5 * par_m_plus / r_plus) */
