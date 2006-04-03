@@ -14,6 +14,7 @@ EXTENDS KEYWORD initial_lapse
 {
   "twopunctures-antisymmetric" :: "antisymmetric lapse for two puncture black holes, -1 <= alpha <= +1"
   "twopunctures-averaged"      :: "averaged lapse for two puncture black holes, 0 <= alpha <= +1"
+	"psi^n"                     :: "Based on the initial conformal factor"
 }
 
 
@@ -120,6 +121,10 @@ REAL par_S_minus[3] "spin of the m- puncture"
   (*:*) :: ""
 } 0.0
 
+REAL initial_lapse_psi_exponent "Exponent n for psi^-n initial lapse profile"
+{
+  (*:*) :: "Should be negative"
+} -2.0
 
 
 BOOLEAN use_sources "Use sources?"

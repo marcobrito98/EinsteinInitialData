@@ -180,7 +180,7 @@ TwoPunctures (CCTK_ARGUMENTS)
   enum GRID_SETUP_METHOD { GSM_Taylor_expansion, GSM_evaluation };
   enum GRID_SETUP_METHOD gsm;
 
-  int antisymmetric_lapse, averaged_lapse;
+  int antisymmetric_lapse, averaged_lapse, pmn_lapse;
 
   int nvar = 1, n1 = npoints_A, n2 = npoints_B, n3 = npoints_phi;
 
@@ -242,6 +242,10 @@ TwoPunctures (CCTK_ARGUMENTS)
 
   antisymmetric_lapse = CCTK_EQUALS(initial_lapse, "twopunctures-antisymmetric");
   averaged_lapse = CCTK_EQUALS(initial_lapse, "twopunctures-averaged");
+	pmn_lapse = CCTK_EQUALS(initial_lapse, "psi^n");
+	if (pmn_lapse)
+		CCTK_VInfo(CCTK_THORNSTRING, "Setting initial lapse to psi^%f profile.", 
+               initial_lapse_psi_exponent);
 
   CCTK_INFO ("Interpolating result");
   if (CCTK_EQUALS(metric_type, "static conformal")) {
@@ -319,7 +323,7 @@ TwoPunctures (CCTK_ARGUMENTS)
         double Aij[3][3];
         BY_Aijofxyz (x[ind], y[ind], z[ind], Aij);
 
-        if (*conformal_state > 0) {
+        if ((*conformal_state > 0) || (pmn_lapse)) {
 
           double xp, yp, zp, rp, ir;
           double s1, s3, s5;
@@ -408,6 +412,9 @@ TwoPunctures (CCTK_ARGUMENTS)
             psiyz[ind] = pyz / static_psi;
             psizz[ind] = pzz / static_psi;
           }
+
+          if (pmn_lapse)
+            alp[ind] = pow(p, initial_lapse_psi_exponent);
 
         } /* if conformal-state > 0 */
           
