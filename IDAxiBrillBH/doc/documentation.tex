@@ -4,7 +4,7 @@
 % (Automatically used from Cactus distribution, if you have a 
 %  thorn without the Cactus Flesh download this from the Cactus
 %  homepage at www.cactuscode.org)
-\usepackage{../../../../doc/ThornGuide/cactus}
+\usepackage{../../../../doc/latex/cactus}
 
 \begin{document}
 
@@ -51,7 +51,7 @@ $\hat{\gamma}_{ab}$ is some chosen conformal three metric.
 The Hamiltonian constraint reduces to
 \begin{equation}
 \hat \Delta \psi = \frac{1}{8}\psi \hat R,
-\label{IDAxiBrillBH/eqn:conformal-hamiltonian}
+				\label{IDAxiBrillBH/eqn:conformal-hamiltonian}
 \end{equation}
 where $\hat \Delta$ is the covariant Laplacian and $\hat R$ is the
 Ricci tensor for the conformal three metric. This form allows
@@ -63,7 +63,7 @@ constraints in vacuum).  This approach was used to create
 Bernstein extended this to the black hole spacetime.  Using
 spherical-polar coordinates, one can write the 3-metric,
 \begin{equation}
-\label{IDAxiBrillBH/eqn:sph-coord}
+				\label{IDAxiBrillBH/eqn:sph-coord}
 ds^2 = \psi^4 (e^{2q} (dr^2 + r^2 d \theta^2) + r^2 \sin \theta d
 \phi^2),
 \end{equation}
@@ -79,7 +79,7 @@ an incident gravitational wave.  The choice of $q=0$ produces the
 Schwarzschild solution.   The typical $q$ function used in
 axisymmetry, and considered here in the non-rotating case, is 
 \begin{equation}
-\label{IDAxiBrillBH/eqn:Q}
+				\label{IDAxiBrillBH/eqn:Q}
 q = Q_0 \sin^n \theta \left [ \exp\left(\frac{\eta -
       \eta_0^2}{\sigma^2}\right ) + \exp\left(\frac{\eta +
       \eta_0^2}{\sigma^2}\right ) \right ].
@@ -87,7 +87,7 @@ q = Q_0 \sin^n \theta \left [ \exp\left(\frac{\eta -
 Note regularity along the axis requires that the exponent $n$ must be
 even.  Choosing a logarithmic radial coordinate
 \begin{equation}
-\label{IDAxiBrillBH/eta-coord}
+				\label{IDAxiBrillBH/eta-coord}
 \eta = \ln{\frac{2r}{m}}.
 \end{equation}
 (where $m$ is a scale parameter), one can rewrite
@@ -100,13 +100,13 @@ ds^2 = \psi(\eta)^4 [ e^{2 q} (d \eta^2 +  d\theta^2) +  \sin^2
 The scale parameter $m$ is equal to the mass of the Schwarzschild
 black hole, if $q=0$.  In this coordinate, the 3-metric is
 \begin{equation}
-\label{IDAxiBrillBH/eqn:metric-brill-eta}
+				\label{IDAxiBrillBH/eqn:metric-brill-eta}
 ds^2 = \tilde{\psi}^4 (e^{2q} (d\eta^2+d\theta^2)+\sin^2 \theta
 d\phi^2),
 \end{equation}
 and the Schwarzschild solution is 
 \begin{equation}
-\label{IDAxiBrillBH/eqn:psi}
+				\label{IDAxiBrillBH/eqn:psi}
 \tilde{\psi} = \sqrt{2M} \cosh (\frac{\eta}{2}).
 \end{equation}
 We also change the notation of $\psi$ for the conformal factor is same 
@@ -115,7 +115,7 @@ factor $r^{1/2}$ in the conformal factor.  Clearly $\psi(\eta)$ and
 $\psi$ differ by a factor of $\sqrt{r}$.  The Hamiltonian 
 constraint is
 \begin{equation}
-\label{IDAxiBrillBH/eqn:ham}
+				\label{IDAxiBrillBH/eqn:ham}
 \frac{\partial^2 \tilde{\psi}}{\partial \eta^2} + \frac{\partial^2
   \tilde{\psi}}{\partial \theta^2} + \cot \theta \frac{\partial
   \tilde{\psi}}{\partial \theta} = - \frac{1}{4} \tilde{\psi}
@@ -136,12 +136,13 @@ to the equation~(\ref{IDAxiBrillBH/eqn:ham}), then we can linearize it as
   \delta\tilde{\psi}}{\partial \theta} = - \frac{1}{4}
 (\delta\tilde{\psi} + \tilde{\psi}_0) (\frac{\partial^2 q}{\partial
   \eta^2} + \frac{\partial^2 q}{\partial \theta^2} -1).
-\label{IDAxiBrillBH/eqn:ham-linear}
+				\label{IDAxiBrillBH/eqn:ham-linear}
 \end{equation}
 For the boundary conditions, we use for the inner boundary condition
 an isometry condition:
 \begin{equation}
 \frac{\partial \tilde{\psi}}{\partial \eta}|_{\eta = 0} = 0,
+				\label{IDAxiBrillBH/eqn:isometry-inner-BC}
 \end{equation}
 and outer boundary condition, a Robin condition:
 \begin{equation}
@@ -155,15 +156,65 @@ and outer boundary condition, a Robin condition:
 
 This thorn solves equation~(\ref{IDAxiBrillBH/eqn:ham-linear}) on a 2-D
 $(\eta,\theta)$ grid.  However, Cactus needs a 3-D grid, typically with
-Cartesian coordinates.  Therefore, this thorn interpolates $\psi$ and its
-$(\eta,\theta)$ derivatives to the Cartesian grid.  More precisely, for
-each Cactus grid point, this thorn calculates the corresponding $(\eta,\theta)$
-coordinates, and interpolates the 2-D solution to that point.
+Cartesian coordinates.  Therefore, this thorn \emph{interpolates} $\psi$
+and its $(\eta,\theta)$ derivatives to the Cartesian grid.  More precisely,
+for each Cactus grid point, this thorn calculates the corresponding
+$(\eta,\theta)$ coordinates, and interpolates the 2-D solution to
+that point.
 
-[Note that since $\eta$ (defined by~$(\ref{IDAxiBrillBH/eta-coord})$)
-is a \emph{logarithmic} radial coordinate, this thorn will fail if
-there's a Cartesian grid point at the origin.  Use a staggered grid
-to work around this problem.]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Size of the 2-D Grid}
+
+Because of the isometry condition~\eqref{IDAxiBrillBH/eqn:isometry-inner-BC},
+the 2-D grid need only cover the region $\eta \ge 0$; the code just
+takes the absolute value of $\eta$ before interpolating.
+
+The 2-D grid covers the region $|\eta| \in [0,\texttt{etamax}]$,
+$\theta \in [0,\pi]$, where the parameter \verb|etamax| defaults to 5.
+If any 3-D grid point's $(|\eta|,\theta)$ is outside this 2-D grid,
+this thorn will abort with a fatal error message from the interpolator,
+typically looking like this:
+\begin{verbatim}
+WARNING level 1 in thorn AEILocalInterp processor 0 host ic0087 (line 1007
+of /nfs/nethome/pollney/runs/CactusDev/arrangements/AEIThorns/AEILocalInterp/src
+/Lagrange-tensor-product/../template.c):
+  ->
+   CCTK_InterpLocalUniform():
+        interpolation point is either outside the grid,
+        or inside but too close to the grid boundary!
+        0-origin interpolation point number pt=307062 of N_interp_points=614125
+        interpolation point (x,y)=(36.1875,0.955317)
+        grid x_min(delta_x)x_max = -0.0199336(0.0199336)6.01993
+        grid y_min(delta_y)y_max = -0.0290888(0.0581776)3.17068
+
+WARNING level 0 in thorn IDAxiBrillBH processor 0 host ic0087
+  (line 484 of IDAxiBrillBH.F):
+  -> error in interpolator: ierror=   -1002
+\end{verbatim}
+
+What happened here is that the 3-D grid had a point right at the origin
+(which by virtue of~\eqref{IDAxiBrillBH/eta-coord} would have given
+$\eta = -\infty$), but some software moved the grid point by $10^{-16}m$
+or so to avoid divisions by zero, giving
+$\eta \equiv \ln (2 \,{\times}\, 10^{-16}) \approx -36$.
+The absolute value of this is the ``$x$'' coordinate the
+interpolator is complaining about.
+
+In an ideal world, someone would enhance \thorn{IDAxiBrillBH} so it
+could handle a grid point at (or very near to) the origin.%%%
+\footnote{%%%
+	 See the file \texttt{doc/TODO} in the \thorn{IDAxiBrillBH}
+	 source code for some ideas on how this might be done.
+	 }%%%
+{}  However, so far noone has volunteered to do this.
+
+In the meantime, a staggered grid is the ``standard'' work-around
+for this problem.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Resolution of the 2-D Grid}
 
 The parameters \verb|neta| and \verb|nq| specify the resolution of
 this thorn's 2-D grid in $\eta$ and $\theta$ respectively.%%%
@@ -185,6 +236,10 @@ to write out $\psi(\eta)$ and $\psi$ on the 2-D grid to an ASCII data file
 where it can be examined and/or plotted.  To do this, set the Boolean
 parameter \verb|output_psi2D|, and possibly also the string parameter
 \verb|output_psi2D_file_name|.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Interpolation Parameters}
 
 This thorn uses the standard Cactus \verb|CCTK_InterpLocalUniform()|
 local interpolation system for this interpolation.  The interpolation
