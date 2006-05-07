@@ -5,3 +5,7 @@ CVS info   : $Header$
 
 This thorn calculates initial data for a black hole distorted by an
 even parity perturbation.
+
+This thorn is currently an orphan (it has no active maintainer).
+Jonathan Thornburg was the last person to hack on the code/documentation
+a bit (in the spring-summer of 2005).
