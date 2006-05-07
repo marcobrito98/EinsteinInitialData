@@ -18,15 +18,11 @@ TwoPunctures_ParamCheck (CCTK_ARGUMENTS)
 {
   DECLARE_CCTK_ARGUMENTS;
   DECLARE_CCTK_PARAMETERS;
+  
   if (use_sources)
   {
-    CCTK_INFO("Solving for BH-NS");
     if (! CCTK_IsFunctionAliased ("Set_Rho_ADM"))
-      CCTK_WARN(0, "I found no (aliased) function for matter sources, but "
-                   "was said to use matter.");
+      CCTK_WARN (0, "Matter sources have been enabled, "
+                 "but there is no aliased function for matter sources.");
   }
-  else
-    CCTK_INFO("Solving for BHs");
-  CCTK_VInfo(CCTK_THORNSTRING, "The two puncture-masses are %.16e and %.16e.\n",
-                               par_m_minus, par_m_plus);
 }

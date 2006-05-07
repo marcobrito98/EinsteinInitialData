@@ -195,8 +195,16 @@ TwoPunctures (CCTK_ARGUMENTS)
     F = dvector (0, ntotal - 1);
     allocate_derivs (&u, ntotal);
     allocate_derivs (&v, ntotal);
-
-    CCTK_INFO ("Solving puncture equation");
+    
+    if (use_sources) {
+      CCTK_INFO ("Solving puncture equation for BH-NS system");
+    } else {
+      CCTK_INFO ("Solving puncture equation for BH-BH system");
+    }
+    CCTK_VInfo (CCTK_THORNSTRING,
+                "The two puncture masses are %g and %g",
+                (double) par_m_minus, (double) par_m_plus);
+    
     /* initialise to 0 */
     for (j = 0; j < ntotal; j++)
     {
