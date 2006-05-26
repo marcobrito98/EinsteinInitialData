@@ -59,11 +59,11 @@ CCTK_INT debug                                                          \
 #
 CCTK_INT debug_ii "i coordinate for per-2D-grid-point debug printing"
 {
-* :: "any integer"
+*:* :: "any integer"
 } 14
 CCTK_INT debug_jj "j coordinate for per-2D-grid-point debug printing"
 {
-* :: "any integer"
+*:* :: "any integer"
 } 15
 
 #
@@ -73,15 +73,15 @@ CCTK_INT debug_jj "j coordinate for per-2D-grid-point debug printing"
 #
 CCTK_INT debug_i "i coordinate for per-grid-point debug printing"
 {
-* :: "any integer"
+*:* :: "any integer"
 } 14
 CCTK_INT debug_j "j coordinate for per-grid-point debug printing"
 {
-* :: "any integer"
+*:* :: "any integer"
 } 15
 CCTK_INT debug_k "k coordinate for per-grid-point debug printing"
 {
-* :: "any integer"
+*:* :: "any integer"
 } 10
 
 ############################################################
