@@ -1,6 +1,7 @@
+#include "cctk.h"
 c----------------------------------------------------------------------
       subroutine mgparm(m,ifd59,id5,id9,idi,idg,imx,jmx)
-      implicit real*8 (a-h,o-z)
+      implicit CCTK_REAL (a-h,o-z)
 c----------------------------------------------------------------------
 c  Given imx, jmx and ifd59 (See comments in mgsu2), mgparm calculates
 c  the number of grids that will be needed, and the dimensions
@@ -94,7 +95,7 @@ c .....................................................................
       subroutine mg9 (idim,ilower,iupper,jdim,jlower,jupper,
      &             cc,cn,cs,cw,ce,cnw,cne,csw,cse,u,rhs,
      &             id5,id9,idi,idg,ifmg,eps,rmax,ier)
-      implicit real*8 (a-h,o-z)
+      implicit CCTK_REAL (a-h,o-z)
 *
 ************************************************************************
 *
@@ -203,10 +204,10 @@ c .....................................................................
 
       integer idim,ilower,iupper,jdim,jlower,jupper,ifmg
       integer id5,id9,idi,idg,ier
-      real*8 cc(idim,jdim),cn(idim,jdim),cs(idim,jdim),cw(idim,jdim),
+      CCTK_REAL cc(idim,jdim),cn(idim,jdim),cs(idim,jdim),cw(idim,jdim),
      &     ce(idim,jdim),cnw(idim,jdim),cne(idim,jdim),csw(idim,jdim),
      &     cse(idim,jdim),u(idim,jdim),rhs(idim,jdim)
-      real*8 eps,rmax
+      CCTK_REAL eps,rmax
 
 *
 ************************************************************************
@@ -373,13 +374,13 @@ c .....................................................................
       integer linp,lout
       common /io/ linp,lout
 
-      real*8 ac(id5),an(id5),as(id5),aw(id5),ae(id5),
+      CCTK_REAL ac(id5),an(id5),as(id5),aw(id5),ae(id5),
      &     anw(id9),ane(id9),asw(id9),ase(id9),
      &     q(id5),f(id5),gam(idg)
 
-      real*8 ru(idi),rd(idi),rc(idi),pu(idi),pd(idi),pc(idi)
+      CCTK_REAL ru(idi),rd(idi),rc(idi),pu(idi),pd(idi),pc(idi)
 
-      real*8 tol
+      CCTK_REAL tol
 
       integer iscale,itry
 
@@ -502,7 +503,7 @@ c   Now call the multigrid routine
       subroutine mg5 (idim,ilower,iupper,jdim,jlower,jupper,
      &             cc,cn,cs,cw,ce,u,rhs,
      &             id5,id9,idi,idg,ifmg,eps,rmax,ier)
-      implicit real*8 (a-h,o-z)
+      implicit CCTK_REAL (a-h,o-z)
 *
 ************************************************************************
 *
@@ -604,9 +605,9 @@ c   Now call the multigrid routine
 
       integer idim,ilower,iupper,jdim,jlower,jupper,ifmg
       integer id5,id9,idi,idg,ier
-      real*8 cc(idim,jdim),cn(idim,jdim),cs(idim,jdim),cw(idim,jdim),
+      CCTK_REAL cc(idim,jdim),cn(idim,jdim),cs(idim,jdim),cw(idim,jdim),
      &     ce(idim,jdim),u(idim,jdim),rhs(idim,jdim)
-      real*8 eps,rmax
+      CCTK_REAL eps,rmax
 
 *
 ************************************************************************
@@ -778,13 +779,13 @@ c   Now call the multigrid routine
       integer linp,lout
       common /io/ linp,lout
 
-      real*8 ac(id5),an(id5),as(id5),aw(id5),ae(id5),
+      CCTK_REAL ac(id5),an(id5),as(id5),aw(id5),ae(id5),
      &     anw(id9),ane(id9),asw(id9),ase(id9),
      &     q(id5),f(id5),gam(idg)
 
-      real*8 ru(idi),rd(idi),rc(idi),pu(idi),pd(idi),pc(idi)
+      CCTK_REAL ru(idi),rd(idi),rc(idi),pu(idi),pd(idi),pc(idi)
 
-      real*8 tol
+      CCTK_REAL tol
 
       integer iscale,itry
 
