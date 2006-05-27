@@ -34,32 +34,34 @@ c@@*/
       DECLARE_CCTK_PARAMETERS
       DECLARE_CCTK_FUNCTIONS
 
-      real*8 axibheps, rmax, dq, deta
+      CCTK_REAL, parameter :: one = 1
+      CCTK_REAL, parameter :: eps = 1.0e-10
+      CCTK_REAL axibheps, rmax, dq, deta
       integer levels,id5,id9,idi,idg,ier
-      real*8, allocatable :: cc(:,:),ce(:,:),cw(:,:),cn(:,:),cs(:,:),
+      CCTK_REAL, allocatable :: cc(:,:),ce(:,:),cw(:,:),cn(:,:),cs(:,:),
      $     rhs(:,:),psi2d(:,:),detapsi2d(:,:),dqpsi2d(:,:),
      $     detaetapsi2d(:,:),detaqpsi2d(:,:),dqqpsi2d(:,:)
-      real*8, allocatable :: etagrd(:),qgrd(:)
-      real*8, allocatable :: eta(:,:,:),abseta(:,:,:),sign_eta(:,:,:),
+      CCTK_REAL, allocatable :: etagrd(:),qgrd(:)
+      CCTK_REAL, allocatable :: eta(:,:,:),abseta(:,:,:),sign_eta(:,:,:),
      $     q(:,:,:),phi(:,:,:)
-      real*8, allocatable :: psi2dv(:,:,:),detapsi2dv(:,:,:),
+      CCTK_REAL, allocatable :: psi2dv(:,:,:),detapsi2dv(:,:,:),
      $     dqpsi2dv(:,:,:),detaetapsi2dv(:,:,:),detaqpsi2dv(:,:,:),
      $     dqqpsi2dv(:,:,:)
-      real*8 error_at_this_grid_point,max_error_in_grid
-      real*8 o1,o2,o3,o4,o5,o6,o7,o8,o9
-      real*8 o10,o11,o12,o13,o14,o15,o16,o17,o18,o19
-      real*8 o20,o21,o22,o23,o24,o25,o26,o27,o28,o29
-      real*8 o30,o31,o32,o33,o34,o35,o36,o37,o38,o39
-      real*8 o40,o41,o42,o43,o44,o45,o46,o47,o48,o49
-      real*8 o50,o51,o52,o53,o54,o55,o56,o57,o58,o59
-      real*8 o60,o61,o62,o63,o64,o65,o66,o67,o68,o69
-      real*8 o70,o71,o72,o73,o74,o75,o76,o77,o78,o79
-      real*8 o80,o81,o82,o83,o84,o85,o86,o87,o88,o89
-      real*8 o90,o91,o92,o93,o94,o95,o96,o97,o98,o99
+      CCTK_REAL error_at_this_grid_point,max_error_in_grid
+      CCTK_REAL o1,o2,o3,o4,o5,o6,o7,o8,o9
+      CCTK_REAL o10,o11,o12,o13,o14,o15,o16,o17,o18,o19
+      CCTK_REAL o20,o21,o22,o23,o24,o25,o26,o27,o28,o29
+      CCTK_REAL o30,o31,o32,o33,o34,o35,o36,o37,o38,o39
+      CCTK_REAL o40,o41,o42,o43,o44,o45,o46,o47,o48,o49
+      CCTK_REAL o50,o51,o52,o53,o54,o55,o56,o57,o58,o59
+      CCTK_REAL o60,o61,o62,o63,o64,o65,o66,o67,o68,o69
+      CCTK_REAL o70,o71,o72,o73,o74,o75,o76,o77,o78,o79
+      CCTK_REAL o80,o81,o82,o83,o84,o85,o86,o87,o88,o89
+      CCTK_REAL o90,o91,o92,o93,o94,o95,o96,o97,o98,o99
       integer i22
-      real*8 pi
-      real*8 adm
-      real*8 exp_mhalf_eta, psi3d
+      CCTK_REAL pi
+      CCTK_REAL adm
+      CCTK_REAL exp_mhalf_eta, psi3d
       integer :: nx,ny,nz
       integer i,j,k,nquads
       integer npoints,ierror
@@ -402,25 +404,14 @@ c
 
       call CCTK_INFO("interpolating solution to xyz grid points")
 
-      eta = 0.5d0 * dlog (x**2 + y**2 + z**2)
+      eta = log (r + eps)
       abseta = abs (eta)
-      q = datan2 (sqrt (x**2 + y**2), z)
-      phi = datan2 (y, x)
-
-      do k=1,nz
-         do j=1,ny
-            do i=1,nx
-               if(eta(i,j,k) .lt. 0)then
-                  sign_eta(i,j,k) = -1
-               else
-                  sign_eta(i,j,k) = 1
-               endif
-            enddo
-         enddo
-      enddo
+      sign_eta = sign (one, eta)
+      q = atan2 (sqrt ((x + eps)**2 + y**2), z)
+      phi = atan2 (y, x + eps)
 
       if (debug .ge. 6) then
-c posn = (0-origin) 1-D positionn of this point in interpolator arrays
+c posn = (0-origin) 1-D position of this point in interpolator arrays
 c        (this is useful because interpolator error messages refer to it)
 	 posn = (debug_i-1) + nx*(debug_j-1) + nx*ny*(debug_k-1)
 	 print *, '### 3-D interpolation coordinates and inputs ###'
@@ -471,6 +462,13 @@ c set up the interpolator array pointers
       out_arrays(5) = CCTK_PointerTo(  detaqpsi2dv)
       out_arrays(6) = CCTK_PointerTo(    dqqpsi2dv)
 
+             psi2dv = 1
+         detapsi2dv = 0
+           dqpsi2dv = 0
+      detaetapsi2dv = 0
+        detaqpsi2dv = 0
+          dqqpsi2dv = 0
+
       call CCTK_InterpLocalUniform (ierror, 2,
      $                              interp_handle, param_table_handle,
      $                              coord_origin, coord_delta,
@@ -480,7 +478,7 @@ c set up the interpolator array pointers
       if (ierror < 0) then
         write(message_buffer, '(A,I8)')
      $      'error in interpolator: ierror=', ierror
-        call CCTK_WARN(CCTK_WARN_ABORT, message_buffer)
+        call CCTK_WARN(CCTK_WARN_ALERT, message_buffer)
       endif
 
       call Util_TableDestroy (ierror, param_table_handle)
@@ -517,6 +515,31 @@ c       gxx = ...
 c     Derivatives of the metric (currently commented-out)
 c       dxgxx = 1/2 \partial gxx / \partial x
 #include "CactusEinstein/IDAxiBrillBH/src/gij.x"
+
+               if (r(i,j,k) < 1.0d-10) then
+                  
+                  psi(i,j,k) = 1
+                  
+                  psix(i,j,k) = 0
+                  psiy(i,j,k) = 0
+                  psiz(i,j,k) = 0
+                  
+                  psixx(i,j,k) = 0
+                  psixy(i,j,k) = 0
+                  psixz(i,j,k) = 0
+                  psiyy(i,j,k) = 0
+                  psiyz(i,j,k) = 0
+                  psizz(i,j,k) = 0
+                  
+                  gxx(i,j,k) = 1
+                  gxy(i,j,k) = 0
+                  gxz(i,j,k) = 0
+                  gyy(i,j,k) = 1
+                  gyz(i,j,k) = 0
+                  gzz(i,j,k) = 1
+                  
+               end if
+
             enddo
          enddo
       enddo
