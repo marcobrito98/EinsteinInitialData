@@ -12,13 +12,14 @@ ActiveThorns = "LocalInterp ADMCoupling Boundary time iobasic ADMconstraints pug
 ADMBase::evolution_method = "ADM"
 ADMBase::metric_type = "static conformal"
 
-driver::global_nx =  32
-driver::global_ny =  32
-driver::global_nz =  32
+driver::global_nx =  33
+driver::global_ny =  33
+driver::global_nz =  33
 
 grid::type = "byspacing"
 grid::dxyz = 0.4
 grid::domain = "full"
+grid::avoid_origin = no
 
 time::dtfac = 0.25   
 
@@ -45,7 +46,7 @@ ADMBase::lapse_evolution_method    = "geodesic"
 
 
 # OUTPUT ########################################################
-IO::out_dir               = "test_axibrill"
+IO::out_dir              = $parfile
 IO::out_fileinfo         = "none"
 IO::parfile_write        = "no"
 IOASCII::out1D_every     =  1
