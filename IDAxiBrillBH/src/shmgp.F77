@@ -1,10 +1,10 @@
-
+#include "cctk.h"
 c----------------------------------------------------------------------
       subroutine umgs2(
      + ac,aw,as,ae,an,asw,ase,ane,anw,q,f,pu,pd,pc,ru,rd,rc,gam,np2,
      + ifd59,ifmg,ncyc,tol,nman,im,jm,id5,id9,idi,m,iskip,rmax,
      + ipc,irc,irurd)
-      implicit real*8(a-h,o-z)
+      implicit CCTK_REAL(a-h,o-z)
 c----------------------------------------------------------------------
 cdir$ noinline
 c** SUBROUTINE UMGS2
@@ -249,12 +249,12 @@ c    - ugrdfn, ukey, uintad, urelax, urscal, ursrhs, useta
 c
 c** END OF DESCRIPTION OF UMGS2
 c .....................................................................
-      real*8 ac(id5),aw(id5),as(id5),ae(id5),an(id5),asw(id9),
+      CCTK_REAL ac(id5),aw(id5),as(id5),ae(id5),an(id5),asw(id9),
      + ase(id9),ane(id9),anw(id9),q(id5),f(id5)
-      real*8 pu(idi),pd(idi),pc(idi),gam(im)
+      CCTK_REAL pu(idi),pd(idi),pc(idi),gam(im)
       integer np2(20,8)
-      real*8 ru(idi),rd(idi),rc(idi)
-      real*8 resid(0:40),confac(0:40)
+      CCTK_REAL ru(idi),rd(idi),rc(idi)
+      CCTK_REAL resid(0:40),confac(0:40)
       common /io/ linp,lout
 c
 c-time           tsu0=second()
@@ -432,7 +432,7 @@ cdir$ noinline
       end
 c----------------------------------------------------------------------
       subroutine ugrdfn(m,ifd59,is5,is9,isi,np2,imx,jmx)
-      implicit real*8(a-h,o-z)
+      implicit CCTK_REAL(a-h,o-z)
 c----------------------------------------------------------------------
 cdir$ noinline
 c  Given imx, jmx and ifd59 (See comments in mgss2), ugrdfn calculates
@@ -484,7 +484,7 @@ c .....................................................................
       end
 c----------------------------------------------------------------------
       subroutine ukey(k,np2,nn5,nn9,nni,jjm,ii9,jj9,iifd,jjred)
-      implicit real*8(a-h,o-z)
+      implicit CCTK_REAL(a-h,o-z)
 c----------------------------------------------------------------------
 c  Returns the grid pointers and dimension variables for grid k.  The
 c  information is stored in the array np2.
@@ -503,7 +503,7 @@ c......................................................................
       end
 c----------------------------------------------------------------------
       subroutine uintad(q,qc,pu,pd,im,jm,jmc,iadd,jred,ipc)
-      implicit real*8 (a-h,o-z)
+      implicit CCTK_REAL (a-h,o-z)
 c----------------------------------------------------------------------
 c  iadd=1:
 c  Interpolates and adds the coarse grid (kf-1) correction, qc, to the
@@ -514,7 +514,7 @@ c  (kf-1) difference equation is interpolated to the fine grid (kf)
 c  to be used as the initial guess vector for kf=2,3,...,m.
 c  Interpolation is at black y-lines only.
 c .....................................................................
-      real*8 q(im,jm),qc(im,jmc),pu(im,jmc),pd(im,jmc)
+      CCTK_REAL q(im,jm),qc(im,jmc),pu(im,jmc),pd(im,jmc)
       im1=im-1
       jm1=jm-1
       jblack=5-jred
@@ -538,14 +538,14 @@ c                       interpolate solution to next finer grid in fmg
       end
 c----------------------------------------------------------------------
       subroutine uneuman(q,im,jm)
-      implicit real*8 (a-h,o-z)
+      implicit CCTK_REAL (a-h,o-z)
 c----------------------------------------------------------------------
 c  For problems with homogeneous Neumann boundary contitions, the
 c  condition that the integral of q over the domain be zero is added
 c  to the set of difference equations in order to obtain a unique
 c  solution.
 c......................................................................
-      real*8 q(im,jm)
+      CCTK_REAL q(im,jm)
       im1=im-1
       jm1=jm-1
       con=0.
@@ -561,7 +561,7 @@ c......................................................................
 c----------------------------------------------------------------------
       subroutine urelax(ac,aw,as,ae,an,asw,ase,ane,anw,f,q,gam,
      + im,jm,i9,j9,ifd,nman,k,m,jred,ipc,iprcud)
-      implicit real*8 (a-h,o-z)
+      implicit CCTK_REAL (a-h,o-z)
 c----------------------------------------------------------------------
 c  Performs red/black x-line relaxation.  The Thomas algorithm is used
 c  to solve the tridiagonal matrices.
@@ -585,9 +585,9 @@ c                finest grid by the call to subroutine uneuman.
 c** OUTPUT -
 c            q=  final approximation after a red/black relaxation sweep
 c .....................................................................
-      real*8 ac(im,jm),aw(im,jm),as(im,jm),ae(im,jm),an(im,jm),
+      CCTK_REAL ac(im,jm),aw(im,jm),as(im,jm),ae(im,jm),an(im,jm),
      + asw(i9,j9),ase(i9,j9),ane(i9,j9),anw(i9,j9)
-      real*8 f(im,jm),q(im,jm),gam(im)
+      CCTK_REAL f(im,jm),q(im,jm),gam(im)
       jm1=jm-1
       im1=im-1
       im2=im-2
@@ -722,7 +722,7 @@ c----------------------------------------------------------------------
       subroutine urscal(
      + ac,aw,as,ae,an,asw,ase,ane,anw,q,f,fc,qc,rc,
      + im,jm,jmc,ifd,i9,j9,kf,m,jred,tol,rmax,ipc,irc)
-      implicit real*8 (a-h,o-z)
+      implicit CCTK_REAL (a-h,o-z)
 c----------------------------------------------------------------------
 c  Defines the grid kf-1 right hand side, fc, as the restriction of the
 c  grid kf residual.  The restriction operator is the transpose of the
@@ -732,10 +732,10 @@ c  Thus, the restriction is simple injection.  The initial guess, qc,
 c  for the coarse grid correction equation is set to zero.  The
 c  maximum norm of the residual is calculated and returned in rmax.
 c......................................................................
-      real*8 ac(im,jm),aw(im,jm),as(im,jm),ae(im,jm),an(im,jm),
+      CCTK_REAL ac(im,jm),aw(im,jm),as(im,jm),ae(im,jm),an(im,jm),
      + asw(i9,j9),ase(i9,j9),ane(i9,j9),anw(i9,j9)
-      real*8 f(im,jm),q(im,jm),fc(im,jmc),qc(im,jmc)
-      real*8 rc(im,jmc)
+      CCTK_REAL f(im,jm),q(im,jm),fc(im,jmc),qc(im,jmc)
+      CCTK_REAL rc(im,jmc)
       rmax=0.
       im1=im-1
       jm1=jm-1
@@ -776,13 +776,13 @@ c
       end
 c----------------------------------------------------------------------
       subroutine ursrhs(f,fc,ru,rd,rc,im,jm,jmc,m,kf,jred,irc)
-      implicit real*8 (a-h,o-z)
+      implicit CCTK_REAL (a-h,o-z)
 c----------------------------------------------------------------------
 c  Restricts the right hand side vector on grid kf onto grid kf-1 when
 c  the full multigrid (ifmg>0) option is used.  The restriction operator
 c  is NOT necessarily the transpose of the interpolation operator.
 c......................................................................
-      real*8 f(im,jm),fc(im,jmc),ru(im,jmc),rd(im,jmc),rc(im,jmc)
+      CCTK_REAL f(im,jm),fc(im,jmc),ru(im,jmc),rd(im,jmc),rc(im,jmc)
       jm1=jm-1
       im1=im-1
       jc=1
@@ -805,7 +805,7 @@ c----------------------------------------------------------------------
      + ac,aw,as,ae,an,asw,ase,ane,anw,acc,awc,asc,aec,
      + anc,aswc,asec,anec,anwc,pu,pd,pc,ru,rd,rc,qw,fw,gam,
      + im,jm,jmc,ifd,i9,j9,nman,kf,m,jred,ipc,irc,irurd)
-      implicit real*8 (a-h,o-z)
+      implicit CCTK_REAL (a-h,o-z)
 c----------------------------------------------------------------------
 cdir$ noinline
 c     Calculates the interpolation coefficients from grid kf-1 to
@@ -823,13 +823,13 @@ c  acc - anwc = coarse grid (kf-1) array stencil coeficients
 c        pu,pd=  arrays of interpolation coefficients from grid kf-1
 c                to grid kf
 c .....................................................................
-      real*8 ac(im,jm),aw(im,jm),as(im,jm),ae(im,jm),an(im,jm),
+      CCTK_REAL ac(im,jm),aw(im,jm),as(im,jm),ae(im,jm),an(im,jm),
      + asw(i9,j9),ase(i9,j9),ane(i9,j9),anw(i9,j9),
      + ru(im,jmc),rd(im,jmc),rc(im,jmc),
      + pu(im,jmc),pd(im,jmc),pc(im,jmc),gam(im)
-      real*8 acc(im,jmc),awc(im,jmc),asc(im,jmc),aec(im,jmc),
+      CCTK_REAL acc(im,jmc),awc(im,jmc),asc(im,jmc),aec(im,jmc),
      + anc(im,jmc),aswc(im,jmc),asec(im,jmc),anec(im,jmc),anwc(im,jmc)
-      real*8 qw(im,jm),fw(im,jm)
+      CCTK_REAL qw(im,jm),fw(im,jm)
       common /io/ linp,lout
       common /prsol/ iprsol
 c
@@ -1184,13 +1184,13 @@ cxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
       end
 c**********************************************************************
       subroutine uoutpt(q,im,jm)
-      implicit real*8 (a-h,o-z)
+      implicit CCTK_REAL (a-h,o-z)
 c**********************************************************************
 c  Sample output subroutine.  Prints out the values of q at the
 c  interior points of the finest grid.
 c**********************************************************************
       common /io/ linp,lout
-      real*8 q(im,jm)
+      CCTK_REAL q(im,jm)
       im1=im-1
       jm1=jm-1
       ie=1
@@ -1205,12 +1205,12 @@ c**********************************************************************
 c**********************************************************************
       subroutine uputf(ac,aw,as,ae,an,f,nx,ny,
      + lo,nxd,nyd,i32su)
-      implicit real*8 (a-h,o-z)
+      implicit CCTK_REAL (a-h,o-z)
 c**********************************************************************
-      real*8 ac(lo:nxd,lo:nyd),aw(lo:nxd,lo:nyd),
+      CCTK_REAL ac(lo:nxd,lo:nyd),aw(lo:nxd,lo:nyd),
      + as(lo:nxd,lo:nyd),ae(lo:nxd,lo:nyd),
      + an(lo:nxd,lo:nyd),f(lo:nxd,lo:nyd)
-      real*8 a(20),b(20),ab(20)
+      CCTK_REAL a(20),b(20),ab(20)
       integer il(20),ir(20),jb(20),jt(20)
       integer ibc(4)
       common /io/ linp,lout
