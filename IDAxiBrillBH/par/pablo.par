@@ -1,6 +1,6 @@
 !DESC "Demonstration file for Pablo/AutoPilot"
 
-ActiveThorns = "SymBase LocalReduce CoordBase Pughslab FlexIO Boundary Time PsiKadelia ADMConstraints PUGH PUGHInterp PUGHReduce CartGrid3D ADMBase ADM admmacros coordgauge staticconformal ADMCoupling SpaceMask IDAxiBrillBH LocalInterp IOBasic IOASCII IOUtil"
+ActiveThorns = "SymBase LocalReduce CoordBase Pughslab FlexIO Boundary Time PsiKadelia ADMConstraints PUGH PUGHInterp PUGHReduce CartGrid3D ADMBase ADM admmacros coordgauge staticconformal ADMCoupling SpaceMask IDAxiBrillBH LocalInterp IOBasic IOASCII IOUtil IOFlexIO FlexIO"
 
 
 # Parameters which will affect performance
