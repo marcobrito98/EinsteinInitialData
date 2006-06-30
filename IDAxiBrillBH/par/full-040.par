@@ -105,8 +105,6 @@ ADMBase::metric_type = "static conformal"
 ADMBase::evolution_method = "none"
 ADMBase::initial_lapse    = "one"
 ADMBase::initial_shift    = "zero"
-ADMBase::lapse_evolution_method = "static"
-ADMBase::shift_evolution_method = "static"
 
 ActiveThorns = "AEILocalInterp"
 ActiveThorns = "IDAxiBrillBH"
@@ -133,7 +131,6 @@ ActiveThorns = "CoordGauge ADMMacros ADMCoupling ADMConstraints ADMAnalysis"
 ActiveThorns = "Boundary"
 ActiveThorns = "BSSN_MoL"
 
-ADMBase::initial_lapse          = "one"
 ADMBase::lapse_evolution_method = "1+log"
 
 BSSN_MoL::lapsesource     = "modified"
@@ -155,7 +152,6 @@ Boundary::radpower        = 2
 # gamma-driver shift
 #
 
-ADMBase::initial_shift           = "zero"
 ADMBase::shift_evolution_method  = "gamma2"
 
 BSSN_MoL::ShiftGammaCoeff        = 0.75
