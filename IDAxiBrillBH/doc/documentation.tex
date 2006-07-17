@@ -152,6 +152,22 @@ and outer boundary condition, a Robin condition:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\section{The Resulting Slice}
+
+This thorn normalizes things so that if there is no perturbation,
+it produces a Schwarzschild ($=$ Brill-Lindquist) slice of the $m=2$
+Schwarzschild spacetime.%%%
+\footnote{%%%
+	 This slice has an apparent horizon at a
+	 coordinate radius $r=1$.
+	 }%%%
+{}  You can't change this mass. :(
+
+In any case (perturbation or not), this thorn also reports an ADM mass
+for the slice.  This seems to be pretty reliable.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{2-D Grid and Interpolation Parameters}
 
 This thorn solves equation~(\ref{IDAxiBrillBH/eqn:ham-linear}) on a 2-D
