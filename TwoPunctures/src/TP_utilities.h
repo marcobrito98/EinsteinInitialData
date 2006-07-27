@@ -2,6 +2,8 @@
 
 #include <math.h>
 
+#include "cctk.h"
+
 #define Pi  3.14159265358979323846264338328
 #define Pih 1.57079632679489661923132169164	/* Pi/2*/
 #define Piq 0.78539816339744830961566084582	/* Pi/4*/
@@ -13,7 +15,7 @@
 
 typedef struct DCOMPLEX
 {
-  double r, i;
+  CCTK_REAL r, i;
 } dcomplex;
 
 #define nrerror TP_nrerror
@@ -30,16 +32,16 @@ typedef struct DCOMPLEX
 
 void nrerror (char error_text[]);
 int *ivector (long nl, long nh);
-double *dvector (long nl, long nh);
+CCTK_REAL *dvector (long nl, long nh);
 int **imatrix (long nrl, long nrh, long ncl, long nch);
-double **dmatrix (long nrl, long nrh, long ncl, long nch);
-double ***d3tensor (long nrl, long nrh, long ncl, long nch, long ndl,
+CCTK_REAL **dmatrix (long nrl, long nrh, long ncl, long nch);
+CCTK_REAL ***d3tensor (long nrl, long nrh, long ncl, long nch, long ndl,
 		    long ndh);
 void free_ivector (int *v, long nl, long nh);
-void free_dvector (double *v, long nl, long nh);
+void free_dvector (CCTK_REAL *v, long nl, long nh);
 void free_imatrix (int **m, long nrl, long nrh, long ncl, long nch);
-void free_dmatrix (double **m, long nrl, long nrh, long ncl, long nch);
-void free_d3tensor (double ***t, long nrl, long nrh, long ncl, long nch,
+void free_dmatrix (CCTK_REAL **m, long nrl, long nrh, long ncl, long nch);
+void free_d3tensor (CCTK_REAL ***t, long nrl, long nrh, long ncl, long nch,
 		    long ndl, long ndh);
 
 int minimum2 (int i, int j);
@@ -48,19 +50,19 @@ int maximum2 (int i, int j);
 int maximum3 (int i, int j, int k);
 int pow_int (int mantisse, int exponent);
 #if 0
-double atanh (double x);
-double asinh (double x);
-double acosh (double x);
+CCTK_REAL atanh (CCTK_REAL x);
+CCTK_REAL asinh (CCTK_REAL x);
+CCTK_REAL acosh (CCTK_REAL x);
 #endif
 
 dcomplex Cadd (dcomplex a, dcomplex b);
 dcomplex Csub (dcomplex a, dcomplex b);
 dcomplex Cmul (dcomplex a, dcomplex b);
-dcomplex RCmul (double x, dcomplex a);
+dcomplex RCmul (CCTK_REAL x, dcomplex a);
 dcomplex Cdiv (dcomplex a, dcomplex b);
-dcomplex Complex (double re, double im);
+dcomplex Complex (CCTK_REAL re, CCTK_REAL im);
 dcomplex Conjg (dcomplex z);
-double Cabs (dcomplex z);
+CCTK_REAL Cabs (dcomplex z);
 
 dcomplex Csqrt (dcomplex z);
 dcomplex Cexp (dcomplex z);
@@ -74,22 +76,22 @@ dcomplex Ccosh (dcomplex z);
 dcomplex Ctanh (dcomplex z);
 dcomplex Ccoth (dcomplex z);
 
-void chebft_Zeros (double u[], int n, int inv);
-void chebft_Extremes (double u[], int n, int inv);
-void chder (double *c, double *cder, int n);
-double chebev (double a, double b, double c[], int m, double x);
-void fourft (double *u, int N, int inv);
-void fourder (double u[], double du[], int N);
-void fourder2 (double u[], double d2u[], int N);
-double fourev (double *u, int N, double x);
+void chebft_Zeros (CCTK_REAL u[], int n, int inv);
+void chebft_Extremes (CCTK_REAL u[], int n, int inv);
+void chder (CCTK_REAL *c, CCTK_REAL *cder, int n);
+CCTK_REAL chebev (CCTK_REAL a, CCTK_REAL b, CCTK_REAL c[], int m, CCTK_REAL x);
+void fourft (CCTK_REAL *u, int N, int inv);
+void fourder (CCTK_REAL u[], CCTK_REAL du[], int N);
+void fourder2 (CCTK_REAL u[], CCTK_REAL d2u[], int N);
+CCTK_REAL fourev (CCTK_REAL *u, int N, CCTK_REAL x);
 
 
-void ludcmp (double **a, int n, int *indx, double *d);
-void lubksb (double **a, int n, int *indx, double b[]);
-void tridag (double a[], double b[], double c[], double r[], double u[],
+void ludcmp (CCTK_REAL **a, int n, int *indx, CCTK_REAL *d);
+void lubksb (CCTK_REAL **a, int n, int *indx, CCTK_REAL b[]);
+void tridag (CCTK_REAL a[], CCTK_REAL b[], CCTK_REAL c[], CCTK_REAL r[], CCTK_REAL u[],
 	     int n);
-double norm1 (double *v, int n);
-double norm2 (double *v, int n);
-double scalarproduct (double *v, double *w, int n);
+CCTK_REAL norm1 (CCTK_REAL *v, int n);
+CCTK_REAL norm2 (CCTK_REAL *v, int n);
+CCTK_REAL scalarproduct (CCTK_REAL *v, CCTK_REAL *w, int n);
 
-double plgndr (int l, int m, double x);
+CCTK_REAL plgndr (int l, int m, CCTK_REAL x);

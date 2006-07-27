@@ -88,39 +88,39 @@ void set_initial_guess(CCTK_POINTER_TO_CONST cctkGH,
         fprintf(debug_file,
                 "%.16g %.16g %.16g %.16g %.16g %.16g %.16g %.16g %.16g %.16g "
                 "%.16g %.16g %.16g %.16g %.16g %.16g %.16g %.16g %.16g\n",
-                s_x[indx], s_y[indx],
-                A,B,
-                U.d0[0],
-                (-cos(Pih * (2 * i + 1) / n1)-1.0),
-                U.d1[0],
-                U.d2[0],
-                U.d3[0],
-                U.d11[0],
-                U.d22[0],
-                U.d33[0],
-                v.d0[indx],
-                v.d1[indx],
-                v.d2[indx],
-                v.d3[indx],
-                v.d11[indx],
-                v.d22[indx],
-                v.d33[indx]
+                (double)s_x[indx], (double)s_y[indx],
+                (double)A,(double)B,
+                (double)U.d0[0],
+                (double)(-cos(Pih * (2 * i + 1) / n1)-1.0),
+                (double)U.d1[0],
+                (double)U.d2[0],
+                (double)U.d3[0],
+                (double)U.d11[0],
+                (double)U.d22[0],
+                (double)U.d33[0],
+                (double)v.d0[indx],
+                (double)v.d1[indx],
+                (double)v.d2[indx],
+                (double)v.d3[indx],
+                (double)v.d11[indx],
+                (double)v.d22[indx],
+                (double)v.d33[indx]
                 );
       }
     fprintf(debug_file, "\n\n");
     for (i=n2-10; i<n2; i++)
     {
-      double d;
+      CCTK_REAL d;
       indx = Index(0,0,i,0,1,n1,n2,n3);
       d = PunctIntPolAtArbitPosition(0, nvar, n1, n2, n3, v,
               s_x[indx], 0.0, 0.0);
       fprintf(debug_file, "%.16g %.16g\n",
-                s_x[indx], d);
+                (double)s_x[indx], (double)d);
     }
     fprintf(debug_file, "\n\n");
     for (i=n2-10; i<n2-1; i++)
     {
-      double d;
+      CCTK_REAL d;
       int ip= Index(0,0,i+1,0,1,n1,n2,n3);
       indx = Index(0,0,i,0,1,n1,n2,n3);
       for (j=-10; j<10; j++)
@@ -129,7 +129,7 @@ void set_initial_guess(CCTK_POINTER_TO_CONST cctkGH,
                 s_x[indx]+(s_x[ip]-s_x[indx])*j/10,
                 0.0, 0.0);
         fprintf(debug_file, "%.16g %.16g\n",
-                s_x[indx]+(s_x[ip]-s_x[indx])*j/10, d);
+                (double)(s_x[indx]+(s_x[ip]-s_x[indx])*j/10), (double)d);
       }
     }
     fprintf(debug_file, "\n\n");
@@ -152,13 +152,13 @@ void set_initial_guess(CCTK_POINTER_TO_CONST cctkGH,
           C_To_c (nvar, X, R, &(s_x[indx]), &r, U);
           fprintf(debug_file,
                   "%.16g %.16g %.16g %.16g %.16g %.16g %.16g %.16g %.16g %.16g %.16g\n",
-                  s_x[indx], r, X, R, U.d0[0],
-                  U.d1[0],
-                  U.d2[0],
-                  U.d3[0],
-                  U.d11[0],
-                  U.d22[0],
-                  U.d33[0]);
+                  (double)s_x[indx], (double)r, (double)X, (double)R, (double)U.d0[0],
+                  (double)U.d1[0],
+                  (double)U.d2[0],
+                  (double)U.d3[0],
+                  (double)U.d11[0],
+                  (double)U.d22[0],
+                  (double)U.d33[0]);
         }
       }
     fclose(debug_file);
@@ -184,11 +184,12 @@ TwoPunctures (CCTK_ARGUMENTS)
 
   int nvar = 1, n1 = npoints_A, n2 = npoints_B, n3 = npoints_phi;
 
+  int imin[3], imax[3], d;
   int i, j, k, ntotal = n1 * n2 * n3 * nvar;
   int percent10 = 0;
-  static double *F = NULL;
+  static CCTK_REAL *F = NULL;
   static derivs u, v;
-  double admMass;
+  CCTK_REAL admMass;
 
   if (! F) {
     /* Solve only when called for the first time */
@@ -232,7 +233,7 @@ TwoPunctures (CCTK_ARGUMENTS)
     /* print out ADM mass, eq.: \Delta M_ADM=2*r*u=4*b*V for A=1,B=0,phi=0 */
     admMass = (par_m_plus + par_m_minus
                - 4*par_b*PunctEvalAtArbitPosition(v.d0, 1, 0, 0, n1, n2, n3));
-    CCTK_VInfo (CCTK_THORNSTRING, "ADM mass is %g\n", admMass);
+    CCTK_VInfo (CCTK_THORNSTRING, "ADM mass is %g\n", (double)admMass);
   }
 
   if (CCTK_EQUALS(grid_setup_method, "Taylor expansion"))
@@ -252,8 +253,8 @@ TwoPunctures (CCTK_ARGUMENTS)
   averaged_lapse = CCTK_EQUALS(initial_lapse, "twopunctures-averaged");
 	pmn_lapse = CCTK_EQUALS(initial_lapse, "psi^n");
 	if (pmn_lapse)
-		CCTK_VInfo(CCTK_THORNSTRING, "Setting initial lapse to psi^%f profile.", 
-               initial_lapse_psi_exponent);
+		CCTK_VInfo(CCTK_THORNSTRING, "Setting initial lapse to psi^%f profile.",
+               (double)initial_lapse_psi_exponent);
 
   CCTK_INFO ("Interpolating result");
   if (CCTK_EQUALS(metric_type, "static conformal")) {
@@ -268,11 +269,17 @@ TwoPunctures (CCTK_ARGUMENTS)
     *conformal_state = 0;
   }
 
-  for (k = 0; k < cctk_lsh[2]; ++k)
+  for (d = 0; d < 3; ++ d)
   {
-    for (j = 0; j < cctk_lsh[1]; ++j)
+    imin[d] = 0           + (cctk_bbox[2*d  ] ? 0 : cctk_nghostzones[2]);
+    imax[d] = cctk_lsh[d] - (cctk_bbox[2*d+1] ? 0 : cctk_nghostzones[2]);
+  }
+
+  for (k = imin[2]; k < imax[2]; ++k)
+  {
+    for (j = imin[1]; j < imax[1]; ++j)
     {
-      for (i = 0; i < cctk_lsh[0]; ++i)
+      for (i = imin[0]; i < imax[0]; ++i)
       {
         if (percent10 != 10*(i+j*cctk_lsh[0]+k*cctk_lsh[0]*cctk_lsh[1]) /
                             (cctk_lsh[0] * cctk_lsh[1] * cctk_lsh[2]))
@@ -284,12 +291,12 @@ TwoPunctures (CCTK_ARGUMENTS)
 
 	const int ind = CCTK_GFINDEX3D (cctkGH, i, j, k);
         
-        double r_plus
+        CCTK_REAL r_plus
           = sqrt(pow(x[ind] - par_b, 2) + pow(y[ind], 2) + pow(z[ind], 2));
-        double r_minus
+        CCTK_REAL r_minus
           = sqrt(pow(x[ind] + par_b, 2) + pow(y[ind], 2) + pow(z[ind], 2));
         
-        double U;
+        CCTK_REAL U;
         switch (gsm)
         {
         case GSM_Taylor_expansion:
@@ -309,7 +316,7 @@ TwoPunctures (CCTK_ARGUMENTS)
             r_plus = TP_Tiny;
         if (r_minus < TP_Tiny)
             r_minus = TP_Tiny;
-        double psi1 = 1
+        CCTK_REAL psi1 = 1
           + 0.5 * par_m_plus / r_plus
           + 0.5 * par_m_minus / r_minus + U;
 #define EXTEND(M,r) \
@@ -326,16 +333,16 @@ TwoPunctures (CCTK_ARGUMENTS)
              + 0.5 * EXTEND(par_m_minus,r_minus)
              + 0.5 * par_m_plus / r_plus + U;
         }
-        double static_psi = 1;
+        CCTK_REAL static_psi = 1;
         
-        double Aij[3][3];
+        CCTK_REAL Aij[3][3];
         BY_Aijofxyz (x[ind], y[ind], z[ind], Aij);
 
         if ((*conformal_state > 0) || (pmn_lapse)) {
 
-          double xp, yp, zp, rp, ir;
-          double s1, s3, s5;
-          double p, px, py, pz, pxx, pxy, pxz, pyy, pyz, pzz;
+          CCTK_REAL xp, yp, zp, rp, ir;
+          CCTK_REAL s1, s3, s5;
+          CCTK_REAL p, px, py, pz, pxx, pxy, pxz, pyy, pyz, pzz;
           p = 1.0;
           px = py = pz = 0.0;
           pxx = pxy = pxz = 0.0;
@@ -443,9 +450,9 @@ TwoPunctures (CCTK_ARGUMENTS)
         kzz[ind] = Aij[2][2] / pow(psi1, 2);
 
         if (antisymmetric_lapse || averaged_lapse) {
-/*           const double alp1 = ((1.0 - 0.5 * par_m_plus / r_plus) */
+/*           const CCTK_REAL alp1 = ((1.0 - 0.5 * par_m_plus / r_plus) */
 /*                                / (1.0 + 0.5 * par_m_plus / r_plus)); */
-/*           const double alp2 = ((1.0 - 0.5 * par_m_minus / r_minus) */
+/*           const CCTK_REAL alp2 = ((1.0 - 0.5 * par_m_minus / r_minus) */
 /*                                / (1.0 + 0.5 * par_m_minus / r_minus)); */
 /*           alp[ind] = alp1 * alp2; */
           alp[ind] =

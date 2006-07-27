@@ -16,7 +16,7 @@
 /*#define FAC sin(al)*sin(be)*sin(al)*sin(be)*/
 /*#define FAC 1*/
 
-static inline double min (double const x, double const y)
+static inline CCTK_REAL min (CCTK_REAL const x, CCTK_REAL const y)
 {
   return x<y ? x : y;
 }
@@ -84,7 +84,7 @@ void
 Derivatives_AB3 (int nvar, int n1, int n2, int n3, derivs v)
 {
   int i, j, k, ivar, N, *indx;
-  double *p, *dp, *d2p, *q, *dq, *r, *dr;
+  CCTK_REAL *p, *dp, *d2p, *q, *dq, *r, *dr;
 
   N = maximum3 (n1, n2, n3);
   p = dvector (0, N);
@@ -190,7 +190,7 @@ Derivatives_AB3 (int nvar, int n1, int n2, int n3, derivs v)
 /* --------------------------------------------------------------------------*/
 void
 F_of_v (CCTK_POINTER_TO_CONST cctkGH,
-        int nvar, int n1, int n2, int n3, derivs v, double *F,
+        int nvar, int n1, int n2, int n3, derivs v, CCTK_REAL *F,
         derivs u)
 {
   /*      Calculates the left hand sides of the non-linear equations F_m(v_n)=0*/
@@ -199,7 +199,7 @@ F_of_v (CCTK_POINTER_TO_CONST cctkGH,
   /*      at interior points and at the boundaries "+/-"*/
   DECLARE_CCTK_PARAMETERS;
   int i, j, k, ivar, indx;
-  double al, be, A, B, X, R, x, r, phi, y, z, Am1, *values;
+  CCTK_REAL al, be, A, B, X, R, x, r, phi, y, z, Am1, *values;
   derivs U;
   CCTK_REAL *sources;
 
@@ -264,7 +264,7 @@ F_of_v (CCTK_POINTER_TO_CONST cctkGH,
 
   Derivatives_AB3 (nvar, n1, n2, n3, v);
   FILE *debugfile;
-  double psi, psi2, psi4, psi7, r_plus, r_minus;
+  CCTK_REAL psi, psi2, psi4, psi7, r_plus, r_minus;
   if (do_residuum_debug_output)
   {
     debugfile=fopen("res.dat", "w");
@@ -338,18 +338,18 @@ F_of_v (CCTK_POINTER_TO_CONST cctkGH,
           psi7 = psi * psi2 * psi4;
           fprintf(debugfile,
                   "%.16g %.16g %.16g %.16g %.16g %.16g %.16g %.16g\n",
-             x, y, A, B,
-             (U.d11[0] +
-              U.d22[0] +
-              U.d33[0] +
-/*              0.125 * BY_KKofxyz (x, y, z) / psi7 +*/
-              2.0 * Pi / psi2/psi * sources[indx]) * FAC,
-             (U.d11[0] +
-              U.d22[0] +
-              U.d33[0])*FAC,
-             -(2.0 * Pi / psi2/psi * sources[indx]) * FAC,
-             sources[indx]
-             /*F[indx]*/
+             (double)x, (double)y, (double)A, (double)B,
+             (double)(U.d11[0] +
+                      U.d22[0] +
+                      U.d33[0] +
+/*                      0.125 * BY_KKofxyz (x, y, z) / psi7 +*/
+                      (2.0 * Pi / psi2/psi * sources[indx]) * FAC),
+             (double)((U.d11[0] +
+                       U.d22[0] +
+                       U.d33[0])*FAC),
+             (double)(-(2.0 * Pi / psi2/psi * sources[indx]) * FAC),
+             (double)sources[indx]
+             /*(double)F[indx]*/
              );
         }
       }
@@ -367,14 +367,14 @@ F_of_v (CCTK_POINTER_TO_CONST cctkGH,
 /* --------------------------------------------------------------------------*/
 void
 J_times_dv (int nvar, int n1, int n2, int n3, derivs dv,
-	    double *Jdv, derivs u)
+	    CCTK_REAL *Jdv, derivs u)
 {				/*      Calculates the left hand sides of the non-linear equations F_m(v_n)=0*/
   /*      and the function u (u.d0[]) as well as its derivatives*/
   /*      (u.d1[], u.d2[], u.d3[], u.d11[], u.d12[], u.d13[], u.d22[], u.d23[], u.d33[])*/
   /*      at interior points and at the boundaries "+/-"*/
   DECLARE_CCTK_PARAMETERS;
   int i, j, k, ivar, indx;
-  double al, be, A, B, X, R, x, r, phi, y, z, Am1, *values;
+  CCTK_REAL al, be, A, B, X, R, x, r, phi, y, z, Am1, *values;
   derivs dU, U;
 
 
@@ -448,17 +448,17 @@ J_times_dv (int nvar, int n1, int n2, int n3, derivs dv,
 /* --------------------------------------------------------------------------*/
 void
 JFD_times_dv (int i, int j, int k, int nvar, int n1, int n2,
-	      int n3, derivs dv, derivs u, double *values)
+	      int n3, derivs dv, derivs u, CCTK_REAL *values)
 {				/* Calculates rows of the vector 'J(FD)*dv'.*/
   /* First row to be calculated: row = Index(0,      i, j, k; nvar, n1, n2, n3)*/
   /* Last  row to be calculated: row = Index(nvar-1, i, j, k; nvar, n1, n2, n3)*/
   /* These rows are stored in the vector JFDdv[0] ... JFDdv[nvar-1].*/
   DECLARE_CCTK_PARAMETERS;
   int ivar, indx;
-  double al, be, A, B, X, R, x, r, phi, y, z, Am1;
-  double sin_al, sin_al_i1, sin_al_i2, sin_al_i3, cos_al;
-  double sin_be, sin_be_i1, sin_be_i2, sin_be_i3, cos_be;
-  double dV0, dV1, dV2, dV3, dV11, dV12, dV13, dV22, dV23, dV33,
+  CCTK_REAL al, be, A, B, X, R, x, r, phi, y, z, Am1;
+  CCTK_REAL sin_al, sin_al_i1, sin_al_i2, sin_al_i3, cos_al;
+  CCTK_REAL sin_be, sin_be_i1, sin_be_i2, sin_be_i3, cos_be;
+  CCTK_REAL dV0, dV1, dV2, dV3, dV11, dV12, dV13, dV22, dV23, dV33,
     ha, ga, ga2, hb, gb, gb2, hp, gp, gp2, gagb, gagp, gbgp;
   derivs dU, U;
 
@@ -590,13 +590,13 @@ JFD_times_dv (int i, int j, int k, int nvar, int n1, int n2,
 /* --------------------------------------------------------------------------*/
 void
 SetMatrix_JFD (int nvar, int n1, int n2, int n3, derivs u,
-	       int *ncols, int **cols, double **Matrix)
+	       int *ncols, int **cols, CCTK_REAL **Matrix)
 {
   DECLARE_CCTK_PARAMETERS;
   int column, row, mcol;
   int i, i1, i_0, i_1, j, j1, j_0, j_1, k, k1, k_0, k_1, N1, N2, N3,
     ivar, ivar1, ntotal = nvar * n1 * n2 * n3;
-  double *values;
+  CCTK_REAL *values;
   derivs dv;
 
   values = dvector (0, nvar - 1);
@@ -679,12 +679,12 @@ SetMatrix_JFD (int nvar, int n1, int n2, int n3, derivs u,
 
 /* --------------------------------------------------------------------------*/
 /* Calculates the value of v at an arbitrary position (A,B,phi)*/
-double
-PunctEvalAtArbitPosition (double *v, double A, double B, double phi,
+CCTK_REAL
+PunctEvalAtArbitPosition (CCTK_REAL *v, CCTK_REAL A, CCTK_REAL B, CCTK_REAL phi,
 			  int n1, int n2, int n3)
 {
   int i, j, k, N;
-  double *p, *values1, **values2, result;
+  CCTK_REAL *p, *values1, **values2, result;
 
   N = maximum3 (n1, n2, n3);
   p = dvector (0, N);
@@ -725,7 +725,7 @@ void
 calculate_derivs (int i, int j, int k, int ivar, int nvar, int n1, int n2,
 		  int n3, derivs v, derivs vv)
 {
-  double al = Pih * (2 * i + 1) / n1, be = Pih * (2 * j + 1) / n2,
+  CCTK_REAL al = Pih * (2 * i + 1) / n1, be = Pih * (2 * j + 1) / n2,
     sin_al = sin (al), sin2_al = sin_al * sin_al, cos_al = cos (al),
     sin_be = sin (be), sin2_be = sin_be * sin_be, cos_be = cos (be);
 
@@ -745,8 +745,8 @@ calculate_derivs (int i, int j, int k, int ivar, int nvar, int n1, int n2,
 }
 
 /* --------------------------------------------------------------------------*/
-double
-interpol (double a, double b, double c, derivs v)
+CCTK_REAL
+interpol (CCTK_REAL a, CCTK_REAL b, CCTK_REAL c, derivs v)
 {
   return v.d0[0]
     + a * v.d1[0] + b * v.d2[0] + c * v.d3[0]
@@ -756,13 +756,13 @@ interpol (double a, double b, double c, derivs v)
 
 /* --------------------------------------------------------------------------*/
 /* Calculates the value of v at an arbitrary position (x,y,z)*/
-double
+CCTK_REAL
 PunctTaylorExpandAtArbitPosition (int ivar, int nvar, int n1,
-                                  int n2, int n3, derivs v, double x, double y,
-                                  double z)
+                                  int n2, int n3, derivs v, CCTK_REAL x, CCTK_REAL y,
+                                  CCTK_REAL z)
 {
   DECLARE_CCTK_PARAMETERS;
-  double xs, ys, zs, rs2, phi, X, R, A, B, al, be, aux1, aux2, a, b, c,
+  CCTK_REAL xs, ys, zs, rs2, phi, X, R, A, B, al, be, aux1, aux2, a, b, c,
     result, Ui;
   int i, j, k;
   derivs vv;
@@ -807,13 +807,13 @@ PunctTaylorExpandAtArbitPosition (int ivar, int nvar, int n1,
 
 /* --------------------------------------------------------------------------*/
 /* Calculates the value of v at an arbitrary position (x,y,z)*/
-double
+CCTK_REAL
 PunctIntPolAtArbitPosition (int ivar, int nvar, int n1,
-			    int n2, int n3, derivs v, double x, double y,
-			    double z)
+			    int n2, int n3, derivs v, CCTK_REAL x, CCTK_REAL y,
+			    CCTK_REAL z)
 {
   DECLARE_CCTK_PARAMETERS;
-  double xs, ys, zs, rs2, phi, X, R, A, B, aux1, aux2, result, Ui;
+  CCTK_REAL xs, ys, zs, rs2, phi, X, R, A, B, aux1, aux2, result, Ui;
 
   xs = x / par_b;
   ys = y / par_b;

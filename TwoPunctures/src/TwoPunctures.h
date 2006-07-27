@@ -7,7 +7,7 @@
 
 typedef struct DERIVS
 {
-  double *d0, *d1, *d2, *d3, *d11, *d12, *d13, *d22, *d23, *d33;
+  CCTK_REAL *d0, *d1, *d2, *d3, *d11, *d12, *d13, *d22, *d23, *d33;
 } derivs;
 
 /*
@@ -22,8 +22,8 @@ Files of "TwoPunctures":
 */
 
 /* Routines in  "TwoPunctures.c"*/
-double TestSolution (double A, double B, double X, double R, double phi);
-void TestVector_w (double *par, int nvar, int n1, int n2, int n3, double *w);
+CCTK_REAL TestSolution (CCTK_REAL A, CCTK_REAL B, CCTK_REAL X, CCTK_REAL R, CCTK_REAL phi);
+void TestVector_w (CCTK_REAL *par, int nvar, int n1, int n2, int n3, CCTK_REAL *w);
 
 /* Routines in  "FuncAndJacobian.c"*/
 int Index (int ivar, int i, int j, int k, int nvar, int n1, int n2, int n3);
@@ -32,50 +32,50 @@ void free_derivs (derivs * v, int n);
 void Derivatives_AB3 (int nvar, int n1, int n2, int n3, derivs v);
 void F_of_v (CCTK_POINTER_TO_CONST cctkGH,
        int nvar, int n1, int n2, int n3, derivs v,
-	     double *F, derivs u);
+	     CCTK_REAL *F, derivs u);
 void J_times_dv (int nvar, int n1, int n2, int n3, derivs dv,
-		 double *Jdv, derivs u);
+		 CCTK_REAL *Jdv, derivs u);
 void JFD_times_dv (int i, int j, int k, int nvar, int n1,
-		   int n2, int n3, derivs dv, derivs u, double *values);
+		   int n2, int n3, derivs dv, derivs u, CCTK_REAL *values);
 void SetMatrix_JFD (int nvar, int n1, int n2, int n3,
-		    derivs u, int *ncols, int **cols, double **Matrix);
-double PunctEvalAtArbitPosition (double *v, double A, double B, double phi,
+		    derivs u, int *ncols, int **cols, CCTK_REAL **Matrix);
+CCTK_REAL PunctEvalAtArbitPosition (CCTK_REAL *v, CCTK_REAL A, CCTK_REAL B, CCTK_REAL phi,
 				 int n1, int n2, int n3);
 void calculate_derivs (int i, int j, int k, int ivar, int nvar, int n1,
 		       int n2, int n3, derivs v, derivs vv);
-double interpol (double a, double b, double c, derivs v);
-double PunctTaylorExpandAtArbitPosition (int ivar, int nvar, int n1,
-                                         int n2, int n3, derivs v, double x,
-                                         double y, double z);
-double PunctIntPolAtArbitPosition (int ivar, int nvar, int n1,
-				   int n2, int n3, derivs v, double x,
-				   double y, double z);
+CCTK_REAL interpol (CCTK_REAL a, CCTK_REAL b, CCTK_REAL c, derivs v);
+CCTK_REAL PunctTaylorExpandAtArbitPosition (int ivar, int nvar, int n1,
+                                         int n2, int n3, derivs v, CCTK_REAL x,
+                                         CCTK_REAL y, CCTK_REAL z);
+CCTK_REAL PunctIntPolAtArbitPosition (int ivar, int nvar, int n1,
+				   int n2, int n3, derivs v, CCTK_REAL x,
+				   CCTK_REAL y, CCTK_REAL z);
 
 /* Routines in  "CoordTransf.c"*/
-void AB_To_XR (int nvar, double A, double B, double *X,
-	       double *R, derivs U);
-void C_To_c (int nvar, double X, double R, double *x,
-	     double *r, derivs U);
-void rx3_To_xyz (int nvar, double x, double r, double phi, double *y,
-		 double *z, derivs U);
+void AB_To_XR (int nvar, CCTK_REAL A, CCTK_REAL B, CCTK_REAL *X,
+	       CCTK_REAL *R, derivs U);
+void C_To_c (int nvar, CCTK_REAL X, CCTK_REAL R, CCTK_REAL *x,
+	     CCTK_REAL *r, derivs U);
+void rx3_To_xyz (int nvar, CCTK_REAL x, CCTK_REAL r, CCTK_REAL phi, CCTK_REAL *y,
+		 CCTK_REAL *z, derivs U);
 
 /* Routines in  "Equations.c"*/
-double BY_KKofxyz (double x, double y, double z);
-void BY_Aijofxyz (double x, double y, double z, double Aij[3][3]);
+CCTK_REAL BY_KKofxyz (CCTK_REAL x, CCTK_REAL y, CCTK_REAL z);
+void BY_Aijofxyz (CCTK_REAL x, CCTK_REAL y, CCTK_REAL z, CCTK_REAL Aij[3][3]);
 void NonLinEquations (CCTK_REAL rho_adm,
-          double A, double B, double X, double R,
-		      double x, double r, double phi,
-		      double y, double z, derivs U, double *values);
-void LinEquations (double A, double B, double X, double R,
-		   double x, double r, double phi,
-		   double y, double z, derivs dU, derivs U, double *values);
+          CCTK_REAL A, CCTK_REAL B, CCTK_REAL X, CCTK_REAL R,
+		      CCTK_REAL x, CCTK_REAL r, CCTK_REAL phi,
+		      CCTK_REAL y, CCTK_REAL z, derivs U, CCTK_REAL *values);
+void LinEquations (CCTK_REAL A, CCTK_REAL B, CCTK_REAL X, CCTK_REAL R,
+		   CCTK_REAL x, CCTK_REAL r, CCTK_REAL phi,
+		   CCTK_REAL y, CCTK_REAL z, derivs dU, derivs U, CCTK_REAL *values);
 
 /* Routines in  "Newton.c"*/
 void TestRelax (CCTK_POINTER_TO_CONST cctkGH,
-                int nvar, int n1, int n2, int n3, derivs v, double *dv);
+                int nvar, int n1, int n2, int n3, derivs v, CCTK_REAL *dv);
 void Newton (CCTK_POINTER_TO_CONST cctkGH,
              int nvar, int n1, int n2, int n3, derivs v,
-	           double tol, int itmax);
+	           CCTK_REAL tol, int itmax);
 
 
 /* 

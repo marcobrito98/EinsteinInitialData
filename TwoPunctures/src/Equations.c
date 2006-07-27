@@ -20,12 +20,12 @@
 /* U.d23[ivar]  = U[ivar]_yz;*/
 /* U.d33[ivar]  = U[ivar]_zz;*/
 
-double
-BY_KKofxyz (double x, double y, double z)
+CCTK_REAL
+BY_KKofxyz (CCTK_REAL x, CCTK_REAL y, CCTK_REAL z)
 {
   DECLARE_CCTK_PARAMETERS;
   int i, j;
-  double r_plus, r2_plus, r3_plus, r_minus, r2_minus, r3_minus, np_Pp, nm_Pm,
+  CCTK_REAL r_plus, r2_plus, r3_plus, r_minus, r2_minus, r3_minus, np_Pp, nm_Pm,
     Aij, AijAij, n_plus[3], n_minus[3], np_Sp[3], nm_Sm[3];
 
   r2_plus = (x - par_b) * (x - par_b) + y * y + z * z;
@@ -79,11 +79,11 @@ BY_KKofxyz (double x, double y, double z)
 }
 
 void
-BY_Aijofxyz (double x, double y, double z, double Aij[3][3])
+BY_Aijofxyz (CCTK_REAL x, CCTK_REAL y, CCTK_REAL z, CCTK_REAL Aij[3][3])
 {
   DECLARE_CCTK_PARAMETERS;
   int i, j;
-  double r_plus, r2_plus, r3_plus, r_minus, r2_minus, r3_minus, np_Pp, nm_Pm,
+  CCTK_REAL r_plus, r2_plus, r3_plus, r_minus, r2_minus, r3_minus, np_Pp, nm_Pm,
     n_plus[3], n_minus[3], np_Sp[3], nm_Sm[3];
 
   r2_plus = (x - par_b) * (x - par_b) + y * y + z * z;
@@ -143,13 +143,13 @@ BY_Aijofxyz (double x, double y, double z, double Aij[3][3])
 /*-----------------------------------------------------------*/
 void
 NonLinEquations (CCTK_REAL rho_adm,
-     double A, double B, double X, double R,
-		 double x, double r, double phi,
-		 double y, double z, derivs U, double *values)
+     CCTK_REAL A, CCTK_REAL B, CCTK_REAL X, CCTK_REAL R,
+		 CCTK_REAL x, CCTK_REAL r, CCTK_REAL phi,
+		 CCTK_REAL y, CCTK_REAL z, derivs U, CCTK_REAL *values)
 {
   DECLARE_CCTK_PARAMETERS;
-  double r_plus, r_minus, psi, psi2, psi4, psi7;
-  double mu;
+  CCTK_REAL r_plus, r_minus, psi, psi2, psi4, psi7;
+  CCTK_REAL mu;
 
   r_plus = sqrt ((x - par_b) * (x - par_b) + y * y + z * z);
   r_minus = sqrt ((x + par_b) * (x + par_b) + y * y + z * z);
@@ -170,12 +170,12 @@ NonLinEquations (CCTK_REAL rho_adm,
 /********               Linear Equations                ***********/
 /*-----------------------------------------------------------*/
 void
-LinEquations (double A, double B, double X, double R,
-	      double x, double r, double phi,
-	      double y, double z, derivs dU, derivs U, double *values)
+LinEquations (CCTK_REAL A, CCTK_REAL B, CCTK_REAL X, CCTK_REAL R,
+	      CCTK_REAL x, CCTK_REAL r, CCTK_REAL phi,
+	      CCTK_REAL y, CCTK_REAL z, derivs dU, derivs U, CCTK_REAL *values)
 {
   DECLARE_CCTK_PARAMETERS;
-  double r_plus, r_minus, psi, psi2, psi4, psi8;
+  CCTK_REAL r_plus, r_minus, psi, psi2, psi4, psi8;
 
   r_plus = sqrt ((x - par_b) * (x - par_b) + y * y + z * z);
   r_minus = sqrt ((x + par_b) * (x + par_b) + y * y + z * z);

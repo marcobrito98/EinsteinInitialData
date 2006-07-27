@@ -12,26 +12,26 @@
 static int
 bicgstab (CCTK_POINTER_TO_CONST cctkGH,
           int nvar, int n1, int n2, int n3, derivs v,
-          derivs dv, int output, int itmax, double tol, double *normres);
+          derivs dv, int output, int itmax, CCTK_REAL tol, CCTK_REAL *normres);
 static void
-relax (double *dv, int nvar, int n1, int n2, int n3,
-       double *rhs, int *ncols, int **cols, double **JFD);
+relax (CCTK_REAL *dv, int nvar, int n1, int n2, int n3,
+       CCTK_REAL *rhs, int *ncols, int **cols, CCTK_REAL **JFD);
 static void
-resid (double *res, int ntotal, double *dv, double *rhs,
-       int *ncols, int **cols, double **JFD);
+resid (CCTK_REAL *res, int ntotal, CCTK_REAL *dv, CCTK_REAL *rhs,
+       int *ncols, int **cols, CCTK_REAL **JFD);
 static void
-LineRelax_al (double *dv, int j, int k, int nvar, int n1, int n2, int n3,
-	      double *rhs, int *ncols, int **cols, double **JFD);
+LineRelax_al (CCTK_REAL *dv, int j, int k, int nvar, int n1, int n2, int n3,
+	      CCTK_REAL *rhs, int *ncols, int **cols, CCTK_REAL **JFD);
 static void
-LineRelax_be (double *dv, int i, int k, int nvar, int n1, int n2, int n3,
-	      double *rhs, int *ncols, int **cols, double **JFD);
+LineRelax_be (CCTK_REAL *dv, int i, int k, int nvar, int n1, int n2, int n3,
+	      CCTK_REAL *rhs, int *ncols, int **cols, CCTK_REAL **JFD);
 /* --------------------------------------------------------------------------*/
 static void
-resid (double *res, int ntotal, double *dv, double *rhs,
-       int *ncols, int **cols, double **JFD)
+resid (CCTK_REAL *res, int ntotal, CCTK_REAL *dv, CCTK_REAL *rhs,
+       int *ncols, int **cols, CCTK_REAL **JFD)
 {
   int i, m;
-  double JFDdv_i;
+  CCTK_REAL JFDdv_i;
 
   for (i = 0; i < ntotal; i++)
   {
@@ -44,11 +44,11 @@ resid (double *res, int ntotal, double *dv, double *rhs,
 
 /* -------------------------------------------------------------------------*/
 static void
-LineRelax_al (double *dv, int j, int k, int nvar, int n1, int n2, int n3,
-	      double *rhs, int *ncols, int **cols, double **JFD)
+LineRelax_al (CCTK_REAL *dv, int j, int k, int nvar, int n1, int n2, int n3,
+	      CCTK_REAL *rhs, int *ncols, int **cols, CCTK_REAL **JFD)
 {
   int i, m, Ic, Ip, Im, col, ivar;
-  double *a, *b, *c, *r, *u;
+  CCTK_REAL *a, *b, *c, *r, *u;
   a = dvector (0, n1 - 1);
   b = dvector (0, n1 - 1);
   c = dvector (0, n1 - 1);
@@ -98,11 +98,11 @@ LineRelax_al (double *dv, int j, int k, int nvar, int n1, int n2, int n3,
 
 /* --------------------------------------------------------------------------*/
 static void
-LineRelax_be (double *dv, int i, int k, int nvar, int n1, int n2, int n3,
-	      double *rhs, int *ncols, int **cols, double **JFD)
+LineRelax_be (CCTK_REAL *dv, int i, int k, int nvar, int n1, int n2, int n3,
+	      CCTK_REAL *rhs, int *ncols, int **cols, CCTK_REAL **JFD)
 {
   int j, m, Ic, Ip, Im, col, ivar;
-  double *a, *b, *c, *r, *u;
+  CCTK_REAL *a, *b, *c, *r, *u;
   a = dvector (0, n2 - 1);
   b = dvector (0, n2 - 1);
   c = dvector (0, n2 - 1);
@@ -152,8 +152,8 @@ LineRelax_be (double *dv, int i, int k, int nvar, int n1, int n2, int n3,
 
 /* --------------------------------------------------------------------------*/
 static void
-relax (double *dv, int nvar, int n1, int n2, int n3,
-       double *rhs, int *ncols, int **cols, double **JFD)
+relax (CCTK_REAL *dv, int nvar, int n1, int n2, int n3,
+       CCTK_REAL *rhs, int *ncols, int **cols, CCTK_REAL **JFD)
 {
   int i, j, k, n;
 
@@ -191,12 +191,12 @@ relax (double *dv, int nvar, int n1, int n2, int n3,
 void
 TestRelax (CCTK_POINTER_TO_CONST cctkGH,
      int nvar, int n1, int n2, int n3, derivs v,
-	   double *dv)
+	   CCTK_REAL *dv)
 {
   DECLARE_CCTK_PARAMETERS;
   int ntotal = n1 * n2 * n3 * nvar, **cols, *ncols, maxcol =
     StencilSize * nvar, j;
-  double *F, *res, **JFD;
+  CCTK_REAL *F, *res, **JFD;
   derivs u;
 
   F = dvector (0, ntotal - 1);
@@ -214,7 +214,7 @@ TestRelax (CCTK_POINTER_TO_CONST cctkGH,
   for (j = 0; j < ntotal; j++)
     dv[j] = 0;
   resid (res, ntotal, dv, F, ncols, cols, JFD);
-  printf ("Before: |F|=%20.15e\n", norm1 (res, ntotal));
+  printf ("Before: |F|=%20.15e\n", (double) norm1 (res, ntotal));
   fflush(stdout);
   for (j = 0; j < NRELAX; j++)
   {
@@ -222,13 +222,13 @@ TestRelax (CCTK_POINTER_TO_CONST cctkGH,
     if (j % Step_Relax == 0)
     {
       resid (res, ntotal, dv, F, ncols, cols, JFD);
-      printf ("j=%d\t |F|=%20.15e\n", j, norm1 (res, ntotal));
+      printf ("j=%d\t |F|=%20.15e\n", j, (double) norm1 (res, ntotal));
       fflush(stdout);
     }
   }
 
   resid (res, ntotal, dv, F, ncols, cols, JFD);
-  printf ("After: |F|=%20.15e\n", norm1 (res, ntotal));
+  printf ("After: |F|=%20.15e\n", (double) norm1 (res, ntotal));
   fflush(stdout);
 
   free_dvector (F, 0, ntotal - 1);
@@ -244,17 +244,17 @@ TestRelax (CCTK_POINTER_TO_CONST cctkGH,
 static int
 bicgstab (CCTK_POINTER_TO_CONST cctkGH,
           int nvar, int n1, int n2, int n3, derivs v,
-	        derivs dv, int output, int itmax, double tol, double *normres)
+	        derivs dv, int output, int itmax, CCTK_REAL tol, CCTK_REAL *normres)
 {
   DECLARE_CCTK_PARAMETERS;
   int ntotal = n1 * n2 * n3 * nvar, ii, j;
-  double alpha = 0, beta = 0;
-  double rho = 0, rho1 = 1, rhotol = 1e-50;
-  double omega = 0, omegatol = 1e-50;
-  double *p, *rt, *s, *t, *r, *vv;
-  double **JFD;
+  CCTK_REAL alpha = 0, beta = 0;
+  CCTK_REAL rho = 0, rho1 = 1, rhotol = 1e-50;
+  CCTK_REAL omega = 0, omegatol = 1e-50;
+  CCTK_REAL *p, *rt, *s, *t, *r, *vv;
+  CCTK_REAL **JFD;
   int **cols, *ncols, maxcol = StencilSize * nvar;
-  double *F;
+  CCTK_REAL *F;
   derivs u, ph, sh;
 
   F = dvector (0, ntotal - 1);
@@ -281,7 +281,7 @@ bicgstab (CCTK_POINTER_TO_CONST cctkGH,
 
   /* check */
   if (output == 1) {
-    printf ("bicgstab:  itmax %d, tol %e\n", itmax, tol);
+    printf ("bicgstab:  itmax %d, tol %e\n", itmax, (double)tol);
     fflush(stdout);
   }
 
@@ -292,7 +292,7 @@ bicgstab (CCTK_POINTER_TO_CONST cctkGH,
 
   *normres = norm2 (r, ntotal);
   if (output == 1) {
-    printf ("bicgstab: %5d  %10.3e\n", 0, *normres);
+    printf ("bicgstab: %5d  %10.3e\n", 0, (double) *normres);
     fflush(stdout);
   }
 
@@ -336,7 +336,7 @@ bicgstab (CCTK_POINTER_TO_CONST cctkGH,
 	dv.d0[j] += alpha * ph.d0[j];
       if (output == 1) {
 	printf ("bicgstab: %5d  %10.3e  %10.3e  %10.3e  %10.3e\n",
-		ii + 1, *normres, alpha, beta, omega);
+		ii + 1, (double) *normres, (double)alpha, (double)beta, (double)omega);
         fflush(stdout);
       }
       break;
@@ -361,7 +361,7 @@ bicgstab (CCTK_POINTER_TO_CONST cctkGH,
     *normres = norm2 (r, ntotal);
     if (output == 1) {
       printf ("bicgstab: %5d  %10.3e  %10.3e  %10.3e  %10.3e\n",
-	      ii + 1, *normres, alpha, beta, omega);
+	      ii + 1, (double) *normres, (double)alpha, (double)beta, (double)omega);
       fflush(stdout);
     }
     if (*normres <= tol)
@@ -409,11 +409,11 @@ bicgstab (CCTK_POINTER_TO_CONST cctkGH,
 void
 Newton (CCTK_POINTER_TO_CONST cctkGH,
   int nvar, int n1, int n2, int n3,
-	derivs v, double tol, int itmax)
+	derivs v, CCTK_REAL tol, int itmax)
 {
   DECLARE_CCTK_PARAMETERS;
   int ntotal = n1 * n2 * n3 * nvar, ii, j, it;
-  double *F, dmax, normres;
+  CCTK_REAL *F, dmax, normres;
   derivs u, dv;
 
   F = dvector (0, ntotal - 1);
@@ -435,7 +435,7 @@ Newton (CCTK_POINTER_TO_CONST cctkGH,
     }
     for (j = 0; j < ntotal; j++)
       dv.d0[j] = 0;
-    printf ("Newton: it=%d \t |F|=%e\n", it, dmax);
+    printf ("Newton: it=%d \t |F|=%e\n", it, (double)dmax);
     fflush(stdout);
     ii =
       bicgstab (cctkGH,
@@ -461,7 +461,7 @@ Newton (CCTK_POINTER_TO_CONST cctkGH,
         if (fabs (F[j]) > dmax)
           dmax = fabs (F[j]);
   }
-  printf ("Newton: it=%d \t |F|=%e \n", it, dmax);
+  printf ("Newton: it=%d \t |F|=%e \n", it, (double)dmax);
   fflush(stdout);
 
   free_dvector (F, 0, ntotal - 1);

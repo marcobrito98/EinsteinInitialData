@@ -12,7 +12,7 @@
 
 /*-----------------------------------------------------------*/
 void
-AB_To_XR (int nvar, double A, double B, double *X, double *R,
+AB_To_XR (int nvar, CCTK_REAL A, CCTK_REAL B, CCTK_REAL *X, CCTK_REAL *R,
 	  derivs U)
 /* On Entrance: U.d0[]=U[]; U.d1[] =U[]_A;  U.d2[] =U[]_B;  U.d3[] =U[]_3;  */
 /*                          U.d11[]=U[]_AA; U.d12[]=U[]_AB; U.d13[]=U[]_A3; */
@@ -22,7 +22,7 @@ AB_To_XR (int nvar, double A, double B, double *X, double *R,
 /*                          U.d22[]=U[]_RR; U.d23[]=U[]_R3; U.d33[]=U[]_33; */
 {
   DECLARE_CCTK_PARAMETERS;
-  double At = 0.5 * (A + 1), A_X, A_XX, B_R, B_RR;
+  CCTK_REAL At = 0.5 * (A + 1), A_X, A_XX, B_R, B_RR;
   int ivar;
 
   *X = 2 * atanh (At);
@@ -47,7 +47,7 @@ AB_To_XR (int nvar, double A, double B, double *X, double *R,
 
 /*-----------------------------------------------------------*/
 void
-C_To_c (int nvar, double X, double R, double *x, double *r,
+C_To_c (int nvar, CCTK_REAL X, CCTK_REAL R, CCTK_REAL *x, CCTK_REAL *r,
 	derivs U)
 /* On Entrance: U.d0[]=U[]; U.d1[] =U[]_X;  U.d2[] =U[]_R;  U.d3[] =U[]_3;  */
 /*                          U.d11[]=U[]_XX; U.d12[]=U[]_XR; U.d13[]=U[]_X3; */
@@ -57,7 +57,7 @@ C_To_c (int nvar, double X, double R, double *x, double *r,
 /*                          U.d22[]=U[]_rr; U.d23[]=U[]_r3; U.d33[]=U[]_33; */
 {
   DECLARE_CCTK_PARAMETERS;
-  double C_c2, U_cb, U_CB;
+  CCTK_REAL C_c2, U_cb, U_CB;
   dcomplex C, C_c, C_cc, c, c_C, c_CC, U_c, U_cc, U_C, U_CC, One =
     Complex (1., 0.);
   int ivar;
@@ -115,8 +115,8 @@ C_To_c (int nvar, double X, double R, double *x, double *r,
 
 /*-----------------------------------------------------------*/
 void
-rx3_To_xyz (int nvar, double x, double r, double phi,
-	    double *y, double *z, derivs U)
+rx3_To_xyz (int nvar, CCTK_REAL x, CCTK_REAL r, CCTK_REAL phi,
+	    CCTK_REAL *y, CCTK_REAL *z, derivs U)
 /* On Entrance: U.d0[]=U[]; U.d1[] =U[]_x;  U.d2[] =U[]_r;  U.d3[] =U[]_3;  */
 /*                          U.d11[]=U[]_xx; U.d12[]=U[]_xr; U.d13[]=U[]_x3; */
 /*                          U.d22[]=U[]_rr; U.d23[]=U[]_r3; U.d33[]=U[]_33; */
@@ -125,7 +125,7 @@ rx3_To_xyz (int nvar, double x, double r, double phi,
 /*                          U.d22[]=U[]_yy; U.d2z[]=U[]_yz; U.dzz[]=U[]_zz; */
 {
   int jvar;
-  double
+  CCTK_REAL
     sin_phi = sin (phi),
     cos_phi = cos (phi),
     sin2_phi = sin_phi * sin_phi,
@@ -138,7 +138,7 @@ rx3_To_xyz (int nvar, double x, double r, double phi,
 
   for (jvar = 0; jvar < nvar; jvar++)
   {
-    double U_x = U.d1[jvar], U_r = U.d2[jvar], U_3 = U.d3[jvar],
+    CCTK_REAL U_x = U.d1[jvar], U_r = U.d2[jvar], U_3 = U.d3[jvar],
       U_xx = U.d11[jvar], U_xr = U.d12[jvar], U_x3 = U.d13[jvar],
       U_rr = U.d22[jvar], U_r3 = U.d23[jvar], U_33 = U.d33[jvar];
     U.d1[jvar] = U_x;		/* U_x*/

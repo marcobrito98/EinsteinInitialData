@@ -31,13 +31,13 @@ ivector (long nl, long nh)
 }
 
 /*---------------------------------------------------------------------------*/
-double *
+CCTK_REAL *
 dvector (long nl, long nh)
-/* allocate a double vector with subscript range v[nl..nh] */
+/* allocate a CCTK_REAL vector with subscript range v[nl..nh] */
 {
-  double *v;
+  CCTK_REAL *v;
 
-  v = (double *) malloc ((size_t) ((nh - nl + 1 + NR_END) * sizeof (double)));
+  v = (CCTK_REAL *) malloc ((size_t) ((nh - nl + 1 + NR_END) * sizeof (CCTK_REAL)));
   if (!v)
     nrerror ("allocation failure in dvector()");
   return v - nl + NR_END;
@@ -74,15 +74,15 @@ imatrix (long nrl, long nrh, long ncl, long nch)
 }
 
 /*---------------------------------------------------------------------------*/
-double **
+CCTK_REAL **
 dmatrix (long nrl, long nrh, long ncl, long nch)
-/* allocate a double matrix with subscript range m[nrl..nrh][ncl..nch] */
+/* allocate a CCTK_REAL matrix with subscript range m[nrl..nrh][ncl..nch] */
 {
   long i, nrow = nrh - nrl + 1, ncol = nch - ncl + 1;
-  double **m;
+  CCTK_REAL **m;
 
   /* allocate pointers to rows */
-  m = (double **) malloc ((size_t) ((nrow + NR_END) * sizeof (double *)));
+  m = (CCTK_REAL **) malloc ((size_t) ((nrow + NR_END) * sizeof (CCTK_REAL *)));
   if (!m)
     nrerror ("allocation failure 1 in matrix()");
   m += NR_END;
@@ -90,7 +90,7 @@ dmatrix (long nrl, long nrh, long ncl, long nch)
 
   /* allocate rows and set pointers to them */
   m[nrl] =
-    (double *) malloc ((size_t) ((nrow * ncol + NR_END) * sizeof (double)));
+    (CCTK_REAL *) malloc ((size_t) ((nrow * ncol + NR_END) * sizeof (CCTK_REAL)));
   if (!m[nrl])
     nrerror ("allocation failure 2 in matrix()");
   m[nrl] += NR_END;
@@ -104,15 +104,15 @@ dmatrix (long nrl, long nrh, long ncl, long nch)
 }
 
 /*---------------------------------------------------------------------------*/
-double ***
+CCTK_REAL ***
 d3tensor (long nrl, long nrh, long ncl, long nch, long ndl, long ndh)
-/* allocate a double 3tensor with range t[nrl..nrh][ncl..nch][ndl..ndh] */
+/* allocate a CCTK_REAL 3tensor with range t[nrl..nrh][ncl..nch][ndl..ndh] */
 {
   long i, j, nrow = nrh - nrl + 1, ncol = nch - ncl + 1, ndep = ndh - ndl + 1;
-  double ***t;
+  CCTK_REAL ***t;
 
   /* allocate pointers to pointers to rows */
-  t = (double ***) malloc ((size_t) ((nrow + NR_END) * sizeof (double **)));
+  t = (CCTK_REAL ***) malloc ((size_t) ((nrow + NR_END) * sizeof (CCTK_REAL **)));
   if (!t)
     nrerror ("allocation failure 1 in f3tensor()");
   t += NR_END;
@@ -120,8 +120,8 @@ d3tensor (long nrl, long nrh, long ncl, long nch, long ndl, long ndh)
 
   /* allocate pointers to rows and set pointers to them */
   t[nrl] =
-    (double **)
-    malloc ((size_t) ((nrow * ncol + NR_END) * sizeof (double *)));
+    (CCTK_REAL **)
+    malloc ((size_t) ((nrow * ncol + NR_END) * sizeof (CCTK_REAL *)));
   if (!t[nrl])
     nrerror ("allocation failure 2 in f3tensor()");
   t[nrl] += NR_END;
@@ -129,8 +129,8 @@ d3tensor (long nrl, long nrh, long ncl, long nch, long ndl, long ndh)
 
   /* allocate rows and set pointers to them */
   t[nrl][ncl] =
-    (double *)
-    malloc ((size_t) ((nrow * ncol * ndep + NR_END) * sizeof (double)));
+    (CCTK_REAL *)
+    malloc ((size_t) ((nrow * ncol * ndep + NR_END) * sizeof (CCTK_REAL)));
   if (!t[nrl][ncl])
     nrerror ("allocation failure 3 in f3tensor()");
   t[nrl][ncl] += NR_END;
@@ -160,8 +160,8 @@ free_ivector (int *v, long nl, long nh)
 
 /*--------------------------------------------------------------------------*/
 void
-free_dvector (double *v, long nl, long nh)
-/* free a double vector allocated with dvector() */
+free_dvector (CCTK_REAL *v, long nl, long nh)
+/* free a CCTK_REAL vector allocated with dvector() */
 {
   free ((FREE_ARG) (v + nl - NR_END));
 }
@@ -177,8 +177,8 @@ free_imatrix (int **m, long nrl, long nrh, long ncl, long nch)
 
 /*--------------------------------------------------------------------------*/
 void
-free_dmatrix (double **m, long nrl, long nrh, long ncl, long nch)
-/* free a double matrix allocated by dmatrix() */
+free_dmatrix (CCTK_REAL **m, long nrl, long nrh, long ncl, long nch)
+/* free a CCTK_REAL matrix allocated by dmatrix() */
 {
   free ((FREE_ARG) (m[nrl] + ncl - NR_END));
   free ((FREE_ARG) (m + nrl - NR_END));
@@ -186,9 +186,9 @@ free_dmatrix (double **m, long nrl, long nrh, long ncl, long nch)
 
 /*--------------------------------------------------------------------------*/
 void
-free_d3tensor (double ***t, long nrl, long nrh, long ncl, long nch,
+free_d3tensor (CCTK_REAL ***t, long nrl, long nrh, long ncl, long nch,
 	       long ndl, long ndh)
-/* free a double f3tensor allocated by f3tensor() */
+/* free a CCTK_REAL f3tensor allocated by f3tensor() */
 {
   free ((FREE_ARG) (t[nrl][ncl] + ndl - NR_END));
   free ((FREE_ARG) (t[nrl] + ncl - NR_END));
@@ -253,22 +253,22 @@ pow_int (int mantisse, int exponent)
 
 /*--------------------------------------------------------------------------*/
 #if 0
-double
-atanh (double x)
+CCTK_REAL
+atanh (CCTK_REAL x)
 {
   return 0.5 * log ((1 + x) / (1 - x));
 }
 
 /*--------------------------------------------------------------------------*/
-double
-asinh (double x)
+CCTK_REAL
+asinh (CCTK_REAL x)
 {
   return log (x + sqrt (1 + x * x));
 }
 
 /*--------------------------------------------------------------------------*/
-double
-acosh (double x)
+CCTK_REAL
+acosh (CCTK_REAL x)
 {
   return log (x + sqrt (x * x - 1));
 }
@@ -306,7 +306,7 @@ Cmul (dcomplex a, dcomplex b)
 
 /*--------------------------------------------------------------------------*/
 dcomplex
-RCmul (double x, dcomplex a)
+RCmul (CCTK_REAL x, dcomplex a)
 {
   dcomplex c;
   c.r = x * a.r;
@@ -319,7 +319,7 @@ dcomplex
 Cdiv (dcomplex a, dcomplex b)
 {
   dcomplex c;
-  double r, den;
+  CCTK_REAL r, den;
   if (fabs (b.r) >= fabs (b.i))
   {
     r = b.i / b.r;
@@ -339,7 +339,7 @@ Cdiv (dcomplex a, dcomplex b)
 
 /*--------------------------------------------------------------------------*/
 dcomplex
-Complex (double re, double im)
+Complex (CCTK_REAL re, CCTK_REAL im)
 {
   dcomplex c;
   c.r = re;
@@ -358,10 +358,10 @@ Conjg (dcomplex z)
 }
 
 /*--------------------------------------------------------------------------*/
-double
+CCTK_REAL
 Cabs (dcomplex z)
 {
-  double x, y, ans, temp;
+  CCTK_REAL x, y, ans, temp;
   x = fabs (z.r);
   y = fabs (z.i);
   if (x == 0.0)
@@ -386,7 +386,7 @@ dcomplex
 Csqrt (dcomplex z)
 {
   dcomplex c;
-  double x, y, w, r;
+  CCTK_REAL x, y, w, r;
   if ((z.r == 0.0) && (z.i == 0.0))
   {
     c.r = 0.0;
@@ -426,7 +426,7 @@ dcomplex
 Cexp (dcomplex z)
 {
   dcomplex c;
-  double exp_r = exp (z.r);
+  CCTK_REAL exp_r = exp (z.r);
 
   c.r = exp_r * cos (z.i);
   c.i = exp_r * sin (z.i);
@@ -524,10 +524,10 @@ Ccoth (dcomplex z)
 
 /*--------------------------------------------------------------------------*/
 void
-chebft_Zeros (double u[], int n, int inv)
+chebft_Zeros (CCTK_REAL u[], int n, int inv)
 {
   int k, j, isignum;
-  double fac, sum, Pion, *c;
+  CCTK_REAL fac, sum, Pion, *c;
 
   c = dvector (0, n);
   Pion = Pi / n;
@@ -571,10 +571,10 @@ chebft_Zeros (double u[], int n, int inv)
 /* --------------------------------------------------------------------------*/
 
 void
-chebft_Extremes (double u[], int n, int inv)
+chebft_Extremes (CCTK_REAL u[], int n, int inv)
 {
   int k, j, isignum, N = n - 1;
-  double fac, sum, PioN, *c;
+  CCTK_REAL fac, sum, PioN, *c;
 
   c = dvector (0, N);
   PioN = Pi / N;
@@ -614,7 +614,7 @@ chebft_Extremes (double u[], int n, int inv)
 /* --------------------------------------------------------------------------*/
 
 void
-chder (double *c, double *cder, int n)
+chder (CCTK_REAL *c, CCTK_REAL *cder, int n)
 {
   int j;
 
@@ -625,10 +625,10 @@ chder (double *c, double *cder, int n)
 }
 
 /* --------------------------------------------------------------------------*/
-double
-chebev (double a, double b, double c[], int m, double x)
+CCTK_REAL
+chebev (CCTK_REAL a, CCTK_REAL b, CCTK_REAL c[], int m, CCTK_REAL x)
 {
-  double d = 0.0, dd = 0.0, sv, y, y2;
+  CCTK_REAL d = 0.0, dd = 0.0, sv, y, y2;
   int j;
 
   y2 = 2.0 * (y = (2.0 * x - a - b) / (b - a));
@@ -643,10 +643,10 @@ chebev (double a, double b, double c[], int m, double x)
 
 /* --------------------------------------------------------------------------*/
 void
-fourft (double *u, int N, int inv)
+fourft (CCTK_REAL *u, int N, int inv)
 {
   int l, k, iy, M;
-  double x, x1, fac, Pi_fac, *a, *b;
+  CCTK_REAL x, x1, fac, Pi_fac, *a, *b;
 
   M = N / 2;
   a = dvector (0, M);
@@ -705,7 +705,7 @@ fourft (double *u, int N, int inv)
 
 /* -----------------------------------------*/
 void
-fourder (double u[], double du[], int N)
+fourder (CCTK_REAL u[], CCTK_REAL du[], int N)
 {
   int l, M, lpM;
 
@@ -722,7 +722,7 @@ fourder (double u[], double du[], int N)
 
 /* -----------------------------------------*/
 void
-fourder2 (double u[], double d2u[], int N)
+fourder2 (CCTK_REAL u[], CCTK_REAL d2u[], int N)
 {
   int l, l2, M, lpM;
 
@@ -739,11 +739,11 @@ fourder2 (double u[], double d2u[], int N)
 }
 
 /* ----------------------------------------- */
-double
-fourev (double *u, int N, double x)
+CCTK_REAL
+fourev (CCTK_REAL *u, int N, CCTK_REAL x)
 {
   int l, M = N / 2;
-  double xl, result;
+  CCTK_REAL xl, result;
 
   result = 0.5 * (u[0] + u[M] * cos (x * M));
   for (l = 1; l < M; l++)
@@ -756,12 +756,12 @@ fourev (double *u, int N, double x)
 
 /* --------------------------------------------------------------------------*/
 void
-ludcmp (double **a, int n, int *indx, double *d)
+ludcmp (CCTK_REAL **a, int n, int *indx, CCTK_REAL *d)
 {				/* Version of 'ludcmp' of the numerical recipes for*/
   /* matrices a[0:n-1][0:n-1]*/
   int i, imax, j, k;
-  double big, dum, sum, temp;
-  double *vv;
+  CCTK_REAL big, dum, sum, temp;
+  CCTK_REAL *vv;
 
   vv = dvector (0, n - 1);
   *d = 1.0;
@@ -823,12 +823,12 @@ ludcmp (double **a, int n, int *indx, double *d)
 
 /* --------------------------------------------------------------------------*/
 void
-lubksb (double **a, int n, int *indx, double b[])
+lubksb (CCTK_REAL **a, int n, int *indx, CCTK_REAL b[])
 {				/* Version of 'lubksb' of the numerical recipes for*/
   /* matrices a[0:n-1][0:n-1] and vectors b[0:n-1]*/
 
   int i, ii = 0, ip, j;
-  double sum;
+  CCTK_REAL sum;
 
   for (i = 0; i < n; i++)
   {
@@ -853,11 +853,11 @@ lubksb (double **a, int n, int *indx, double b[])
 
 /* -------------------------------------------------------------------------*/
 void
-tridag (double a[], double b[], double c[], double r[], double u[], int n)
+tridag (CCTK_REAL a[], CCTK_REAL b[], CCTK_REAL c[], CCTK_REAL r[], CCTK_REAL u[], int n)
 {				/* Version of 'tridag' of the numerical recipes for*/
   /* vectors a, b, c, r, u with indices in the range [0:n-1]*/
   int j;
-  double bet, *gam;
+  CCTK_REAL bet, *gam;
 
   gam = dvector (0, n - 1);
   if (b[0] == 0.0)
@@ -877,11 +877,11 @@ tridag (double a[], double b[], double c[], double r[], double u[], int n)
 }
 
 /* ------------------------------------------------------------------------*/
-double
-norm1 (double *v, int n)
+CCTK_REAL
+norm1 (CCTK_REAL *v, int n)
 {
   int i;
-  double result = -1;
+  CCTK_REAL result = -1;
 
   for (i = 0; i < n; i++)
     if (fabs (v[i]) > result)
@@ -891,11 +891,11 @@ norm1 (double *v, int n)
 }
 
 /* -------------------------------------------------------------------------*/
-double
-norm2 (double *v, int n)
+CCTK_REAL
+norm2 (CCTK_REAL *v, int n)
 {
   int i;
-  double result = 0;
+  CCTK_REAL result = 0;
 
   for (i = 0; i < n; i++)
     result += v[i] * v[i];
@@ -904,11 +904,11 @@ norm2 (double *v, int n)
 }
 
 /* -------------------------------------------------------------------------*/
-double
-scalarproduct (double *v, double *w, int n)
+CCTK_REAL
+scalarproduct (CCTK_REAL *v, CCTK_REAL *w, int n)
 {
   int i;
-  double result = 0;
+  CCTK_REAL result = 0;
 
   for (i = 0; i < n; i++)
     result += v[i] * w[i];
@@ -917,11 +917,11 @@ scalarproduct (double *v, double *w, int n)
 }
 
 /* -------------------------------------------------------------------------*/
-double
-plgndr (int l, int m, double x)
+CCTK_REAL
+plgndr (int l, int m, CCTK_REAL x)
 {
   void nrerror (char error_text[]);
-  double fact, pll, pmm, pmmp1, somx2;
+  CCTK_REAL fact, pll, pmm, pmmp1, somx2;
   int i, ll;
 
   if (m < 0 || m > l || fabs (x) > 1.0)
