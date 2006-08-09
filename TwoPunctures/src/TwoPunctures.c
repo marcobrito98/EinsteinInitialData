@@ -190,22 +190,23 @@ TwoPunctures (CCTK_ARGUMENTS)
   static CCTK_REAL *F = NULL;
   static derivs u, v;
   CCTK_REAL admMass;
+  CCTK_REAL old_alp;
 
   if (! F) {
     /* Solve only when called for the first time */
     F = dvector (0, ntotal - 1);
     allocate_derivs (&u, ntotal);
     allocate_derivs (&v, ntotal);
-    
+
     if (use_sources) {
-      CCTK_INFO ("Solving puncture equation for BH-NS system");
+      CCTK_INFO ("Solving puncture equation for BH-NS/NS-NS system");
     } else {
       CCTK_INFO ("Solving puncture equation for BH-BH system");
     }
     CCTK_VInfo (CCTK_THORNSTRING,
                 "The two puncture masses are %g and %g",
                 (double) par_m_minus, (double) par_m_plus);
-    
+
     /* initialise to 0 */
     for (j = 0; j < ntotal; j++)
     {
@@ -289,13 +290,13 @@ TwoPunctures (CCTK_ARGUMENTS)
             CCTK_VInfo(CCTK_THORNSTRING, "%3d%% done", percent10*10);
         }
 
-	const int ind = CCTK_GFINDEX3D (cctkGH, i, j, k);
-        
+        const int ind = CCTK_GFINDEX3D (cctkGH, i, j, k);
+
         CCTK_REAL r_plus
           = sqrt(pow(x[ind] - par_b, 2) + pow(y[ind], 2) + pow(z[ind], 2));
         CCTK_REAL r_minus
           = sqrt(pow(x[ind] + par_b, 2) + pow(y[ind], 2) + pow(z[ind], 2));
-        
+
         CCTK_REAL U;
         switch (gsm)
         {
@@ -337,6 +338,9 @@ TwoPunctures (CCTK_ARGUMENTS)
         
         CCTK_REAL Aij[3][3];
         BY_Aijofxyz (x[ind], y[ind], z[ind], Aij);
+
+        if (multiply_old_lapse)
+            old_alp = alp[ind];
 
         if ((*conformal_state > 0) || (pmn_lapse)) {
 
@@ -450,11 +454,6 @@ TwoPunctures (CCTK_ARGUMENTS)
         kzz[ind] = Aij[2][2] / pow(psi1, 2);
 
         if (antisymmetric_lapse || averaged_lapse) {
-/*           const CCTK_REAL alp1 = ((1.0 - 0.5 * par_m_plus / r_plus) */
-/*                                / (1.0 + 0.5 * par_m_plus / r_plus)); */
-/*           const CCTK_REAL alp2 = ((1.0 - 0.5 * par_m_minus / r_minus) */
-/*                                / (1.0 + 0.5 * par_m_minus / r_minus)); */
-/*           alp[ind] = alp1 * alp2; */
           alp[ind] =
             ((1.0 -0.5*par_m_plus/r_plus -0.5*par_m_minus/r_minus)
             /(1.0 +0.5*par_m_plus/r_plus +0.5*par_m_minus/r_minus));
@@ -474,6 +473,8 @@ TwoPunctures (CCTK_ARGUMENTS)
             alp[ind] = 0.5 * (1.0 + alp[ind]);
           }
         }
+        if (multiply_old_lapse)
+          alp[ind] *= old_alp;
       }
     }
   }

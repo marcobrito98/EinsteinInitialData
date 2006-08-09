@@ -14,7 +14,7 @@ EXTENDS KEYWORD initial_lapse
 {
   "twopunctures-antisymmetric" :: "antisymmetric lapse for two puncture black holes, -1 <= alpha <= +1"
   "twopunctures-averaged"      :: "averaged lapse for two puncture black holes, 0 <= alpha <= +1"
-	"psi^n"                     :: "Based on the initial conformal factor"
+  "psi^n"                      :: "Based on the initial conformal factor"
 }
 
 
@@ -146,4 +146,12 @@ BOOLEAN do_residuum_debug_output "Output debug information about the residuum"
 BOOLEAN do_initial_debug_output "Output debug information about initial guess"
 {
 } "no"
+
+BOOLEAN multiply_old_lapse "Multiply the old lapse to the new one"
+{
+} "no"
+
+BOOLEAN schedule_in_ADMBase_InitialData "Schedule in or after ADMBase_InitialData"
+{
+} "yes"
 

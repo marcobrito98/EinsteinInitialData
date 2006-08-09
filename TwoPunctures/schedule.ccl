@@ -12,10 +12,22 @@ if (CCTK_Equals(initial_data, "twopunctures"))
     LANG: C
   } "Check parameters and thorn needs"
 
-  SCHEDULE TwoPunctures IN ADMBase_InitialData
+  if (schedule_in_ADMBase_InitialData)
   {
-    LANG: C
-    STORAGE: puncture_u
-    SYNC: ADMBase::metric ADMBase::curv ADMBase::lapse
-  } "Create puncture black hole initial data"
+    SCHEDULE TwoPunctures IN ADMBase_InitialData
+    {
+      LANG: C
+      STORAGE: puncture_u
+      SYNC: ADMBase::metric ADMBase::curv ADMBase::lapse
+    } "Create puncture black hole initial data"
+  }
+  else
+  {
+    SCHEDULE TwoPunctures AT Initial AFTER ADMBase_InitialData BEFORE ADMBase_PostInitial AFTER TOV_Initial_Data
+    {
+      LANG: C
+      STORAGE: puncture_u
+      SYNC: ADMBase::metric ADMBase::curv ADMBase::lapse
+    } "Create puncture black hole initial data"
+  }
 }
