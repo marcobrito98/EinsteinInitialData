@@ -272,8 +272,12 @@ TwoPunctures (CCTK_ARGUMENTS)
 
   for (d = 0; d < 3; ++ d)
   {
+    /*
     imin[d] = 0           + (cctk_bbox[2*d  ] ? 0 : cctk_nghostzones[d]);
     imax[d] = cctk_lsh[d] - (cctk_bbox[2*d+1] ? 0 : cctk_nghostzones[d]);
+    */
+    imin[d] = 0;
+    imax[d] = cctk_lsh[d];
   }
 
   for (k = imin[2]; k < imax[2]; ++k)
