@@ -18,7 +18,7 @@ if (CCTK_Equals(initial_data, "twopunctures"))
     {
       LANG: C
       STORAGE: puncture_u
-      SYNC: ADMBase::metric ADMBase::curv ADMBase::lapse
+      # SYNC: ADMBase::metric ADMBase::curv ADMBase::lapse
     } "Create puncture black hole initial data"
   }
   else
@@ -27,7 +27,7 @@ if (CCTK_Equals(initial_data, "twopunctures"))
     {
       LANG: C
       STORAGE: puncture_u
-      SYNC: ADMBase::metric ADMBase::curv ADMBase::lapse
+      # SYNC: ADMBase::metric ADMBase::curv ADMBase::lapse
     } "Create puncture black hole initial data"
   }
 }
