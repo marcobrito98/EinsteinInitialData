@@ -155,3 +155,7 @@ BOOLEAN schedule_in_ADMBase_InitialData "Schedule in or after ADMBase_InitialDat
 {
 } "yes"
 
+BOOLEAN solve_momentum_constraint "Solve for momentum constraint?"
+{
+} "no"
+

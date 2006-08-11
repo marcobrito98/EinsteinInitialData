@@ -18,57 +18,64 @@ void set_initial_guess(CCTK_POINTER_TO_CONST cctkGH,
   DECLARE_CCTK_PARAMETERS;
 
   int nvar = 1, n1 = npoints_A, n2 = npoints_B, n3 = npoints_phi;
+
   CCTK_REAL *s_x, *s_y, *s_z;
   CCTK_REAL al, A, Am1, be, B, phi, R, r, X;
-  CCTK_INT i, j, k, i3D, indx;
+  CCTK_INT ivar, i, j, k, i3D, indx;
   derivs U;
   FILE *debug_file;
+
+  if (solve_momentum_constraint)
+    nvar = 4;
 
   s_x    =calloc(n1*n2*n3, sizeof(CCTK_REAL));
   s_y    =calloc(n1*n2*n3, sizeof(CCTK_REAL));
   s_z    =calloc(n1*n2*n3, sizeof(CCTK_REAL));
   allocate_derivs (&U, nvar);
-  for (i = 0; i < n1; i++)
-    for (j = 0; j < n2; j++)
-      for (k = 0; k < n3; k++)
-      {
-        i3D = Index(0,i,j,k,1,n1,n2,n3);
+  for (ivar = 0; ivar < nvar; ivar++)
+    for (i = 0; i < n1; i++)
+      for (j = 0; j < n2; j++)
+        for (k = 0; k < n3; k++)
+        {
+          i3D = Index(ivar,i,j,k,1,n1,n2,n3);
 
-        al = Pih * (2 * i + 1) / n1;
-        A = -cos (al);
-        be = Pih * (2 * j + 1) / n2;
-        B = -cos (be);
-        phi = 2. * Pi * k / n3;
+          al = Pih * (2 * i + 1) / n1;
+          A = -cos (al);
+          be = Pih * (2 * j + 1) / n2;
+          B = -cos (be);
+          phi = 2. * Pi * k / n3;
 
-        /* Calculation of (X,R)*/
-        AB_To_XR (nvar, A, B, &X, &R, U);
-        /* Calculation of (x,r)*/
-        C_To_c (nvar, X, R, &(s_x[i3D]), &r, U);
-        /* Calculation of (y,z)*/
-        rx3_To_xyz (nvar, s_x[i3D], r, phi, &(s_y[i3D]), &(s_z[i3D]), U);
-      }
+          /* Calculation of (X,R)*/
+          AB_To_XR (nvar, A, B, &X, &R, U);
+          /* Calculation of (x,r)*/
+          C_To_c (nvar, X, R, &(s_x[i3D]), &r, U);
+          /* Calculation of (y,z)*/
+          rx3_To_xyz (nvar, s_x[i3D], r, phi, &(s_y[i3D]), &(s_z[i3D]), U);
+        }
   Set_Initial_Guess_for_u(cctkGH, n1*n2*n3, v.d0, s_x, s_y, s_z);
-  for (i = 0; i < n1; i++)
-    for (j = 0; j < n2; j++)
-      for (k = 0; k < n3; k++)
-      {
-        indx = Index(0,i,j,k,1,n1,n2,n3);
-        v.d0[indx]/=(-cos(Pih * (2 * i + 1) / n1)-1.0);
-      }
+  for (ivar = 0; ivar < nvar; ivar++)
+    for (i = 0; i < n1; i++)
+      for (j = 0; j < n2; j++)
+        for (k = 0; k < n3; k++)
+        {
+          indx = Index(ivar,i,j,k,1,n1,n2,n3);
+          v.d0[indx]/=(-cos(Pih * (2 * i + 1) / n1)-1.0);
+        }
   Derivatives_AB3 (nvar, n1, n2, n3, v);
   if (do_initial_debug_output)
   {
     debug_file=fopen("initial.dat", "w");
-    for (i = 0; i < n1; i++)
-      for (j = 0; j < n2; j++)
-      {
-        al = Pih * (2 * i + 1) / n1;
-        A = -cos (al);
-        Am1 = A -1.0;
-        be = Pih * (2 * j + 1) / n2;
-        B = -cos (be);
-        phi = 0.0;
-        indx = Index(0,i,j,0,1,n1,n2,n3);
+    for (ivar = 0; ivar < nvar; ivar++)
+      for (i = 0; i < n1; i++)
+        for (j = 0; j < n2; j++)
+        {
+          al = Pih * (2 * i + 1) / n1;
+          A = -cos (al);
+          Am1 = A -1.0;
+          be = Pih * (2 * j + 1) / n2;
+          B = -cos (be);
+          phi = 0.0;
+          indx = Index(ivar,i,j,0,1,n1,n2,n3);
           U.d0[0] = Am1 * v.d0[indx];        /* U*/
           U.d1[0] = v.d0[indx] + Am1 * v.d1[indx];        /* U_A*/
           U.d2[0] = Am1 * v.d2[indx];        /* U_B*/
@@ -106,7 +113,7 @@ void set_initial_guess(CCTK_POINTER_TO_CONST cctkGH,
                 (double)v.d22[indx],
                 (double)v.d33[indx]
                 );
-      }
+        }
     fprintf(debug_file, "\n\n");
     for (i=n2-10; i<n2; i++)
     {
