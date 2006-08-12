@@ -12,6 +12,18 @@
 #include "TP_utilities.h"
 #include "TwoPunctures.h"
 
+
+
+/* Swap two variables */
+static inline
+CCTK_REAL swap (CCTK_REAL * const a, CCTK_REAL * const b)
+{
+  CCTK_REAL const t = *a; *a=*b; *b=t;
+}
+#define SWAP(a,b) (swap(&(a),&(b)))
+
+
+
 void set_initial_guess(CCTK_POINTER_TO_CONST cctkGH,
                        derivs v)
 {
@@ -303,21 +315,37 @@ TwoPunctures (CCTK_ARGUMENTS)
 
         const int ind = CCTK_GFINDEX3D (cctkGH, i, j, k);
 
+        CCTK_REAL x1, y1, z1;
+        x1 = x[ind];
+        y1 = y[ind];
+        z1 = z[ind];
+
+        /* We implement swapping the x and z coordinates as follows.
+           The bulk of the code that performs the actual calculations
+           is unchanged.  This code looks only at local variables.
+           Before the bulk --i.e., here-- we swap all x and z tensor
+           components, and after the code --i.e., at the end of this
+           main loop-- we swap everything back.  */
+        if (swap_xz) {
+          /* Swap the x and z coordinates */
+          SWAP (x1, z1);
+        }
+
         CCTK_REAL r_plus
-          = sqrt(pow(x[ind] - par_b, 2) + pow(y[ind], 2) + pow(z[ind], 2));
+          = sqrt(pow(x1 - par_b, 2) + pow(y1, 2) + pow(z1, 2));
         CCTK_REAL r_minus
-          = sqrt(pow(x[ind] + par_b, 2) + pow(y[ind], 2) + pow(z[ind], 2));
+          = sqrt(pow(x1 + par_b, 2) + pow(y1, 2) + pow(z1, 2));
 
         CCTK_REAL U;
         switch (gsm)
         {
         case GSM_Taylor_expansion:
           U = PunctTaylorExpandAtArbitPosition
-            (0, nvar, n1, n2, n3, v, x[ind], y[ind], z[ind]);
+            (0, nvar, n1, n2, n3, v, x1, y1, z1);
           break;
         case GSM_evaluation:
           U = PunctIntPolAtArbitPosition
-            (0, nvar, n1, n2, n3, v, x[ind], y[ind], z[ind]);
+            (0, nvar, n1, n2, n3, v, x1, y1, z1);
           break;
         default:
           assert (0);
@@ -348,7 +376,7 @@ TwoPunctures (CCTK_ARGUMENTS)
         CCTK_REAL static_psi = 1;
         
         CCTK_REAL Aij[3][3];
-        BY_Aijofxyz (x[ind], y[ind], z[ind], Aij);
+        BY_Aijofxyz (x1, y1, z1, Aij);
 
         if (multiply_old_lapse)
             old_alp = alp[ind];
@@ -364,9 +392,9 @@ TwoPunctures (CCTK_ARGUMENTS)
           pyy = pyz = pzz = 0.0;
 
           /* first puncture */
-          xp = x[ind] - par_b;
-          yp = y[ind];
-          zp = z[ind];
+          xp = x1 - par_b;
+          yp = y1;
+          zp = z1;
           rp = sqrt (xp*xp + yp*yp + zp*zp);
           rp = pow (pow (rp, 4) + pow (TP_epsilon, 4), 0.25);
           if (rp < TP_Tiny)
@@ -395,9 +423,9 @@ TwoPunctures (CCTK_ARGUMENTS)
           pzz += zp*zp*s5 + s3;
 
           /* second puncture */
-          xp = x[ind] + par_b;
-          yp = y[ind];
-          zp = z[ind];
+          xp = x1 + par_b;
+          yp = y1;
+          zp = z1;
           rp = sqrt (xp*xp + yp*yp + zp*zp);
           rp = pow (pow (rp, 4) + pow (TP_epsilon, 4), 0.25);
           if (rp < TP_Tiny)
@@ -486,9 +514,25 @@ TwoPunctures (CCTK_ARGUMENTS)
         }
         if (multiply_old_lapse)
           alp[ind] *= old_alp;
-      }
-    }
-  }
+
+        if (swap_xz) {
+          /* Swap the x and z components of all tensors */
+          if (*conformal_state >= 2) {
+            SWAP (psix[ind], psiz[ind]);
+          }
+          if (*conformal_state >= 3) {
+            SWAP (psixx[ind], psizz[ind]);
+            SWAP (psixy[ind], psiyz[ind]);
+          }
+          SWAP (gxx[ind], gzz[ind]);
+          SWAP (gxy[ind], gyz[ind]);
+          SWAP (kxx[ind], kzz[ind]);
+          SWAP (kxy[ind], kyz[ind]);
+        } /* if swap_xz */
+
+      } /* for i */
+    }   /* for j */
+  }     /* for k */
 
   if (use_sources && rescale_sources)
   {

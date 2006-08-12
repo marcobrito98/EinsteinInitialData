@@ -127,6 +127,13 @@ REAL initial_lapse_psi_exponent "Exponent n for psi^-n initial lapse profile"
 } -2.0
 
 
+
+BOOLEAN swap_xz "Swap x and z coordinates when interpolating, so that the black holes are separated in the z direction"
+{
+} "no"
+
+
+
 BOOLEAN use_sources "Use sources?"
 {
 } "no"
