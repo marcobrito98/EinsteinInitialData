@@ -20,6 +20,7 @@ CCTK_REAL swap (CCTK_REAL * const a, CCTK_REAL * const b)
 {
   CCTK_REAL const t = *a; *a=*b; *b=t;
 }
+#undef SWAP
 #define SWAP(a,b) (swap(&(a),&(b)))
 
 
