@@ -61,7 +61,3 @@ It would be nice if Exact supported fisheye.
 Failing that, it could at least check if FishEye is active
   and cleanly report an error.
 ----------------------------------------
-It would be nice if Exact supported the "static conformal" metric type.
-[Note by Erik Schnetter, 2005-05-15: Thorn Exact works just fine with
-a static conformal factor.  Jonathan, please remove this item.]
-----------------------------------------
