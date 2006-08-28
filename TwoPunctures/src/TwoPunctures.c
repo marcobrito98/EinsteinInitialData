@@ -200,7 +200,7 @@ TwoPunctures (CCTK_ARGUMENTS)
   enum GRID_SETUP_METHOD { GSM_Taylor_expansion, GSM_evaluation };
   enum GRID_SETUP_METHOD gsm;
 
-  int antisymmetric_lapse, averaged_lapse, pmn_lapse;
+  int antisymmetric_lapse, averaged_lapse, pmn_lapse, brownsville_lapse;
 
   int nvar = 1, n1 = npoints_A, n2 = npoints_B, n3 = npoints_phi;
 
@@ -273,8 +273,13 @@ TwoPunctures (CCTK_ARGUMENTS)
   antisymmetric_lapse = CCTK_EQUALS(initial_lapse, "twopunctures-antisymmetric");
   averaged_lapse = CCTK_EQUALS(initial_lapse, "twopunctures-averaged");
 	pmn_lapse = CCTK_EQUALS(initial_lapse, "psi^n");
-	if (pmn_lapse)
+  if (pmn_lapse)
 		CCTK_VInfo(CCTK_THORNSTRING, "Setting initial lapse to psi^%f profile.",
+               (double)initial_lapse_psi_exponent);
+  brownsville_lapse = CCTK_EQUALS(initial_lapse, "brownsville");
+  if (brownsville_lapse)
+    CCTK_VInfo(CCTK_THORNSTRING, 
+               "Setting initial lapse to a Brownsville-style profile.",
                (double)initial_lapse_psi_exponent);
 
   CCTK_INFO ("Interpolating result");
@@ -382,7 +387,7 @@ TwoPunctures (CCTK_ARGUMENTS)
         if (multiply_old_lapse)
             old_alp = alp[ind];
 
-        if ((*conformal_state > 0) || (pmn_lapse)) {
+        if ((*conformal_state > 0) || (pmn_lapse) || (brownsville_lapse)) {
 
           CCTK_REAL xp, yp, zp, rp, ir;
           CCTK_REAL s1, s3, s5;
@@ -474,6 +479,8 @@ TwoPunctures (CCTK_ARGUMENTS)
 
           if (pmn_lapse)
             alp[ind] = pow(p, initial_lapse_psi_exponent);
+          if (brownsville_lapse)
+            alp[ind] = 2.0/(1.0+pow(p, initial_lapse_psi_exponent));
 
         } /* if conformal-state > 0 */
           
