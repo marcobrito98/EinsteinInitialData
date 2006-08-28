@@ -16,7 +16,7 @@
 
 /* Swap two variables */
 static inline
-CCTK_REAL swap (CCTK_REAL * const a, CCTK_REAL * const b)
+void swap (CCTK_REAL * const a, CCTK_REAL * const b)
 {
   CCTK_REAL const t = *a; *a=*b; *b=t;
 }
