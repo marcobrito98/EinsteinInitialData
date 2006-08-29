@@ -279,7 +279,8 @@ TwoPunctures (CCTK_ARGUMENTS)
   brownsville_lapse = CCTK_EQUALS(initial_lapse, "brownsville");
   if (brownsville_lapse)
     CCTK_VInfo(CCTK_THORNSTRING, 
-               "Setting initial lapse to a Brownsville-style profile.",
+               "Setting initial lapse to a Brownsville-style profile "
+               "with exp %f.",
                (double)initial_lapse_psi_exponent);
 
   CCTK_INFO ("Interpolating result");
