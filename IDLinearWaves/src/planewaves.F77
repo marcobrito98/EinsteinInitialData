@@ -231,10 +231,10 @@ c   Check if we should create and store conformal factor stuff */
 
          if(CCTK_EQUALS(conformal_storage,"factor+derivs")) then
 
-            conformal_state = 2;
+            conformal_state = 2
 
          else if(CCTK_EQUALS(conformal_storage,"factor+derivs+2nd derivs")) then
-            conformal_state = 3;
+            conformal_state = 3
          end if
 
          do k=1,cctk_lsh(3)

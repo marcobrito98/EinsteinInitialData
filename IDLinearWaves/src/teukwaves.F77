@@ -78,17 +78,17 @@ c     from old spheretocart
 c     to be consistent with Evans & Abrahams, rescale the amplitude
 c     by kappa, because they use that in the packet and
 c     4/3 because they use I not Teuk. F  
-      if (CCTK_Equals(packet,'eppley') == 1) then
+      if (CCTK_Equals(packet,'eppley') .eq. 1) then
          ipacket = 1
          call CCTK_INFO('Teukolsky Packet = eppley') 
-      elseif (CCTK_Equals(packet,'evans') == 1) then
+      elseif (CCTK_Equals(packet,'evans') .eq. 1) then
          ipacket = 2
          call CCTK_INFO('Teukolsky Packet = evans')
 c     to be consistent with Evans & Abrahams, rescale the amplitude
 c     by kappa, because they use that in the packet and
 c     4/3 because they use I not Teuk. F
          amp = amp*(4.0d0/3.0d0)*kappa
-      elseif (CCTK_Equals(packet,'square') == 1) then
+      elseif (CCTK_Equals(packet,'square') .eq. 1) then
          ipacket = 3
          call CCTK_INFO('Teukolsky Packet = square')
       end if
@@ -106,21 +106,21 @@ c     4/3 because they use I not Teuk. F
      &    ' wavelength = ',wave
       call CCTK_INFO(infoline)
       
-      if (CCTK_Equals(parity,'even') == 1) then    
+      if (CCTK_Equals(parity,'even') .eq. 1) then    
          iparity = 0
-      elseif (CCTK_Equals(parity,'odd') == 1) then 
+      elseif (CCTK_Equals(parity,'odd') .eq. 1) then 
          iparity = 1
       endif
       
-      if(CCTK_Equals(wavesgoing,'in') == 1) then
+      if(CCTK_Equals(wavesgoing,'in') .eq. 1) then
          ingoing = 1
       endif
       
-      if(CCTK_Equals(wavesgoing,'out') == 1) then
+      if(CCTK_Equals(wavesgoing,'out') .eq. 1) then
          outgoing = 1
       endif
       
-      if(CCTK_Equals(wavesgoing,'both') == 1) then
+      if(CCTK_Equals(wavesgoing,'both') .eq. 1) then
          ingoing  = 1
          outgoing = 1
       endif
@@ -566,10 +566,10 @@ c   Check if we should create and store conformal factor stuff */
 
          if(CCTK_EQUALS(conformal_storage,"factor+derivs")) then
 
-            conformal_state = 2;
+            conformal_state = 2
 
          else if(CCTK_EQUALS(conformal_storage,"factor+derivs+2nd derivs")) then
-            conformal_state = 3;
+            conformal_state = 3
          end if
 
          do k=1,cctk_lsh(3)
