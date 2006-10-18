@@ -122,6 +122,11 @@ REAL par_S_minus[3] "spin of the m- puncture"
   (*:*) :: ""
 } 0.0
 
+REAL center_offset[3] "offset b=0 to position (x,y,z)"
+{
+  (*:*) :: ""
+} 0.0
+
 REAL initial_lapse_psi_exponent "Exponent n for psi^-n initial lapse profile"
 {
   (*:*) :: "Should be negative"
