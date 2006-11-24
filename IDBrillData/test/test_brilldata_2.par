@@ -31,6 +31,9 @@ idbrilldata::gundlach_a 			= 5.0
 idbrilldata::solver 			 	= "bam"
 bam_elliptic::bam_bound                 	= "bamrobin"
 
+# BAM requires this specific processor topology setup algorithm in PUGH
+PUGH::processor_topology = "automatic_old"
+
 # Output.
 
 IO::out_dir       = "test_brilldata_2"
