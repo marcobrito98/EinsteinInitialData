@@ -69,7 +69,7 @@ c     and the extrinsic curvature
                kyy(i,j,k) = cp*cp * (bt/2) + sp*sp * (0)
                kxz(i,j,k) = 0
                kyz(i,j,k) = 0
-               kzz(i,j,k) = bt/2
+               kzz(i,j,k) = -bt/2
                
           enddo 
         enddo
