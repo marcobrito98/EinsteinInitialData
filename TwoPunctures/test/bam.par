@@ -1,6 +1,6 @@
 # $Header$
 
-ActiveThorns = "Boundary CartGrid3D Time CoordBase SymBase"
+ActiveThorns = "Boundary CartGrid3D Time CoordBase SymBase LocalReduce"
 ActiveThorns = "PUGH PUGHReduce PUGHSlab"
 ActiveThorns = "IOASCII IOBasic IOUtil"
 ActiveThorns = "ADMBase StaticConformal"
@@ -22,6 +22,9 @@ Grid::zmax			=  4
 Driver::global_nx		= 35
 Driver::global_ny		= 35
 Driver::global_nz		= 35
+
+# BAM requires this specific processor topology setup algorithm in PUGH
+PUGH::processor_topology = "automatic_old"
 
 ADMBase::initial_data		= "BrBr"
 
