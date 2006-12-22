@@ -2,7 +2,7 @@
 #!DESC "Initial data for axisymmetric distored black hole"
 ######################################################################
 
-ActiveThorns = "coordgauge admanalysis admbase admmacros staticconformal time boundary ADMconstraints pugh pughreduce pughslab pughinterp cartgrid3d ADM IDAxiOddBrillBH ioascii iobasic ioutil"
+ActiveThorns = "coordgauge admanalysis admbase admmacros staticconformal time boundary ADMconstraints pugh pughreduce pughslab pughinterp cartgrid3d ADM IDAxiOddBrillBH ioascii iobasic ioutil LocalReduce ADMCoupling SpaceMask CoordBase SymBase LocalInterp"
 
 # GENERAL 
 
@@ -46,7 +46,8 @@ staticconformal::conformal_storage = "factor+derivs+2nd derivs"
 
 
 # OUTPUT ########################################################
-IO::outdir               = "2test_axioddbh"
+IO::out_dir               = $parfile
+IO::out_fileinfo          = "none"
 
 IOBasic::outInfo_vars    = "admconstraints::ham admbase::gxx"
 IOBasic::outScalar_vars  = "admbase::metric admconstraints::ham"
