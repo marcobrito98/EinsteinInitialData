@@ -1,0 +1,9 @@
+TEST bhns_eval
+{
+  NPROCS 1
+}
+
+TEST bhns_interp
+{
+  NPROCS 1
+}
