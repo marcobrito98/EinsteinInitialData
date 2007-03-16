@@ -42,8 +42,8 @@ ADMBase::initial_shift  = "tov"
 TwoPunctures::keep_u_around     = yes
 TwoPunctures::schedule_in_ADMBase_InitialData = no
 
-TwoPunctures::npoints_A         = 30
-TwoPunctures::npoints_B         = 30
+TwoPunctures::npoints_A         = 20
+TwoPunctures::npoints_B         = 20
 TwoPunctures::npoints_phi       = 4
 TwoPunctures::Newton_tol        = 1.e-10
 #TwoPunctures::grid_setup_method = "evaluation"
