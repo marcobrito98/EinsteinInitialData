@@ -1,3 +1,6 @@
+ABSTOL 1.e-9
+RELTOL 1.e-9
+
 TEST bhns_eval
 {
   NPROCS 1
@@ -6,4 +9,6 @@ TEST bhns_eval
 TEST bhns_interp
 {
   NPROCS 1
+  ABSTOL 1.e-4
+  RELTOL 1.e-2
 }
