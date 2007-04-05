@@ -52,7 +52,6 @@ ADMBase::initial_lapse		= "one"
 IO::out_dir			= $parfile
 IO::out_fileinfo		= "axis labels"
 
-IOBasic::outScalar_reductions = "minimum maximum"
 IOBasic::outScalar_every	= 1
 IOBasic::outScalar_vars		= "staticconformal::psi admbase::metric admbase::curv admconstraints::hamiltonian admconstraints::momentum TwoPunctures::puncture_u"
 

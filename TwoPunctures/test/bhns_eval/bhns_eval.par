@@ -94,7 +94,6 @@ Carpet::prolongation_order_time   = 2
 Carpet::convergence_level         = 0
 Carpet::init_3_timelevels         = no
 
-IOScalar::outScalar_reductions = "minimum maximum"
 IOScalar::outScalar_every	= 512
 IOScalar::outScalar_vars		= "admbase::metric admbase::curv TwoPunctures::puncture_u whisky::whisky_prim_scalar_var whisky::whisky_prim_vector_var whisky::whisky_cons_scalar_var whisky::whisky_cons_vector_var admbase::lapse admbase::shift"
 IOASCII::out1D_every		= 512
