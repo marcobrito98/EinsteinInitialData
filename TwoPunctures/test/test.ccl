@@ -12,3 +12,10 @@ TEST bhns_interp
   ABSTOL 1.e-4
   RELTOL 1.e-2
 }
+
+TEST twopunctures
+{
+  NPROCS 1
+  ABSTOL 1.e-2
+  RELTOL 1.e-2
+}
