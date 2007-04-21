@@ -38,6 +38,7 @@ c output arguments
 
 c local variables
       CCTK_REAL boostv, eps, m, a
+      integer   power
 
 c local variables
       CCTK_REAL gamma, t0, z0, x0, y0, rho02, r02, r0, costheta0, 
@@ -54,6 +55,7 @@ C     to the J/m definition used in the code here.
 
       boostv = Kerr_KerrSchild__boost_v
       eps    = Kerr_KerrSchild__epsilon
+      power  = Kerr_KerrSchild__power
       m      = Kerr_KerrSchild__mass
       a      = m*Kerr_KerrSchild__spin
 
@@ -79,7 +81,18 @@ C     Spherical auxiliary coordinate r and angle theta in BH rest frame.
 
       r02 = 0.5d0 * (rho02 - a**2) 
      $     + sqrt(0.25d0 * (rho02 - a**2)**2 + a**2 * z0**2)
-      r0 = (r02**2 + eps**4)**0.25d0
+      r0 = sqrt(r02)
+      if (Kerr_KerrSchild__parabolic .eq. 0) then
+C        Use a power law to avoid the singularity
+         r0 = (r0**power + eps**power)**(1.0d0/power)
+      else
+         if (r0 .lt. eps) then
+            r0 = (eps + r0**2 / eps) / 2
+         end if
+      end if
+C     Another idea:
+C        r0 = r0 + eps * exp(-x/eps)
+
       costheta0 = z0 / r0
       
 C     Coefficient H. Note this transforms as a scalar, so does not carry

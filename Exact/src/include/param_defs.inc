@@ -38,16 +38,17 @@ c Minkowski spacetime
 #define EXACT__Minkowski_conf_wave		6
 
 c black hole spacetimes
-#define EXACT__Schwarzschild_EF		10
-#define EXACT__Schwarzschild_PG		11
-#define EXACT__Schwarzschild_BL		12
-#define EXACT__Schwarzschild_Novikov	13
-#define EXACT__Kerr_BoyerLindquist	14
-#define EXACT__Kerr_KerrSchild		15
-#define EXACT__Schwarzschild_Lemaitre	16
-#define EXACT__multi_BH			17
-#define EXACT__Alvi			18
-#define EXACT__Thorne_fakebinary	19
+#define EXACT__Schwarzschild_EF			10
+#define EXACT__Schwarzschild_PG			11
+#define EXACT__Schwarzschild_BL			12
+#define EXACT__Schwarzschild_Novikov		13
+#define EXACT__Kerr_BoyerLindquist		14
+#define EXACT__Kerr_KerrSchild			15
+#define EXACT__Kerr_KerrSchild_spherical	16
+#define EXACT__Schwarzschild_Lemaitre		17
+#define EXACT__multi_BH				18
+#define EXACT__Alvi				19
+#define EXACT__Thorne_fakebinary		20
 
 c cosmological spacetimes
 #define EXACT__Lemaitre			50

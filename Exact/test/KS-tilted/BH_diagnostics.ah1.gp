@@ -1,0 +1,42 @@
+# apparent horizon 1/1
+#
+# column  1 = cctk_iteration
+# column  2 = cctk_time
+# column  3 = centroid_x
+# column  4 = centroid_y
+# column  5 = centroid_z
+# column  6 = min radius
+# column  7 = max radius
+# column  8 = mean radius
+# column  9 = quadrupole_xx
+# column 10 = quadrupole_xy
+# column 11 = quadrupole_xz
+# column 12 = quadrupole_yy
+# column 13 = quadrupole_yz
+# column 14 = quadrupole_zz
+# column 15 = min x
+# column 16 = max x
+# column 17 = min y
+# column 18 = max y
+# column 19 = min z
+# column 20 = max z
+# column 21 = xy-plane circumference
+# column 22 = xz-plane circumference
+# column 23 = yz-plane circumference
+# column 24 = ratio of xz/xy-plane circumferences
+# column 25 = ratio of yz/xy-plane circumferences
+# column 26 = area
+# column 27 = m_irreducible
+# column 28 = areal radius
+# column 29 = expansion Theta_(l)
+# column 30 = inner expansion Theta_(n)
+# column 31 = product of the expansions
+# column 32 = mean curvature
+# column 33 = gradient of the areal radius
+# column 34 = gradient of the expansion Theta_(l)
+# column 35 = gradient of the inner expansion Theta_(n)
+# column 36 = gradient of the product of the expansions
+# column 37 = gradient of the mean curvature
+0	0.000	-0.000000	0.000000	0.000000	1.800107386	1.897357126	1.865240773	1.199983840	-2.341261159e-08	-7.705129016e-08	1.181787313	0.04304125283	1.098188158	-1.897343169	1.897343169	-1.881558869	1.881558869	-1.813788206	1.813788206	12.40953204	11.74974772	11.61754522	0.9468324573	0.9361791549	45.23835967	0.9486772739	1.897354548	-1.081225865e-11	-1.466239844	1.657958671e-11	0.7331199219	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+1	0.031	-0.000000	-0.000000	0.000000	1.799995950	1.897244949	1.865125428	1.199837619	-1.223698721e-07	-3.390703490e-07	1.181642415	0.04303875551	1.098048978	-1.897244949	1.897244949	-1.881459721	1.881459721	-1.813685028	1.813685028	12.40910569	11.74919833	11.61698218	0.9468207162	0.9361659475	45.23328718	0.9486240856	1.897248171	-3.293764153e-16	-1.466281593	4.966112274e-16	0.7331407966	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+2	0.062	-0.000000	-0.000000	0.000000	1.799888324	1.897150818	1.865014207	1.199696765	-2.081014156e-07	-5.741339136e-07	1.181502773	0.04303642658	1.097914589	-1.897150818	1.897150818	-1.881364449	1.881364449	-1.813585228	1.813585228	12.40869291	11.74866887	11.61643983	0.9468095436	0.9361533823	45.22843886	0.9485732452	1.897146490	9.825935079e-17	-1.466319752	-1.506907866e-16	0.7331598758	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000

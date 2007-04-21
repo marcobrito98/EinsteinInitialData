@@ -1,0 +1,96 @@
+Cactus::cctk_run_title     = "Tilted Kerr/Kerr-Schild data"
+Cactus::cctk_full_warnings = yes
+
+Cactus::cctk_itlast = 2
+
+ActiveThorns = "IOUtil"
+IO::out_dir       = $parfile
+IO::out_fileinfo  = "axis labels"
+IO::parfile_write = "no"
+
+ActiveThorns = "AEILocalInterp LocalInterp LocalReduce"
+
+ActiveThorns = "SphericalSurface"
+
+ActiveThorns = "PUGH PUGHInterp PUGHReduce PUGHSlab"
+driver::global_nsize = 49
+driver::ghost_size   =  2
+
+ActiveThorns = "NaNChecker"
+
+ActiveThorns = "Boundary CartGrid3D CoordBase SymBase SymBase"
+CartGrid3D::type         = "byspacing"
+CartGrid3D::domain       = "full"
+CartGrid3D::dxyz         = 0.125
+CartGrid3D::avoid_origin = no
+
+ActiveThorns = "ADMBase ADMCoupling ADMMacros CoordGauge SpaceMask StaticConformal TmunuBase"
+SpaceMask::use_mask = yes
+
+ActiveThorns = "Exact"
+ADMBase::initial_data           = "exact"
+ADMBase::initial_lapse          = "exact"
+ADMBase::initial_shift          = "exact"
+Exact::exact_model              = "Kerr/Kerr-Schild"
+Exact::rotation_euler_theta     = 0.4 # in radians, approx. 23 degrees
+
+ActiveThorns = "LegoExcision"
+LegoExcision::fixed_excision = "sphere"
+LegoExcision::fixed_size     = 1.01
+
+ActiveThorns = "Time"
+Time::dtfac = 0.25
+
+ActiveThorns = "MoL"
+MoL::ODE_Method = "RK3"
+
+ActiveThorns = "BSSN_MoL"
+BSSN_MoL::excise       = yes
+BSSN_MoL::excisionType = "lego"
+
+ADMBase::evolution_method = ADM_BSSN
+ADM_BSSN::stencil_size               = 2
+ADM_BSSN::advection                  = "upwind2"
+ADM_BSSN::bound                      = "newrad"
+ADM_BSSN::BSSN_MaxNumConstrainedVars = 16
+
+ActiveThorns = "ADMConstraints"
+
+ActiveThorns = "AHFinderDirect"
+AHFinderDirect::output_OpenDX_control_files    = no
+AHFinderDirect::geometry_interpolator_name     = "Lagrange polynomial interpolation"
+AHFinderDirect::geometry_interpolator_pars     = "order=4"
+AHFinderDirect::surface_interpolator_name      = "Lagrange polynomial interpolation"
+AHFinderDirect::surface_interpolator_pars      = "order=4"
+
+ActiveThorns = "IOBasic"
+IOBasic::outInfo_every      = 1
+IOBasic::outInfo_reductions = "norm2"
+IOBasic::outInfo_vars       = "
+        ADMConstraints::ham
+        ADMBase::gxx
+"
+
+IOBasic::outScalar_every      = 1
+IOBasic::outScalar_reductions = "average count maximum minimum norm1 norm2 norm_inf"
+IOBasic::outScalar_vars       = "
+        ADMBase::metric
+        ADMBase::curv
+        ADMBase::lapse
+        ADMBase::shift
+        ADMConstraints::hamiltonian
+        ADMConstraints::momentum
+        SpaceMask::mask
+"
+
+ActiveThorns = "IOASCII"
+IOASCII::out1D_every = 1
+IOASCII::out1D_vars  = "
+        ADMBase::metric
+        ADMBase::curv
+        ADMBase::lapse
+        ADMBase::shift
+        ADMConstraints::hamiltonian
+        ADMConstraints::momentum
+        SpaceMask::mask
+"

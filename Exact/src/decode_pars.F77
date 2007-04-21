@@ -76,6 +76,8 @@ c black hole spacetimes
 	     decoded_exact_model = EXACT__Kerr_BoyerLindquist
 	elseif (CCTK_Equals(exact_model, "Kerr/Kerr-Schild") .ne. 0) then
 	     decoded_exact_model = EXACT__Kerr_KerrSchild
+	elseif (CCTK_Equals(exact_model, "Kerr/Kerr-Schild/spherical") .ne. 0) then
+	     decoded_exact_model = EXACT__Kerr_KerrSchild_spherical
 	elseif (CCTK_Equals(exact_model, "Schwarzschild-Lemaitre") .ne. 0) then
 	     decoded_exact_model = EXACT__Schwarzschild_Lemaitre
 	elseif (CCTK_Equals(exact_model, "multi-BH") .ne. 0) then

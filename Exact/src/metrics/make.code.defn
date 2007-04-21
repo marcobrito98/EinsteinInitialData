@@ -19,6 +19,7 @@ SRCS = Minkowski.F77			\
        Schwarzschild_Novikov.F77	\
        Kerr_BoyerLindquist.F77		\
        Kerr_KerrSchild.F77		\
+       Kerr_KerrSchild_spherical.F77	\
        Schwarzschild_Lemaitre.F77	\
        multi_BH.F77			\
        Thorne_fakebinary.F77		\

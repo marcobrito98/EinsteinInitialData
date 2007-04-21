@@ -11,8 +11,8 @@ USES KEYWORD metric_type
 
 EXTENDS KEYWORD initial_data 
 {
-  "exact"   :: "Initial data from exact solution"
-  "slice"   :: "Initial data from exact solution on arbitrary slice"
+  "exact" :: "Initial data from exact solution"
+  "slice" :: "Initial data from exact solution on arbitrary slice"
 }
 
 EXTENDS KEYWORD lapse_evolution_method
@@ -26,11 +26,11 @@ EXTENDS KEYWORD shift_evolution_method
 
 EXTENDS KEYWORD initial_lapse 
 {
-  "exact"   :: "Initial lapse from exact solution"
+  "exact" :: "Initial lapse from exact solution"
 }
 EXTENDS KEYWORD initial_shift 
 {
-  "exact"   :: "Initial shift from exact solution"
+  "exact" :: "Initial shift from exact solution"
 }
 
 EXTENDS KEYWORD evolution_method
@@ -79,18 +79,18 @@ private:
 
 REAL slice_Gauss_ampl "Amplitude of Gauss slice in exact"
 {
-0.0:  ::  "Positive please"
+0.0: :: "Positive please"
 } 0.0
 
 REAL slice_Gauss_width "Width of Gauss slice in exact"
 {
-0.0:  ::  "Positive please"
+0.0: :: "Positive please"
 } 1.0
 
 # this parameter is used directly in our schedule.ccl file
 KEYWORD overwrite_boundary "Overwrite g and K on the boundary"
 {
-  "no" :: "Do nothing"
+  "no"    :: "Do nothing"
   "exact" :: "Use boundary data from an exact solution on a trivial slice"
 } "no"
 
@@ -128,6 +128,25 @@ REAL shift_add_y "y component of added shift"
 *:* :: "any real number"
 } 0.0
 REAL shift_add_z "z component of added shift"
+{
+*:* :: "any real number"
+} 0.0
+
+################################################################################
+##### parameters for rotating any model ########################################
+################################################################################
+
+private:
+
+REAL rotation_euler_phi "Euler angle phi (first rotation, about z axis) (irrelevant for axisymmetric models)"
+{
+*:* :: "any real number"
+} 0.0
+REAL rotation_euler_theta "Euler angle theta (second rotation, about x axis)"
+{
+*:* :: "any real number"
+} 0.0
+REAL rotation_euler_psi "Euler angle psi (third rotation, about z axis)"
 {
 *:* :: "any real number"
 } 0.0
@@ -209,38 +228,39 @@ KEYWORD exact_model "The exact solution/coordinates used in thorn exact"
 #
 # black hole spacetimes
 #
-"Schwarzschild/EF"     :: "Schwarzschild spacetime in Eddington-Finkelstein coordinates"
-"Schwarzschild/PG"     :: "Schwarzschild spacetime in Painleve-Gullstrand coordinates"
-"Schwarzschild/BL"     :: "Schwarzschild spacetime in Brill-Lindquist coordinates"
-"Schwarzschild/Novikov":: "Schwarzschild spacetime in Novikov coordinates"
-"Schwarzschild-Lemaitre":: "Schwarzschild metric in Schwarzschild coordinates, with cosmological constant"
-"Kerr/Boyer-Lindquist" :: "Kerr spacetime in Boyer-Lindquist coordinates"
-"Kerr/Kerr-Schild"     :: "Kerr spacetime in Kerr-Schild coordinates"
-"multi-BH"             :: "Majumdar-Papapetrou or Kastor-Traschen maximally charged multi BH solutions"
-"Alvi"                 :: "Alvi post-Newtonian 2BH spacetime (not fully implemented yet)"
-"Thorne-fakebinary"    :: "Thorne's fake-binary spacetime (non-Einstein)"
+"Schwarzschild/EF"           :: "Schwarzschild spacetime in Eddington-Finkelstein coordinates"
+"Schwarzschild/PG"           :: "Schwarzschild spacetime in Painleve-Gullstrand coordinates"
+"Schwarzschild/BL"           :: "Schwarzschild spacetime in Brill-Lindquist coordinates"
+"Schwarzschild/Novikov"      :: "Schwarzschild spacetime in Novikov coordinates"
+"Schwarzschild-Lemaitre"     :: "Schwarzschild metric in Schwarzschild coordinates, with cosmological constant"
+"Kerr/Boyer-Lindquist"       :: "Kerr spacetime in Boyer-Lindquist coordinates"
+"Kerr/Kerr-Schild"           :: "Kerr spacetime in Kerr-Schild coordinates"
+"Kerr/Kerr-Schild/spherical" :: "Kerr spacetime in distorted Kerr-Schild coordinates such that the horizon is a coordinate sphere"
+"multi-BH"                   :: "Majumdar-Papapetrou or Kastor-Traschen maximally charged multi BH solutions"
+"Alvi"                       :: "Alvi post-Newtonian 2BH spacetime (not fully implemented yet)"
+"Thorne-fakebinary"          :: "Thorne's fake-binary spacetime (non-Einstein)"
 #
 # cosmological spacetimes
 #
-"Lemaitre"             :: "Lemaitre-type spacetime"
-##"Robertson-Walker"     :: "Robertson-Walker spacetime"
-"de Sitter"            :: "de Sitter spacetime (R-W cosmology, near t=0, p=0)"
-"de Sitter+Lambda"     :: "de Sitter spacetime with cosmological constant"
-"anti-de Sitter+Lambda":: "anti-de Sitter spacetime with cosmological constant"
-"Bianchi I"            :: "approximate Bianchi type I spacetime"
-"Goedel"               :: "Goedel spacetime"
-"Bertotti"             :: "Bertotti spacetime"
-"Kasner-like"          :: "Kasner-like spacetime"
-"Kasner-axisymmetric"  :: "axisymmetric Kasner spacetime"
-"Kasner-generalized"   :: "generalized Kasner spacetime"
-"Gowdy-wave"	       :: "Gowdy spacetime with polarized wave on a torus"
-"Milne"                :: "Milne spacetime for pre-big-bang cosmology"
+"Lemaitre"              :: "Lemaitre-type spacetime"
+##"Robertson-Walker"      :: "Robertson-Walker spacetime"
+"de Sitter"             :: "de Sitter spacetime (R-W cosmology, near t=0, p=0)"
+"de Sitter+Lambda"      :: "de Sitter spacetime with cosmological constant"
+"anti-de Sitter+Lambda" :: "anti-de Sitter spacetime with cosmological constant"
+"Bianchi I"             :: "approximate Bianchi type I spacetime"
+"Goedel"                :: "Goedel spacetime"
+"Bertotti"              :: "Bertotti spacetime"
+"Kasner-like"           :: "Kasner-like spacetime"
+"Kasner-axisymmetric"   :: "axisymmetric Kasner spacetime"
+"Kasner-generalized"    :: "generalized Kasner spacetime"
+"Gowdy-wave"	        :: "Gowdy spacetime with polarized wave on a torus"
+"Milne"                 :: "Milne spacetime for pre-big-bang cosmology"
 #
 # miscelaneous spacetimes
 #
-"boost-rotation symmetric":: "boost-rotation symmetric spacetime"
-"bowl"                 :: "bowl (bag-of-gold) spacetime (non-Einstein)"
-"constant density star":: "constant density (Schwarzschild) star"
+"boost-rotation symmetric" :: "boost-rotation symmetric spacetime"
+"bowl"                     :: "bowl (bag-of-gold) spacetime (non-Einstein)"
+"constant density star"    :: "constant density (Schwarzschild) star"
 } "Minkowski"
 
 ################################################################################
@@ -368,7 +388,7 @@ REAL Schwarzschild_EF__mass "Schwarzschild/EF: BH mass"
 
 REAL Schwarzschild_EF__epsilon "Schwarzschild/EF: numerical fudge"
 {
-0.0:*  ::  "any real number >= 0.0"
+0.0:* :: "any real number >= 0.0"
 } 1.e-16
 
 ################################################################################
@@ -379,12 +399,12 @@ REAL Schwarzschild_EF__epsilon "Schwarzschild/EF: numerical fudge"
 
 REAL Schwarzschild_PG__mass "Schwarzschild/PG: BH mass"
 {
-(0.0:*  ::  "any real number > 0.0"
+(0.0:* :: "any real number > 0.0"
 } 1.0
 
 REAL Schwarzschild_PG__epsilon "Schwarzschild/PG: numerical fudge"
 {
-0.0:*  ::  "any real number >= 0.0"
+0.0:* ::  "any real number >= 0.0"
 } 1.e-16
 
 ################################################################################
@@ -395,12 +415,12 @@ REAL Schwarzschild_PG__epsilon "Schwarzschild/PG: numerical fudge"
 
 REAL Schwarzschild_BL__mass "Schwarzschild/BL: BH mass"
 {
-(0.0:*  ::  "any real number > 0.0"
+(0.0:* :: "any real number > 0.0"
 } 1.0
 
 REAL Schwarzschild_BL__epsilon "Schwarzschild/BL: numerical fudge"
 {
-0.0:*  ::  "any real number >= 0.0"
+0.0:* :: "any real number >= 0.0"
 } 1.e-16
 
 ################################################################################
@@ -409,12 +429,12 @@ REAL Schwarzschild_BL__epsilon "Schwarzschild/BL: numerical fudge"
 
 REAL Schwarzschild_Novikov__mass "Schwarzschild/Novikov: BH mass"
 {
-(0.0:*  ::  "any real number > 0.0"
+(0.0:* :: "any real number > 0.0"
 } 1.0
 
 REAL Schwarzschild_Novikov__epsilon "Schwarzschild/Novikov: numerical fudge"
 {
-0.0:*  ::  "any real number >= 0.0"
+0.0:* :: "any real number >= 0.0"
 } 1.e-16
 
 ################################################################################
@@ -444,7 +464,7 @@ REAL Kerr_BoyerLindquist__spin \
 
 REAL Kerr_BoyerLindquist__mass "Kerr/Boyer-Lindquist: BH mass"
 {
-(0.0:*  ::  "any real number > 0"
+(0.0:* :: "any real number > 0"
 } 1.0
 
 ################################################################################
@@ -454,20 +474,29 @@ REAL Kerr_BoyerLindquist__mass "Kerr/Boyer-Lindquist: BH mass"
 #
 
 # the black hole is boosted in the z direction with this velocity,
-# i.e. the black hole is located at x=0, y=0, and z=vt
+# i.e., the black hole is located at x=0, y=0, and z=vt
 REAL Kerr_KerrSchild__boost_v "Kerr/Kerr-Schild: boost velocity of black hole in z direction"
 {
-(-1:1)  ::  "any real number with absolute value < 1"
+(-1:1) :: "any real number with absolute value < 1"
 } 0.0
 
 REAL Kerr_KerrSchild__epsilon "Kerr/Kerr-Schild: numerical fudge"
 {
-0.0:*  ::  "any real number >= 0.0"
+0.0:* :: "any real number >= 0.0"
 } 1.e-16
+
+INT Kerr_KerrSchild__power "Kerr/Kerr-Schild: power (exponent) of numerical fudge"
+{
+1:* :: ""
+} 4
+
+BOOLEAN Kerr_KerrSchild__parabolic "Kerr/Kerr-Schild: use a parabolic singularity-avoiding term"
+{
+} "no"
 
 REAL Kerr_KerrSchild__mass "Kerr/Kerr-Schild: BH mass"
 {
-(0.0:*  ::  "any real number > 0"
+(0.0:* :: "any real number > 0"
 } 1.0
 
 REAL Kerr_KerrSchild__spin \
@@ -629,7 +658,7 @@ BOOLEAN Thorne_fakebinary__retarded "Thorne-fakebinary: use retarded time?"
 # FIXME: can this really be exactly 0.0?
 REAL Thorne_fakebinary__epsilon "Thorne-fakebinary: numerical fudge"
 {
-0.0:*  ::  "any real number >= 0.0"
+0.0:* :: "any real number >= 0.0"
 } 1.e-16
 
 REAL Thorne_fakebinary__separation "Thorne-fakebinary: initial separation"
@@ -719,7 +748,7 @@ REAL Lemaitre__R0 "Lemaitre: scale factor (radius) of the universe at time t=0"
 
 REAL de_Sitter__scale "de Sitter: multiplicative scale factor"
 {
-(0.0:*  :: "any positive real number"
+(0.0:* :: "any positive real number"
 } 0.1
 
 ################################################################################
@@ -730,7 +759,7 @@ REAL de_Sitter__scale "de Sitter: multiplicative scale factor"
 
 REAL de_Sitter_Lambda__scale "de Sitter+Lambda: multiplicative scale factor"
 {
-(0.0:*  :: "any positive real number"
+(0.0:* :: "any positive real number"
 } 0.1
 
 ################################################################################
@@ -742,7 +771,7 @@ REAL de_Sitter_Lambda__scale "de Sitter+Lambda: multiplicative scale factor"
 REAL anti_de_Sitter_Lambda__scale \
   "anti-de Sitter+Lambda: multiplicative scale factor"
 {
-(0.0:*  :: "any positive real number"
+(0.0:* :: "any positive real number"
 } 0.1
 
 ################################################################################
@@ -775,7 +804,7 @@ REAL Goedel__scale "Goedel: multiplicative scale factor"
 
 REAL Bertotti__Lambda "Bertotti: cosmological constant"
 {
-*:*    :: "any real number"
+*:* :: "any real number"
 } -1.0
 
 ################################################################################
@@ -843,19 +872,19 @@ REAL Gowdy_wave__amplitude "Gowdy-wave: amplitude parameter"
 
 REAL boost_rotation_symmetric__scale "boost-rotation symmetric: length scale"
 {
-0.0:  ::  "Positive please"
+0.0: :: "Positive please"
 } 1.0
 
 REAL boost_rotation_symmetric__amp \
   "boost-rotation symmetric: dimensionless amplitude"
 {
-0.0:  ::  "Positive please"
+0.0: :: "Positive please"
 } 0.1
 
 REAL boost_rotation_symmetric__min_d \
   "boost-rotation symmetric: dimensionless safety distance"
 {
-(0.0:  ::  "any positive real number"
+(0.0: :: "any positive real number"
 } 0.01
 
 ################################################################################
@@ -878,44 +907,44 @@ BOOLEAN bowl__evolve "bowl: are we evolving the metric?"
 # FIXME: can this be negative?
 REAL bowl__strength "bowl: deformation strength"
 {
-0.0:* ::  "any real number >= 0"
+0.0:* :: "any real number >= 0"
 } 0.5
 
 REAL bowl__center "bowl: deformation center"
 {
-(0.0:*  ::  "any positive real number"
+(0.0:* :: "any positive real number"
 } 2.5
 
 # n.b. for bowl__shape = "Gaussian", this parameter is actually
 #      sqrt(2) times the standard deviation of the Gaussian
 REAL bowl__sigma "bowl: width of deformation"
 {
-(0.0:*  ::  "any positive real number"
+(0.0:* :: "any positive real number"
 } 1.0
 
 REAL bowl__x_scale "bowl: scale for x coordinate"
 {
-(0.0:*  ::  "any positive real number"
+(0.0:* :: "any positive real number"
 } 1.0
 
 REAL bowl__y_scale "bowl: scale for y coordinate"
 {
-(0.0:*  ::  "any positive real number"
+(0.0:* :: "any positive real number"
 } 1.0
 
 REAL bowl__z_scale "bowl: scale for z coordinate"
 {
-(0.0:*  ::  "any positive real number"
+(0.0:* :: "any positive real number"
 } 1.0
 
 REAL bowl__t0 "bowl: center of Fermi step in time"
 {
-*:* ::  "any real number"
+*:* :: "any real number"
 } 1.0
 
 REAL bowl__sigma_t "bowl: width of Fermi step in time"
 {
-(0.0:*  ::  "any positive real number"
+(0.0:* :: "any positive real number"
 } 1.0
 
 ################################################################################
@@ -926,13 +955,13 @@ REAL bowl__sigma_t "bowl: width of Fermi step in time"
 
 REAL constant_density_star__mass "constant density star: mass of star"
 {
-(0.0:*  ::  "any positive real number"
+(0.0:* :: "any positive real number"
 } 1.0
 
 # FIXME: is this default value ok? (does it give a star or a BH?)
-REAL  constant_density_star__radius "constant density star: radius of star"
+REAL constant_density_star__radius "constant density star: radius of star"
 {
-(0.0:*  ::  "any positive real number"
+(0.0:* :: "any positive real number"
 } 1.0
 
 ################################################################################

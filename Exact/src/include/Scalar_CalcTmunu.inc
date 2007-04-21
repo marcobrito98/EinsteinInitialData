@@ -61,6 +61,8 @@ c        no stress-energy tensor in this model
 c        no stress-energy tensor in this model
        elseif (decoded_exact_model .eq. EXACT__Kerr_KerrSchild) then
 c        no stress-energy tensor in this model
+       elseif (decoded_exact_model .eq. EXACT__Kerr_KerrSchild_spherical) then
+c        no stress-energy tensor in this model
 
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
