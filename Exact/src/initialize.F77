@@ -19,6 +19,7 @@ C $Header$
       integer i,j,k
       integer nx,ny,nz
 
+      CCTK_REAL tt, xx, yy, zz
       CCTK_REAL alpjunk, axjunk, ayjunk, azjunk, 
      $     betaxjunk, betayjunk, betazjunk,
      $     bxxjunk, bxyjunk, bxzjunk, 
@@ -62,6 +63,11 @@ C     Set data pointwise.
          do j=1,ny
             do i=1,nx
 
+               tt = cctk_time
+               xx = x(i,j,k) - cctk_time * shift_add_x
+               yy = y(i,j,k) - cctk_time * shift_add_y
+               zz = z(i,j,k) - cctk_time * shift_add_z
+
 C     Initialize the psi of exact
 C     (also to tell the models about the conformal_state)
                if (conformal_state .ne. 0) then
@@ -81,7 +87,7 @@ C     (also to tell the models about the conformal_state)
 
                call Exact__Bona_Masso_data(
      $              decoded_exact_model,
-     $              x(i,j,k), y(i,j,k), z(i,j,k), cctk_time,
+     $              xx, yy, zz, tt,
      $              gxx(i,j,k), gyy(i,j,k), gzz(i,j,k), 
      $              gxy(i,j,k), gyz(i,j,k), gxz(i,j,k),
      $              kxx(i,j,k), kyy(i,j,k), kzz(i,j,k), 
