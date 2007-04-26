@@ -87,7 +87,19 @@ C        Use a power law to avoid the singularity
          r0 = (r0**power + eps**power)**(1.0d0/power)
       else
          if (r0 .lt. eps) then
-            r0 = (eps + r0**2 / eps) / 2
+            if (power .eq. 0) then
+               r0 = eps
+            else if (power .eq. 2) then
+               r0 = eps/2 + r0**2 * 1/(2*eps)
+            else if (power .eq. 4) then
+               r0 = 3*eps/8 + r0**2 * (3/(4*eps) - r0**2 * 1/(8*eps**3))
+            else if (power .eq. 6) then
+               r0 = 5*eps/16 + r0**2 * (15/(16*eps) + r0**2 * (-5/(16*eps**3) + r0**2 * 1/(16*eps**5)))
+            else if (power .eq. 8) then
+               r0 = 35*eps/128 + r0**2 * (35/(32*eps) + r0**2 * (-35/(64*eps**3) + r0**2 * (7/(32*eps**5) - r0**2 * 5/(128*eps**7))))
+            else
+               call CCTK_WARN (CCTK_WARN_ABORT, "Unsupported value of parameter Kerr_KerrSchild__power")
+            end if
          end if
       end if
 C     Another idea:
