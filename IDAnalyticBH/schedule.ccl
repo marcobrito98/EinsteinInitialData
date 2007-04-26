@@ -19,6 +19,7 @@ if (CCTK_Equals(initial_data,"schwarzschild"))
 	
    schedule Schwarzschild in ADMBase_InitialData
    {
+     STORAGE: confac[1]
      LANG: C
    } "Construct initial data for a single Schwarzschild black hole"
 }
@@ -61,9 +62,9 @@ else if (CCTK_Equals(initial_data,"misner_bh"))
 }
 else if (CCTK_Equals(initial_data,"multiple_misner_bh")) 
 { 
-   STORAGE: confac[1]
    schedule Misner_multiple in ADMBase_InitialData
    {
+     STORAGE: confac[1]
      LANG: C
    } "Construct initial data for multiple Misner black holes"
 
