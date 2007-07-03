@@ -1,3 +1,4 @@
+#ifdef FCODE
 c
 c temporary variables for code in "Scalar_CalcTmunu.inc"
 c
@@ -6,3 +7,4 @@ c
         CCTK_REAL  unu1, raz, raz2, razsch2, coefsch, pppsch, unusch
         CCTK_REAL  treiori
         CCTK_REAL  star_m, star_r
+#endif

@@ -1,3 +1,4 @@
+#ifdef FCODE
 C Here we added the matter variables for several of the metrics
 C you can find in "src" directory through the components of the
 C stress-eergy tensor. Being different in specific cases it is
@@ -349,3 +350,4 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
         else
           call CCTK_WARN(0,"Unknown value of Exact::decoded_exact_model")
         endif 
+#endif
