@@ -27,10 +27,10 @@ module NoExcision_mod
                                                      'NoExcision::redkyy', &
                                                      'NoExcision::redkyz', &
                                                      'NoExcision::redkzz', &
-                                                     'NoExcision::red', &
-                                                     'NoExcision::redx', &
-                                                     'NoExcision::redy', &
-                                                     'NoExcision::redz' /)
+                                                     'NoExcision::red   ', &
+                                                     'NoExcision::redx  ', &
+                                                     'NoExcision::redy  ', &
+                                                     'NoExcision::redz  ' /)
   character(len=5), dimension(16) :: var_names = (/ '  gxx', '  gxy', &
                                                     '  gxz', '  gyy', &
                                                     '  gyz', '  gzz', &
