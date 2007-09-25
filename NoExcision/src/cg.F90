@@ -9,13 +9,13 @@ subroutine NoExcision_CGInit_1 (CCTK_ARGUMENTS)
 
   use NoExcision_mod
 
+  implicit none
+
   DECLARE_CCTK_ARGUMENTS
   DECLARE_CCTK_FUNCTIONS
   DECLARE_CCTK_PARAMETERS
 
   CCTK_INT :: my_level, n_levels
-  CCTK_INT :: ierr
-  CCTK_INT, dimension(3) :: sym
 
   nx = cctk_lsh(1); ny = cctk_lsh(2); nz = cctk_lsh(3)
 
@@ -114,6 +114,7 @@ subroutine NoExcision_CGInit_2 (CCTK_ARGUMENTS)
 
   use NoExcision_mod
 
+  implicit none
 
   DECLARE_CCTK_ARGUMENTS
   DECLARE_CCTK_FUNCTIONS
@@ -215,6 +216,8 @@ subroutine NoExcision_CG_2 (CCTK_ARGUMENTS)
 
   use NoExcision_mod
 
+  implicit none
+
   DECLARE_CCTK_ARGUMENTS
   DECLARE_CCTK_FUNCTIONS
   DECLARE_CCTK_PARAMETERS
@@ -249,9 +252,13 @@ subroutine NoExcision_CG_3 (CCTK_ARGUMENTS)
 
   use NoExcision_mod
 
+  implicit none
+
   DECLARE_CCTK_ARGUMENTS
   DECLARE_CCTK_FUNCTIONS
   DECLARE_CCTK_PARAMETERS
+
+  integer :: i
 
   nx = cctk_lsh(1); ny=cctk_lsh(2); nz = cctk_lsh(3)
 
@@ -315,6 +322,8 @@ subroutine NoExcision_CG_4 (CCTK_ARGUMENTS)
 
   use NoExcision_mod
 
+  implicit none
+
   DECLARE_CCTK_ARGUMENTS
   DECLARE_CCTK_FUNCTIONS
   DECLARE_CCTK_PARAMETERS
@@ -350,6 +359,8 @@ subroutine NoExcision_CG_5 (CCTK_ARGUMENTS)
 
   use NoExcision_mod
 
+  implicit none
+
   DECLARE_CCTK_ARGUMENTS
   DECLARE_CCTK_FUNCTIONS
   DECLARE_CCTK_PARAMETERS
@@ -380,7 +391,7 @@ subroutine NoExcision_CG_5 (CCTK_ARGUMENTS)
     call CCTK_INFO ( var_message )
   end if
   if ( verbose > 0 .and. mod(loop_counter,10) == 0 ) then
-    write (iter_message, '(a10,i8)' ), 'Iteration ', loop_counter
+    write (iter_message, '(a10,i8)' ) 'Iteration ', loop_counter
     write (res_message, '(16(a3,es9.3))' ) (' | ', infnormresid(i), i=1, 16 )
     call CCTK_INFO ( iter_message )
     call CCTK_INFO ( res_message )
@@ -499,6 +510,8 @@ end subroutine NoExcision_SetSym
 subroutine NoExcision_CGApplySym(CCTK_ARGUMENTS)
 
   use NoExcision_mod
+
+  implicit none
 
   DECLARE_CCTK_ARGUMENTS
   DECLARE_CCTK_PARAMETERS
