@@ -142,3 +142,7 @@ REAL smoothing_eps "CG smoothing stop criteria"
 {
   (0.0:* :: ""
 } 1e-6
+
+BOOLEAN use_user_regions "Use user defined regions for the smoothing regions"
+{
+} "no"

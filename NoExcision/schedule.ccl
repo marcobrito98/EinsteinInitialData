@@ -20,6 +20,13 @@ if (smooth_regions) {
       LANG: Fortran
     } "Smooth regions"
   } else {
+    
+    if (use_user_regions) {
+      SCHEDULE NoExcision_Set_Zero IN ADMBase_PostInitial BEFORE NoExcision_CGSmoothing
+      {
+        LANG: Fortran
+      } "set variablse to zero in used defined regions"
+    }
 
     SCHEDULE GROUP NoExcision_CGSmoothing IN ADMBase_PostInitial
     {

@@ -645,3 +645,78 @@ subroutine NoExcision_CGApplySym(CCTK_ARGUMENTS)
   end if
 
 end subroutine NoExcision_CGApplySym
+
+
+subroutine NoExcision_Set_Zero(CCTK_ARGUMENTS)
+
+  use NoExcision_mod
+
+  DECLARE_CCTK_ARGUMENTS
+  DECLARE_CCTK_PARAMETERS
+  DECLARE_CCTK_FUNCTIONS
+
+  CCTK_REAL :: cx, cy, cz, radx, rady, radz
+  CCTK_REAL, dimension(:,:,:), allocatable :: dist2
+  integer :: n
+  CCTK_INT :: my_level, n_levels
+
+  call NoExcision_levelinfo ( cctkGH, my_level, n_levels )
+
+  if ( my_level == n_levels-1 ) then
+
+    allocate ( dist2(cctk_lsh(1),cctk_lsh(2),cctk_lsh(3)) )
+
+    do n = 1, num_regions
+
+      cx = centre_x(n)
+      cy = centre_y(n)
+      cz = centre_z(n)
+
+      if (CCTK_EQUALS(region_shape(n), "sphere")) then
+
+        radx = radius(n)
+        rady = radius(n)
+        radz = radius(n)
+
+      else if (CCTK_EQUALS(region_shape(n), "ellipsoid")) then
+
+        radx = radius_x(n)
+        rady = radius_y(n)
+        radz = radius_z(n)
+
+      else
+
+        call CCTK_WARN (0, "internal error")
+
+      end if 
+
+      dist2 =   ((x - cx) / radx)**2 + ((y - cy) / rady)**2 &
+           &  + ((z - cz) / radz)**2
+
+      where ( dist2 <= one )
+
+        gxx = zero
+        gxy = zero
+        gxz = zero
+        gyy = zero
+        gyz = zero
+        gzz = zero
+        kxx = zero
+        kxy = zero
+        kxz = zero
+        kyy = zero
+        kyz = zero
+        kzz = zero
+        alp = zero
+        betax = zero
+        betay = zero
+        betaz = zero
+
+      end where
+
+    end do
+
+    deallocate ( dist2 )
+
+  end if
+end subroutine NoExcision_Set_Zero
