@@ -1,7 +1,3 @@
-"Parameter file test_dbh.par
-"Created Sep 15 2003 15:02:33
-"x-label time
-"y-label ADMCONSTRAINTS::ham
 "ham v time
 0.0000000000000	0.0154118655052
 0.0250000000000	0.0153951675356

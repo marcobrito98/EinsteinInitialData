@@ -1,7 +1,3 @@
-"Parameter file test_dbh.par
-"Created Sep 15 2003 15:02:33
-"x-label time
-"y-label ADMBASE::gyz
 "gyz v time
 0.0000000000000	0.0000000000000
 0.0250000000000	-0.0000149658743
