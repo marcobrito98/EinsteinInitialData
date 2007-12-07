@@ -66,6 +66,7 @@ module NoExcision_mod
       select case (order)
       case (2) 
 
+!$OMP PARALLEL DO PRIVATE(j,i) SCHEDULE(GUIDED)
         do k = 2, nz-1
           do j = 2, ny-1
             do i = 2, nx-1
@@ -82,9 +83,11 @@ module NoExcision_mod
             end do
           end do
         end do
+!$OMP END PARALLEL DO
 
       case (4)
 
+!$OMP PARALLEL DO PRIVATE(j,i) SCHEDULE(GUIDED)
         do k = 3, nz-2
           do j = 3, ny-2
             do i = 3, nx-2
@@ -105,9 +108,11 @@ module NoExcision_mod
             end do
           end do
         end do
+!$OMP END PARALLEL DO
 
       case (6)
 
+!$OMP PARALLEL DO PRIVATE(j,i) SCHEDULE(GUIDED)
         do k = 4, nz-3
           do j = 4, ny-3
             do i = 4, nx-3
@@ -131,6 +136,7 @@ module NoExcision_mod
             end do
           end do
         end do
+!$OMP END PARALLEL DO
 
       case default
 
@@ -202,22 +208,105 @@ module NoExcision_mod
                                                   r13, r14, r15, r16
       CCTK_INT, dimension(:,:,:), intent(in) :: mask
 
-      if ( cont(1) ) where ( mask > 0 ) r1 = u1*v1
-      if ( cont(2) ) where ( mask > 0 ) r2 = u2*v2
-      if ( cont(3) ) where ( mask > 0 ) r3 = u3*v3
-      if ( cont(4) ) where ( mask > 0 ) r4 = u4*v4
-      if ( cont(5) ) where ( mask > 0 ) r5 = u5*v5
-      if ( cont(6) ) where ( mask > 0 ) r6 = u6*v6
-      if ( cont(7) ) where ( mask > 0 ) r7 = u7*v7
-      if ( cont(8) ) where ( mask > 0 ) r8 = u8*v8
-      if ( cont(9) ) where ( mask > 0 ) r9 = u9*v9
-      if ( cont(10) ) where ( mask > 0 ) r10 = u10*v10
-      if ( cont(11) ) where ( mask > 0 ) r11 = u11*v11
-      if ( cont(12) ) where ( mask > 0 ) r12 = u12*v12
-      if ( cont(13) ) where ( mask > 0 ) r13 = u13*v13
-      if ( cont(14) ) where ( mask > 0 ) r14 = u14*v14
-      if ( cont(15) ) where ( mask > 0 ) r15 = u15*v15
-      if ( cont(16) ) where ( mask > 0 ) r16 = u16*v16
+!$OMP PARALLEL
+
+      if ( cont(1) ) then
+!$OMP WORKSHARE
+        where ( mask > 0 ) r1 = u1*v1
+!$OMP END WORKSHARE NOWAIT
+      end if
+
+      if ( cont(2) ) then
+!$OMP WORKSHARE
+         where ( mask > 0 ) r2 = u2*v2
+!$OMP END WORKSHARE NOWAIT
+      end if
+
+      if ( cont(3) ) then
+!$OMP WORKSHARE
+        where ( mask > 0 ) r3 = u3*v3
+!$OMP END WORKSHARE NOWAIT
+      end if
+
+      if ( cont(4) ) then
+!$OMP WORKSHARE
+        where ( mask > 0 ) r4 = u4*v4
+!$OMP END WORKSHARE NOWAIT
+      end if
+
+      if ( cont(5) ) then
+!$OMP WORKSHARE
+        where ( mask > 0 ) r5 = u5*v5
+!$OMP END WORKSHARE NOWAIT
+      end if
+
+      if ( cont(6) ) then
+!$OMP WORKSHARE
+        where ( mask > 0 ) r6 = u6*v6
+!$OMP END WORKSHARE NOWAIT
+      end if
+
+      if ( cont(7) ) then
+!$OMP WORKSHARE
+        where ( mask > 0 ) r7 = u7*v7
+!$OMP END WORKSHARE NOWAIT
+      end if
+
+      if ( cont(8) ) then
+!$OMP WORKSHARE
+        where ( mask > 0 ) r8 = u8*v8
+!$OMP END WORKSHARE NOWAIT
+      end if
+
+      if ( cont(9) ) then
+!$OMP WORKSHARE
+        where ( mask > 0 ) r9 = u9*v9
+!$OMP END WORKSHARE NOWAIT
+      end if
+
+      if ( cont(10) ) then
+!$OMP WORKSHARE
+         where ( mask > 0 ) r10 = u10*v10
+!$OMP END WORKSHARE NOWAIT
+      end if
+
+      if ( cont(11) ) then
+!$OMP WORKSHARE
+        where ( mask > 0 ) r11 = u11*v11
+!$OMP END WORKSHARE NOWAIT
+      end if
+
+      if ( cont(12) ) then
+!$OMP WORKSHARE
+        where ( mask > 0 ) r12 = u12*v12
+!$OMP END WORKSHARE NOWAIT
+      end if
+
+      if ( cont(13) ) then
+!$OMP WORKSHARE
+        where ( mask > 0 ) r13 = u13*v13
+!$OMP END WORKSHARE NOWAIT
+      end if
+
+      if ( cont(14) ) then
+!$OMP WORKSHARE
+        where ( mask > 0 ) r14 = u14*v14
+!$OMP END WORKSHARE NOWAIT
+      end if
+
+      if ( cont(15) ) then
+!$OMP WORKSHARE
+        where ( mask > 0 ) r15 = u15*v15
+!$OMP END WORKSHARE NOWAIT
+      end if
+
+      if ( cont(16) ) then
+!$OMP WORKSHARE
+        where ( mask > 0 ) r16 = u16*v16
+!$OMP END WORKSHARE NOWAIT
+      end if
+
+!$OMP END PARALLEL 
 
     end subroutine multiply
                   
@@ -243,22 +332,105 @@ module NoExcision_mod
       CCTK_INT, dimension(:,:,:), intent(in) :: mask
 
       
-      if ( cont(1) ) where ( mask > 0 ) u1 = c1(1)*u1 + c2(1)*v1
-      if ( cont(2) ) where ( mask > 0 ) u2 = c1(2)*u2 + c2(2)*v2
-      if ( cont(3) ) where ( mask > 0 ) u3 = c1(3)*u3 + c2(3)*v3
-      if ( cont(4) ) where ( mask > 0 ) u4 = c1(4)*u4 + c2(4)*v4
-      if ( cont(5) ) where ( mask > 0 ) u5 = c1(5)*u5 + c2(5)*v5
-      if ( cont(6) ) where ( mask > 0 ) u6 = c1(6)*u6 + c2(6)*v6
-      if ( cont(7) ) where ( mask > 0 ) u7 = c1(7)*u7 + c2(7)*v7
-      if ( cont(8) ) where ( mask > 0 ) u8 = c1(8)*u8 + c2(8)*v8
-      if ( cont(9) ) where ( mask > 0 ) u9 = c1(9)*u9 + c2(9)*v9
-      if ( cont(10) ) where ( mask > 0 ) u10 = c1(10)*u10 + c2(10)*v10
-      if ( cont(11) ) where ( mask > 0 ) u11 = c1(11)*u11 + c2(11)*v11
-      if ( cont(12) ) where ( mask > 0 ) u12 = c1(12)*u12 + c2(12)*v12
-      if ( cont(13) ) where ( mask > 0 ) u13 = c1(13)*u13 + c2(13)*v13
-      if ( cont(14) ) where ( mask > 0 ) u14 = c1(14)*u14 + c2(14)*v14
-      if ( cont(15) ) where ( mask > 0 ) u15 = c1(15)*u15 + c2(15)*v15
-      if ( cont(16) ) where ( mask > 0 ) u16 = c1(16)*u16 + c2(16)*v16
+!$OMP PARALLEL
+
+      if ( cont(1) ) then
+!$OMP WORKSHARE
+        where ( mask > 0 ) u1 = c1(1)*u1 + c2(1)*v1
+!$OMP END WORKSHARE NOWAIT
+      endif
+
+      if ( cont(2) ) then
+!$OMP WORKSHARE
+        where ( mask > 0 ) u2 = c1(2)*u2 + c2(2)*v2
+!$OMP END WORKSHARE NOWAIT
+      endif
+
+      if ( cont(3) ) then
+!$OMP WORKSHARE
+        where ( mask > 0 ) u3 = c1(3)*u3 + c2(3)*v3
+!$OMP END WORKSHARE NOWAIT
+      endif
+
+      if ( cont(4) ) then
+!$OMP WORKSHARE
+        where ( mask > 0 ) u4 = c1(4)*u4 + c2(4)*v4
+!$OMP END WORKSHARE NOWAIT
+      endif
+
+      if ( cont(5) ) then
+!$OMP WORKSHARE
+        where ( mask > 0 ) u5 = c1(5)*u5 + c2(5)*v5
+!$OMP END WORKSHARE NOWAIT
+      endif
+
+      if ( cont(6) ) then
+!$OMP WORKSHARE
+        where ( mask > 0 ) u6 = c1(6)*u6 + c2(6)*v6
+!$OMP END WORKSHARE NOWAIT
+      endif
+
+      if ( cont(7) ) then
+!$OMP WORKSHARE
+        where ( mask > 0 ) u7 = c1(7)*u7 + c2(7)*v7
+!$OMP END WORKSHARE NOWAIT
+      endif
+
+      if ( cont(8) ) then
+!$OMP WORKSHARE
+        where ( mask > 0 ) u8 = c1(8)*u8 + c2(8)*v8
+!$OMP END WORKSHARE NOWAIT
+      endif
+
+      if ( cont(9) ) then
+!$OMP WORKSHARE
+        where ( mask > 0 ) u9 = c1(9)*u9 + c2(9)*v9
+!$OMP END WORKSHARE NOWAIT
+      endif
+
+      if ( cont(10) ) then
+!$OMP WORKSHARE
+        where ( mask > 0 ) u10 = c1(10)*u10 + c2(10)*v10
+!$OMP END WORKSHARE NOWAIT
+      endif
+
+      if ( cont(11) ) then
+!$OMP WORKSHARE
+        where ( mask > 0 ) u11 = c1(11)*u11 + c2(11)*v11
+!$OMP END WORKSHARE NOWAIT
+      endif
+
+      if ( cont(12) ) then
+!$OMP WORKSHARE
+        where ( mask > 0 ) u12 = c1(12)*u12 + c2(12)*v12
+!$OMP END WORKSHARE NOWAIT
+      endif
+
+      if ( cont(13) ) then
+!$OMP WORKSHARE
+        where ( mask > 0 ) u13 = c1(13)*u13 + c2(13)*v13
+!$OMP END WORKSHARE NOWAIT
+      endif
+
+      if ( cont(14) ) then
+!$OMP WORKSHARE
+        where ( mask > 0 ) u14 = c1(14)*u14 + c2(14)*v14
+!$OMP END WORKSHARE NOWAIT
+      endif
+
+      if ( cont(15) ) then
+!$OMP WORKSHARE
+        where ( mask > 0 ) u15 = c1(15)*u15 + c2(15)*v15
+!$OMP END WORKSHARE NOWAIT
+      endif
+
+      if ( cont(16) ) then
+!$OMP WORKSHARE
+        where ( mask > 0 ) u16 = c1(16)*u16 + c2(16)*v16
+!$OMP END WORKSHARE NOWAIT
+      endif
+
+!$OMP END PARALLEL 
 
     end subroutine multiply_sum
 

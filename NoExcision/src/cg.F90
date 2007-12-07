@@ -33,6 +33,8 @@ subroutine NoExcision_CGInit_1 (CCTK_ARGUMENTS)
 
     call CCTK_INFO ( 'Starting smoothing procedure' )
 
+!$OMP PARALLEL WORKSHARE
+
     resgxx = zero; resgxy = zero; resgxz = zero
     resgyy = zero; resgyz = zero; resgzz = zero
     reskxx = zero; reskxy = zero; reskxz = zero
@@ -56,6 +58,8 @@ subroutine NoExcision_CGInit_1 (CCTK_ARGUMENTS)
     redkxx = zero; redkxy = zero; redkxz = zero
     redkyy = zero; redkyz = zero; redkzz = zero
     red = zero; redx = zero; redy = zero; redz = zero
+
+!$OMP END PARALLEL WORKSHARE
 
     ! r = b - A x.
     ! Since x=0 and we actually use A':   b = -A' 0 and  r = b = -A' 0.
@@ -666,6 +670,7 @@ subroutine NoExcision_Set_Zero(CCTK_ARGUMENTS)
 
     allocate ( dist2(cctk_lsh(1),cctk_lsh(2),cctk_lsh(3)) )
 
+!$OMP PARALLEL PRIVATE(cx, cy, cz, radx, rady, radz)
     do n = 1, num_regions
 
       cx = centre_x(n)
@@ -689,6 +694,8 @@ subroutine NoExcision_Set_Zero(CCTK_ARGUMENTS)
         call CCTK_WARN (0, "internal error")
 
       end if 
+
+!$OMP WORKSHARE
 
       dist2 =   ((x - cx) / radx)**2 + ((y - cy) / rady)**2 &
            &  + ((z - cz) / radz)**2
@@ -714,7 +721,11 @@ subroutine NoExcision_Set_Zero(CCTK_ARGUMENTS)
 
       end where
 
+!$OMP END WORKSHARE
+
     end do
+
+!$OMP END PARALLEL
 
     deallocate ( dist2 )
 
