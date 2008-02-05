@@ -92,7 +92,8 @@ subroutine NoExcision_CGInit_1 (CCTK_ARGUMENTS)
                     res, resx, resy, resz, &
                     redgxx, redgxy, redgxz, redgyy, redgyz, redgzz, &
                     redkxx, redkxy, redkxz, redkyy, redkyz, redkzz, &
-                    red, redx, redy, redz, nes_mask )
+                    red, redx, redy, redz, nes_mask, red_mask, &
+                    .true., smoothing_order )
                      
     call CCTK_ReductionArrayHandle ( sum_handle, 'sum' )
     if ( sum_handle .lt. 0 ) then
@@ -129,27 +130,17 @@ subroutine NoExcision_CGInit_2 (CCTK_ARGUMENTS)
   character(len=56) :: conv_message
 
   if ( loop_control == 1 ) then
-    do i = 1, 16
-      if ( cont(i) ) then
-        call CCTK_VarIndex ( res_var, red_names(i) )
-        if ( res_var < 0 ) then
-          call CCTK_WARN ( 0, 'Could not get index to grid function red' )
-        end if
+    ! delta_new = r^T r.
+    call CCTK_ReduceLocArrayToArray1D ( ierr, cctkGH, -1, sum_handle, lsumred, &
+                                        delta_new, 16, CCTK_VARIABLE_REAL)
+    if ( ierr < 0 ) call CCTK_WARN ( 0, 'Could not perform reduction of local 1D array' )
 
-        ! delta_new = r^T r.
+    call CCTK_ReduceLocArrayToArray1D ( ierr, cctkGH, -1, infnorm_handle, &
+                                        linfred, infnormresid, 16, &
+                                        CCTK_VARIABLE_REAL)
+    if ( ierr < 0 ) call CCTK_WARN ( 0, 'Could not perform reduction of local 1D array' )
 
-        call CCTK_Reduce ( ierr, cctkGH, -1, sum_handle, 1, &
-                           CCTK_VARIABLE_REAL, delta_new(i), 1, res_var )
-
-        call CCTK_Reduce ( ierr, cctkGH, -1, infnorm_handle, 1, &
-                           CCTK_VARIABLE_REAL, infnormresid(i), 1, res_var )
-
-        ! Since we are reducing r*r, we have to take the square root.
-
-        infnormresid(i) = sqrt(infnormresid(i))
-
-      end if
-    end do
+    where ( cont ) infnormresid = sqrt(infnormresid)
 
     ! Check if some variables has already converged. This happens when the
     ! variable is identically zero.
@@ -209,7 +200,8 @@ subroutine NoExcision_CG_1 (CCTK_ARGUMENTS)
                   q, qx, qy, qz, &
                   redgxx, redgxy, redgxz, redgyy, redgyz, redgzz, &
                   redkxx, redkxy, redkxz, redkyy, redkyz, redkzz, &
-                  red, redx, redy, redz, nes_mask )
+                  red, redx, redy, redz, nes_mask, red_mask,&
+                  .false., smoothing_order )
 
   sym_selector = 2
 
@@ -231,22 +223,12 @@ subroutine NoExcision_CG_2 (CCTK_ARGUMENTS)
   integer :: i
 
   if ( loop_control == 1 ) then
-    do i = 1, 16
-      if ( cont(i) ) then
-        call CCTK_VarIndex ( res_var, red_names(i) )
-        if ( res_var < 0 ) then
-          call CCTK_WARN ( 0, 'Could not get index to grid function red' )
-        end if
+    call CCTK_ReduceLocArrayToArray1D ( ierr, cctkGH, -1, sum_handle, lsumred, &
+                                        alpha, 16, CCTK_VARIABLE_REAL)
+    if ( ierr < 0 ) call CCTK_WARN ( 0, 'Could not perform reduction of local 1D array' )
 
-        ! alpha = delta_new / ( d^T A d ).
-        call CCTK_Reduce ( ierr, cctkGH, -1, sum_handle, 1, &
-                           CCTK_VARIABLE_REAL, alpha(i), 1, res_var )
-      
-        alpha(i) = delta_new(i) / alpha(i)
-
-      end if
-    end do
-
+    ! alpha = delta_new / ( d^T A d ).
+    where ( cont ) alpha = delta_new / alpha
   end if
 
 end subroutine NoExcision_CG_2
@@ -315,7 +297,8 @@ subroutine NoExcision_CG_3 (CCTK_ARGUMENTS)
                   res, resx, resy, resz, &
                   redgxx, redgxy, redgxz, redgyy, redgyz, redgzz, &
                   redkxx, redkxy, redkxz, redkyy, redkyz, redkzz, &
-                  red, redx, redy, redz, nes_mask )
+                  red, redx, redy, redz, nes_mask, red_mask, &
+                  .true., smoothing_order )
 
   sym_selector = 3
 
@@ -337,24 +320,19 @@ subroutine NoExcision_CG_4 (CCTK_ARGUMENTS)
   integer :: i
 
   if ( loop_control == 1 ) then
-    do i = 1, 16
-      if ( cont(i) ) then
-        call CCTK_VarIndex ( res_var, red_names(i) )
-        if ( res_var < 0 ) then
-          call CCTK_WARN ( 0, 'Could not get index to grid function red' )
-        end if
+    ! delta_new = r^T r.
+    call CCTK_ReduceLocArrayToArray1D ( ierr, cctkGH, -1, sum_handle, lsumred, &
+                                        delta_new, 16, CCTK_VARIABLE_REAL)
+    if ( ierr < 0 ) call CCTK_WARN ( 0, 'Could not perform reduction of local 1D array' )
 
-        ! delta_new = r^T r.
-        call CCTK_Reduce ( ierr, cctkGH, -1, sum_handle, 1, &
-                           CCTK_VARIABLE_REAL, delta_new(i), 1, res_var )
+    call CCTK_ReduceLocArrayToArray1D ( ierr, cctkGH, -1, infnorm_handle, &
+                                        linfred, infnormresid, 16, &
+                                        CCTK_VARIABLE_REAL)
+    if ( ierr < 0 ) call CCTK_WARN ( 0, 'Could not perform reduction of local 1D array' )
 
-        call CCTK_Reduce ( ierr, cctkGH, -1, infnorm_handle, 1, &
-                           CCTK_VARIABLE_REAL, infnormresid(i), 1, res_var )
-        infnormresid(i) = sqrt(infnormresid(i))
-      end if
-    end do
-
+    where ( cont ) infnormresid = sqrt(infnormresid)
   end if
+
 
 end subroutine NoExcision_CG_4
 

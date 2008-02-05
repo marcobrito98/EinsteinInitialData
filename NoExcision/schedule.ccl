@@ -1,6 +1,8 @@
 # Schedule definitions for thorn NoExcision
 # $Header$
 
+STORAGE: reduction_mask
+
 SCHEDULE NoExcision_Overwrite IN ADMBase_PostInitial
 {
   LANG: Fortran
@@ -39,7 +41,13 @@ if (smooth_regions) {
 
     } "Conjugate Gradient smoothing"
 
-    SCHEDULE NoExcision_CGInit_1 IN NoExcision_CGSmoothing
+    SCHEDULE CopyMask IN NoExcision_CGSmoothing
+    {
+      LANG: C
+      OPTIONS: global loop-local
+    } "Copy the weight function from CarpetReduce"
+
+    SCHEDULE NoExcision_CGInit_1 IN NoExcision_CGSmoothing AFTER CopyMask
     {
       LANG: Fortran
     } "Initialise the conjugate gradient method 1"

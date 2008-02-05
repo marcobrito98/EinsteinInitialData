@@ -18,13 +18,17 @@ CCTK_INT FUNCTION Boundary_SelectGroupForBC(CCTK_POINTER_TO_CONST IN GH, \
                                             CCTK_INT IN table_handle, \
                                             CCTK_STRING IN var_name, \
                                             CCTK_STRING IN bc_name)
-
 USES FUNCTION Boundary_SelectGroupForBC
 
 CCTK_INT smask type=GF timelevels=1 tags='tensortypealias="scalar" Prolongation="None"'
 {
   nes_mask
 } "mask for smoothing"
+
+CCTK_REAL reduction_mask type=GF tags='Prolongation="None" InterpNumTimelevels=1 checkpoint="no"'
+{
+  red_mask
+} "Copy of the weight grid function from CarpetReduce"
 
 CCTK_REAL cg_res_metric type=GF timelevels=1 tags='tensortypealias="dd_sym" Prolongation="None"'
 {
