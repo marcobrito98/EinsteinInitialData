@@ -15,6 +15,7 @@ module NoExcision_mod
   CCTK_INT :: loop_counter
   CCTK_REAL, dimension(16) :: infnormresid
   CCTK_REAL, dimension(16) :: delta_new, delta_old, alpha, beta, absres
+  CCTK_REAL, dimension(16) :: sumred, lsumred, infred, linfred
   character(len=18), dimension(16) :: red_names = (/ 'NoExcision::redgxx', &
                                                      'NoExcision::redgxy', &
                                                      'NoExcision::redgxz', &
@@ -39,7 +40,7 @@ module NoExcision_mod
                                                     '  kyz', '  kzz', &
                                                     '  alp', 'betax', &
                                                     'betay', 'betaz' /)
-  integer :: nx, ny, nz
+  CCTK_INT :: nx, ny, nz
   integer :: ii
   logical, dimension(16) :: cont = (/ (.true., ii=1, 16) /)
 
@@ -165,6 +166,7 @@ module NoExcision_mod
       CCTK_INT, dimension(:,:,:), intent(in) :: mask
       CCTK_REAL, intent(in) :: si
       CCTK_INT, intent(in) :: order
+      CCTK_INT :: offset
 
       if ( cont(1) ) call residual ( v1, mask, r1, si, order )
       if ( cont(2) ) call residual ( v2, mask, r2, si, order )
@@ -195,7 +197,7 @@ module NoExcision_mod
                           v9, v10, v11, v12, v13, v14, v15, v16, &
                           r1, r2, r3, r4, r5, r6, r7, r8, &
                           r9, r10, r11, r12, r13, r14, r15, r16, &
-                          mask )
+                          mask, weight, do_inf_reduction, order )
 
       CCTK_REAL, dimension(:,:,:), intent(in) :: u1, u2, u3, u4, u5, u6, &
                                                  u7, u8, u9, u10, u11, u12, &
@@ -207,106 +209,128 @@ module NoExcision_mod
                                                   r7, r8, r9, r10, r11, r12, &
                                                   r13, r14, r15, r16
       CCTK_INT, dimension(:,:,:), intent(in) :: mask
+      CCTK_REAL, dimension(:,:,:), intent(in) :: weight
+      LOGICAL, intent(in) :: do_inf_reduction
+      CCTK_INT, intent(in) :: order
 
-!$OMP PARALLEL
+      CCTK_INT i, j, k, offset
 
-      if ( cont(1) ) then
-!$OMP WORKSHARE
-        where ( mask > 0 ) r1 = u1*v1
-!$OMP END WORKSHARE NOWAIT
-      end if
+      offset = order / 2
 
-      if ( cont(2) ) then
-!$OMP WORKSHARE
-         where ( mask > 0 ) r2 = u2*v2
-!$OMP END WORKSHARE NOWAIT
-      end if
+      lsumred = 0.0
 
-      if ( cont(3) ) then
-!$OMP WORKSHARE
-        where ( mask > 0 ) r3 = u3*v3
-!$OMP END WORKSHARE NOWAIT
-      end if
+      if (do_inf_reduction) linfred = 0.0
 
-      if ( cont(4) ) then
-!$OMP WORKSHARE
-        where ( mask > 0 ) r4 = u4*v4
-!$OMP END WORKSHARE NOWAIT
-      end if
+!$OMP PARALLEL DO SCHEDULE(guided) PRIVATE(j,i) REDUCTION(+:lsumred) &
+!$OMP REDUCTION(max:linfred)
+      do k = 1 + offset, nz - offset
+        do j = 1 + offset, ny - offset
+          do i = 1 + offset, nx - offset
 
-      if ( cont(5) ) then
-!$OMP WORKSHARE
-        where ( mask > 0 ) r5 = u5*v5
-!$OMP END WORKSHARE NOWAIT
-      end if
+            if ( mask(i,j,k) > 0 ) then
 
-      if ( cont(6) ) then
-!$OMP WORKSHARE
-        where ( mask > 0 ) r6 = u6*v6
-!$OMP END WORKSHARE NOWAIT
-      end if
+              if ( cont(1) ) then
+                r1(i,j,k) = u1(i,j,k)*v1(i,j,k)
+                lsumred(1) = lsumred(1) + weight(i,j,k)*r1(i,j,k)
+                if (do_inf_reduction) linfred(1) = max(linfred(1),r1(i,j,k))
+              end if
+                
+              if ( cont(2) ) then
+                r2(i,j,k)  = u2(i,j,k)*v2(i,j,k)
+                lsumred(2) = lsumred(2) + weight(i,j,k)*r2(i,j,k)
+                if (do_inf_reduction) linfred(2) = max(linfred(2),r2(i,j,k))
+              end if
 
-      if ( cont(7) ) then
-!$OMP WORKSHARE
-        where ( mask > 0 ) r7 = u7*v7
-!$OMP END WORKSHARE NOWAIT
-      end if
+              if ( cont(3) ) then
+                r3(i,j,k) = u3(i,j,k)*v3(i,j,k)
+                lsumred(3) = lsumred(3) + weight(i,j,k)*r3(i,j,k)
+                if (do_inf_reduction) linfred(3) = max(linfred(3),r3(i,j,k))
+              end if
 
-      if ( cont(8) ) then
-!$OMP WORKSHARE
-        where ( mask > 0 ) r8 = u8*v8
-!$OMP END WORKSHARE NOWAIT
-      end if
+              if ( cont(4) ) then
+                r4(i,j,k) = u4(i,j,k)*v4(i,j,k)
+                lsumred(4) = lsumred(4) + weight(i,j,k)*r4(i,j,k)
+                if (do_inf_reduction) linfred(4) = max(linfred(4),r4(i,j,k))
+              end if
 
-      if ( cont(9) ) then
-!$OMP WORKSHARE
-        where ( mask > 0 ) r9 = u9*v9
-!$OMP END WORKSHARE NOWAIT
-      end if
+              if ( cont(5) ) then
+                r5(i,j,k) = u5(i,j,k)*v5(i,j,k)
+                lsumred(5) = lsumred(5) + weight(i,j,k)*r5(i,j,k)
+                if (do_inf_reduction) linfred(5) = max(linfred(5),r5(i,j,k))
+              end if
 
-      if ( cont(10) ) then
-!$OMP WORKSHARE
-         where ( mask > 0 ) r10 = u10*v10
-!$OMP END WORKSHARE NOWAIT
-      end if
+              if ( cont(6) ) then
+                r6(i,j,k) = u6(i,j,k)*v6(i,j,k)
+                lsumred(6) = lsumred(6) + weight(i,j,k)*r6(i,j,k)
+                if (do_inf_reduction) linfred(6) = max(linfred(6),r6(i,j,k))
+              end if
 
-      if ( cont(11) ) then
-!$OMP WORKSHARE
-        where ( mask > 0 ) r11 = u11*v11
-!$OMP END WORKSHARE NOWAIT
-      end if
+              if ( cont(7) ) then
+                r7(i,j,k) = u7(i,j,k)*v7(i,j,k)
+                lsumred(7) = lsumred(7) + weight(i,j,k)*r7(i,j,k)
+                if (do_inf_reduction) linfred(7) = max(linfred(7),r7(i,j,k))
+              end if
 
-      if ( cont(12) ) then
-!$OMP WORKSHARE
-        where ( mask > 0 ) r12 = u12*v12
-!$OMP END WORKSHARE NOWAIT
-      end if
+              if ( cont(8) ) then
+                r8(i,j,k) = u8(i,j,k)*v8(i,j,k)
+                lsumred(8) = lsumred(8) + weight(i,j,k)*r8(i,j,k)
+                if (do_inf_reduction) linfred(8) = max(linfred(8),r8(i,j,k))
+              end if
 
-      if ( cont(13) ) then
-!$OMP WORKSHARE
-        where ( mask > 0 ) r13 = u13*v13
-!$OMP END WORKSHARE NOWAIT
-      end if
+              if ( cont(9) ) then
+                r9(i,j,k) = u9(i,j,k)*v9(i,j,k)
+                lsumred(9) = lsumred(9) + weight(i,j,k)*r9(i,j,k)
+                if (do_inf_reduction) linfred(9) = max(linfred(9),r9(i,j,k))
+              end if
 
-      if ( cont(14) ) then
-!$OMP WORKSHARE
-        where ( mask > 0 ) r14 = u14*v14
-!$OMP END WORKSHARE NOWAIT
-      end if
+              if ( cont(10) ) then
+                r10(i,j,k) = u10(i,j,k)*v10(i,j,k)
+                lsumred(10) = lsumred(10) + weight(i,j,k)*r10(i,j,k)
+                if (do_inf_reduction) linfred(10) = max(linfred(01),r10(i,j,k))
+              end if
 
-      if ( cont(15) ) then
-!$OMP WORKSHARE
-        where ( mask > 0 ) r15 = u15*v15
-!$OMP END WORKSHARE NOWAIT
-      end if
+              if ( cont(11) ) then
+                r11(i,j,k) = u11(i,j,k)*v11(i,j,k)
+                lsumred(11) = lsumred(11) + weight(i,j,k)*r11(i,j,k)
+                if (do_inf_reduction) linfred(11) = max(linfred(11),r11(i,j,k))
+              end if
 
-      if ( cont(16) ) then
-!$OMP WORKSHARE
-        where ( mask > 0 ) r16 = u16*v16
-!$OMP END WORKSHARE NOWAIT
-      end if
+              if ( cont(12) ) then
+                r12(i,j,k) = u12(i,j,k)*v12(i,j,k)
+                lsumred(12) = lsumred(12) + weight(i,j,k)*r12(i,j,k)
+                if (do_inf_reduction) linfred(12) = max(linfred(12),r12(i,j,k))
+              end if
 
-!$OMP END PARALLEL 
+              if ( cont(13) ) then
+                r13(i,j,k) = u13(i,j,k)*v13(i,j,k)
+                lsumred(13) = lsumred(13) + weight(i,j,k)*r13(i,j,k)
+                if (do_inf_reduction) linfred(13) = max(linfred(13),r13(i,j,k))
+              end if
+
+              if ( cont(14) ) then
+                r14(i,j,k) = u14(i,j,k)*v14(i,j,k)
+                lsumred(14) = lsumred(14) + weight(i,j,k)*r14(i,j,k)
+                if (do_inf_reduction) linfred(14) = max(linfred(14),r14(i,j,k))
+              end if
+
+              if ( cont(15) ) then
+                r15(i,j,k) = u15(i,j,k)*v15(i,j,k)
+                lsumred(15) = lsumred(15) + weight(i,j,k)*r15(i,j,k)
+                if (do_inf_reduction) linfred(15) = max(linfred(15),r15(i,j,k))
+              end if
+
+              if ( cont(16) ) then
+                r16(i,j,k) = u16(i,j,k)*v16(i,j,k)
+                lsumred(16) = lsumred(16) + weight(i,j,k)*r16(i,j,k)
+                if (do_inf_reduction) linfred(16) = max(linfred(16),r16(i,j,k))
+              end if
+
+            end if
+
+          end do
+        end do
+      end do
+!$OMP END PARALLEL DO
 
     end subroutine multiply
                   
@@ -330,7 +354,6 @@ module NoExcision_mod
                                                  v13, v14, v15, v16
       CCTK_REAL, dimension(16), intent(in) :: c1, c2
       CCTK_INT, dimension(:,:,:), intent(in) :: mask
-
       
 !$OMP PARALLEL
 
