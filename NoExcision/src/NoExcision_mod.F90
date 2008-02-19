@@ -166,7 +166,6 @@ module NoExcision_mod
       CCTK_INT, dimension(:,:,:), intent(in) :: mask
       CCTK_REAL, intent(in) :: si
       CCTK_INT, intent(in) :: order
-      CCTK_INT :: offset
 
       if ( cont(1) ) call residual ( v1, mask, r1, si, order )
       if ( cont(2) ) call residual ( v2, mask, r2, si, order )
