@@ -125,7 +125,7 @@ subroutine NoExcision_CGInit_2 (CCTK_ARGUMENTS)
   DECLARE_CCTK_FUNCTIONS
   DECLARE_CCTK_PARAMETERS
 
-  CCTK_INT :: res_var, ierr
+  CCTK_INT :: ierr
   integer :: i
   character(len=56) :: conv_message
 
@@ -218,9 +218,7 @@ subroutine NoExcision_CG_2 (CCTK_ARGUMENTS)
   DECLARE_CCTK_FUNCTIONS
   DECLARE_CCTK_PARAMETERS
 
-  CCTK_INT res_var, ierr
-
-  integer :: i
+  CCTK_INT ierr
 
   if ( loop_control == 1 ) then
     call CCTK_ReduceLocArrayToArray1D ( ierr, cctkGH, -1, sum_handle, lsumred, &
@@ -315,9 +313,7 @@ subroutine NoExcision_CG_4 (CCTK_ARGUMENTS)
   DECLARE_CCTK_FUNCTIONS
   DECLARE_CCTK_PARAMETERS
 
-  CCTK_INT res_var, ierr
-
-  integer :: i
+  CCTK_INT ierr
 
   if ( loop_control == 1 ) then
     ! delta_new = r^T r.
@@ -639,7 +635,7 @@ subroutine NoExcision_Set_Zero(CCTK_ARGUMENTS)
   DECLARE_CCTK_PARAMETERS
   DECLARE_CCTK_FUNCTIONS
 
-  CCTK_REAL :: cx, cy, cz, radx, rady, radz
+  CCTK_REAL :: cx, cy, cz, iradx, irady, iradz
   CCTK_REAL, dimension(:,:,:), allocatable :: dist2
   integer :: n
   CCTK_INT :: my_level, n_levels
@@ -650,8 +646,6 @@ subroutine NoExcision_Set_Zero(CCTK_ARGUMENTS)
 
     allocate ( dist2(cctk_lsh(1),cctk_lsh(2),cctk_lsh(3)) )
 
-! This cannot be parallel since dist2 is shared
-! !$OMP PARALLEL PRIVATE(cx, cy, cz, radx, rady, radz)
     do n = 1, num_regions
 
       cx = centre_x(n)
@@ -660,15 +654,15 @@ subroutine NoExcision_Set_Zero(CCTK_ARGUMENTS)
 
       if (CCTK_EQUALS(region_shape(n), "sphere")) then
 
-        radx = radius(n)
-        rady = radius(n)
-        radz = radius(n)
+        iradx = 1 / radius(n)
+        irady = 1 / radius(n)
+        iradz = 1 / radius(n)
 
       else if (CCTK_EQUALS(region_shape(n), "ellipsoid")) then
 
-        radx = radius_x(n)
-        rady = radius_y(n)
-        radz = radius_z(n)
+        iradx = 1 / radius_x(n)
+        irady = 1 / radius_y(n)
+        iradz = 1 / radius_z(n)
 
       else
 
@@ -676,10 +670,10 @@ subroutine NoExcision_Set_Zero(CCTK_ARGUMENTS)
 
       end if 
 
-!$OMP WORKSHARE
+!$OMP PARALLEL WORKSHARE
 
-      dist2 =   ((x - cx) / radx)**2 + ((y - cy) / rady)**2 &
-           &  + ((z - cz) / radz)**2
+      dist2 =   ((x - cx) * iradx)**2 + ((y - cy) * irady)**2 &
+           &  + ((z - cz) * iradz)**2
 
       where ( dist2 <= one )
 
@@ -702,11 +696,9 @@ subroutine NoExcision_Set_Zero(CCTK_ARGUMENTS)
 
       end where
 
-!$OMP END WORKSHARE
+!$OMP END PARALLEL WORKSHARE
 
     end do
-
-! !$OMP END PARALLEL
 
     deallocate ( dist2 )
 
