@@ -205,11 +205,11 @@ TwoPunctures (CCTK_ARGUMENTS)
   int nvar = 1, n1 = npoints_A, n2 = npoints_B, n3 = npoints_phi;
 
   int imin[3], imax[3], d;
-  int i, j, k, ntotal = n1 * n2 * n3 * nvar;
+  int i, j, k, l, ntotal = n1 * n2 * n3 * nvar;
   int percent10 = 0;
   static CCTK_REAL *F = NULL;
   static derivs u, v;
-  CCTK_REAL admMass;
+  CCTK_REAL admMass, M_p, M_m, tmp_p, tmp_m, um, up, mp, mm;
   CCTK_REAL old_alp;
 
   if (! F) {
@@ -223,10 +223,7 @@ TwoPunctures (CCTK_ARGUMENTS)
     } else {
       CCTK_INFO ("Solving puncture equation for BH-BH system");
     }
-    CCTK_VInfo (CCTK_THORNSTRING,
-                "The two puncture masses are %g and %g",
-                (double) par_m_minus, (double) par_m_plus);
-
+    
     /* initialise to 0 */
     for (j = 0; j < ntotal; j++)
     {
@@ -247,12 +244,52 @@ TwoPunctures (CCTK_ARGUMENTS)
       set_initial_guess(cctkGH, v);
     }
 
+     if(!give_bare_mass) {
+       Newton (cctkGH, nvar, n1, n2, n3, v, Newton_tol, 2);
+
+       F_of_v (cctkGH, nvar, n1, n2, n3, v, F, u);
+
+    
+      up  = PunctTaylorExpandAtArbitPosition
+	(0, nvar, n1, n2, n3, v, par_b, 0., 0.);
+      um  = PunctTaylorExpandAtArbitPosition 
+	(0, nvar, n1, n2, n3, v, -par_b, 0., 0.);
+      mp  = target_M_plus;
+      mm  = target_M_minus;
+      M_p= target_M_plus;
+      M_m= target_M_minus;
+      for(l=0; l<32;l++) {
+	tmp_p=(4*par_b*um+mp+4*par_b);
+	tmp_m=(4*par_b*up+mm+4*par_b);
+	mp = mp - ((mp*(up+1+M_m/tmp_p)-M_p)/
+		   (up+1+(M_m/tmp_p)-(mp*M_m)/(pow(tmp_p,2))));
+	mm = mm - ((mm*(um+1+M_p/tmp_m)-M_m)/
+		   (um+1+(M_p/tmp_m)-(mm*M_p)/(pow(tmp_m,2))));
+      }
+      char valbuf_p[100], valbuf_m[100];  
+
+      sprintf (valbuf_p,"%f", (float) mp);
+      CCTK_ParameterSet ("par_m_plus", "twopunctures", valbuf_p);
+      const CCTK_REAL tmp = *(const CCTK_REAL *) CCTK_ParameterGet("par_m_plus", "twopunctures", NULL);
+      sprintf (valbuf_m,"%f", (float) mm);
+      CCTK_ParameterSet ("par_m_minus", "twopunctures", valbuf_m);
+    }
+    else {
+      mp = par_m_plus;
+      mm = par_m_minus;
+    }
+
     Newton (cctkGH, nvar, n1, n2, n3, v, Newton_tol, Newton_maxit);
 
     F_of_v (cctkGH, nvar, n1, n2, n3, v, F, u);
-    
+
+    CCTK_VInfo (CCTK_THORNSTRING,
+                "The two puncture masses are %g and %g",
+                (double) mm, (double) mp);
+
+  
     /* print out ADM mass, eq.: \Delta M_ADM=2*r*u=4*b*V for A=1,B=0,phi=0 */
-    admMass = (par_m_plus + par_m_minus
+    admMass = (mp + mm
                - 4*par_b*PunctEvalAtArbitPosition(v.d0, 1, 0, 0, n1, n2, n3));
     CCTK_VInfo (CCTK_THORNSTRING, "ADM mass is %g\n", (double)admMass);
   }
@@ -374,21 +411,21 @@ TwoPunctures (CCTK_ARGUMENTS)
         if (r_minus < TP_Tiny)
             r_minus = TP_Tiny;
         CCTK_REAL psi1 = 1
-          + 0.5 * par_m_plus / r_plus
-          + 0.5 * par_m_minus / r_minus + U;
+          + 0.5 * mp / r_plus
+          + 0.5 * mm / r_minus + U;
 #define EXTEND(M,r) \
           ( M * (3./8 * pow(r, 4) / pow(TP_Extend_Radius, 5) - \
                  5./4 * pow(r, 2) / pow(TP_Extend_Radius, 3) + \
                  15./8 / TP_Extend_Radius))
         if (r_plus < TP_Extend_Radius) {
           psi1 = 1
-             + 0.5 * EXTEND(par_m_plus,r_plus)
-             + 0.5 * par_m_minus / r_minus + U;
+             + 0.5 * EXTEND(mp,r_plus)
+             + 0.5 * mm / r_minus + U;
         }
         if (r_minus < TP_Extend_Radius) {
           psi1 = 1
-             + 0.5 * EXTEND(par_m_minus,r_minus)
-             + 0.5 * par_m_plus / r_plus + U;
+             + 0.5 * EXTEND(mm,r_minus)
+             + 0.5 * mp / r_plus + U;
         }
         CCTK_REAL static_psi = 1;
         
@@ -422,7 +459,7 @@ TwoPunctures (CCTK_ARGUMENTS)
             ir = EXTEND(1., rp);
           }
 
-          s1 = 0.5*par_m_plus*ir;
+          s1 = 0.5*mp*ir;
           s3 = -s1*ir*ir;
           s5 = -3.0*s3*ir*ir;
 
@@ -453,7 +490,7 @@ TwoPunctures (CCTK_ARGUMENTS)
             ir = EXTEND(1., rp);
           }
 
-          s1 = 0.5*par_m_minus*ir;
+          s1 = 0.5*mm*ir;
           s3 = -s1*ir*ir;
           s5 = -3.0*s3*ir*ir;
 
@@ -513,18 +550,18 @@ TwoPunctures (CCTK_ARGUMENTS)
 
         if (antisymmetric_lapse || averaged_lapse) {
           alp[ind] =
-            ((1.0 -0.5*par_m_plus/r_plus -0.5*par_m_minus/r_minus)
-            /(1.0 +0.5*par_m_plus/r_plus +0.5*par_m_minus/r_minus));
+            ((1.0 -0.5*mp/r_plus -0.5*mm/r_minus)
+            /(1.0 +0.5*mp/r_plus +0.5*mm/r_minus));
 
           if (r_plus < TP_Extend_Radius) {
             alp[ind] =
-              ((1.0 -0.5*EXTEND(par_m_plus, r_plus) -0.5*par_m_minus/r_minus)
-              /(1.0 +0.5*EXTEND(par_m_plus, r_plus) +0.5*par_m_minus/r_minus));
+              ((1.0 -0.5*EXTEND(mp, r_plus) -0.5*mm/r_minus)
+              /(1.0 +0.5*EXTEND(mp, r_plus) +0.5*mm/r_minus));
           }
           if (r_minus < TP_Extend_Radius) {
             alp[ind] =
-              ((1.0 -0.5*EXTEND(par_m_minus, r_minus) -0.5*par_m_plus/r_plus)
-              /(1.0 +0.5*EXTEND(par_m_minus, r_minus) +0.5*par_m_plus/r_plus));
+              ((1.0 -0.5*EXTEND(mm, r_minus) -0.5*mp/r_plus)
+              /(1.0 +0.5*EXTEND(mm, r_minus) +0.5*mp/r_plus));
           }
           
           if (averaged_lapse) {

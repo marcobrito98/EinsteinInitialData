@@ -26,7 +26,7 @@ USES KEYWORD conformal_storage
 
 
 
-PRIVATE:
+RESTRICTED:
 
 BOOLEAN verbose "Print screen output while solving"
 {
@@ -36,6 +36,9 @@ BOOLEAN keep_u_around "Keep the variable u around after solving"
 {
 } "no"
 
+BOOLEAN give_bare_mass "User provides bare masses rather than target ADM masses"
+{
+} "yes"
 
 
 KEYWORD grid_setup_method "How to fill the 3D grid from the spectral grid"
@@ -92,15 +95,25 @@ REAL par_b "x coordinate of the m+ puncture"
   (0.0:*) :: ""
 } 1.0
 
-REAL par_m_plus "mass of the m+ puncture"
+REAL par_m_plus "mass of the m+ puncture" STEERABLE = ALWAYS
 {
-  (0.0:* :: ""
+  (0.0:*) :: ""
 } 1.0
 
-REAL par_m_minus "mass of the m- puncture"
+REAL par_m_minus "mass of the m- puncture" STEERABLE = ALWAYS
 {
-  (0.0:* :: ""
+  (0.0:*) :: ""
 } 1.0
+
+REAL target_M_plus "target ADM mass for m+"
+{
+  (0.0:*) :: ""
+} 0.5
+
+REAL target_M_minus "target ADM mass for m-"
+{
+  (0.0:*) :: ""
+} 0.5
 
 REAL par_P_plus[3] "momentum of the m+ puncture"
 {
