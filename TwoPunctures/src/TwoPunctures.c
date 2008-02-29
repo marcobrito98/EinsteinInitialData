@@ -268,10 +268,9 @@ TwoPunctures (CCTK_ARGUMENTS)
       }
       char valbuf_p[100], valbuf_m[100];  
 
-      sprintf (valbuf_p,"%f", (float) mp);
+      snprintf (valbuf_p,sizeof valbuf_p, "%g", (float) mp);
       CCTK_ParameterSet ("par_m_plus", "twopunctures", valbuf_p);
-      const CCTK_REAL tmp = *(const CCTK_REAL *) CCTK_ParameterGet("par_m_plus", "twopunctures", NULL);
-      sprintf (valbuf_m,"%f", (float) mm);
+      snprintf (valbuf_m,sizeof valbuf_m, "%g", (float) mm);
       CCTK_ParameterSet ("par_m_minus", "twopunctures", valbuf_m);
     }
     else {
