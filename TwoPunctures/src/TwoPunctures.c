@@ -292,6 +292,12 @@ TwoPunctures (CCTK_ARGUMENTS)
                - 4*par_b*PunctEvalAtArbitPosition(v.d0, 1, 0, 0, n1, n2, n3));
     CCTK_VInfo (CCTK_THORNSTRING, "ADM mass is %g\n", (double)admMass);
   }
+  else {
+
+    mp = par_m_plus;
+    mm = par_m_minus;
+
+  }
 
   if (CCTK_EQUALS(grid_setup_method, "Taylor expansion"))
   {
