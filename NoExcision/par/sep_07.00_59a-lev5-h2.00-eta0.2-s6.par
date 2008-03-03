@@ -85,7 +85,6 @@ Carpet::num_integrator_substeps      = 4
 
 Carpet::output_timers_every      = 512
 CarpetLib::print_timestats_every = 512
-CarpetLib::timestat_timer        = "rdtsc"
 CarpetLib::print_memstats_every  = 512
 
 
