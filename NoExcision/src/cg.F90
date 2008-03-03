@@ -142,7 +142,7 @@ subroutine NoExcision_CGInit_2 (CCTK_ARGUMENTS)
 
     where ( cont ) infnormresid = sqrt(infnormresid)
 
-    ! Check if some variables has already converged. This happens when the
+    ! Check if some variables have already converged. This happens when the
     ! variable is identically zero.
 
     do i = 1, 16 
