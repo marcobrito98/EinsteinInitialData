@@ -21,103 +21,100 @@ subroutine NoExcision_Overwrite (CCTK_ARGUMENTS)
   integer, parameter :: sm_cosine = 3
   integer :: sm_type
 
-  if (CCTK_EQUALS(method,"old")) then
-    do n = 1, num_regions
+  do n = 1, num_regions
 
-       cx = centre_x(n)
-       cy = centre_y(n)
-       cz = centre_z(n)
-       if (CCTK_EQUALS(region_shape(n), "sphere")) then
-          radx = radius(n)
-          rady = radius(n)
-          radz = radius(n)
-       else if (CCTK_EQUALS(region_shape(n), "ellipsoid")) then
-          radx = radius_x(n)
-          rady = radius_y(n)
-          radz = radius_z(n)
-       else
-          call CCTK_WARN (0, "internal error")
-       end if
+     cx = centre_x(n)
+     cy = centre_y(n)
+     cz = centre_z(n)
+     if (CCTK_EQUALS(region_shape(n), "sphere")) then
+        radx = radius(n)
+        rady = radius(n)
+        radz = radius(n)
+     else if (CCTK_EQUALS(region_shape(n), "ellipsoid")) then
+        radx = radius_x(n)
+        rady = radius_y(n)
+        radz = radius_z(n)
+     else
+        call CCTK_WARN (0, "internal error")
+     end if
 
-       if (CCTK_EQUALS (smoothing_function(n), "linear")) then
-          sm_type = sm_linear
-       else if (CCTK_EQUALS (smoothing_function(n), "spline")) then
-          sm_type = sm_spline
-       else if (CCTK_EQUALS (smoothing_function(n), "cosine")) then
-          sm_type = sm_cosine
-       else
-          call CCTK_WARN (0, "internal error")
-       end if
-       width = smoothing_zone_width(n)
+     if (CCTK_EQUALS (smoothing_function(n), "linear")) then
+        sm_type = sm_linear
+     else if (CCTK_EQUALS (smoothing_function(n), "spline")) then
+        sm_type = sm_spline
+     else if (CCTK_EQUALS (smoothing_function(n), "cosine")) then
+        sm_type = sm_cosine
+     else
+        call CCTK_WARN (0, "internal error")
+     end if
+     width = smoothing_zone_width(n)
 
-       dist2 =   ((x - cx) / radx)**2 + ((y - cy) / rady)**2 &
-            &  + ((z - cz) / radz)**2
+     dist2 =   ((x - cx) / radx)**2 + ((y - cy) / rady)**2 &
+          &  + ((z - cz) / radz)**2
 
-       if (overwrite_geometry(n) /= 0) then
+     if (overwrite_geometry(n) /= 0) then
 
-          if (conformal_state >= 1) then
-             where (dist2 <= 1)
-                psi = 1
-             end where
-          end if
-          if (conformal_state >= 2) then
-             where (dist2 <= 1)
-                psix = 0
-                psiy = 0
-                psiz = 0
-             end where
-          end if
-          if (conformal_state >= 3) then
-             where (dist2 <= 1)
-                psixx = 0
-                psixy = 0
-                psixz = 0
-                psiyy = 0
-                psiyz = 0
-                psizz = 0
-             end where
-          end if
-  
-          where (dist2 <= 1)
-             gxx = smooth (gxx,  Minkowski_scale(n), dist2)
-             gxy = smooth (gxy,  zero              , dist2)
-             gxz = smooth (gxz,  zero              , dist2)
-             gyy = smooth (gyy,  Minkowski_scale(n), dist2)
-             gyz = smooth (gyz,  zero              , dist2)
-             gzz = smooth (gzz,  Minkowski_scale(n), dist2)
-             kxx = smooth (kxx,  zero              , dist2)
-             kxy = smooth (kxy,  zero              , dist2)
-             kxz = smooth (kxz,  zero              , dist2)
-             kyy = smooth (kyy,  zero              , dist2)
-             kyz = smooth (kyz,  zero              , dist2)
-             kzz = smooth (kzz,  zero              , dist2)
-          end where
+        if (conformal_state >= 1) then
+           where (dist2 <= 1)
+              psi = 1
+           end where
+        end if
+        if (conformal_state >= 2) then
+           where (dist2 <= 1)
+              psix = 0
+              psiy = 0
+              psiz = 0
+           end where
+        end if
+        if (conformal_state >= 3) then
+           where (dist2 <= 1)
+              psixx = 0
+              psixy = 0
+              psixz = 0
+              psiyy = 0
+              psiyz = 0
+              psizz = 0
+           end where
+        end if
 
-       end if
+        where (dist2 <= 1)
+           gxx = smooth (gxx,  Minkowski_scale(n), dist2)
+           gxy = smooth (gxy,  zero              , dist2)
+           gxz = smooth (gxz,  zero              , dist2)
+           gyy = smooth (gyy,  Minkowski_scale(n), dist2)
+           gyz = smooth (gyz,  zero              , dist2)
+           gzz = smooth (gzz,  Minkowski_scale(n), dist2)
+           kxx = smooth (kxx,  zero              , dist2)
+           kxy = smooth (kxy,  zero              , dist2)
+           kxz = smooth (kxz,  zero              , dist2)
+           kyy = smooth (kyy,  zero              , dist2)
+           kyz = smooth (kyz,  zero              , dist2)
+           kzz = smooth (kzz,  zero              , dist2)
+        end where
 
-       if (overwrite_lapse(n) /= 0) then
+     end if
 
-          where (dist2 <= 1)
-             alp = smooth (alp, lapse_scale(n), dist2)
-          end where
+     if (overwrite_lapse(n) /= 0) then
 
-       end if
+        where (dist2 <= 1)
+           alp = smooth (alp, lapse_scale(n), dist2)
+        end where
 
-       if (overwrite_shift(n) /= 0) then
+     end if
 
-          if (shift_state /= 0) then
-             where (dist2 <= 1)
-                betax = smooth (betax, zero, dist2)
-                betay = smooth (betay, zero, dist2)
-                betaz = smooth (betaz, zero, dist2)
-             end where
-          end if
+     if (overwrite_shift(n) /= 0) then
 
-       end if
+        if (shift_state /= 0) then
+           where (dist2 <= 1)
+              betax = smooth (betax, zero, dist2)
+              betay = smooth (betay, zero, dist2)
+              betaz = smooth (betaz, zero, dist2)
+           end where
+        end if
 
-    end do
-    
-  end if
+     end if
+
+  end do
   
 contains
   

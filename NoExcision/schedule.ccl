@@ -3,10 +3,12 @@
 
 STORAGE: reduction_mask
 
-SCHEDULE NoExcision_Overwrite IN ADMBase_PostInitial
-{
-  LANG: Fortran
-} "Overwrite regions with Minkowski"
+if (CCTK_EQUALS(method,"old")) {
+  SCHEDULE NoExcision_Overwrite IN ADMBase_PostInitial
+  {
+    LANG: Fortran
+  } "Overwrite regions with Minkowski"
+}
 
 if (CCTK_Equals(method,"new")) {
   schedule NoExcision_SetSym at CCTK_BASEGRID
@@ -27,7 +29,7 @@ if (smooth_regions) {
       SCHEDULE NoExcision_Set_Zero IN ADMBase_PostInitial BEFORE NoExcision_CGSmoothing
       {
         LANG: Fortran
-      } "set variablse to zero in used defined regions"
+      } "Set variables to zero in used defined regions"
     }
 
     SCHEDULE GROUP NoExcision_CGSmoothing IN ADMBase_PostInitial
