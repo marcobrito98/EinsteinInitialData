@@ -243,19 +243,22 @@ TwoPunctures (CCTK_ARGUMENTS)
     {
       set_initial_guess(cctkGH, v);
     }
+    mp = *(CCTK_REAL *) CCTK_ParameterGet("par_m_plus", "twopunctures", NULL);
+    mm = *(CCTK_REAL *) CCTK_ParameterGet("par_m_minus", "twopunctures", NULL);
 
-     if(!give_bare_mass) {
-       Newton (cctkGH, nvar, n1, n2, n3, v, Newton_tol, 2);
+    if(!(give_bare_mass)) {
+      Newton (cctkGH, nvar, n1, n2, n3, v, Newton_tol, 2);
 
-       F_of_v (cctkGH, nvar, n1, n2, n3, v, F, u);
+      F_of_v (cctkGH, nvar, n1, n2, n3, v, F, u);
 
-    
-      up  = PunctTaylorExpandAtArbitPosition
+      up  = PunctIntPolAtArbitPosition 
 	(0, nvar, n1, n2, n3, v, par_b, 0., 0.);
-      um  = PunctTaylorExpandAtArbitPosition 
+      um  = PunctIntPolAtArbitPosition 
 	(0, nvar, n1, n2, n3, v, -par_b, 0., 0.);
-      mp  = target_M_plus;
-      mm  = target_M_minus;
+
+      mp  = *(CCTK_REAL *) CCTK_ParameterGet("target_M_plus", "twopunctures", NULL);
+      mm  = *(CCTK_REAL *) CCTK_ParameterGet("target_M_minus", "twopunctures", NULL);
+      
       M_p= target_M_plus;
       M_m= target_M_minus;
       for(l=0; l<32;l++) {
@@ -268,14 +271,10 @@ TwoPunctures (CCTK_ARGUMENTS)
       }
       char valbuf_p[100], valbuf_m[100];  
 
-      snprintf (valbuf_p,sizeof valbuf_p, "%g", (float) mp);
+      sprintf (valbuf_p,"%f", (float) mp);
       CCTK_ParameterSet ("par_m_plus", "twopunctures", valbuf_p);
-      snprintf (valbuf_m,sizeof valbuf_m, "%g", (float) mm);
+      sprintf (valbuf_m,"%f", (float) mm);
       CCTK_ParameterSet ("par_m_minus", "twopunctures", valbuf_m);
-    }
-    else {
-      mp = par_m_plus;
-      mm = par_m_minus;
     }
 
     Newton (cctkGH, nvar, n1, n2, n3, v, Newton_tol, Newton_maxit);
@@ -286,17 +285,14 @@ TwoPunctures (CCTK_ARGUMENTS)
                 "The two puncture masses are %g and %g",
                 (double) mm, (double) mp);
 
-  
+    CCTK_VInfo (CCTK_THORNSTRING,
+		  "The puncture masses are %g and %g",
+                (double) par_m_minus, (double) par_m_plus);
+
     /* print out ADM mass, eq.: \Delta M_ADM=2*r*u=4*b*V for A=1,B=0,phi=0 */
     admMass = (mp + mm
                - 4*par_b*PunctEvalAtArbitPosition(v.d0, 1, 0, 0, n1, n2, n3));
     CCTK_VInfo (CCTK_THORNSTRING, "ADM mass is %g\n", (double)admMass);
-  }
-  else {
-
-    mp = par_m_plus;
-    mm = par_m_minus;
-
   }
 
   if (CCTK_EQUALS(grid_setup_method, "Taylor expansion"))
@@ -416,21 +412,21 @@ TwoPunctures (CCTK_ARGUMENTS)
         if (r_minus < TP_Tiny)
             r_minus = TP_Tiny;
         CCTK_REAL psi1 = 1
-          + 0.5 * mp / r_plus
-          + 0.5 * mm / r_minus + U;
+          + 0.5 * par_m_plus / r_plus
+          + 0.5 * par_m_minus / r_minus + U;
 #define EXTEND(M,r) \
           ( M * (3./8 * pow(r, 4) / pow(TP_Extend_Radius, 5) - \
                  5./4 * pow(r, 2) / pow(TP_Extend_Radius, 3) + \
                  15./8 / TP_Extend_Radius))
         if (r_plus < TP_Extend_Radius) {
           psi1 = 1
-             + 0.5 * EXTEND(mp,r_plus)
-             + 0.5 * mm / r_minus + U;
+             + 0.5 * EXTEND(par_m_plus,r_plus)
+             + 0.5 * par_m_minus / r_minus + U;
         }
         if (r_minus < TP_Extend_Radius) {
           psi1 = 1
-             + 0.5 * EXTEND(mm,r_minus)
-             + 0.5 * mp / r_plus + U;
+             + 0.5 * EXTEND(par_m_minus,r_minus)
+             + 0.5 * par_m_plus / r_plus + U;
         }
         CCTK_REAL static_psi = 1;
         
@@ -464,7 +460,7 @@ TwoPunctures (CCTK_ARGUMENTS)
             ir = EXTEND(1., rp);
           }
 
-          s1 = 0.5*mp*ir;
+          s1 = 0.5*par_m_plus*ir;
           s3 = -s1*ir*ir;
           s5 = -3.0*s3*ir*ir;
 
@@ -495,7 +491,7 @@ TwoPunctures (CCTK_ARGUMENTS)
             ir = EXTEND(1., rp);
           }
 
-          s1 = 0.5*mm*ir;
+          s1 = 0.5*par_m_minus*ir;
           s3 = -s1*ir*ir;
           s5 = -3.0*s3*ir*ir;
 
@@ -555,18 +551,18 @@ TwoPunctures (CCTK_ARGUMENTS)
 
         if (antisymmetric_lapse || averaged_lapse) {
           alp[ind] =
-            ((1.0 -0.5*mp/r_plus -0.5*mm/r_minus)
-            /(1.0 +0.5*mp/r_plus +0.5*mm/r_minus));
+            ((1.0 -0.5*par_m_plus/r_plus -0.5*par_m_minus/r_minus)
+            /(1.0 +0.5*par_m_plus/r_plus +0.5*par_m_minus/r_minus));
 
           if (r_plus < TP_Extend_Radius) {
             alp[ind] =
-              ((1.0 -0.5*EXTEND(mp, r_plus) -0.5*mm/r_minus)
-              /(1.0 +0.5*EXTEND(mp, r_plus) +0.5*mm/r_minus));
+              ((1.0 -0.5*EXTEND(par_m_plus, r_plus) -0.5*par_m_minus/r_minus)
+              /(1.0 +0.5*EXTEND(par_m_plus, r_plus) +0.5*par_m_minus/r_minus));
           }
           if (r_minus < TP_Extend_Radius) {
             alp[ind] =
-              ((1.0 -0.5*EXTEND(mm, r_minus) -0.5*mp/r_plus)
-              /(1.0 +0.5*EXTEND(mm, r_minus) +0.5*mp/r_plus));
+              ((1.0 -0.5*EXTEND(par_m_minus, r_minus) -0.5*par_m_plus/r_plus)
+              /(1.0 +0.5*EXTEND(par_m_minus, r_minus) +0.5*par_m_plus/r_plus));
           }
           
           if (averaged_lapse) {
