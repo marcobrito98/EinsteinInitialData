@@ -4,7 +4,7 @@
 if (CCTK_Equals(initial_data, "twopunctures"))
 {
   if (keep_u_around) {
-    STORAGE: puncture_u
+    STORAGE: puncture_u bare_mass
   }
 
   SCHEDULE TwoPunctures_ParamCheck AT PARAMCHECK
@@ -17,7 +17,7 @@ if (CCTK_Equals(initial_data, "twopunctures"))
     SCHEDULE TwoPunctures IN ADMBase_InitialData
     {
       LANG: C
-      STORAGE: puncture_u
+      STORAGE: puncture_u bare_mass
       # SYNC: ADMBase::metric ADMBase::curv ADMBase::lapse
     } "Create puncture black hole initial data"
   }
@@ -26,7 +26,7 @@ if (CCTK_Equals(initial_data, "twopunctures"))
     SCHEDULE TwoPunctures AT Initial AFTER ADMBase_InitialData BEFORE ADMBase_PostInitial AFTER TOV_Initial_Data
     {
       LANG: C
-      STORAGE: puncture_u
+      STORAGE: puncture_u bare_mass
       # SYNC: ADMBase::metric ADMBase::curv ADMBase::lapse
     } "Create puncture black hole initial data"
   }

@@ -40,3 +40,12 @@ CCTK_INT FUNCTION Rescale_Sources(  \
 USES FUNCTION Set_Rho_ADM
 USES FUNCTION Set_Initial_Guess_for_u
 USES FUNCTION Rescale_Sources
+
+PUBLIC:
+
+CCTK_REAL bare_mass TYPE=scalar
+{
+  mp mm
+} "Bare masses of the punctures"
+
+
