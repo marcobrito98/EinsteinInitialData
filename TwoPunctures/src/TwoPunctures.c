@@ -208,11 +208,11 @@ TwoPunctures (CCTK_ARGUMENTS)
   int nvar = 1, n1 = npoints_A, n2 = npoints_B, n3 = npoints_phi;
 
   int imin[3], imax[3], d;
-  int i, j, k, l, ntotal = n1 * n2 * n3 * nvar;
+  int i, j, k, l, n, ntotal = n1 * n2 * n3 * nvar;
   int percent10 = 0;
   static CCTK_REAL *F = NULL;
   static derivs u, v;
-  CCTK_REAL admMass, M_p, M_m, tmp_p, tmp_m, um, up;
+  CCTK_REAL admMass, M_p, M_m, tmp_p, tmp_m, um, up, new_mass, old_mass;
   CCTK_REAL old_alp;
 
   if (! F) {
@@ -248,40 +248,49 @@ TwoPunctures (CCTK_ARGUMENTS)
     }
 
     if(!(give_bare_mass)) {
-      Newton (cctkGH, nvar, n1, n2, n3, v, Newton_tol, 2);
-
-      F_of_v (cctkGH, nvar, n1, n2, n3, v, F, u);
-
-      up  = PunctIntPolAtArbitPosition 
-	(0, nvar, n1, n2, n3, v, par_b, 0., 0.);
-      um  = PunctIntPolAtArbitPosition 
-	(0, nvar, n1, n2, n3, v, -par_b, 0., 0.);
-
-     * mp  = *(CCTK_REAL *) CCTK_ParameterGet("target_M_plus", "twopunctures", NULL);
-     * mm  = *(CCTK_REAL *) CCTK_ParameterGet("target_M_minus", "twopunctures", NULL);
+      * mp  = target_M_plus;
+      * mm  = target_M_minus;
       
       M_p= target_M_plus;
       M_m= target_M_minus;
-      for(l=0; l<32;l++) {
-	tmp_p=(4*par_b*um+ *mp +4*par_b);
-	tmp_m=(4*par_b*up+ *mm +4*par_b);
-	*mp = *mp - ((*mp*(up+1+M_m/tmp_p)-M_p)/
-		   (up+1+(M_m/tmp_p)-(*mp*M_m)/(pow(tmp_p,2))));
-	*mm = *mm - ((*mm*(um+1+M_p/tmp_m)-M_m)/
-		   (um+1+(M_p/tmp_m)-(*mm*M_p)/(pow(tmp_m,2))));
-      }
-      char valbuf_p[100], valbuf_m[100];  
 
-      sprintf (valbuf_p,"%f", (float) *mp);
-      CCTK_ParameterSet ("par_m_plus", "twopunctures", valbuf_p);
-      sprintf (valbuf_m,"%f", (float) *mm);
-      CCTK_ParameterSet ("par_m_minus", "twopunctures", valbuf_m);
-    }
+      new_mass = 0;
+      old_mass = 1.;
+      while (new_mass<old_mass) {
+	old_mass = (double)*mp + (double)*mm;
+	Newton (cctkGH, nvar, n1, n2, n3, v, Newton_tol, 1);
+
+	F_of_v (cctkGH, nvar, n1, n2, n3, v, F, u);
+
+	up  = PunctIntPolAtArbitPosition 
+	  (0, nvar, n1, n2, n3, v, par_b, 0., 0.);
+	um  = PunctIntPolAtArbitPosition 
+	  (0, nvar, n1, n2, n3, v, -par_b, 0., 0.);
+
+	for(l=0; l<32;l++) {
+	  tmp_p=(4*par_b*um+ *mp +4*par_b);
+	  tmp_m=(4*par_b*up+ *mm +4*par_b);
+	  *mp = *mp - ((*mp*(up+1+M_m/tmp_p)-M_p)/
+		       (up+1+(M_m/tmp_p)-(*mp*M_m)/(pow(tmp_p,2))));
+	  *mm = *mm - ((*mm*(um+1+M_p/tmp_m)-M_m)/
+		       (um+1+(M_p/tmp_m)-(*mm*M_p)/(pow(tmp_m,2))));
+	}
+	char valbuf_p[100], valbuf_m[100];  
+	
+	sprintf (valbuf_p,"%f", (float) *mp);
+	CCTK_ParameterSet ("par_m_plus", "twopunctures", valbuf_p);
+	sprintf (valbuf_m,"%f", (float) *mm);
+	CCTK_ParameterSet ("par_m_minus", "twopunctures", valbuf_m);
+	new_mass = (double)*mp + (double)*mm;
+      }
+    } 
+    admMass = (*mp + *mm
+               - 4*par_b*PunctEvalAtArbitPosition(v.d0, 1, 0, 0, n1, n2, n3));
+    CCTK_VInfo (CCTK_THORNSTRING, "ADM mass is %g\n", (double)admMass);
 
     Newton (cctkGH, nvar, n1, n2, n3, v, Newton_tol, Newton_maxit);
-
+ 
     F_of_v (cctkGH, nvar, n1, n2, n3, v, F, u);
-
     CCTK_VInfo (CCTK_THORNSTRING,
                 "The two puncture masses are %g and %g",
                 (double) *mm, (double)* mp);

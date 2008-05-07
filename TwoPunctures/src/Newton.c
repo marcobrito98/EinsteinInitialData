@@ -412,6 +412,7 @@ Newton (CCTK_POINTER_TO_CONST cctkGH,
 	derivs v, CCTK_REAL tol, int itmax)
 {
   DECLARE_CCTK_PARAMETERS;
+
   int ntotal = n1 * n2 * n3 * nvar, ii, j, it;
   CCTK_REAL *F, dmax, normres;
   derivs u, dv;
@@ -436,6 +437,7 @@ Newton (CCTK_POINTER_TO_CONST cctkGH,
     for (j = 0; j < ntotal; j++)
       dv.d0[j] = 0;
     printf ("Newton: it=%d \t |F|=%e\n", it, (double)dmax);
+    printf ("bare mass: mp=%g \t mm=%g\n", (double) par_m_plus, (double) par_m_minus);
     fflush(stdout);
     ii =
       bicgstab (cctkGH,
