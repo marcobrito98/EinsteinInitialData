@@ -104,7 +104,7 @@ INT eppley_c "Eppley Brill wave: (r^2 - r0^2)^(c/2)"
 
 REAL eppley_r0 "Eppley Brill wave: radius of torus in r"
 {
-  (0:* :: "Positive" 
+  0:* :: "Positive" 
 } 0.0
 
 REAL eppley_sigmarho "Eppley Brill wave: sigma in rho"
@@ -136,7 +136,7 @@ REAL gundlach_sigmarho "Gundlach Brill wave: sigma in rho"
 
 REAL gundlach_r0 "Gundlach Brill wave: radius of torus in r"
 {
-  (0:* :: "Positive" 
+  0:* :: "Positive" 
 } 0.0
 
 INT gundlach_c "Gundlach Brill wave: (r^2 - r0^2)^(c/2)"
