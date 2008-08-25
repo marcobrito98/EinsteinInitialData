@@ -71,10 +71,10 @@ c     Epsilon for finite differencing.
                z1 = z(i,j,k)
 
                rho2 = x1*x1 + y1*y1
-               rho1 = dsqrt(rho2)
+               rho1 = sqrt(rho2)
                phi = phif(x1,y1)
 
-               e2q  = dexp(two*brillq(rho1,z1,phi))
+               e2q  = exp(two*brillq(rho1,z1,phi))
 
 c              Initialise psi
 

@@ -64,7 +64,7 @@ c     \/ psi +  Mlinear*psi  +  Nsource  =  0
                y1 = y(i,j,k)
                z1 = z(i,j,k)
 
-               rho1 = dsqrt(x1*x1 + y1*y1)
+               rho1 = sqrt(x1*x1 + y1*y1)
 
                brillpsi(i,j,k) = one
 

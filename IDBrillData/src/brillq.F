@@ -91,11 +91,11 @@ c     "exp" brill data
 
       if (qtype.eq.0) then
 
-         brillq = exp_a*dabs(rho)**(2 + exp_b)
-     .          / dexp((rho - exp_rho0)**2)/(rho**2 + z**2)
+         brillq = exp_a*abs(rho)**(2 + exp_b)
+     .          / exp((rho - exp_rho0)**2)/(rho**2 + z**2)
 
          if (exp_sigmaz.ne.0.0D0) then
-            brillq = brillq/dexp((z/exp_sigmaz)**2)
+            brillq = brillq/exp((z/exp_sigmaz)**2)
          end if
 
       else if (qtype.eq.1) then
@@ -114,7 +114,7 @@ c     smooth "pure quadrupole" q should be, plus the choice of
 c     Holz et al.
 
          brillq = gundlach_a*(rho/gundlach_sigmarho)**gundlach_b
-     &          / dexp(((rho**2 + z**2 - gundlach_r0**2)/
+     &          / exp(((rho**2 + z**2 - gundlach_r0**2)/
      &            gundlach_sigmar**2)**(gundlach_c/2))
 
       else

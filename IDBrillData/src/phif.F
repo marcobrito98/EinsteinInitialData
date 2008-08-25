@@ -28,10 +28,10 @@ c     Numbers.
 
 c     Find angle between 0 and pi/2 such that tan(phi) = |y/x|.
 
-      if (dabs(x).gt.dabs(y)) then
-         phif = atan(dabs(y/x))
-      else if (dabs(x).lt.dabs(y)) then
-         phif = half*pi - atan(dabs(x/y))
+      if (abs(x).gt.abs(y)) then
+         phif = atan(abs(y/x))
+      else if (abs(x).lt.abs(y)) then
+         phif = half*pi - atan(abs(x/y))
       else
          phif = 0.25D0*pi
       end if
