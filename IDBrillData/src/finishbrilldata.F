@@ -46,11 +46,11 @@ c     Brill metric calculated from q and Psi.
                z1 = z(i,j,k)
 
                rho2 = x1*x1 + y1*y1
-               rho1 = dsqrt(rho2)
+               rho1 = sqrt(rho2)
 
                phi = phif(x1,y1)
 
-               e2q  = dexp(2.d0*brillq(rho1,z1,phi))
+               e2q  = exp(2.d0*brillq(rho1,z1,phi))
 
 c              Fudge division by rho^2 on axis. (Physically, y^/rho^2,
 c              x^2/rho^2 and xy/rho^2 are of course regular.)
