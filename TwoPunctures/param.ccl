@@ -97,12 +97,12 @@ REAL par_b "x coordinate of the m+ puncture"
 
 REAL par_m_plus "mass of the m+ puncture" STEERABLE = ALWAYS
 {
-  (0.0:*) :: ""
+  0.0:* :: ""
 } 1.0
 
 REAL par_m_minus "mass of the m- puncture" STEERABLE = ALWAYS
 {
-  (0.0:*) :: ""
+  0.0:* :: ""
 } 1.0
 
 REAL target_M_plus "target ADM mass for m+"
