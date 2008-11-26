@@ -1,5 +1,4 @@
 # Parameter definitions for thorn TwoPunctures
-# $Header$
 
 SHARES: ADMBase
 
@@ -97,22 +96,22 @@ REAL par_b "x coordinate of the m+ puncture"
 
 REAL par_m_plus "mass of the m+ puncture" STEERABLE = ALWAYS
 {
-  0.0:* :: ""
+  0.0:*) :: ""
 } 1.0
 
 REAL par_m_minus "mass of the m- puncture" STEERABLE = ALWAYS
 {
-  0.0:* :: ""
+  0.0:*) :: ""
 } 1.0
 
 REAL target_M_plus "target ADM mass for m+"
 {
-  (0.0:*) :: ""
+  0.0:*) :: ""
 } 0.5
 
 REAL target_M_minus "target ADM mass for m-"
 {
-  (0.0:*) :: ""
+  0.0:*) :: ""
 } 0.5
 
 REAL par_P_plus[3] "momentum of the m+ puncture"
@@ -173,11 +172,11 @@ BOOLEAN do_initial_debug_output "Output debug information about initial guess"
 {
 } "no"
 
-BOOLEAN multiply_old_lapse "Multiply the old lapse to the new one"
+BOOLEAN multiply_old_lapse "Multiply the old lapse with the new one"
 {
 } "no"
 
-BOOLEAN schedule_in_ADMBase_InitialData "Schedule in or after ADMBase_InitialData"
+BOOLEAN schedule_in_ADMBase_InitialData "Schedule in (instead of after) ADMBase_InitialData"
 {
 } "yes"
 

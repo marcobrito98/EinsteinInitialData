@@ -1,5 +1,4 @@
 # Schedule definitions for thorn TwoPunctures
-# $Header$
 
 if (CCTK_Equals(initial_data, "twopunctures"))
 {

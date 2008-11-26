@@ -16,7 +16,7 @@
 
 /* Swap two variables */
 static inline
-void swap (CCTK_REAL * const a, CCTK_REAL * const b)
+void swap (CCTK_REAL * restrict const a, CCTK_REAL * restrict const b)
 {
   CCTK_REAL const t = *a; *a=*b; *b=t;
 }
@@ -25,6 +25,7 @@ void swap (CCTK_REAL * const a, CCTK_REAL * const b)
 
 
 
+static
 void set_initial_guess(CCTK_POINTER_TO_CONST cctkGH,
                        derivs v)
 {
@@ -205,15 +206,16 @@ TwoPunctures (CCTK_ARGUMENTS)
 
   int antisymmetric_lapse, averaged_lapse, pmn_lapse, brownsville_lapse;
 
-  int nvar = 1, n1 = npoints_A, n2 = npoints_B, n3 = npoints_phi;
+  int const nvar = 1, n1 = npoints_A, n2 = npoints_B, n3 = npoints_phi;
 
-  int imin[3], imax[3], d;
-  int i, j, k, l, n, ntotal = n1 * n2 * n3 * nvar;
+  int imin[3], imax[3];
+  int const ntotal = n1 * n2 * n3 * nvar;
+#if 0
   int percent10 = 0;
+#endif
   static CCTK_REAL *F = NULL;
   static derivs u, v;
   CCTK_REAL admMass, M_p, M_m, tmp_p, tmp_m, um, up, new_mass, old_mass;
-  CCTK_REAL old_alp;
 
   if (! F) {
     /* Solve only when called for the first time */
@@ -228,7 +230,7 @@ TwoPunctures (CCTK_ARGUMENTS)
     }
     
     /* initialise to 0 */
-    for (j = 0; j < ntotal; j++)
+    for (int j = 0; j < ntotal; j++)
     {
       v.d0[j] = 0.0;
       v.d1[j] = 0.0;
@@ -267,7 +269,7 @@ TwoPunctures (CCTK_ARGUMENTS)
 	um  = PunctIntPolAtArbitPosition 
 	  (0, nvar, n1, n2, n3, v, -par_b, 0., 0.);
 
-	for(l=0; l<32;l++) {
+	for(int l=0; l<32;l++) {
 	  tmp_p=(4*par_b*um+ *mp +4*par_b);
 	  tmp_m=(4*par_b*up+ *mm +4*par_b);
 	  *mp = *mp - ((*mp*(up+1+M_m/tmp_p)-M_p)/
@@ -291,18 +293,15 @@ TwoPunctures (CCTK_ARGUMENTS)
     Newton (cctkGH, nvar, n1, n2, n3, v, Newton_tol, Newton_maxit);
  
     F_of_v (cctkGH, nvar, n1, n2, n3, v, F, u);
-    CCTK_VInfo (CCTK_THORNSTRING,
-                "The two puncture masses are %g and %g",
-                (double) *mm, (double)* mp);
 
     CCTK_VInfo (CCTK_THORNSTRING,
-		  "The puncture masses are %g and %g",
+		  "The two puncture masses are %g and %g",
                 (double) par_m_minus, (double) par_m_plus);
 
     /* print out ADM mass, eq.: \Delta M_ADM=2*r*u=4*b*V for A=1,B=0,phi=0 */
     admMass = (*mp + *mm
                - 4*par_b*PunctEvalAtArbitPosition(v.d0, 1, 0, 0, n1, n2, n3));
-    CCTK_VInfo (CCTK_THORNSTRING, "ADM mass is %g\n", (double)admMass);
+    CCTK_VInfo (CCTK_THORNSTRING, "ADM mass is %g", (double)admMass);
   }
 
   if (CCTK_EQUALS(grid_setup_method, "Taylor expansion"))
@@ -344,7 +343,7 @@ TwoPunctures (CCTK_ARGUMENTS)
     *conformal_state = 0;
   }
 
-  for (d = 0; d < 3; ++ d)
+  for (int d = 0; d < 3; ++ d)
   {
     /*
     imin[d] = 0           + (cctk_bbox[2*d  ] ? 0 : cctk_nghostzones[d]);
@@ -354,22 +353,15 @@ TwoPunctures (CCTK_ARGUMENTS)
     imax[d] = cctk_lsh[d];
   }
 
-  for (k = imin[2]; k < imax[2]; ++k)
-    for (j = imin[1]; j < imax[1]; ++j)
-      for (i = imin[0]; i < imax[0]; ++i)
-        {
-          int ijk = CCTK_GFINDEX3D(cctkGH, i, j, k);
-          x[ijk] -= center_offset[0];
-          y[ijk] -= center_offset[1];
-          z[ijk] -= center_offset[2];
-        }
-
-  for (k = imin[2]; k < imax[2]; ++k)
+#pragma omp parallel for
+  for (int k = imin[2]; k < imax[2]; ++k)
   {
-    for (j = imin[1]; j < imax[1]; ++j)
+    for (int j = imin[1]; j < imax[1]; ++j)
     {
-      for (i = imin[0]; i < imax[0]; ++i)
+      for (int i = imin[0]; i < imax[0]; ++i)
       {
+#if 0
+        /* We can't output this when running in parallel */
         if (percent10 != 10*(i+j*cctk_lsh[0]+k*cctk_lsh[0]*cctk_lsh[1]) /
                             (cctk_lsh[0] * cctk_lsh[1] * cctk_lsh[2]))
         {
@@ -377,13 +369,14 @@ TwoPunctures (CCTK_ARGUMENTS)
                            (cctk_lsh[0] * cctk_lsh[1] * cctk_lsh[2]);
             CCTK_VInfo(CCTK_THORNSTRING, "%3d%% done", percent10*10);
         }
+#endif
 
         const int ind = CCTK_GFINDEX3D (cctkGH, i, j, k);
 
         CCTK_REAL x1, y1, z1;
-        x1 = x[ind];
-        y1 = y[ind];
-        z1 = z[ind];
+        x1 = x[ind] - center_offset[0];
+        y1 = y[ind] - center_offset[1];
+        z1 = z[ind] - center_offset[2];
 
         /* We implement swapping the x and z coordinates as follows.
            The bulk of the code that performs the actual calculations
@@ -443,6 +436,7 @@ TwoPunctures (CCTK_ARGUMENTS)
         CCTK_REAL Aij[3][3];
         BY_Aijofxyz (x1, y1, z1, Aij);
 
+        CCTK_REAL old_alp;
         if (multiply_old_lapse)
             old_alp = alp[ind];
 

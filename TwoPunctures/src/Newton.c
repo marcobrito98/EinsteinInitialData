@@ -10,33 +10,79 @@
 #include "TwoPunctures.h"
 
 static int
-bicgstab (CCTK_POINTER_TO_CONST cctkGH,
-          int nvar, int n1, int n2, int n3, derivs v,
-          derivs dv, int output, int itmax, CCTK_REAL tol, CCTK_REAL *normres);
+bicgstab (CCTK_POINTER_TO_CONST const cctkGH,
+          int const nvar, int const n1, int const n2, int const n3,
+          derivs v, derivs dv,
+          int const output, int const itmax, CCTK_REAL const tol,
+          CCTK_REAL * restrict const normres);
+static CCTK_REAL
+norm_inf (CCTK_REAL const * restrict const F,
+          int const ntotal);
 static void
-relax (CCTK_REAL *dv, int nvar, int n1, int n2, int n3,
-       CCTK_REAL *rhs, int *ncols, int **cols, CCTK_REAL **JFD);
+relax (CCTK_REAL * restrict const dv,
+       int const nvar, int const n1, int const n2, int const n3,
+       CCTK_REAL const * restrict const rhs,
+       int const * restrict const ncols,
+       int const * restrict const * restrict const cols,
+       CCTK_REAL const * restrict const * restrict const JFD);
 static void
-resid (CCTK_REAL *res, int ntotal, CCTK_REAL *dv, CCTK_REAL *rhs,
-       int *ncols, int **cols, CCTK_REAL **JFD);
+resid (CCTK_REAL * restrict const res,
+       int const ntotal,
+       CCTK_REAL const * restrict const dv,
+       CCTK_REAL const * restrict const rhs,
+       int const * restrict const ncols,
+       int const * restrict const * restrict const cols,
+       CCTK_REAL const * restrict const * restrict const JFD);
 static void
-LineRelax_al (CCTK_REAL *dv, int j, int k, int nvar, int n1, int n2, int n3,
-	      CCTK_REAL *rhs, int *ncols, int **cols, CCTK_REAL **JFD);
+LineRelax_al (CCTK_REAL * restrict const dv,
+              int const j, int const k, int const nvar,
+              int const n1, int const n2, int const n3,
+	      CCTK_REAL const * restrict const rhs,
+              int const * restrict const ncols,
+              int const * restrict const * restrict const cols,
+              CCTK_REAL const * restrict const * restrict const JFD);
 static void
-LineRelax_be (CCTK_REAL *dv, int i, int k, int nvar, int n1, int n2, int n3,
-	      CCTK_REAL *rhs, int *ncols, int **cols, CCTK_REAL **JFD);
+LineRelax_be (CCTK_REAL * restrict const dv,
+              int const i, int const k, int const nvar,
+              int const n1, int const n2, int const n3,
+	      CCTK_REAL const * restrict const rhs,
+              int const * restrict const ncols,
+              int const * restrict const * restrict const cols,
+              CCTK_REAL const * restrict const * restrict const JFD);
+/* --------------------------------------------------------------------------*/
+static CCTK_REAL
+norm_inf (CCTK_REAL const * restrict const F,
+          int const ntotal)
+{
+  CCTK_REAL dmax = -1;
+#pragma omp parallel
+  {
+    CCTK_REAL dmax1 = -1;
+#pragma omp for
+    for (int j = 0; j < ntotal; j++)
+      if (fabs (F[j]) > dmax1)
+        dmax1 = fabs (F[j]);
+#pragma omp critical
+    if (dmax1 > dmax)
+      dmax = dmax1;
+  }
+  return dmax;
+}
 /* --------------------------------------------------------------------------*/
 static void
-resid (CCTK_REAL *res, int ntotal, CCTK_REAL *dv, CCTK_REAL *rhs,
-       int *ncols, int **cols, CCTK_REAL **JFD)
+resid (CCTK_REAL * restrict const res,
+       int const ntotal,
+       CCTK_REAL const * restrict const dv,
+       CCTK_REAL const * restrict const rhs,
+       int const * restrict const ncols,
+       int const * restrict const * restrict const cols,
+       CCTK_REAL const * restrict const * restrict const JFD)
 {
-  int i, m;
-  CCTK_REAL JFDdv_i;
-
-  for (i = 0; i < ntotal; i++)
+#pragma omp parallel for
+  for (int i = 0; i < ntotal; i++)
   {
-    JFDdv_i = 0;
-    for (m = 0; m < ncols[i]; m++)
+    CCTK_REAL JFDdv_i = 0;
+    for (int m = 0; m < ncols[i]; m++)
       JFDdv_i += JFD[i][m] * dv[cols[i][m]];
     res[i] = rhs[i] - JFDdv_i;
   }
@@ -44,8 +90,13 @@ resid (CCTK_REAL *res, int ntotal, CCTK_REAL *dv, CCTK_REAL *rhs,
 
 /* -------------------------------------------------------------------------*/
 static void
-LineRelax_al (CCTK_REAL *dv, int j, int k, int nvar, int n1, int n2, int n3,
-	      CCTK_REAL *rhs, int *ncols, int **cols, CCTK_REAL **JFD)
+LineRelax_al (CCTK_REAL * restrict const dv,
+              int const j, int const k, int const nvar,
+              int const n1, int const n2, int const n3,
+	      CCTK_REAL const * restrict const rhs,
+              int const * restrict const ncols,
+              int const * restrict const * restrict const cols,
+              CCTK_REAL const * restrict const * restrict const JFD)
 {
   int i, m, Ic, Ip, Im, col, ivar;
   CCTK_REAL *a, *b, *c, *r, *u;
@@ -98,8 +149,13 @@ LineRelax_al (CCTK_REAL *dv, int j, int k, int nvar, int n1, int n2, int n3,
 
 /* --------------------------------------------------------------------------*/
 static void
-LineRelax_be (CCTK_REAL *dv, int i, int k, int nvar, int n1, int n2, int n3,
-	      CCTK_REAL *rhs, int *ncols, int **cols, CCTK_REAL **JFD)
+LineRelax_be (CCTK_REAL * restrict const dv,
+              int const i, int const k, int const nvar,
+              int const n1, int const n2, int const n3,
+	      CCTK_REAL const * restrict const rhs,
+              int const * restrict const ncols,
+              int const * restrict const * restrict const cols,
+              CCTK_REAL const * restrict const * restrict const JFD)
 {
   int j, m, Ic, Ip, Im, col, ivar;
   CCTK_REAL *a, *b, *c, *r, *u;
@@ -152,8 +208,12 @@ LineRelax_be (CCTK_REAL *dv, int i, int k, int nvar, int n1, int n2, int n3,
 
 /* --------------------------------------------------------------------------*/
 static void
-relax (CCTK_REAL *dv, int nvar, int n1, int n2, int n3,
-       CCTK_REAL *rhs, int *ncols, int **cols, CCTK_REAL **JFD)
+relax (CCTK_REAL * restrict const dv,
+       int const nvar, int const n1, int const n2, int const n3,
+       CCTK_REAL const * restrict const rhs,
+       int const * restrict const ncols,
+       int const * restrict const * restrict const cols,
+       CCTK_REAL const * restrict const * restrict const JFD)
 {
   int i, j, k, n;
 
@@ -242,12 +302,14 @@ TestRelax (CCTK_POINTER_TO_CONST cctkGH,
 
 /* --------------------------------------------------------------------------*/
 static int
-bicgstab (CCTK_POINTER_TO_CONST cctkGH,
-          int nvar, int n1, int n2, int n3, derivs v,
-	        derivs dv, int output, int itmax, CCTK_REAL tol, CCTK_REAL *normres)
+bicgstab (CCTK_POINTER_TO_CONST const cctkGH,
+          int const nvar, int const n1, int const n2, int const n3,
+          derivs v, derivs dv,
+          int const output, int const itmax, CCTK_REAL const tol,
+          CCTK_REAL * restrict const normres)
 {
   DECLARE_CCTK_PARAMETERS;
-  int ntotal = n1 * n2 * n3 * nvar, ii, j;
+  int ntotal = n1 * n2 * n3 * nvar, ii;
   CCTK_REAL alpha = 0, beta = 0;
   CCTK_REAL rho = 0, rho1 = 1, rhotol = 1e-50;
   CCTK_REAL omega = 0, omegatol = 1e-50;
@@ -287,7 +349,8 @@ bicgstab (CCTK_POINTER_TO_CONST cctkGH,
 
   /* compute initial residual rt = r = F - J*dv */
   J_times_dv (nvar, n1, n2, n3, dv, r, u);
-  for (j = 0; j < ntotal; j++)
+#pragma omp parallel for
+  for (int j = 0; j < ntotal; j++)
     rt[j] = r[j] = F[j] - r[j];
 
   *normres = norm2 (r, ntotal);
@@ -308,31 +371,38 @@ bicgstab (CCTK_POINTER_TO_CONST cctkGH,
 
     /* compute direction vector p */
     if (ii == 0)
-      for (j = 0; j < ntotal; j++)
+    {
+#pragma omp parallel for
+      for (int j = 0; j < ntotal; j++)
 	p[j] = r[j];
+    }
     else
     {
       beta = (rho / rho1) * (alpha / omega);
-      for (j = 0; j < ntotal; j++)
+#pragma omp parallel for
+      for (int j = 0; j < ntotal; j++)
 	p[j] = r[j] + beta * (p[j] - omega * vv[j]);
     }
 
     /* compute direction adjusting vector ph and scalar alpha */
-    for (j = 0; j < ntotal; j++)
+#pragma omp parallel for
+    for (int j = 0; j < ntotal; j++)
       ph.d0[j] = 0;
-    for (j = 0; j < NRELAX; j++)	/* solves JFD*ph = p by relaxation*/
+    for (int j = 0; j < NRELAX; j++)	/* solves JFD*ph = p by relaxation*/
       relax (ph.d0, nvar, n1, n2, n3, p, ncols, cols, JFD);
 
     J_times_dv (nvar, n1, n2, n3, ph, vv, u);	/* vv=J*ph*/
     alpha = rho / scalarproduct (rt, vv, ntotal);
-    for (j = 0; j < ntotal; j++)
+#pragma omp parallel for
+    for (int j = 0; j < ntotal; j++)
       s[j] = r[j] - alpha * vv[j];
 
     /* early check of tolerance */
     *normres = norm2 (s, ntotal);
     if (*normres <= tol)
     {
-      for (j = 0; j < ntotal; j++)
+#pragma omp parallel for
+      for (int j = 0; j < ntotal; j++)
 	dv.d0[j] += alpha * ph.d0[j];
       if (output == 1) {
 	printf ("bicgstab: %5d  %10.3e  %10.3e  %10.3e  %10.3e\n",
@@ -343,16 +413,18 @@ bicgstab (CCTK_POINTER_TO_CONST cctkGH,
     }
 
     /* compute stabilizer vector sh and scalar omega */
-    for (j = 0; j < ntotal; j++)
+#pragma omp parallel for
+    for (int j = 0; j < ntotal; j++)
       sh.d0[j] = 0;
-    for (j = 0; j < NRELAX; j++)	/* solves JFD*sh = s by relaxation*/
+    for (int j = 0; j < NRELAX; j++)	/* solves JFD*sh = s by relaxation*/
       relax (sh.d0, nvar, n1, n2, n3, s, ncols, cols, JFD);
 
     J_times_dv (nvar, n1, n2, n3, sh, t, u);	/* t=J*sh*/
     omega = scalarproduct (t, s, ntotal) / scalarproduct (t, t, ntotal);
 
     /* compute new solution approximation */
-    for (j = 0; j < ntotal; j++)
+#pragma omp parallel for
+    for (int j = 0; j < ntotal; j++)
     {
       dv.d0[j] += alpha * ph.d0[j] + omega * sh.d0[j];
       r[j] = s[j] - omega * t[j];
@@ -407,13 +479,14 @@ bicgstab (CCTK_POINTER_TO_CONST cctkGH,
 
 /* -------------------------------------------------------------------*/
 void
-Newton (CCTK_POINTER_TO_CONST cctkGH,
-  int nvar, int n1, int n2, int n3,
-	derivs v, CCTK_REAL tol, int itmax)
+Newton (CCTK_POINTER_TO_CONST const cctkGH,
+        int const nvar, int const n1, int const n2, int const n3,
+	derivs v,
+        CCTK_REAL const tol, int const itmax)
 {
   DECLARE_CCTK_PARAMETERS;
 
-  int ntotal = n1 * n2 * n3 * nvar, ii, j, it;
+  int ntotal = n1 * n2 * n3 * nvar, ii, it;
   CCTK_REAL *F, dmax, normres;
   derivs u, dv;
 
@@ -429,12 +502,10 @@ Newton (CCTK_POINTER_TO_CONST cctkGH,
     if (it == 0)
     {
       F_of_v (cctkGH, nvar, n1, n2, n3, v, F, u);
-      dmax = -1;
-      for (j = 0; j < ntotal; j++)
-        if (fabs (F[j]) > dmax)
-          dmax = fabs (F[j]);
+      dmax = norm_inf (F, ntotal);
     }
-    for (j = 0; j < ntotal; j++)
+#pragma omp parallel for
+    for (int j = 0; j < ntotal; j++)
       dv.d0[j] = 0;
     printf ("Newton: it=%d \t |F|=%e\n", it, (double)dmax);
     printf ("bare mass: mp=%g \t mm=%g\n", (double) par_m_plus, (double) par_m_minus);
@@ -442,26 +513,17 @@ Newton (CCTK_POINTER_TO_CONST cctkGH,
     ii =
       bicgstab (cctkGH,
                 nvar, n1, n2, n3, v, dv, verbose, 100, dmax * 1.e-3, &normres);
-    for (j = 0; j < ntotal; j++)
+#pragma omp parallel for
+    for (int j = 0; j < ntotal; j++)
       v.d0[j] -= dv.d0[j];
     F_of_v (cctkGH, nvar, n1, n2, n3, v, F, u);
-    dmax = -1;
-    for (j = 0; j < ntotal; j++)
-    {
-      if (fabs (F[j]) > dmax)
-      {
-        dmax = fabs (F[j]);
-      }
-    }
+    dmax = norm_inf (F, ntotal);
     it += 1;
   }
   if (itmax==0)
   {
       F_of_v (cctkGH, nvar, n1, n2, n3, v, F, u);
-      dmax = -1;
-      for (j = 0; j < ntotal; j++)
-        if (fabs (F[j]) > dmax)
-          dmax = fabs (F[j]);
+      dmax = norm_inf (F, ntotal);
   }
   printf ("Newton: it=%d \t |F|=%e \n", it, (double)dmax);
   fflush(stdout);

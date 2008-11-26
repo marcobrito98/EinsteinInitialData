@@ -90,10 +90,10 @@ BY_Aijofxyz (CCTK_REAL x, CCTK_REAL y, CCTK_REAL z, CCTK_REAL Aij[3][3])
   r2_minus = (x + par_b) * (x + par_b) + y * y + z * z;
   r2_plus = sqrt (pow (r2_plus, 2) + pow (TP_epsilon, 4));
   r2_minus = sqrt (pow (r2_minus, 2) + pow (TP_epsilon, 4));
-  if (r2_plus < TP_Tiny)
-    r2_plus = TP_Tiny;
-  if (r2_minus < TP_Tiny)
-    r2_minus = TP_Tiny;
+  if (r2_plus < pow(TP_Tiny,2))
+    r2_plus = pow(TP_Tiny,2);
+  if (r2_minus < pow(TP_Tiny,2))
+    r2_minus = pow(TP_Tiny,2);
   r_plus = sqrt (r2_plus);
   r_minus = sqrt (r2_minus);
   r3_plus = r_plus * r2_plus;
