@@ -1,10 +1,11 @@
 Cactus Code Thorn IDAxiBrillBH
-Thorn Author(s)     : Steve Brandt
-                      Paul Walker
-                      Ryoji Takahashi
-Thorn Maintainer(s) : The Cactus Team <cactusmaint@cactuscode.org>
-CVS info   : $Header$
+Author(s)    : Steve Brandt
+               Paul Walker
+               Ryoji Takahashi
+Maintainer(s): Cactus team
 --------------------------------------------------------------------------
+
+1. Purpose
 
 This thorn calculates initial data for a black hole distorted by an
 even parity perturbation.
