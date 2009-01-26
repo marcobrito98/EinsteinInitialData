@@ -1,14 +1,13 @@
 Cactus Code Thorn IDAnalyticBH
-Thorn Author(s)     : Steve Brandt
-                      Carsten Gundlach
-                      Joan Masso
-                      Ed Seidel
-                      Paul Walker
-Thorn Maintainer(s) : The Cactus Team <cactusmaint@cactuscode.org>
-CVS info   : $Header$
+Author(s)    : Steve Brandt
+               Carsten Gundlach
+               Joan Masso
+               Ed Seidel
+               Paul Walker
+Maintainer(s): Cactus team
 --------------------------------------------------------------------------
 
-1. Purpose of the thorn
+1. Purpose
 
 This thorn calculates analytic initial data for the Einstein grid functions
 (lapse, shift, metric, curv) for various black hole spacetimes:
