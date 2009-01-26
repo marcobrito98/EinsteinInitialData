@@ -1,8 +1,9 @@
 Cactus Code Thorn IDBrillData
-Thorn Author(s)     : Carsten Gundlach
-                      Miguel Alcubierre
-Thorn Maintainer(s) : Carsten Gundlach <gundlach@aei.mpg.de>
-                      Miguel Alcubierre <miguel@aei.mpg.de>
+Author(s)    : Carsten Gundlach
+               Miguel Alcubierre
+Maintainer(s): Cactus team
 --------------------------------------------------------------------------
+
+1. Purpose
 
 Initializes Brill wave data.
