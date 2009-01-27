@@ -1,0 +1,132 @@
+\documentstyle{report}
+\newcommand{\parameter}[1]{{\it #1}}
+
+\begin{document}
+
+\chapter{IDAnalyticBH}
+
+\begin{tabular}{@{}ll}
+Code Authors & Joan Masso, Paul Walker, Ed Seidel. Gabrielle Allen \\
+Maintained by & Cactus Developers \\
+Documentation Authors & 
+\end{tabular}
+
+\section{Introduction}
+  
+\subsection{Purpose of Thorn}
+
+Thorn IDAnalyticBH provides analytic initial data for vacuum black 
+hole spacetimes. Initial data is provided for the 3-metric, extrinsic
+curvature, and if appropriate the conformal factor and it's spatial 
+derivatives. The current initial data sets are for a single (Schwarzschild)
+black hole in isotropic coordinates, up to four Brill-Lindquist black 
+holes, and any number of Misner-type black holes.
+
+\subsection{Technical Specification}
+
+\begin{itemize}
+
+\item{Implements} einsteinID
+\item{Inherits from} einstein
+\item{Tested with thorns} Einstein
+
+\end{itemize}
+
+\section{Theoretical Background}
+
+
+\section{Algorithmic and Implementation Details}
+
+This thorn uses no special numerical methods, however two points
+are worth noting
+
+\begin{enumerate}
+
+\item{} The solution for Misner is obtained by summing a sequence
+
+\item{} The spatial derivatives of the conformal metric (when required) 
+        are calculated accurately using finite differencing of the 
+        exact solution by a very small spacing
+
+\end{enumerate}
+
+\section{Using the Thorn}
+
+This thorn can provide either the physical metric (use\_conformal=''no'')
+or the conformal metric and a conformal factor (and its spatial derivatives)
+(use\_conformal=''yes''). In general, the option use\_conformal=''yes'' should 
+be used, since ????. 
+
+\section{Parameters}
+
+\subsection{Extended Parameters}
+\begin{tabular}{l|l|l|l}
+&&&\\
+einstein &&&\\
+\hline
+\parameter{initial\_data} & KEYWORD & schwarzschild & One Schwarzschild black hole \\
+& & bl\_bh & Brill Lindquist black holes \\
+& & misner\_bh &Misner black holes \\
+& & multiple\_misner\_bh & Multiple Misner black holes \\
+\parameter{initial\_lapse} & KEYWORD & schwarz & Set lapse to schwarzschild \\
+\end{tabular}
+
+\subsection{Private Parameters}
+
+\begin{tabular}{l|l|l|l|l}
+&&&&\\
+Schwarzschild & & & & \\
+\hline
+\parameter{mass} & {\t CCTK\_REAL} & $(-\infty,\infty)$ & 2.0 & Mass of black hole \\
+&&&&\\
+Multiple Misner & & & & \\
+\hline
+\parameter{mu} & {\t CCTK\_REAL} & $[0,\infty)$ & 1.2 & Misner $\mu$ value \\
+\parameter{nmax} & {\t CCTK\_INT} & $[0,\infty)$ & 30 & Numer of terns to include for Misner series \\
+\parameter{misner\_nmh} & {\t CCTK\_INT} & $[0,10]$ & 1 & Number of Misner black holes \\
+&&&&\\
+Brill Lindquist & & & & \\
+\hline
+\parameter{bl\_nbh} & {\t CCTK\_INT} & $[1,4]$ & 1 & Number of Brill Lindquist black holes\\
+\parameter{bl\_x0\_1} & {\t CCTK\_REAL} &  $(-\infty,\infty)$ & 0.0 & x-position of first BL hole\\
+\parameter{bl\_y0\_1} & {\t CCTK\_REAL} &  $(-\infty,\infty)$ & 0.0 &  y-position of first BL hole\\
+\parameter{bl\_z0\_1} & {\t CCTK\_REAL} &  $(-\infty,\infty)$ & 0.0 &  z-position of first BL hole\\
+\parameter{bl\_M\_1} & {\t CCTK\_REAL} &  $(-\infty,\infty)$ & 1.0 &  mass of first BL hole\\
+\parameter{bl\_x0\_2} & {\t CCTK\_REAL} &  $(-\infty,\infty)$ & 0.0 & x-position of second BL hole\\
+\parameter{bl\_y0\_2} & {\t CCTK\_REAL} &  $(-\infty,\infty)$ & 0.0 &  y-position of second BL hole\\
+\parameter{bl\_z0\_2} & {\t CCTK\_REAL} &  $(-\infty,\infty)$ & 0.0 &  z-position of second BL hole\\
+\parameter{bl\_M\_2} & {\t CCTK\_REAL} &  $(-\infty,\infty)$ & 1.0 &  mass of second BL hole\\
+\parameter{bl\_x0\_3} & {\t CCTK\_REAL} &  $(-\infty,\infty)$ & 0.0 & x-position of third BL hole\\
+\parameter{bl\_y0\_3} & {\t CCTK\_REAL} &  $(-\infty,\infty)$ & 0.0 &  y-position of third BL hole\\
+\parameter{bl\_z0\_3} & {\t CCTK\_REAL} &  $(-\infty,\infty)$ & 0.0 &  z-position of third BL hole\\
+\parameter{bl\_M\_3} & {\t CCTK\_REAL} &  $(-\infty,\infty)$ & 1.0 &  mass of third BL hole\\
+\parameter{bl\_x0\_4} & {\t CCTK\_REAL} &  $(-\infty,\infty)$ & 0.0 & x-position of fourth BL hole\\
+\parameter{bl\_y0\_4} & {\t CCTK\_REAL} &  $(-\infty,\infty)$ & 0.0 &  y-position of fourth BL hole\\
+\parameter{bl\_z0\_4} & {\t CCTK\_REAL} &  $(-\infty,\infty)$ & 0.0 &  z-position of fourth BL hole\\
+\parameter{bl\_M\_4} & {\t CCTK\_REAL} &  $(-\infty,\infty)$ & 1.0 &  mass of fourth BL hole\\
+\end{tabular}
+
+\subsection{Discussion}
+
+
+
+\section{Interaction with Other Thorns}
+
+It is still to be decided how initial data should be supplied to
+for systems of evolution equations which use more or different 
+variables to those in the einstein implementation
+
+\section{Future Development}
+
+Initial data sets which are missing from this thorn include
+
+\begin{itemize}
+
+\item{} Boosted single black hole
+\item{} Single black hole in harmonic spatial coordinates
+\item{} Single black hole in Eddington-Finkelstein coordinates
+
+\end{itemize}
+
+
+\end{document}
