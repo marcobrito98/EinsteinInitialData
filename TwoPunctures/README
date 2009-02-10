@@ -1,24 +1,21 @@
 Cactus Code Thorn TwoPunctures
-Thorn Author(s)     : Marcus Ansorg <marcus.ansorg@aei.mpg.de>
-                    : Erik Schnetter <schnetter@cct.lsu.edu>
-                    : Frank Löffler <knarf@cct.lsu.edu>
-Thorn Maintainer(s) : Marcus Ansorg <marcus.ansorg@aei.mpg.de>
-                    : Erik Schnetter <schnetter@cct.lsu.edu>
+Author(s)    : Marcus Ansorg
+               Erik Schnetter
+               Frank LÃ¶ffler
+Maintainer(s): Marcus Ansorg
+               Erik Schnetter
+Licence      : private
 --------------------------------------------------------------------------
 
-Purpose of the thorn:
+1. Purpose
 
 Create initial for two puncture black holes using a single domain
 spectral method.  This method is described in
-
-Marcus Ansorg, Bernd Brügmann, Wolfgang Tichy,
+Marcus Ansorg, Bernd BrÃ¼gmann, Wolfgang Tichy,
 "A single-domain spectral method for black hole puncture data",
 PRD 70, 064011 (2004),
 arXiv:gr-qc/0404056.
 
-NOTE: This thorn is currently being extended by Frank Löffler to
-include source terms to be able to handle matter, with the same
-restrictions as the black holes before, plus zero momentum/angular
-momentum (K_{ij} = 0).  This is still work in progess and might work
-or might not.  It should _not_ influence the ability of the thorn
-without matter.
+This thorn was extended to include source terms to be able
+to handle matter with the same restrictions as the BHs before plus
+zero momentum/ang. momentum (K_{ij} = 0).
