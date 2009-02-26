@@ -263,11 +263,12 @@ F_of_v (CCTK_POINTER_TO_CONST cctkGH,
           sources[Index(0,i,j,k,1,n1,n2,n3)]=0.0;
 
   Derivatives_AB3 (nvar, n1, n2, n3, v);
-  FILE *debugfile;
   CCTK_REAL psi, psi2, psi4, psi7, r_plus, r_minus;
-  if (do_residuum_debug_output)
+  FILE *debugfile = NULL;
+  if (do_residuum_debug_output && CCTK_MyProc(cctkGH) == 0)
   {
-    debugfile=fopen("res.dat", "w");
+    debugfile = fopen("res.dat", "w");
+    assert(debugfile);
   }
   for (i = 0; i < n1; i++)
   {
@@ -325,7 +326,7 @@ F_of_v (CCTK_POINTER_TO_CONST cctkGH,
           u.d23[indx] = U.d23[ivar];        /*      U_yz*/
           u.d33[indx] = U.d33[ivar];        /*      U_zz*/
         }
-        if (do_residuum_debug_output && (k==0))
+        if (debugfile && (k==0))
         {
           r_plus = sqrt ((x - par_b) * (x - par_b) + y * y + z * z);
           r_minus = sqrt ((x + par_b) * (x + par_b) + y * y + z * z);
@@ -355,7 +356,7 @@ F_of_v (CCTK_POINTER_TO_CONST cctkGH,
       }
     }
   }
-  if (do_residuum_debug_output)
+  if (debugfile)
   {
     fclose(debugfile);
   }

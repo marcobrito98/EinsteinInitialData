@@ -76,9 +76,10 @@ void set_initial_guess(CCTK_POINTER_TO_CONST cctkGH,
           v.d0[indx]/=(-cos(Pih * (2 * i + 1) / n1)-1.0);
         }
   Derivatives_AB3 (nvar, n1, n2, n3, v);
-  if (do_initial_debug_output)
+  if (do_initial_debug_output && CCTK_MyProc(cctkGH) == 0)
   {
     debug_file=fopen("initial.dat", "w");
+    assert(debug_file);
     for (ivar = 0; ivar < nvar; ivar++)
       for (i = 0; i < n1; i++)
         for (j = 0; j < n2; j++)
