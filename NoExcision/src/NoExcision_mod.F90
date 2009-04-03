@@ -285,7 +285,7 @@ module NoExcision_mod
               if ( cont(10) ) then
                 r10(i,j,k) = u10(i,j,k)*v10(i,j,k)
                 lsumred(10) = lsumred(10) + weight(i,j,k)*r10(i,j,k)
-                if (do_inf_reduction) linfred(10) = max(linfred(01),r10(i,j,k))
+                if (do_inf_reduction) linfred(10) = max(linfred(10),r10(i,j,k))
               end if
 
               if ( cont(11) ) then
