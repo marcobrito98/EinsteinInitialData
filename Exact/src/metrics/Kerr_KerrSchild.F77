@@ -81,7 +81,7 @@ C     Spherical auxiliary coordinate r and angle theta in BH rest frame.
 
       r02 = 0.5d0 * (rho02 - a**2) 
      $     + sqrt(0.25d0 * (rho02 - a**2)**2 + a**2 * z0**2)
-      r0 = sqrt(r02)
+      r0 = sqrt(max(0.0d0,r02))
       if (Kerr_KerrSchild__parabolic .eq. 0) then
 C        Use a power law to avoid the singularity
          r0 = (r0**power + eps**power)**(1.0d0/power)
