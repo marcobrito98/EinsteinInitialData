@@ -1,22 +1,22 @@
 ActiveThorns = "Boundary CartGrid3D Time CoordBase SymBase LocalReduce"
-ActiveThorns = "Carpet CarpetLib CarpetInterp CarpetReduce CarpetSlab CarpetIOASCII CarpetIOBasic IOUtil CarpetIOScalar CarpetIOHDF5"
+ActiveThorns = "Loopcontrol InitBase Carpet CarpetLib CarpetInterp CarpetReduce CarpetSlab CarpetIOASCII CarpetIOBasic IOUtil CarpetIOScalar CarpetIOHDF5"
 
 ActiveThorns = "ADMBase"
 ActiveThorns = "StaticConformal"
 ActiveThorns = "ADMCoupling ADMMacros"
-ActiveThorns = "Constants SpaceMask Whisky"
+ActiveThorns = "TmunuBase Constants SpaceMask Whisky HydroBase"
 ActiveThorns = "Whisky_TOVSolverC eos_base eos_ideal_fluid eos_polytrope"
 ActiveThorns = "TwoPunctures"
 ActiveThorns = "coordgauge boundary"
+
+Carpet::init_each_timelevel 		= "no"
+InitBase::initial_data_setup_method	= "init_all_levels"
 
 Cactus::cctk_itlast = 0
 
 Time::dtfac			= 0.25
 
 CoordBase::domainsize = minmax
-
-CarpetLib::save_memory_during_regridding = "yes"
-CarpetLib::use_collective_communication_buffers = "yes"
 
 driver::ghost_size                = 3
 
@@ -70,7 +70,7 @@ whisky::recon_method              = "ppm"
 whisky::rho_abs_min               = 1.e-10
 whisky::initial_atmosphere_factor = 0.1
 #whisky::Whisky_MaxNumSandRVars    = 0
-whisky::timelevels = 3
+hydrobase::timelevels = 3
 
 Whisky_TOVSolverC::TOV_Enforce_Interpolation = "yes"
 Whisky_TOVSolverC::TOV_Num_Radial     = 1000000
@@ -88,16 +88,17 @@ IO::out_fileinfo= "axis labels"
 
 Carpet::max_refinement_levels = 10
 carpet::enable_all_storage        = no
-Carpet::buffer_width              = 6
 Carpet::prolongation_order_space  = 3
 Carpet::prolongation_order_time   = 2
 Carpet::convergence_level         = 0
 Carpet::init_3_timelevels         = no
 
+CarpetIOScalar::outScalar_reductions	= "minimum maximum norm1 norm2"
+
 IOScalar::outScalar_every	= 512
-IOScalar::outScalar_vars		= "admbase::metric admbase::curv TwoPunctures::puncture_u whisky::whisky_prim_scalar_var whisky::whisky_prim_vector_var whisky::whisky_cons_scalar_var whisky::whisky_cons_vector_var admbase::lapse admbase::shift"
+IOScalar::outScalar_vars		= "admbase::metric admbase::curv TwoPunctures::puncture_u whisky::w_lorentz hydrobase::rho hydrobase::press hydrobase::eps HydroBase::vel whisky::dens whisky::tau whisky::scon admbase::lapse admbase::shift"
 IOASCII::out1D_every		= 512
-IOASCII::out1D_vars		= "admbase::metric admbase::curv TwoPunctures::puncture_u whisky::whisky_prim_scalar_var whisky::whisky_prim_vector_var whisky::whisky_cons_scalar_var whisky::whisky_cons_vector_var admbase::lapse admbase::shift"
+IOASCII::out1D_vars		= "admbase::metric admbase::curv TwoPunctures::puncture_u whisky::w_lorentz hydrobase::rho hydrobase::press hydrobase::eps HydroBase::vel whisky::dens whisky::tau whisky::scon admbase::lapse admbase::shift"
 
 admbase::metric_type		= "physical"
 

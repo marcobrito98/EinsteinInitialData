@@ -4,7 +4,7 @@ ActiveThorns = "Loopcontrol InitBase Carpet CarpetLib CarpetInterp CarpetReduce 
 ActiveThorns = "ADMBase"
 ActiveThorns = "StaticConformal"
 ActiveThorns = "ADMCoupling ADMMacros"
-ActiveThorns = "TmunuBase Constants SpaceMask Whisky"
+ActiveThorns = "TmunuBase Constants SpaceMask Whisky HydroBase"
 ActiveThorns = "Whisky_TOVSolverC eos_base eos_ideal_fluid eos_polytrope"
 ActiveThorns = "TwoPunctures"
 ActiveThorns = "coordgauge boundary"
@@ -70,7 +70,7 @@ whisky::recon_method              = "ppm"
 whisky::rho_abs_min               = 1.e-10
 whisky::initial_atmosphere_factor = 0.1
 #whisky::Whisky_MaxNumSandRVars    = 0
-whisky::timelevels = 3
+hydrobase::timelevels = 3
 
 Whisky_TOVSolverC::TOV_Enforce_Interpolation = "yes"
 Whisky_TOVSolverC::TOV_Num_Radial     = 1000000
@@ -96,9 +96,9 @@ Carpet::init_3_timelevels         = no
 CarpetIOScalar::outScalar_reductions	= "minimum maximum norm1 norm2"
 
 IOScalar::outScalar_every	= 512
-IOScalar::outScalar_vars		= "admbase::metric admbase::curv TwoPunctures::puncture_u whisky::whisky_prim_scalar_var whisky::whisky_prim_vector_var whisky::whisky_cons_scalar_var whisky::whisky_cons_vector_var admbase::lapse admbase::shift"
+IOScalar::outScalar_vars		= "admbase::metric admbase::curv TwoPunctures::puncture_u whisky::w_lorentz hydrobase::rho hydrobase::press hydrobase::eps HydroBase::vel whisky::dens whisky::tau whisky::scon admbase::lapse admbase::shift"
 IOASCII::out1D_every		= 512
-IOASCII::out1D_vars		= "admbase::metric admbase::curv TwoPunctures::puncture_u whisky::whisky_prim_scalar_var whisky::whisky_prim_vector_var whisky::whisky_cons_scalar_var whisky::whisky_cons_vector_var admbase::lapse admbase::shift"
+IOASCII::out1D_vars		= "admbase::metric admbase::curv TwoPunctures::puncture_u whisky::w_lorentz hydrobase::rho hydrobase::press hydrobase::eps HydroBase::vel whisky::dens whisky::tau whisky::scon admbase::lapse admbase::shift"
 
 admbase::metric_type		= "physical"
 
