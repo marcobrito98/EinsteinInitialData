@@ -221,12 +221,16 @@ relax (CCTK_REAL * restrict const dv,
   {
     for (n = 0; n < N_PlaneRelax; n++)
     {
+#pragma omp parallel for schedule(dynamic)
       for (i = 2; i < n1; i = i + 2)
 	LineRelax_be (dv, i, k, nvar, n1, n2, n3, rhs, ncols, cols, JFD);
+#pragma omp parallel for schedule(dynamic)
       for (i = 1; i < n1; i = i + 2)
 	LineRelax_be (dv, i, k, nvar, n1, n2, n3, rhs, ncols, cols, JFD);
+#pragma omp parallel for schedule(dynamic)
       for (j = 1; j < n2; j = j + 2)
 	LineRelax_al (dv, j, k, nvar, n1, n2, n3, rhs, ncols, cols, JFD);
+#pragma omp parallel for schedule(dynamic)
       for (j = 0; j < n2; j = j + 2)
 	LineRelax_al (dv, j, k, nvar, n1, n2, n3, rhs, ncols, cols, JFD);
     }
@@ -235,12 +239,16 @@ relax (CCTK_REAL * restrict const dv,
   {
     for (n = 0; n < N_PlaneRelax; n++)
     {
+#pragma omp parallel for schedule(dynamic)
       for (i = 0; i < n1; i = i + 2)
 	LineRelax_be (dv, i, k, nvar, n1, n2, n3, rhs, ncols, cols, JFD);
+#pragma omp parallel for schedule(dynamic)
       for (i = 1; i < n1; i = i + 2)
 	LineRelax_be (dv, i, k, nvar, n1, n2, n3, rhs, ncols, cols, JFD);
+#pragma omp parallel for schedule(dynamic)
       for (j = 1; j < n2; j = j + 2)
 	LineRelax_al (dv, j, k, nvar, n1, n2, n3, rhs, ncols, cols, JFD);
+#pragma omp parallel for schedule(dynamic)
       for (j = 0; j < n2; j = j + 2)
 	LineRelax_al (dv, j, k, nvar, n1, n2, n3, rhs, ncols, cols, JFD);
     }

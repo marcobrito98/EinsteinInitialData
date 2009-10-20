@@ -378,15 +378,14 @@ J_times_dv (int nvar, int n1, int n2, int n3, derivs dv,
   CCTK_REAL al, be, A, B, X, R, x, r, phi, y, z, Am1, *values;
   derivs dU, U;
 
-
-  values = dvector (0, nvar - 1);
-  allocate_derivs (&dU, nvar);
-  allocate_derivs (&U, nvar);
-
   Derivatives_AB3 (nvar, n1, n2, n3, dv);
 
+#pragma omp parallel for private (values,dU,U,j,k,al,A,be,B,phi,X,R,x,r,y,z,Am1,ivar,indx) schedule(dynamic)
   for (i = 0; i < n1; i++)
   {
+    values = dvector (0, nvar - 1);
+    allocate_derivs (&dU, nvar);
+    allocate_derivs (&U, nvar);
     for (j = 0; j < n2; j++)
     {
       for (k = 0; k < n3; k++)
@@ -440,10 +439,10 @@ J_times_dv (int nvar, int n1, int n2, int n3, derivs dv,
 	}
       }
     }
+    free_dvector (values, 0, nvar - 1);
+    free_derivs (&dU, nvar);
+    free_derivs (&U, nvar);
   }
-  free_dvector (values, 0, nvar - 1);
-  free_derivs (&dU, nvar);
-  free_derivs (&U, nvar);
 }
 
 /* --------------------------------------------------------------------------*/
@@ -607,6 +606,7 @@ SetMatrix_JFD (int nvar, int n1, int n2, int n3, derivs u,
   N2 = n2 - 1;
   N3 = n3 - 1;
 
+#pragma omp parallel for private (j,k,ivar,row) schedule(dynamic)
   for (i = 0; i < n1; i++)
   {
     for (j = 0; j < n2; j++)
