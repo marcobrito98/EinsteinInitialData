@@ -1,0 +1,77 @@
+!DESC "Carpet unigrid, one TOV" 
+ActiveThorns = "time MoL coordbase symbase cartgrid3d ioutil boundary admbase staticconformal spacemask admcoupling coordgauge admmacros hydrobase whisky whisky_init_data whisky_tovsolverc eos_base eos_ideal_fluid eos_polytrope bssn_mol admconstraints Constants LocalReduce Carpet CarpetLib CarpetInterp CarpetReduce CarpetIOScalar CarpetIOBasic LoopControl TmunuBase"
+
+TmunuBase::stress_energy_storage	=	yes
+TmunuBase::stress_energy_at_RHS		=	yes
+
+time::dtfac = 0.375
+
+admbase::evolution_method        = "adm_bssn"
+admbase::lapse_evolution_method  = "1+log"
+admbase::shift_evolution_method  = "gamma0"
+
+adm_bssn::bound           = "radiative"
+adm_bssn::harmonic_f      = 2.0
+
+ADMConstraints::constraints_persist	= yes
+admconstraints::bound     = "static"
+
+boundary::radpower        = 2
+
+SpaceMask::use_mask = "yes"
+
+CartGrid3D::type = "coordbase"
+CoordBase::domainsize = minmax
+
+Carpet::domain_from_coordbase = "yes"
+CoordBase::spacing = "numcells"
+CoordBase::xmin =  -15.0
+CoordBase::ymin =  -15.0
+CoordBase::zmin =  -15.0
+CoordBase::xmax =   15.001
+CoordBase::ymax =   15.001
+CoordBase::zmax =   15.001
+CoordBase::ncells_x = 32
+CoordBase::ncells_y = 32
+CoordBase::ncells_z = 32
+
+driver::ghost_size   = 3
+
+cactus::cctk_itlast   =       0
+
+methodoflines::ode_method        = "icn"
+
+hydrobase::timelevels             = 2
+hydrobase::evolution_method       = "whisky"
+
+whisky::riemann_solver            = "Marquina"
+whisky::whisky_eos_type           = "Polytype"
+whisky::whisky_eos_table          = "2D_Polytrope"
+whisky::recon_method              = "ppm"
+whisky::whisky_stencil            = 3
+whisky::bound                     = "none"
+whisky::tvd_limiter               = "VanLeerMC2"
+whisky::rho_abs_min               = 1.e-7
+whisky::initial_atmosphere_factor = 0.999
+
+ADMBase::initial_data  = "tov"
+ADMBase::initial_lapse = "tov"
+ADMBase::initial_shift = "tov"
+
+whiskytovsolver::TOV_Rho_Central[0] = 1.28e-3
+whiskytovsolver::TOV_Gamma[0]       = 2.0
+whiskytovsolver::TOV_K[0]           = 100.0
+whiskytovsolver::TOV_Combine_Method = "maximum"
+
+EOS_Polytrope::eos_gamma            = 2.0
+EOS_Polytrope::eos_k                = 100.0
+
+Carpet::prolongation_order_space  = 3
+Carpet::prolongation_order_time   = 2
+
+IO::out_dir			= $parfile
+IO::out_fileinfo= "none"
+
+IOScalar::outScalar_every = 1
+IOScalar::outScalar_vars  = "hydrobase::rho hydrobase::press hydrobase::eps hydrobase::vel whisky::dens whisky::tau whisky::scon admbase::lapse admbase::metric admbase::curv admconstraints::ham admconstraints::momentum whisky::w_lorentz"
+IOScalar::outScalar_reductions  = "minimum maximum norm1 norm2"
