@@ -1,0 +1,20 @@
+#include <cctk.h>
+#include <cctk_Arguments.h>
+#include <cctk_Parameters.h>
+
+
+
+extern "C"
+void ID_Bin_NS_check_parameters (CCTK_ARGUMENTS)
+{
+  DECLARE_CCTK_ARGUMENTS;
+  DECLARE_CCTK_PARAMETERS;
+  
+  if (not CCTK_EQUALS (initial_data , "ID_Bin_NS") or
+      not CCTK_EQUALS (initial_lapse, "ID_Bin_NS") or
+      not CCTK_EQUALS (initial_shift, "ID_Bin_NS") or
+      not CCTK_EQUALS (initial_hydro, "ID_Bin_NS"))
+  {
+    CCTK_PARAMWARN ("The parameters ADMBase::initial_data, ADMBase::initial_lapse, ADMBase::initial_shift, and HydroBase::initial_hydro must all be set to the value \"ID_Bin_NS\"");
+  }
+}
