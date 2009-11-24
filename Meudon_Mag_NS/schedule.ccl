@@ -1,0 +1,18 @@
+# Schedule definitions for thorn ID_Mag_NS
+
+if (CCTK_EQUALS (initial_data,  "ID_Mag_NS") ||
+    CCTK_EQUALS (initial_lapse, "ID_Mag_NS") ||
+    CCTK_EQUALS (initial_shift, "ID_Mag_NS") ||
+    CCTK_EQUALS (initial_hydro, "ID_Mag_NS") ||
+    CCTK_EQUALS (initial_Bmag,  "ID_Mag_NS"))
+{
+  SCHEDULE ID_Mag_NS_check_parameters AT paramcheck
+  {
+    LANG: C
+  } "Check parameters"
+  
+  SCHEDULE ID_Mag_NS_initialise IN ADMBase_Initial
+  {
+    LANG: C
+  } "Set up magnetised neutron star initial data"
+}
