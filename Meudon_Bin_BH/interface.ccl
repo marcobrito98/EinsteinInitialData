@@ -1,0 +1,5 @@
+# Interface definition for thorn ID_Bin_BH
+
+IMPLEMENTS: ID_Bin_BH
+
+INHERITS: grid ADMBase

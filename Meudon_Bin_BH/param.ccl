@@ -1,0 +1,27 @@
+# Parameter definitions for thorn ID_Bin_BH
+
+SHARES: ADMBase
+
+EXTENDS KEYWORD initial_data
+{
+  "ID_Bin_BH" :: ""
+}
+
+EXTENDS KEYWORD initial_lapse
+{
+  "ID_Bin_BH" :: ""
+}
+
+EXTENDS KEYWORD initial_shift
+{
+  "ID_Bin_BH" :: ""
+}
+
+
+
+PRIVATE:
+
+STRING filename "Input file name"
+{
+  "" :: ""
+} ""
