@@ -98,6 +98,13 @@ void ID_Mag_NS_initialise (CCTK_ARGUMENTS)
     betay[i] = mag_ns.beta_y[i];
     betaz[i] = mag_ns.beta_z[i];
     
+    // These initial data assume stationarity
+    dtalp[i] = 0.0;
+    
+    dtbetax[i] = 0.0;
+    dtbetay[i] = 0.0;
+    dtbetaz[i] = 0.0;
+    
     CCTK_REAL g[3][3];
     g[0][0] = mag_ns.g_xx[i];
     g[0][1] = mag_ns.g_xy[i];
@@ -154,9 +161,9 @@ void ID_Mag_NS_initialise (CCTK_ARGUMENTS)
     vel[i+  npoints] = mag_ns.u_euler_y[i] / vel_unit;
     vel[i+2*npoints] = mag_ns.u_euler_z[i] / vel_unit;
     
-    Bmag[i          ] = mag_ns.bb_x[i] / B_unit;
-    Bmag[i+  npoints] = mag_ns.bb_y[i] / B_unit;
-    Bmag[i+2*npoints] = mag_ns.bb_z[i] / B_unit;
+    Bvec[i          ] = mag_ns.bb_x[i] / B_unit;
+    Bvec[i+  npoints] = mag_ns.bb_y[i] / B_unit;
+    Bvec[i+2*npoints] = mag_ns.bb_z[i] / B_unit;
     
   } // for i
   
