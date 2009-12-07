@@ -1,16 +1,18 @@
 # Schedule definitions for thorn ID_Bin_NS
 
-if (CCTK_EQUALS (initial_data,  "ID_Bin_NS") ||
-    CCTK_EQUALS (initial_lapse, "ID_Bin_NS") ||
-    CCTK_EQUALS (initial_shift, "ID_Bin_NS") ||
-    CCTK_EQUALS (initial_hydro, "ID_Bin_NS"))
+if (CCTK_EQUALS (initial_data,    "ID_Bin_NS") ||
+    CCTK_EQUALS (initial_lapse,   "ID_Bin_NS") ||
+    CCTK_EQUALS (initial_shift,   "ID_Bin_NS") ||
+    CCTK_EQUALS (initial_dtlapse, "ID_Bin_NS") ||
+    CCTK_EQUALS (initial_dtshift, "ID_Bin_NS") ||
+    CCTK_EQUALS (initial_hydro,   "ID_Bin_NS"))
 {
   SCHEDULE ID_Bin_NS_check_parameters AT paramcheck
   {
     LANG: C
   } "Check parameters"
   
-  SCHEDULE ID_Bin_NS_initialise IN ADMBase_Initial
+  SCHEDULE ID_Bin_NS_initialise IN ADMBase_InitialData
   {
     LANG: C
   } "Set up binary neutron star initial data"

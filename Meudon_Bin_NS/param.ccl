@@ -17,6 +17,16 @@ EXTENDS KEYWORD initial_shift
   "ID_Bin_NS" :: ""
 }
 
+EXTENDS KEYWORD initial_dtlapse
+{
+  "ID_Bin_NS" :: ""
+}
+
+EXTENDS KEYWORD initial_dtshift
+{
+  "ID_Bin_NS" :: ""
+}
+
 
 
 SHARES: HydroBase

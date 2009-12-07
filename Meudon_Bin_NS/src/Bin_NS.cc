@@ -1,5 +1,5 @@
-#include <cassert>
 #include <cstdio>
+#include <cassert>
 #include <vector>
 
 #include <cctk.h>
@@ -93,6 +93,14 @@ void ID_Bin_NS_initialise (CCTK_ARGUMENTS)
     betax[i] = bin_ns.beta_x[i];
     betay[i] = bin_ns.beta_y[i];
     betaz[i] = bin_ns.beta_z[i];
+    
+    // These initial data assume a helical Killing vector field
+    // TODO: calculate spatial derivatives to set this correctly
+    dtalp[i] = 0.0;
+    
+    dtbetax[i] = 0.0;
+    dtbetay[i] = 0.0;
+    dtbetaz[i] = 0.0;
     
     CCTK_REAL g[3][3];
     g[0][0] = bin_ns.g_xx[i];
