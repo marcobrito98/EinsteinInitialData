@@ -60,6 +60,14 @@ void ID_Bin_BH_initialise (CCTK_ARGUMENTS)
     betay[i] = bin_bh.beta_y[i];
     betaz[i] = bin_bh.beta_z[i];
     
+    // These initial data assume a helical Killing vector field
+    // TODO: calculate spatial derivatives to set this correctly
+    dtalp[i] = 0.0;
+    
+    dtbetax[i] = 0.0;
+    dtbetay[i] = 0.0;
+    dtbetaz[i] = 0.0;
+    
     CCTK_REAL g[3][3];
     g[0][0] = bin_bh.g_xx[i];
     g[0][1] = bin_bh.g_xy[i];
