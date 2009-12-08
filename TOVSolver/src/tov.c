@@ -866,8 +866,11 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
                                 2*gyz[i3D] * vely[i3D] * velz[i3D]) * my_psi4);
       }
       /* now all combine methods are doing the same */
-      if ((TOV_Num_TOVs==1) && (rho[i3D] < TOV_Atmosphere[0]))
+      if ((TOV_Num_TOVs==1) && (rho[i3D] <= TOV_Atmosphere[0]))
+      {
         velx[i3D] = vely[i3D] = velz[i3D] = 0.0;
+        w_lorentz[i3D] = 1.0;
+      }
 
       SpatialDet(gxx[i3D],gxy[i3D],gxz[i3D],gyy[i3D],gyz[i3D],gzz[i3D],&det);
 
