@@ -98,13 +98,6 @@ void ID_Mag_NS_initialise (CCTK_ARGUMENTS)
     betay[i] = mag_ns.beta_y[i];
     betaz[i] = mag_ns.beta_z[i];
     
-    // These initial data assume stationarity
-    dtalp[i] = 0.0;
-    
-    dtbetax[i] = 0.0;
-    dtbetay[i] = 0.0;
-    dtbetaz[i] = 0.0;
-    
     CCTK_REAL g[3][3];
     g[0][0] = mag_ns.g_xx[i];
     g[0][1] = mag_ns.g_xy[i];
@@ -166,6 +159,37 @@ void ID_Mag_NS_initialise (CCTK_ARGUMENTS)
     Bvec[i+2*npoints] = mag_ns.bb_z[i] / B_unit;
     
   } // for i
+  
+  
+  
+  CCTK_INFO ("Setting time derivatives of lapse and shift");
+  {
+    // These initial data assume stationarity
+    
+    if (CCTK_EQUALS (initial_dtlapse, "ID_Mag_NS")) {
+#pragma omp parallel for
+      for (int i=0; i<npoints; ++i) {
+        dtalp[i] = 0.0;
+      }
+    } else if (CCTK_EQUALS (initial_dtlapse, "none")) {
+      // do nothing
+    } else {
+      CCTK_WARN (CCTK_WARN_ABORT, "internal error");
+    }
+    
+    if (CCTK_EQUALS (initial_dtshift, "ID_Mag_NS")) {
+#pragma omp parallel for
+      for (int i=0; i<npoints; ++i) {
+        dtbetax[i] = 0.0;
+        dtbetay[i] = 0.0;
+        dtbetaz[i] = 0.0;
+      }
+    } else if (CCTK_EQUALS (initial_dtshift, "none")) {
+      // do nothing
+    } else {
+      CCTK_WARN (CCTK_WARN_ABORT, "internal error");
+    }
+  }
   
   
   
