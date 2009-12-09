@@ -1,4 +1,5 @@
 #include <cassert>
+#include <cmath>
 #include <cstdio>
 #include <vector>
 
@@ -9,6 +10,30 @@
 #include <bin_bh.h>
 
 using namespace std;
+
+
+
+static void set_dt_from_domega (CCTK_ARGUMENTS,
+                                CCTK_REAL const* const var,
+                                CCTK_REAL      * const dtvar,
+                                CCTK_REAL const& omega)
+{
+  DECLARE_CCTK_ARGUMENTS;
+  
+  int const npoints = cctk_lsh[0] * cctk_lsh[1] * cctk_lsh[2];
+  vector<CCTK_REAL> dxvar(npoints), dyvar(npoints);
+  
+  Diff_gv (cctkGH, 0, var, &dxvar[0], -1);
+  Diff_gv (cctkGH, 1, var, &dyvar[0], -1);
+  
+#pragma omp parallel for
+  for (int i=0; i<npoints; ++i) {
+    CCTK_REAL const ephix = +y[i];
+    CCTK_REAL const ephiy = -x[i];
+    CCTK_REAL const dphi_var = ephix * dxvar[i] + ephiy * dyvar[i];
+    dtvar[i] = omega * dphi_var;
+  }
+}
 
 
 
@@ -25,7 +50,6 @@ void ID_Bin_BH_initialise (CCTK_ARGUMENTS)
   CCTK_INFO ("Setting up coordinates");
   
   int const npoints = cctk_lsh[0] * cctk_lsh[1] * cctk_lsh[2];
-  
   vector<double> xx(npoints), yy(npoints), zz(npoints);
   
 #pragma omp parallel for
@@ -59,14 +83,6 @@ void ID_Bin_BH_initialise (CCTK_ARGUMENTS)
     betax[i] = bin_bh.beta_x[i];
     betay[i] = bin_bh.beta_y[i];
     betaz[i] = bin_bh.beta_z[i];
-    
-    // These initial data assume a helical Killing vector field
-    // TODO: calculate spatial derivatives to set this correctly
-    dtalp[i] = 0.0;
-    
-    dtbetax[i] = 0.0;
-    dtbetay[i] = 0.0;
-    dtbetaz[i] = 0.0;
     
     CCTK_REAL g[3][3];
     g[0][0] = bin_bh.g_xx[i];
@@ -117,6 +133,34 @@ void ID_Bin_BH_initialise (CCTK_ARGUMENTS)
     kzz[i] = k[2][2];
     
   } // for i
+  
+  
+  
+  CCTK_INFO ("Calculating time derivatives of lapse and shift");
+  {
+    // Angular velocity
+    CCTK_REAL const omega = bin_bh.omega * bin_bh.dist;
+    
+    // These initial data assume a helical Killing vector field
+    
+    if (CCTK_EQUALS (initial_dtlapse, "ID_Bin_BH")) {
+      set_dt_from_domega (CCTK_PASS_CTOC, alp, dtalp, omega);
+    } else if (CCTK_EQUALS (initial_dtlapse, "none")) {
+      // do nothing
+    } else {
+      CCTK_WARN (CCTK_WARN_ABORT, "internal error");
+    }
+    
+    if (CCTK_EQUALS (initial_dtshift, "ID_Bin_BH")) {
+      set_dt_from_domega (CCTK_PASS_CTOC, betax, dtbetax, omega);
+      set_dt_from_domega (CCTK_PASS_CTOC, betay, dtbetay, omega);
+      set_dt_from_domega (CCTK_PASS_CTOC, betaz, dtbetaz, omega);
+    } else if (CCTK_EQUALS (initial_dtshift, "none")) {
+      // do nothing
+    } else {
+      CCTK_WARN (CCTK_WARN_ABORT, "internal error");
+    }
+  }
   
   
   
