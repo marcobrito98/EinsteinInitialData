@@ -1,4 +1,4 @@
-ActiveThorns = "time MoL pugh pughreduce pughslab coordbase symbase cartgrid3d ioutil ioascii iobasic boundary admbase staticconformal spacemask admcoupling coordgauge admmacros hydrobase whisky whisky_init_data whisky_tovsolverc nanchecker eos_base eos_ideal_fluid eos_polytrope bssn_mol admconstraints constants LocalReduce TmunuBase"
+ActiveThorns = "time MoL pugh pughreduce pughslab coordbase symbase cartgrid3d ioutil ioascii iobasic boundary admbase staticconformal spacemask admcoupling coordgauge admmacros hydrobase whisky whisky_init_data whisky_tovsolverc nanchecker eos_base eos_ideal_fluid eos_polytrope bssn_mol admconstraints constants LocalReduce TmunuBase InitBase"
 
 TmunuBase::stress_energy_storage	=	yes
 TmunuBase::stress_energy_at_RHS		=	yes
