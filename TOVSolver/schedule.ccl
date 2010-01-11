@@ -42,8 +42,8 @@ schedule TOV_C_Integrate_RHS IN TOV_Initial_Data
   OPTIONS: GLOBAL
 } "Integrate the 1d equations for the TOV star"
 
-if (CCTK_Equals(initial_data, "tov") || (TOV_Use_Old_Initial_Data > 0) ||
-    TOV_Enforce_Interpolation)
+if (CCTK_Equals(initial_data, "tov") || CCTK_Equals(initial_hydro, "tov") ||
+    (TOV_Use_Old_Initial_Data > 0) || TOV_Enforce_Interpolation)
 {
   schedule TOV_C_Exact IN TOV_Initial_Data AFTER TOV_C_Integrate_RHS
   {

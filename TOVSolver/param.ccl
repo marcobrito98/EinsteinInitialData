@@ -120,6 +120,13 @@ CCTK_INT TOV_fake_evolution "Fake evolution by setting ID at every step" STEERAB
 } 0
 
 
+shares:HydroBase
+
+EXTENDS KEYWORD initial_hydro ""
+{
+  "tov" :: "TOV star initial hydrobase variables"
+}
+
 shares:admbase
 
 EXTENDS KEYWORD initial_data
