@@ -1,0 +1,12 @@
+# Interface definition for thorn TOVSolverC
+
+implements: WhiskyTOVSolver
+inherits: Whisky, Constants
+
+public:
+
+void FUNCTION SpatialDet(CCTK_REAL IN gxx, CCTK_REAL IN gxy, \
+                         CCTK_REAL IN gxz, CCTK_REAL IN gyy, \
+                         CCTK_REAL IN gyz, CCTK_REAL IN gzz, \
+                         CCTK_REAL OUT det)
+USES FUNCTION SpatialDet
