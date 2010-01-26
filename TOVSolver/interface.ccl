@@ -3,6 +3,8 @@
 implements: WhiskyTOVSolver
 inherits: Whisky, Constants
 
+USES INCLUDE: constants.h
+
 public:
 
 void FUNCTION SpatialDet(CCTK_REAL IN gxx, CCTK_REAL IN gxy, \
