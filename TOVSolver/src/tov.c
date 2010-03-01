@@ -367,7 +367,7 @@ void TOV_C_Integrate_RHS(CCTK_ARGUMENTS)
   CCTK_INFO("Integrated TOV equation");
   /* do some info */
   CCTK_VInfo(CCTK_THORNSTRING, "Information about the TOVs used:");
-  CCTK_VInfo("", "TOV    radius     mass  mass(g) bary_mass cent.rho rho(cgi)        K   K(cgi)    Gamma");
+  CCTK_VInfo("", "TOV    radius    mass  bary_mass mass(g) cent.rho rho(cgi)        K   K(cgi)    Gamma");
   for (i=0; i<TOV_Num_TOVs; i++)
     if (TOV_Gamma[i]==2.0)
       CCTK_VInfo("","  %d  %8g %8g %8g %8.3g %8g %8.3g %8g %8.3g %8g",
