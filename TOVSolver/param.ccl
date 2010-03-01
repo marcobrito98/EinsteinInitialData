@@ -119,6 +119,10 @@ CCTK_INT TOV_fake_evolution "Fake evolution by setting ID at every step" STEERAB
   *:* :: "anything, 0 as off (default), everything else as on"
 } 0
 
+STRING TOV_save_to_datafile "Only save data to file and exit"
+{
+  ".*" :: "Any filename, not used if empty"
+} ""
 
 shares:HydroBase
 
