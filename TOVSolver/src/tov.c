@@ -17,6 +17,8 @@
 
 #include "tov.h"
 
+#define NUMVARS 6
+
 #define velx (&vel[0*cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2]])
 #define vely (&vel[1*cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2]])
 #define velz (&vel[2*cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2]])
@@ -46,6 +48,8 @@ CCTK_REAL * TOV_rbar_1d=0;
 CCTK_REAL * TOV_press_1d=0;
 CCTK_REAL * TOV_phi_1d=0;
 CCTK_REAL * TOV_m_1d=0;
+CCTK_REAL * TOV_mbary_1d=0;
+CCTK_REAL * TOV_rprop_1d=0;
 
 #include "utils.inc"
 
@@ -115,10 +119,10 @@ void TOV_C_ParamCheck(CCTK_ARGUMENTS)
    @endhistory
 @@*/
 void TOV_C_Source_RHS(CCTK_REAL r, CCTK_REAL K, CCTK_REAL Gamma,
-                      CCTK_REAL old_data[4], CCTK_REAL source_data[4])
+                      CCTK_REAL old_data[NUMVARS], CCTK_REAL source_data[NUMVARS])
 {
   CCTK_REAL LOCAL_TINY, PI;
-  CCTK_REAL press, rho, eps, mu, m, phi;
+  CCTK_REAL press, rho, eps, mu, m, phi, mbary, rprop;
   CCTK_REAL log_rbar_over_r, r_minus_two_m;
 
   LOCAL_TINY = 1.0e-35;
@@ -130,6 +134,8 @@ void TOV_C_Source_RHS(CCTK_REAL r, CCTK_REAL K, CCTK_REAL Gamma,
   m               = old_data[1];
   phi             = old_data[2];
   log_rbar_over_r = old_data[3];
+  mbary           = old_data[4];
+  rprop           = old_data[5];
 
   rho = pow(press / K, 1.0 / Gamma);
   eps = press / (Gamma - 1.0) / rho;
@@ -139,10 +145,11 @@ void TOV_C_Source_RHS(CCTK_REAL r, CCTK_REAL K, CCTK_REAL Gamma,
 
   if ((r==0.0) && (m==0.0))
   {
-    /* source_data[0] = 0.0; */
     source_data[1] = 0.0;
     source_data[2] = 0.0;
     source_data[3] = 0.0;
+    source_data[4] = 0.0;
+    source_data[5] = 0.0;
   }
   else
   {
@@ -152,6 +159,8 @@ void TOV_C_Source_RHS(CCTK_REAL r, CCTK_REAL K, CCTK_REAL Gamma,
                      (m + 4*PI * r*r*r * press) / r_minus_two_m / r;
     source_data[1] = 4*PI * r*r * mu;
     source_data[3] = (sqrt(r) - sqrt(r_minus_two_m)) / r / sqrt(r_minus_two_m);
+    source_data[5] = 1.0/sqrt(1.0-2.0*m/r);
+    source_data[4] = source_data[5] * 4*PI * rho * r*r;
   }
 }
 
@@ -168,7 +177,6 @@ void TOV_C_Source_RHS(CCTK_REAL r, CCTK_REAL K, CCTK_REAL Gamma,
    @history
    @endhistory
 @@*/
-
 void TOV_C_Integrate_RHS(CCTK_ARGUMENTS)
 {
   DECLARE_CCTK_ARGUMENTS
@@ -177,8 +185,9 @@ void TOV_C_Integrate_RHS(CCTK_ARGUMENTS)
   CCTK_REAL LOCAL_TINY;
 
   CCTK_INT star, star_i, i, TOV_Surface_Index;
-  CCTK_REAL old_data[4], source_data[4], in_data[4], new_data[4],
-            k1[4], k2[4], k3[4], k4[4];
+  CCTK_REAL old_data[NUMVARS], source_data[NUMVARS],
+            in_data[NUMVARS], new_data[NUMVARS],
+            k1[NUMVARS], k2[NUMVARS], k3[NUMVARS], k4[NUMVARS];
   CCTK_REAL Surface_Mass, factor, local_rho;
   CCTK_REAL rho_central;
 
@@ -193,6 +202,8 @@ void TOV_C_Integrate_RHS(CCTK_ARGUMENTS)
   assert(TOV_press_1d!=0);
   assert(TOV_phi_1d!=0);
   assert(TOV_m_1d!=0);
+  assert(TOV_mbary_1d!=0);
+  assert(TOV_rprop_1d!=0);
 
   /* do it for all stars */
   for (star=0; star < TOV_Num_TOVs; star++)
@@ -240,6 +251,8 @@ void TOV_C_Integrate_RHS(CCTK_ARGUMENTS)
     TOV_C_fill(&(TOV_phi_1d  [star_i]), TOV_Num_Radial, 0.0);
     TOV_C_fill(&(TOV_rbar_1d [star_i]), TOV_Num_Radial, 0.0);
     TOV_C_fill(&(TOV_r_1d    [star_i]), TOV_Num_Radial, 0.0);
+    TOV_C_fill(&(TOV_mbary_1d[star_i]), TOV_Num_Radial, 0.0);
+    TOV_C_fill(&(TOV_rprop_1d[star_i]), TOV_Num_Radial, 0.0);
 
     /* set start values */
     TOV_press_1d[star_i] = TOV_K[star] *
@@ -254,10 +267,12 @@ void TOV_C_Integrate_RHS(CCTK_ARGUMENTS)
     TOV_Surface[star] = -1.0;
     TOV_Surface_Index = -1.0;
 
+#define RKLOOP for (int rk=0; rk<NUMVARS; rk++)
     /* loop over all radii */
     for (i=star_i; (i < star_i+TOV_Num_Radial-1) &&
                             (TOV_Surface[star] < 0.0); i++)
     {
+      /* set up RK arrays */
       old_data[0] = TOV_press_1d[i];
       old_data[1] = TOV_m_1d[i];
       old_data[2] = TOV_phi_1d[i];
@@ -265,67 +280,43 @@ void TOV_C_Integrate_RHS(CCTK_ARGUMENTS)
         old_data[3] = 0.0;
       else
         old_data[3] = log(TOV_rbar_1d[i] / TOV_r_1d[i]);
+      old_data[4] = TOV_mbary_1d[i];
+      old_data[5] = TOV_rprop_1d[i];
 
-      in_data[0] = old_data[0];
-      in_data[1] = old_data[1];
-      in_data[2] = old_data[2];
-      in_data[3] = old_data[3];
-
-      TOV_C_fill(source_data, 4, 0.0);
+      /* usual RK4 */
+      RKLOOP in_data[rk] = old_data[rk];
+      TOV_C_fill(source_data, 6, 0.0);
 
       TOV_C_Source_RHS(TOV_r_1d[i],
                      TOV_K[star], TOV_Gamma[star],
                      in_data, source_data);
-      k1[0] = TOV_dr[star] * source_data[0];
-      k1[1] = TOV_dr[star] * source_data[1];
-      k1[2] = TOV_dr[star] * source_data[2];
-      k1[3] = TOV_dr[star] * source_data[3];
-      in_data[0] = old_data[0] + 0.5 * k1[0];
-      in_data[1] = old_data[1] + 0.5 * k1[1];
-      in_data[2] = old_data[2] + 0.5 * k1[2];
-      in_data[3] = old_data[3] + 0.5 * k1[3];
 
+      RKLOOP k1[rk] = TOV_dr[star] * source_data[rk];
+      RKLOOP in_data[rk] = old_data[rk] + 0.5 * k1[rk];
       TOV_C_Source_RHS(TOV_r_1d[i]+ 0.5 * TOV_dr[star],
                        TOV_K[star], TOV_Gamma[star],
                        in_data, source_data);
-      k2[0] = TOV_dr[star] * source_data[0];
-      k2[1] = TOV_dr[star] * source_data[1];
-      k2[2] = TOV_dr[star] * source_data[2];
-      k2[3] = TOV_dr[star] * source_data[3];
-      in_data[0] = old_data[0] + 0.5 * k2[0];
-      in_data[1] = old_data[1] + 0.5 * k2[1];
-      in_data[2] = old_data[2] + 0.5 * k2[2];
-      in_data[3] = old_data[3] + 0.5 * k2[3];
 
+      RKLOOP k2[rk] = TOV_dr[star] * source_data[rk];
+      RKLOOP in_data[rk] = old_data[rk] + 0.5 * k2[rk];
       TOV_C_Source_RHS(TOV_r_1d[i]+ 0.5 * TOV_dr[star],
                        TOV_K[star], TOV_Gamma[star],
                        in_data, source_data);
-      k3[0] = TOV_dr[star] * source_data[0];
-      k3[1] = TOV_dr[star] * source_data[1];
-      k3[2] = TOV_dr[star] * source_data[2];
-      k3[3] = TOV_dr[star] * source_data[3];
-      in_data[0] = old_data[0] + k3[0];
-      in_data[1] = old_data[1] + k3[1];
-      in_data[2] = old_data[2] + k3[2];
-      in_data[3] = old_data[3] + k3[3];
 
+      RKLOOP k3[rk] = TOV_dr[star] * source_data[rk];
+      RKLOOP in_data[rk] = old_data[rk] + k3[rk];
       TOV_C_Source_RHS(TOV_r_1d[i]+ TOV_dr[star],
                        TOV_K[star], TOV_Gamma[star],
                        in_data, source_data);
-      k4[0] = TOV_dr[star] * source_data[0];
-      k4[1] = TOV_dr[star] * source_data[1];
-      k4[2] = TOV_dr[star] * source_data[2];
-      k4[3] = TOV_dr[star] * source_data[3];
-
-      new_data[0] = old_data[0] + (k1[0] + k4[0] + 2.0 * (k2[0] + k3[0])) /6.0;
-      new_data[1] = old_data[1] + (k1[1] + k4[1] + 2.0 * (k2[1] + k3[1])) /6.0;
-      new_data[2] = old_data[2] + (k1[2] + k4[2] + 2.0 * (k2[2] + k3[2])) /6.0;
-      new_data[3] = old_data[3] + (k1[3] + k4[3] + 2.0 * (k2[3] + k3[3])) /6.0;
+      RKLOOP k4[rk] = TOV_dr[star] * source_data[rk];
+      RKLOOP new_data[rk] = old_data[rk] + (k1[rk] + k4[rk] + 2.0 * (k2[rk] + k3[rk])) /6.0;
 
       TOV_press_1d[i+1] = new_data[0];
       TOV_m_1d    [i+1] = new_data[1];
       TOV_phi_1d  [i+1] = new_data[2];
       TOV_rbar_1d [i+1] = TOV_r_1d[i+1] * exp(new_data[3]);
+      TOV_mbary_1d[i+1] = new_data[4];
+      TOV_rprop_1d[i+1] = new_data[5];
 
       /* otherwise the code crashes later */
       if (TOV_press_1d[i+1] < 0.0)
@@ -369,18 +360,20 @@ void TOV_C_Integrate_RHS(CCTK_ARGUMENTS)
                           TOV_r_1d[i] - Surface_Mass);
         TOV_m_1d[i]     = Surface_Mass;
         TOV_phi_1d[i]   = 0.5 * log( 1.0 - 2.0 * Surface_Mass / TOV_r_1d[i]);
+        TOV_mbary_1d[i] = TOV_mbary_1d[TOV_Surface_Index];
       }
     }
   }
   CCTK_INFO("Integrated TOV equation");
   /* do some info */
   CCTK_VInfo(CCTK_THORNSTRING, "Information about the TOVs used:");
-  CCTK_VInfo("", "TOV    radius     mass  mass(g) cent.rho rho(cgi)        K   K(cgi)    Gamma");
+  CCTK_VInfo("", "TOV    radius     mass  mass(g) bary_mass cent.rho rho(cgi)        K   K(cgi)    Gamma");
   for (i=0; i<TOV_Num_TOVs; i++)
     if (TOV_Gamma[i]==2.0)
-      CCTK_VInfo("","  %d  %8g %8g %8.3g %8g %8.3g %8g %8.3g %8g",
+      CCTK_VInfo("","  %d  %8g %8g %8g %8.3g %8g %8.3g %8g %8.3g %8g",
                  i+1, TOV_R_Surface[i],
                  TOV_m_1d[(i+1)*TOV_Num_Radial-1],
+                 TOV_mbary_1d[(i+1)*TOV_Num_Radial-1],
                  TOV_m_1d[(i+1)*TOV_Num_Radial-1]*CONSTANT_Msolar_cgi,
                  TOV_Rho_Central[i],
                  TOV_Rho_Central[i]/pow(CONSTANT_G_cgi,3.0)/

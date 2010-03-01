@@ -13,6 +13,8 @@ void TOV_C_AllocateMemory(CCTK_ARGUMENTS)
   assert(TOV_press_1d==0);
   assert(TOV_phi_1d==0);
   assert(TOV_m_1d==0);
+  assert(TOV_mbary_1d==0);
+  assert(TOV_rprop_1d==0);
 
   TOV_Surface = malloc(TOV_Num_TOVs * sizeof(CCTK_REAL));
   TOV_R_Surface = malloc(TOV_Num_TOVs * sizeof(CCTK_REAL));
@@ -23,6 +25,8 @@ void TOV_C_AllocateMemory(CCTK_ARGUMENTS)
   TOV_press_1d = malloc(TOV_Num_Radial * TOV_Num_TOVs * sizeof(CCTK_REAL));
   TOV_phi_1d = malloc(TOV_Num_Radial * TOV_Num_TOVs * sizeof(CCTK_REAL));
   TOV_m_1d = malloc(TOV_Num_Radial * TOV_Num_TOVs * sizeof(CCTK_REAL));
+  TOV_mbary_1d = malloc(TOV_Num_Radial * TOV_Num_TOVs * sizeof(CCTK_REAL));
+  TOV_rprop_1d = malloc(TOV_Num_Radial * TOV_Num_TOVs * sizeof(CCTK_REAL));
 }
 
 void TOV_C_FreeMemory (CCTK_ARGUMENTS)
@@ -49,6 +53,8 @@ void TOV_C_FreeMemory (CCTK_ARGUMENTS)
   free(TOV_press_1d);
   free(TOV_phi_1d);
   free(TOV_m_1d);
+  free(TOV_mbary_1d);
+  free(TOV_rprop_1d);
 
   TOV_Surface=0;
   TOV_R_Surface=0;
@@ -59,6 +65,8 @@ void TOV_C_FreeMemory (CCTK_ARGUMENTS)
   TOV_press_1d=0;
   TOV_phi_1d=0;
   TOV_m_1d=0;
+  TOV_mbary_1d=0;
+  TOV_rprop_1d=0;
 }
 
 /* - utility routine
