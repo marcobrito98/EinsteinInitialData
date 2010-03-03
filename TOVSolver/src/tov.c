@@ -799,7 +799,7 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
             alp[i3D] *= exp(phi_point[star_i]);
           if (TOV_Conformal_Flat_Three_Metric)
           {
-            /* This is a hack, since it does not check, if the input data is
+            /* This is a hack, since it does not check if the input data is
              * really conformally flat. It simply assumes this by only using
              * gxx */
             my_psi4 = (r_point[star_i] * r_point[star_i] /
