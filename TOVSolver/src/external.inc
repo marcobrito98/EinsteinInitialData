@@ -213,8 +213,7 @@ CCTK_INT TOV_Set_Initial_Guess_for_u(
   /* loop over all points we got */
   for (i=0; i<size; i++)
   {
-    CCTK_REAL rho, eps, gxx, r_tmp;
-    int star_loop;
+    CCTK_REAL rho, eps, gxx;
     /* calculate the distance to the stars and choose the closest */
     star=get_nearest_star(x,y,z,i);
     star_i = star * TOV_Num_Radial;
