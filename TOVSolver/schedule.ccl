@@ -51,6 +51,15 @@ if (!CCTK_Equals(TOV_save_to_datafile,""))
   } "Save data to file and exit"
 }
 
+if (TOV_ProperPosition)
+{
+  schedule TOV_Set_ProperPositions in TOV_Initial_Data after TOV_C_Integrate_RHS before TOV_C_Exact
+  {
+    LANG: C
+    Options: GLOBAL
+  } "Steer NS position parameters according to proper distance"
+}
+
 if (CCTK_Equals(initial_data, "tov") || CCTK_Equals(initial_hydro, "tov") ||
     (TOV_Use_Old_Initial_Data > 0) || TOV_Enforce_Interpolation)
 {

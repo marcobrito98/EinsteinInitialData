@@ -41,6 +41,7 @@
 
 CCTK_REAL * TOV_Surface=0;
 CCTK_REAL * TOV_R_Surface=0;
+CCTK_REAL * TOV_RProp_Surface=0;
 CCTK_REAL * TOV_Atmosphere=0;
 
 CCTK_REAL * TOV_r_1d=0;
@@ -75,6 +76,11 @@ void TOV_C_ParamCheck(CCTK_ARGUMENTS)
 	  CCTK_WARN(1, "TOV_Solve_for_TOVs is depreciated. "
                    "Use TOV_Enforce_Interpolation instead.\n");
       }
+  if (TOV_ProperPosition)
+  {
+    if (TOV_Num_TOVs != 2)
+      CCTK_WARN(0, "TOV_ProperPosition atm only works for TOV_Num_TOVs==2");
+  }
 }
 
 /* centered differencing with one-sided differencing at the boundary */
@@ -195,6 +201,7 @@ void TOV_C_Integrate_RHS(CCTK_ARGUMENTS)
 
   assert(TOV_Surface!=0);
   assert(TOV_R_Surface!=0);
+  assert(TOV_RProp_Surface!=0);
   assert(TOV_Atmosphere!=0);
 
   assert(TOV_r_1d!=0);
@@ -331,6 +338,7 @@ void TOV_C_Integrate_RHS(CCTK_ARGUMENTS)
       {
         TOV_Surface[star]   = TOV_r_1d[i];
         TOV_R_Surface[star] = TOV_rbar_1d[i];
+        TOV_RProp_Surface[star] = TOV_rprop_1d[i];
         TOV_Surface_Index = i;
       }
     }
@@ -985,6 +993,54 @@ void TOV_Prepare_Fake_Evolution(CCTK_ARGUMENTS)
                           "1"))
         CCTK_WARN(0,
                   "Could not prepare for fake evolution - steering failed\n");
+}
+
+inline static CCTK_REAL calc_coord_dist(CCTK_REAL prop_dist, CCTK_REAL M, CCTK_REAL R)
+{
+    CCTK_REAL xnp = prop_dist;
+    CCTK_REAL xn, f, fp;
+    do {
+      xn = xnp;
+      f  = xn - prop_dist + M * log(xn/R - 1);
+      fp = 1 + M / (xn-R);
+      xnp = xn - f/fp;
+    } while (fabs((xnp-xn)/xn) > 10.e-14);
+    return xnp;
+}
+
+/* Only works for equal-mass binary NS systems atm */
+void TOV_Set_ProperPositions(CCTK_ARGUMENTS)
+{
+  DECLARE_CCTK_ARGUMENTS
+  DECLARE_CCTK_PARAMETERS
+
+  /* The specified parameters are given in proper distance */
+  CCTK_REAL prop_dist = sqrt((TOV_Position_x[0]-TOV_Position_x[1])*
+                             (TOV_Position_x[0]-TOV_Position_x[1])+
+                             (TOV_Position_y[0]-TOV_Position_y[1])*
+                             (TOV_Position_y[0]-TOV_Position_y[1])+
+                             (TOV_Position_z[0]-TOV_Position_z[1])*
+                             (TOV_Position_z[0]-TOV_Position_z[1]));
+  /* Now we need to calculate the coordinate distance from that */
+  CCTK_REAL coord_dist = calc_coord_dist(prop_dist,
+                                         TOV_m_1d[TOV_Num_Radial-1],
+                                         TOV_RProp_Surface[0]);
+  /* Now steer the parameters before the stars are interpolated onto
+   * the Cactus grid using those very same variables */
+  /* We do that by scaling every variable by the same factor */
+  CCTK_REAL factor = coord_dist / prop_dist;
+  char tmp[1024];
+  snprintf(tmp, 1023, "%g", coord_dist/2);
+  if (CCTK_ParameterSet("par_b", "TwoPunctures", tmp))
+    CCTK_WARN(0, "Could not set par_b");
+  snprintf(tmp, 1023, "%g", TOV_Position_x[0] * factor);
+  if (CCTK_ParameterSet("TOV_Position_x[0]", "Whisky_TOVSolverC", tmp))
+    CCTK_WARN(0, "Could not set x[0]");
+  snprintf(tmp, 1023, "%g", TOV_Position_x[1] * factor);
+  if (CCTK_ParameterSet("TOV_Position_x[1]", "Whisky_TOVSolverC", tmp))
+    CCTK_WARN(0, "Could not set x[1]");
+
+  // printf("proper distance: %g, coordinate distance: %g\n", prop_dist, coord_dist);
 }
 
 #include "external.inc"

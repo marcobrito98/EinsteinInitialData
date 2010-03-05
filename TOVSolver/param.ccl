@@ -78,6 +78,10 @@ CCTK_REAL TOV_Velocity_z[10] "(fixed) Velocity of neutron star, z coordinate (ca
   *:* :: "real"
 } 0.0
 
+BOOLEAN TOV_ProperPosition "For use only with two NSs, atm only handles equal mass"
+{
+} "no"
+
 BOOLEAN TOV_Fast_Interpolation "Use faster interpolation algorithm? Default is yes."
 {
 } "yes"
