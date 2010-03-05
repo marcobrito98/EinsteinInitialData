@@ -89,7 +89,7 @@ REAL TP_Extend_Radius "Radius of an extended spacetime instead of the puncture"
   0:* :: "anything positive, should be smaller than the horizon"
 } 0.0
 
-REAL par_b "x coordinate of the m+ puncture"
+REAL par_b "x coordinate of the m+ puncture" STEERABLE=always
 {
   (0.0:*) :: ""
 } 1.0

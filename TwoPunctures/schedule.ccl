@@ -22,7 +22,7 @@ if (CCTK_Equals(initial_data, "twopunctures"))
   }
   else
   {
-    SCHEDULE TwoPunctures AT Initial AFTER ADMBase_InitialData BEFORE ADMBase_PostInitial AFTER HydroBase_Initial
+    SCHEDULE TwoPunctures AT Initial AFTER ADMBase_InitialData BEFORE ADMBase_PostInitial AFTER HydroBase_Initial before SetTmunu before HydroBase_Prim2ConInitial
     {
       LANG: C
       STORAGE: puncture_u bare_mass

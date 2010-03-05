@@ -229,6 +229,7 @@ TwoPunctures (CCTK_ARGUMENTS)
     } else {
       CCTK_INFO ("Solving puncture equation for BH-BH system");
     }
+    CCTK_VInfo (CCTK_THORNSTRING, "b = %g", par_b);
     
     /* initialise to 0 */
     for (int j = 0; j < ntotal; j++)
