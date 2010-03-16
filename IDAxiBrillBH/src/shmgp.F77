@@ -307,8 +307,16 @@ cdir$ inline
       call ukey(k+1,np2,n5,n9,ni,jm,i9,j9,ifd,jr)
       call ukey(k,np2,n5c,n9c,nic,jmc,i9c,j9c,ifdc,jrc)
 cdir$ noinline 
+c     TODO 2009-01-06 Erik Schnetter <schnetter@cct.lsu.edu>:
+c     I notice that this call does not correspond to the subroutine
+c     definition below.  The call passes three arguments too many.
+c     Maybe the three arguments pu(nic),pd(nic),pc(nic) should be
+c     omitted?
+      call CCTK_WARN (CCTK_WARN_ABORT, "Trying to find out whether this line is reached")
     6 call ursrhs(f(n5),f(n5c),pu(nic),pd(nic),pc(nic),ru(nic),
      + rd(nic),rc(nic),im,jm,jmc,m,k+1,jr,irc)
+c    6 call ursrhs(f(n5),f(n5c),ru(nic),rd(nic),rc(nic),
+c     + im,jm,jmc,m,k+1,jr,irc)
          endif
 c-time            tsu1=second()
 c-time            write(lout,*) ' time for setup =',tsu1-tsu0
