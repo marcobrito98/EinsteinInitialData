@@ -256,6 +256,8 @@ c .....................................................................
       CCTK_REAL ru(idi),rd(idi),rc(idi)
       CCTK_REAL resid(0:40),confac(0:40)
       common /io/ linp,lout
+      CCTK_REAL one
+      parameter (one=1)
 c
 c-time           tsu0=second()
          if(iskip.eq.0) then
@@ -313,10 +315,10 @@ c     definition below.  The call passes three arguments too many.
 c     Maybe the three arguments pu(nic),pd(nic),pc(nic) should be
 c     omitted?
       call CCTK_WARN (CCTK_WARN_ABORT, "Trying to find out whether this line is reached")
-    6 call ursrhs(f(n5),f(n5c),pu(nic),pd(nic),pc(nic),ru(nic),
-     + rd(nic),rc(nic),im,jm,jmc,m,k+1,jr,irc)
-c    6 call ursrhs(f(n5),f(n5c),ru(nic),rd(nic),rc(nic),
-c     + im,jm,jmc,m,k+1,jr,irc)
+c    6 call ursrhs(f(n5),f(n5c),pu(nic),pd(nic),pc(nic),ru(nic),
+c     + rd(nic),rc(nic),im,jm,jmc,m,k+1,jr,irc)
+    6 call ursrhs(f(n5),f(n5c),ru(nic),rd(nic),rc(nic),
+     + im,jm,jmc,m,k+1,jr,irc)
          endif
 c-time            tsu1=second()
 c-time            write(lout,*) ' time for setup =',tsu1-tsu0
@@ -413,7 +415,7 @@ cdir$ noinline
       call urscal(
      + ac(n5),aw(n5),as(n5),ae(n5),an(n5),asw(n9),ase(n9),
      + ane(n9),anw(n9),q(n5),f(n5),f(n5c),q(n5c),rc(nic),
-     + im,jm,jmc,ifd,i9,j9,k,m,jr,1.,rmax,ipc,irc)
+     + im,jm,jmc,ifd,i9,j9,k,m,jr,one,rmax,ipc,irc)
       resid(mcyc)=rmax
       confac(mcyc)=rmax/rmaxo
       nb=0
