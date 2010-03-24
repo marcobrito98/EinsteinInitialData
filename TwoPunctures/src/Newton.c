@@ -5,6 +5,8 @@
 #include <string.h>
 #include <math.h>
 #include <ctype.h>
+#include <gsl/gsl_vector.h>
+#include <gsl/gsl_linalg.h>
 #include "cctk_Parameters.h"
 #include "TP_utilities.h"
 #include "TwoPunctures.h"
@@ -99,52 +101,53 @@ LineRelax_al (CCTK_REAL * restrict const dv,
               CCTK_REAL const * restrict const * restrict const JFD)
 {
   int i, m, Ic, Ip, Im, col, ivar;
-  CCTK_REAL *a, *b, *c, *r, *u;
-  a = dvector (0, n1 - 1);
-  b = dvector (0, n1 - 1);
-  c = dvector (0, n1 - 1);
-  r = dvector (0, n1 - 1);
-  u = dvector (0, n1 - 1);
+
+  gsl_vector *diag = gsl_vector_alloc(n1);
+  gsl_vector *e = gsl_vector_alloc(n1-1); /* above diagonal */
+  gsl_vector *f = gsl_vector_alloc(n1-1); /* below diagonal */
+  gsl_vector *b = gsl_vector_alloc(n1);   /* rhs */
+  gsl_vector *x = gsl_vector_alloc(n1);   /* solution vector */
 
   for (ivar = 0; ivar < nvar; ivar++)
   {
+    gsl_vector_set_zero(diag);
+    gsl_vector_set_zero(e);
+    gsl_vector_set_zero(f);
     for (i = 0; i < n1; i++)
     {
       Ip = Index (ivar, i + 1, j, k, nvar, n1, n2, n3);
       Ic = Index (ivar, i, j, k, nvar, n1, n2, n3);
       Im = Index (ivar, i - 1, j, k, nvar, n1, n2, n3);
-      a[i] = 0;
-      b[i] = 0;
-      c[i] = 0;
-      r[i] = rhs[Ic];
+      gsl_vector_set(b,i,rhs[Ic]);
       for (m = 0; m < ncols[Ic]; m++)
       {
 	col = cols[Ic][m];
 	if (col != Ip && col != Ic && col != Im)
-	  r[i] -= JFD[Ic][m] * dv[col];
+          *gsl_vector_ptr(b, i) -= JFD[Ic][m] * dv[col];
 	else
 	{
-	  if (col == Im)
-	    a[i] = JFD[Ic][m];
+	  if (col == Im && i > 0)
+            gsl_vector_set(f,i-1,JFD[Ic][m]);
 	  if (col == Ic)
-	    b[i] = JFD[Ic][m];
-	  if (col == Ip)
-	    c[i] = JFD[Ic][m];
+            gsl_vector_set(diag,i,JFD[Ic][m]);
+	  if (col == Ip && i < n1-1)
+            gsl_vector_set(e,i,JFD[Ic][m]);
 	}
       }
     }
-    tridag (a, b, c, r, u, n1);
+    gsl_linalg_solve_tridiag(diag, e, f, b, x);
     for (i = 0; i < n1; i++)
     {
       Ic = Index (ivar, i, j, k, nvar, n1, n2, n3);
-      dv[Ic] = u[i];
+      dv[Ic] = gsl_vector_get(x, i);
     }
   }
-  free_dvector (a, 0, n1 - 1);
-  free_dvector (b, 0, n1 - 1);
-  free_dvector (c, 0, n1 - 1);
-  free_dvector (r, 0, n1 - 1);
-  free_dvector (u, 0, n1 - 1);
+
+  gsl_vector_free(diag);
+  gsl_vector_free(e);
+  gsl_vector_free(f);
+  gsl_vector_free(b);
+  gsl_vector_free(x);
 }
 
 /* --------------------------------------------------------------------------*/
@@ -158,52 +161,52 @@ LineRelax_be (CCTK_REAL * restrict const dv,
               CCTK_REAL const * restrict const * restrict const JFD)
 {
   int j, m, Ic, Ip, Im, col, ivar;
-  CCTK_REAL *a, *b, *c, *r, *u;
-  a = dvector (0, n2 - 1);
-  b = dvector (0, n2 - 1);
-  c = dvector (0, n2 - 1);
-  r = dvector (0, n2 - 1);
-  u = dvector (0, n2 - 1);
+
+  gsl_vector *diag = gsl_vector_alloc(n2);
+  gsl_vector *e = gsl_vector_alloc(n2-1); /* above diagonal */
+  gsl_vector *f = gsl_vector_alloc(n2-1); /* below diagonal */
+  gsl_vector *b = gsl_vector_alloc(n2);   /* rhs */
+  gsl_vector *x = gsl_vector_alloc(n2);   /* solution vector */
 
   for (ivar = 0; ivar < nvar; ivar++)
   {
+    gsl_vector_set_zero(diag);
+    gsl_vector_set_zero(e);
+    gsl_vector_set_zero(f);
     for (j = 0; j < n2; j++)
     {
       Ip = Index (ivar, i, j + 1, k, nvar, n1, n2, n3);
       Ic = Index (ivar, i, j, k, nvar, n1, n2, n3);
       Im = Index (ivar, i, j - 1, k, nvar, n1, n2, n3);
-      a[j] = 0;
-      b[j] = 0;
-      c[j] = 0;
-      r[j] = rhs[Ic];
+      gsl_vector_set(b,j,rhs[Ic]);
       for (m = 0; m < ncols[Ic]; m++)
       {
 	col = cols[Ic][m];
 	if (col != Ip && col != Ic && col != Im)
-	  r[j] -= JFD[Ic][m] * dv[col];
+          *gsl_vector_ptr(b, j) -= JFD[Ic][m] * dv[col];
 	else
 	{
-	  if (col == Im)
-	    a[j] = JFD[Ic][m];
+	  if (col == Im && j > 0)
+            gsl_vector_set(f,j-1,JFD[Ic][m]);
 	  if (col == Ic)
-	    b[j] = JFD[Ic][m];
-	  if (col == Ip)
-	    c[j] = JFD[Ic][m];
+            gsl_vector_set(diag,j,JFD[Ic][m]);
+	  if (col == Ip && j < n2-1)
+            gsl_vector_set(e,j,JFD[Ic][m]);
 	}
       }
     }
-    tridag (a, b, c, r, u, n2);
+    gsl_linalg_solve_tridiag(diag, e, f, b, x);
     for (j = 0; j < n2; j++)
     {
       Ic = Index (ivar, i, j, k, nvar, n1, n2, n3);
-      dv[Ic] = u[j];
+      dv[Ic] = gsl_vector_get(x, j);
     }
   }
-  free_dvector (a, 0, n2 - 1);
-  free_dvector (b, 0, n2 - 1);
-  free_dvector (c, 0, n2 - 1);
-  free_dvector (r, 0, n2 - 1);
-  free_dvector (u, 0, n2 - 1);
+  gsl_vector_free(diag);
+  gsl_vector_free(e);
+  gsl_vector_free(f);
+  gsl_vector_free(b);
+  gsl_vector_free(x);
 }
 
 /* --------------------------------------------------------------------------*/

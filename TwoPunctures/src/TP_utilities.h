@@ -86,12 +86,6 @@ void fourder2 (CCTK_REAL u[], CCTK_REAL d2u[], int N);
 CCTK_REAL fourev (CCTK_REAL *u, int N, CCTK_REAL x);
 
 
-void ludcmp (CCTK_REAL **a, int n, int *indx, CCTK_REAL *d);
-void lubksb (CCTK_REAL **a, int n, int *indx, CCTK_REAL b[]);
-void tridag (CCTK_REAL a[], CCTK_REAL b[], CCTK_REAL c[], CCTK_REAL r[], CCTK_REAL u[],
-	     int n);
 CCTK_REAL norm1 (CCTK_REAL *v, int n);
 CCTK_REAL norm2 (CCTK_REAL *v, int n);
 CCTK_REAL scalarproduct (CCTK_REAL *v, CCTK_REAL *w, int n);
-
-CCTK_REAL plgndr (int l, int m, CCTK_REAL x);

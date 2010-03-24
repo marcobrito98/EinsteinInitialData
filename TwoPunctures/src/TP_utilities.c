@@ -6,16 +6,7 @@
 #include <stdlib.h>
 #include "TP_utilities.h"
 
-/*---------------------------------------------------------------------------*/
-void
-nrerror (char error_text[])
-/* Numerical Recipes standard error handler */
-{
-  fprintf (stderr, "Numerical Recipes run-time error...\n");
-  fprintf (stderr, "%s\n", error_text);
-  fprintf (stderr, "...now exiting to system...\n");
-  exit (1);
-}
+#include "cctk_Functions.h"
 
 /*---------------------------------------------------------------------------*/
 int *
@@ -26,7 +17,7 @@ ivector (long nl, long nh)
 
   v = (int *) malloc ((size_t) ((nh - nl + 1 + NR_END) * sizeof (int)));
   if (!v)
-    nrerror ("allocation failure in ivector()");
+    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure in ivector()");
   return v - nl + NR_END;
 }
 
@@ -39,7 +30,7 @@ dvector (long nl, long nh)
 
   v = (CCTK_REAL *) malloc ((size_t) ((nh - nl + 1 + NR_END) * sizeof (CCTK_REAL)));
   if (!v)
-    nrerror ("allocation failure in dvector()");
+    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure in dvector()");
   return v - nl + NR_END;
 }
 
@@ -54,7 +45,7 @@ imatrix (long nrl, long nrh, long ncl, long nch)
   /* allocate pointers to rows */
   m = (int **) malloc ((size_t) ((nrow + NR_END) * sizeof (int *)));
   if (!m)
-    nrerror ("allocation failure 1 in matrix()");
+    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure 1 in matrix()");
   m += NR_END;
   m -= nrl;
 
@@ -62,7 +53,7 @@ imatrix (long nrl, long nrh, long ncl, long nch)
   /* allocate rows and set pointers to them */
   m[nrl] = (int *) malloc ((size_t) ((nrow * ncol + NR_END) * sizeof (int)));
   if (!m[nrl])
-    nrerror ("allocation failure 2 in matrix()");
+    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure 2 in matrix()");
   m[nrl] += NR_END;
   m[nrl] -= ncl;
 
@@ -84,7 +75,7 @@ dmatrix (long nrl, long nrh, long ncl, long nch)
   /* allocate pointers to rows */
   m = (CCTK_REAL **) malloc ((size_t) ((nrow + NR_END) * sizeof (CCTK_REAL *)));
   if (!m)
-    nrerror ("allocation failure 1 in matrix()");
+    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure 1 in matrix()");
   m += NR_END;
   m -= nrl;
 
@@ -92,7 +83,7 @@ dmatrix (long nrl, long nrh, long ncl, long nch)
   m[nrl] =
     (CCTK_REAL *) malloc ((size_t) ((nrow * ncol + NR_END) * sizeof (CCTK_REAL)));
   if (!m[nrl])
-    nrerror ("allocation failure 2 in matrix()");
+    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure 2 in matrix()");
   m[nrl] += NR_END;
   m[nrl] -= ncl;
 
@@ -114,7 +105,7 @@ d3tensor (long nrl, long nrh, long ncl, long nch, long ndl, long ndh)
   /* allocate pointers to pointers to rows */
   t = (CCTK_REAL ***) malloc ((size_t) ((nrow + NR_END) * sizeof (CCTK_REAL **)));
   if (!t)
-    nrerror ("allocation failure 1 in f3tensor()");
+    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure 1 in f3tensor()");
   t += NR_END;
   t -= nrl;
 
@@ -123,7 +114,7 @@ d3tensor (long nrl, long nrh, long ncl, long nch, long ndl, long ndh)
     (CCTK_REAL **)
     malloc ((size_t) ((nrow * ncol + NR_END) * sizeof (CCTK_REAL *)));
   if (!t[nrl])
-    nrerror ("allocation failure 2 in f3tensor()");
+    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure 2 in f3tensor()");
   t[nrl] += NR_END;
   t[nrl] -= ncl;
 
@@ -132,7 +123,7 @@ d3tensor (long nrl, long nrh, long ncl, long nch, long ndl, long ndh)
     (CCTK_REAL *)
     malloc ((size_t) ((nrow * ncol * ndep + NR_END) * sizeof (CCTK_REAL)));
   if (!t[nrl][ncl])
-    nrerror ("allocation failure 3 in f3tensor()");
+    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure 3 in f3tensor()");
   t[nrl][ncl] += NR_END;
   t[nrl][ncl] -= ndl;
 
@@ -525,6 +516,7 @@ Ccoth (dcomplex z)
 /*--------------------------------------------------------------------------*/
 void
 chebft_Zeros (CCTK_REAL u[], int n, int inv)
+    /* eq. 5.8.7 and 5.8.8 at x = (5.8.4) of 2nd edition C++ NR */
 {
   int k, j, isignum;
   CCTK_REAL fac, sum, Pion, *c;
@@ -572,6 +564,7 @@ chebft_Zeros (CCTK_REAL u[], int n, int inv)
 
 void
 chebft_Extremes (CCTK_REAL u[], int n, int inv)
+    /* eq. 5.8.7 and 5.8.8 at x = (5.8.5) of 2nd edition C++ NR */
 {
   int k, j, isignum, N = n - 1;
   CCTK_REAL fac, sum, PioN, *c;
@@ -627,23 +620,31 @@ chder (CCTK_REAL *c, CCTK_REAL *cder, int n)
 /* --------------------------------------------------------------------------*/
 CCTK_REAL
 chebev (CCTK_REAL a, CCTK_REAL b, CCTK_REAL c[], int m, CCTK_REAL x)
+    /* eq. 5.8.11 of C++ NR (2nd ed) */
 {
-  CCTK_REAL d = 0.0, dd = 0.0, sv, y, y2;
   int j;
+  CCTK_REAL djp2, djp1, dj; /* d_{j+2}, d_{j+1} and d_j */
+  CCTK_REAL y;
 
-  y2 = 2.0 * (y = (2.0 * x - a - b) / (b - a));
-  for (j = m - 1; j >= 1; j--)
-  {
-    sv = d;
-    d = y2 * d - dd + c[j];
-    dd = sv;
+  /* rescale input to lie within [-1,1] */
+  y = 2*(x - 0.5*(b+a))/(b-a);
+
+  dj = djp1 = 0;
+  for(j = m-1 ; j >= 1; j--)
+  { 
+    /* advance the coefficients */
+    djp2 = djp1; 
+    djp1 = dj;
+    dj   = 2*y*djp1 - djp2 + c[j];
   }
-  return y * d - dd + 0.5 * c[0];
+
+  return y*dj - djp1 + 0.5*c[0];
 }
 
 /* --------------------------------------------------------------------------*/
 void
 fourft (CCTK_REAL *u, int N, int inv)
+    /* a (slow) Fourier transform, seems to be just eq. 12.1.6 and 12.1.9 of C++ NR (2nd ed) */
 {
   int l, k, iy, M;
   CCTK_REAL x, x1, fac, Pi_fac, *a, *b;
@@ -754,128 +755,6 @@ fourev (CCTK_REAL *u, int N, CCTK_REAL x)
   return result;
 }
 
-/* --------------------------------------------------------------------------*/
-void
-ludcmp (CCTK_REAL **a, int n, int *indx, CCTK_REAL *d)
-{				/* Version of 'ludcmp' of the numerical recipes for*/
-  /* matrices a[0:n-1][0:n-1]*/
-  int i, imax, j, k;
-  CCTK_REAL big, dum, sum, temp;
-  CCTK_REAL *vv;
-
-  vv = dvector (0, n - 1);
-  *d = 1.0;
-  for (i = 0; i < n; i++)
-  {
-    big = 0.0;
-    for (j = 0; j < n; j++)
-      if ((temp = fabs (a[i][j])) > big)
-	big = temp;
-    if (big == 0.0)
-      nrerror ("Singular matrix in routine ludcmp");
-    vv[i] = 1.0 / big;
-  }
-  for (j = 0; j < n; j++)
-  {
-    for (i = 0; i < j; i++)
-    {
-      sum = a[i][j];
-      for (k = 0; k < i; k++)
-	sum -= a[i][k] * a[k][j];
-      a[i][j] = sum;
-    }
-    big = 0.0;
-    for (i = j; i < n; i++)
-    {
-      sum = a[i][j];
-      for (k = 0; k < j; k++)
-	sum -= a[i][k] * a[k][j];
-      a[i][j] = sum;
-      if ((dum = vv[i] * fabs (sum)) >= big)
-      {
-	big = dum;
-	imax = i;
-      }
-    }
-    if (j != imax)
-    {
-      for (k = 0; k < n; k++)
-      {
-	dum = a[imax][k];
-	a[imax][k] = a[j][k];
-	a[j][k] = dum;
-      }
-      *d = -(*d);
-      vv[imax] = vv[j];
-    }
-    indx[j] = imax;
-    if (a[j][j] == 0.0)
-      a[j][j] = TINY;
-    if (j != n)
-    {
-      dum = 1.0 / (a[j][j]);
-      for (i = j + 1; i < n; i++)
-	a[i][j] *= dum;
-    }
-  }
-  free_dvector (vv, 0, n - 1);
-}
-
-/* --------------------------------------------------------------------------*/
-void
-lubksb (CCTK_REAL **a, int n, int *indx, CCTK_REAL b[])
-{				/* Version of 'lubksb' of the numerical recipes for*/
-  /* matrices a[0:n-1][0:n-1] and vectors b[0:n-1]*/
-
-  int i, ii = 0, ip, j;
-  CCTK_REAL sum;
-
-  for (i = 0; i < n; i++)
-  {
-    ip = indx[i];
-    sum = b[ip];
-    b[ip] = b[i];
-    if (ii)
-      for (j = ii; j <= i - 1; j++)
-	sum -= a[i][j] * b[j];
-    else if (sum)
-      ii = i;
-    b[i] = sum;
-  }
-  for (i = n - 1; i >= 0; i--)
-  {
-    sum = b[i];
-    for (j = i + 1; j <= n; j++)
-      sum -= a[i][j] * b[j];
-    b[i] = sum / a[i][i];
-  }
-}
-
-/* -------------------------------------------------------------------------*/
-void
-tridag (CCTK_REAL a[], CCTK_REAL b[], CCTK_REAL c[], CCTK_REAL r[], CCTK_REAL u[], int n)
-{				/* Version of 'tridag' of the numerical recipes for*/
-  /* vectors a, b, c, r, u with indices in the range [0:n-1]*/
-  int j;
-  CCTK_REAL bet, *gam;
-
-  gam = dvector (0, n - 1);
-  if (b[0] == 0.0)
-    nrerror ("Error 1 in tridag");
-  u[0] = r[0] / (bet = b[0]);
-  for (j = 1; j < n; j++)
-  {
-    gam[j] = c[j - 1] / bet;
-    bet = b[j] - a[j] * gam[j];
-    if (bet == 0.0)
-      nrerror ("Error 2 in tridag");
-    u[j] = (r[j] - a[j] * u[j - 1]) / bet;
-  }
-  for (j = (n - 2); j >= 0; j--)
-    u[j] -= gam[j + 1] * u[j + 1];
-  free_dvector (gam, 0, n - 1);
-}
-
 /* ------------------------------------------------------------------------*/
 CCTK_REAL
 norm1 (CCTK_REAL *v, int n)
@@ -914,47 +793,6 @@ scalarproduct (CCTK_REAL *v, CCTK_REAL *w, int n)
     result += v[i] * w[i];
 
   return result;
-}
-
-/* -------------------------------------------------------------------------*/
-CCTK_REAL
-plgndr (int l, int m, CCTK_REAL x)
-{
-  void nrerror (char error_text[]);
-  CCTK_REAL fact, pll, pmm, pmmp1, somx2;
-  int i, ll;
-
-  if (m < 0 || m > l || fabs (x) > 1.0)
-    nrerror ("Bad arguments in routine plgndr");
-  pmm = 1.0;
-  if (m > 0)
-  {
-    somx2 = sqrt ((1.0 - x) * (1.0 + x));
-    fact = 1.0;
-    for (i = 1; i <= m; i++)
-    {
-      pmm *= -fact * somx2;
-      fact += 2.0;
-    }
-  }
-  if (l == m)
-    return pmm;
-  else
-  {
-    pmmp1 = x * (2 * m + 1) * pmm;
-    if (l == (m + 1))
-      return pmmp1;
-    else
-    {
-      for (ll = m + 2; ll <= l; ll++)
-      {
-	pll = (x * (2 * ll - 1) * pmmp1 - (ll + m - 1) * pmm) / (ll - m);
-	pmm = pmmp1;
-	pmmp1 = pll;
-      }
-      return pll;
-    }
-  }
 }
 
 /* -------------------------------------------------------------------------*/
