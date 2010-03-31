@@ -29,8 +29,8 @@ C $Header$
       CCTK_REAL dxgxxe, dxgyye, dxgzze, dxgxye, dxgyze, dxgxze
       CCTK_REAL dygxxe, dygyye, dygzze, dygxye, dygyze, dygxze
       CCTK_REAL dzgxxe, dzgyye, dzgzze, dzgxye, dzgyze, dzgxze
-      CCTK_REAL alpe, axe, aye, aze
-      CCTK_REAL betaxe,betaye,betaze
+      CCTK_REAL alpe, dtalpe, axe, aye, aze
+      CCTK_REAL betaxe,betaye,betaze, dtbetaxe,dtbetaye,dtbetaze
       CCTK_REAL bxxe,bxye,bxze,byxe,byye,byze,bzxe,bzye,bzze
       CCTK_REAL det, uxx, uxy, uxz, uyy, uyz, uzz
       CCTK_REAL
@@ -120,7 +120,8 @@ C     (also to tell the models about the conformal_state)
      $                 dxgxxe, dxgyye, dxgzze, dxgxye, dxgyze, dxgxze,
      $                 dygxxe, dygyye, dygzze, dygxye, dygyze, dygxze,
      $                 dzgxxe, dzgyye, dzgzze, dzgxye, dzgyze, dzgxze,
-     $                 alpe, axe, aye, aze, betaxe, betaye, betaze,
+     $                 alpe, dtalpe, axe, aye, aze,
+     $                 betaxe, betaye, betaze, dtbetaxe, dtbetaye, dtbetaze,
      $                 bxxe, bxye, bxze, byxe, 
      $                 byye, byze, bzxe, bzye, bzze)
 

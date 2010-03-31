@@ -18,7 +18,8 @@ c $Header$
      $     dxgxx, dxgyy, dxgzz, dxgxy, dxgyz, dxgxz,
      $     dygxx, dygyy, dygzz, dygxy, dygyz, dygxz,
      $     dzgxx, dzgyy, dzgzz, dzgxy, dzgyz, dzgxz,
-     $     alp, ax, ay, az, betax, betay, betaz,
+     $     alp, dtalp, ax, ay, az,
+     $     betax, betay, betaz, dtbetax, dtbetay, dtbetaz,
      $     bxx, bxy, bxz, byx, byy, byz, bzx, bzy, bzz)
 
       implicit none
@@ -32,7 +33,8 @@ c $Header$
      $       dxgxx, dxgyy, dxgzz, dxgxy, dxgyz, dxgxz,
      $       dygxx, dygyy, dygzz, dygxy, dygyz, dygxz,
      $       dzgxx, dzgyy, dzgzz, dzgxy, dzgyz, dzgxz,
-     $       alp, ax, ay, az, betax, betay, betaz,
+     $       alp, dtalp, ax, ay, az,
+     $       betax, betay, betaz, dtbetax, dtbetay, dtbetaz,
      $       bxx, bxy, bxz, byx, byy, byz, bzx, bzy, bzz
 
 C     gxx is g_xx etc.
@@ -252,6 +254,21 @@ C     Calculate t-derivatives, and extrinsic curvature.
      $     + (dxgxz * betax + dygxz * betay + dzgxz * betaz      
      $     + bxx * gxz + bxy * gyz + bxz * gzz
      $     + bzx * gxx + bzy * gxy + bzz * gxz) / alp
+
+C     Calculate time derivatives of  lapse and shift
+
+C     alp = 1.d0 / sqrt(-gutt)
+      dtalp = 0.5d0 / sqrt(-gutt)**3 * (gutt_p - gutt_m) / 2.d0
+
+C     betax = - gutx / gutt
+C     betay = - guty / gutt
+C     betaz = - gutz / gutt
+      dtbetax = - (gutx_p - gutx_m) / gutt / 2.d0
+     $          + gutx * (gutt_p - gutt_m) / gutt**2 / 2.d0
+      dtbetay = - (guty_p - guty_m) / gutt / 2.d0
+     $          + guty * (gutt_p - gutt_m) / gutt**2 / 2.d0
+      dtbetaz = - (gutz_p - gutz_m) / gutt / 2.d0
+     $          + gutz * (gutt_p - gutt_m) / gutt**2 / 2.d0
 
 C     Calculate second derivatives of the conformal factor
 

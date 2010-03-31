@@ -64,7 +64,7 @@ if ( (CCTK_Equals(initial_data,"slice")) && ! (CCTK_Equals(evolution_method,"sli
 # Lapse and/or shift from a trivial slice through an exact solution.
 # At the initial time:
 
-if ( (CCTK_Equals(initial_lapse,"exact")) || (CCTK_Equals(initial_shift,"exact")) )
+if ( (CCTK_Equals(initial_lapse,"exact")) || (CCTK_Equals(initial_shift,"exact")) || (CCTK_Equals(initial_dtlapse,"exact")) || (CCTK_Equals(initial_dtshift,"exact")) )
 {
   schedule Exact__gauge in ADMBase_InitialGauge
   {

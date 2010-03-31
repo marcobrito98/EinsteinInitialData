@@ -18,23 +18,25 @@ C $Header$
 
       integer i,j,k
       integer nx,ny,nz
+      logical set_lapse, set_dtlapse, set_shift, set_dtshift
 
       CCTK_REAL tt, xx, yy, zz
-      CCTK_REAL gxxjunk, gyyjunk, gzzjunk, 
-     $     gxyjunk, gyzjunk, gxzjunk,
-     $     hxxjunk, hyyjunk, hzzjunk, 
-     $     hxyjunk, hyzjunk, hxzjunk,
-     $     dxgxxjunk, dxgyyjunk, dxgzzjunk, 
-     $     dxgxyjunk, dxgyzjunk, dxgxzjunk,
-     $     dygxxjunk, dygyyjunk, dygzzjunk, 
-     $     dygxyjunk, dygyzjunk, dygxzjunk,
-     $     dzgxxjunk, dzgyyjunk, dzgzzjunk, 
-     $     dzgxyjunk, dzgyzjunk, dzgxzjunk,
-     $     alpjunk, axjunk, ayjunk, azjunk, 
-     $     betaxjunk, betayjunk, betazjunk,
-     $     bxxjunk, bxyjunk, bxzjunk, 
-     $     byxjunk, byyjunk, byzjunk, 
-     $     bzxjunk, bzyjunk, bzzjunk
+      CCTK_REAL gxxtmp, gyytmp, gzztmp, 
+     $     gxytmp, gyztmp, gxztmp,
+     $     hxxtmp, hyytmp, hzztmp, 
+     $     hxytmp, hyztmp, hxztmp,
+     $     dxgxxtmp, dxgyytmp, dxgzztmp, 
+     $     dxgxytmp, dxgyztmp, dxgxztmp,
+     $     dygxxtmp, dygyytmp, dygzztmp, 
+     $     dygxytmp, dygyztmp, dygxztmp,
+     $     dzgxxtmp, dzgyytmp, dzgzztmp, 
+     $     dzgxytmp, dzgyztmp, dzgxztmp,
+     $     alptmp, dtalptmp, axtmp, aytmp, aztmp, 
+     $     betaxtmp, betaytmp, betaztmp,
+     $     dtbetaxtmp, dtbetaytmp, dtbetaztmp,
+     $     bxxtmp, bxytmp, bxztmp, 
+     $     byxtmp, byytmp, byztmp, 
+     $     bzxtmp, bzytmp, bzztmp
       CCTK_REAL
      $     exact_psi,
      $     exact_psix, exact_psiy, exact_psiz,
@@ -69,18 +71,41 @@ C     is why this remains a bug for now... :( :(
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 
 C
-C     Set both lapse and shift?
+C     Set lapse and/or shift?
 C
-      if (
-     $     ( is_initial_slice
-     $       .and. (CCTK_Equals(initial_lapse,         "exact").ne.0)
-     $       .and. (CCTK_Equals(initial_shift,         "exact").ne.0) )
-     $     .or.
-     $     ( is_later_slice
-     $       .and. (CCTK_Equals(lapse_evolution_method,"exact").ne.0)
-     $       .and. (CCTK_Equals(shift_evolution_method,"exact").ne.0) )
-     $   ) then
+      if ( is_initial_slice ) then
+         set_lapse   = CCTK_Equals(initial_lapse,   "exact").ne.0
+         set_shift   = CCTK_Equals(initial_shift,   "exact").ne.0
+         set_dtlapse = CCTK_Equals(initial_dtlapse, "exact").ne.0
+         set_dtshift = CCTK_Equals(initial_dtshift, "exact").ne.0
+      end if
+      if ( is_later_slice ) then
+         set_lapse   = CCTK_Equals(lapse_evolution_method, "exact").ne.0
+         set_shift   = CCTK_Equals(shift_evolution_method, "exact").ne.0
+         set_dtlapse = .false.
+         set_dtshift = .false.
+      end if
 
+      if ( set_lapse .or. set_shift .or. set_dtlapse .or. set_dtshift) then
+
+C$omp    parallel do private (
+C$omp$     tt, xx, yy, zz,
+C$omp$     alptmp, dtalptmp, axtmp, aytmp, aztmp, 
+C$omp$     betaxtmp, betaytmp, betaztmp,
+C$omp$     dtbetaxtmp, dtbetaytmp, dtbetaztmp,
+C$omp$     bxxtmp, bxytmp, bxztmp, 
+C$omp$     byxtmp, byytmp, byztmp, 
+C$omp$     bzxtmp, bzytmp, bzztmp,
+C$omp$     dxgxxtmp, dxgyytmp, dxgzztmp, 
+C$omp$     dxgxytmp, dxgyztmp, dxgxztmp,
+C$omp$     dygxxtmp, dygyytmp, dygzztmp, 
+C$omp$     dygxytmp, dygyztmp, dygxztmp,
+C$omp$     dzgxxtmp, dzgyytmp, dzgzztmp, 
+C$omp$     dzgxytmp, dzgyztmp, dzgxztmp,
+C$omp$     exact_psi,
+C$omp$     exact_psix, exact_psiy, exact_psiz,
+C$omp$     exact_psixx, exact_psiyy, exact_psizz,
+C$omp$     exact_psixy, exact_psiyz, exact_psixz)
          do k=1,nz
             do j=1,ny
                do i=1,nx
@@ -110,163 +135,43 @@ C     (also to tell the models about the conformal_state)
                   call Exact__Bona_Masso_data(
      $                 decoded_exact_model,
      $                 xx, yy, zz, tt,
-     $                 gxxjunk, gyyjunk, gzzjunk, 
-     $                 gxyjunk, gyzjunk, gxzjunk,
-     $                 hxxjunk, hyyjunk, hzzjunk, 
-     $                 hxyjunk, hyzjunk, hxzjunk,
+     $                 gxxtmp, gyytmp, gzztmp, 
+     $                 gxytmp, gyztmp, gxztmp,
+     $                 hxxtmp, hyytmp, hzztmp, 
+     $                 hxytmp, hyztmp, hxztmp,
      $                 exact_psi,
      $                 exact_psix, exact_psiy, exact_psiz,
      $                 exact_psixx, exact_psiyy, exact_psizz,
      $                 exact_psixy, exact_psiyz, exact_psixz,
-     $                 dxgxxjunk, dxgyyjunk, dxgzzjunk, 
-     $                 dxgxyjunk, dxgyzjunk, dxgxzjunk,
-     $                 dygxxjunk, dygyyjunk, dygzzjunk, 
-     $                 dygxyjunk, dygyzjunk, dygxzjunk,
-     $                 dzgxxjunk, dzgyyjunk, dzgzzjunk, 
-     $                 dzgxyjunk, dzgyzjunk, dzgxzjunk,
-     $                 alp(i,j,k), axjunk, ayjunk, azjunk, 
-     $                 betax(i,j,k), betay(i,j,k), betaz(i,j,k),
-     $                 bxxjunk, bxyjunk, bxzjunk, 
-     $                 byxjunk, byyjunk, byzjunk, 
-     $                 bzxjunk, bzyjunk, bzzjunk)
-                  betax(i,j,k) = betax(i,j,k) + shift_add_x
-                  betay(i,j,k) = betay(i,j,k) + shift_add_y
-                  betaz(i,j,k) = betaz(i,j,k) + shift_add_z
-               end do
-            end do
-         end do
+     $                 dxgxxtmp, dxgyytmp, dxgzztmp, 
+     $                 dxgxytmp, dxgyztmp, dxgxztmp,
+     $                 dygxxtmp, dygyytmp, dygzztmp, 
+     $                 dygxytmp, dygyztmp, dygxztmp,
+     $                 dzgxxtmp, dzgyytmp, dzgzztmp, 
+     $                 dzgxytmp, dzgyztmp, dzgxztmp,
+     $                 alptmp, dtalptmp, axtmp, aytmp, aztmp, 
+     $                 betaxtmp, betaytmp, betaztmp,
+     $                 dtbetaxtmp, dtbetaytmp, dtbetaztmp,
+     $                 bxxtmp, bxytmp, bxztmp, 
+     $                 byxtmp, byytmp, byztmp, 
+     $                 bzxtmp, bzytmp, bzztmp)
 
-CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-
-C
-C     Set lapse only?
-C
-      elseif (
-     $         ( is_initial_slice
-     $           .and. (CCTK_Equals(initial_lapse,         "exact").ne.0) )
-     $         .or.
-     $         ( is_later_slice
-     $           .and. (CCTK_Equals(lapse_evolution_method,"exact").ne.0) )
-     $       ) then
-
-         do k=1,nz
-            do j=1,ny
-               do i=1,nx
-
-                  tt = cctk_time
-                  xx = x(i,j,k) - cctk_time * shift_add_x
-                  yy = y(i,j,k) - cctk_time * shift_add_y
-                  zz = z(i,j,k) - cctk_time * shift_add_z
-
-C     Initialize the psi of exact
-C     (also to tell the models about the conformal_state)
-                  if (conformal_state .ne. 0) then
-                    exact_psi = 1.0D0
-                  else
-                    exact_psi = 0.0D0
+                  if ( set_lapse ) then
+                     alp(i,j,k) = alptmp
                   end if
-                  exact_psix = 0.0D0
-                  exact_psiy = 0.0D0
-                  exact_psiz = 0.0D0
-                  exact_psixx = 0.0D0
-                  exact_psixx = 0.0D0
-                  exact_psizz = 0.0D0
-                  exact_psixy = 0.0D0
-                  exact_psiyz = 0.0D0
-                  exact_psixz = 0.0D0
-
-                  call Exact__Bona_Masso_data(
-     $                 decoded_exact_model,
-     $                 xx, yy, zz, tt,
-     $                 gxxjunk, gyyjunk, gzzjunk, 
-     $                 gxyjunk, gyzjunk, gxzjunk,
-     $                 hxxjunk, hyyjunk, hzzjunk, 
-     $                 hxyjunk, hyzjunk, hxzjunk,
-     $                 exact_psi,
-     $                 exact_psix, exact_psiy, exact_psiz,
-     $                 exact_psixx, exact_psiyy, exact_psizz,
-     $                 exact_psixy, exact_psiyz, exact_psixz,
-     $                 dxgxxjunk, dxgyyjunk, dxgzzjunk, 
-     $                 dxgxyjunk, dxgyzjunk, dxgxzjunk,
-     $                 dygxxjunk, dygyyjunk, dygzzjunk, 
-     $                 dygxyjunk, dygyzjunk, dygxzjunk,
-     $                 dzgxxjunk, dzgyyjunk, dzgzzjunk, 
-     $                 dzgxyjunk, dzgyzjunk, dzgxzjunk,
-     $                 alp(i,j,k), axjunk, ayjunk, azjunk, 
-     $                 betaxjunk, betayjunk, betazjunk,
-     $                 bxxjunk, bxyjunk, bxzjunk, 
-     $                 byxjunk, byyjunk, byzjunk, 
-     $                 bzxjunk, bzyjunk, bzzjunk)
-
-               end do
-            end do
-         end do
-
-CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-
-C
-C     Set shift only?
-C
-      elseif (
-     $         ( is_initial_slice
-     $           .and. (CCTK_Equals(initial_shift,"exact").ne.0) )
-     $         .or.
-     $         ( is_later_slice
-     $           .and. (CCTK_Equals(shift_evolution_method,"exact").ne.0) )
-     $       ) then
-
-         do k=1,nz
-            do j=1,ny
-               do i=1,nx
-
-                  tt = cctk_time
-                  xx = x(i,j,k) - cctk_time * shift_add_x
-                  yy = y(i,j,k) - cctk_time * shift_add_y
-                  zz = z(i,j,k) - cctk_time * shift_add_z
-
-C     Initialize the psi of exact
-C     (also to tell the models about the conformal_state)
-                  if (conformal_state .ne. 0) then
-                    exact_psi = 1.0D0
-                  else
-                    exact_psi = 0.0D0
+                  if ( set_shift ) then
+                     betax(i,j,k) = betaxtmp + shift_add_x
+                     betay(i,j,k) = betaytmp + shift_add_y
+                     betaz(i,j,k) = betaztmp + shift_add_z
                   end if
-                  exact_psix = 0.0D0
-                  exact_psiy = 0.0D0
-                  exact_psiz = 0.0D0
-                  exact_psixx = 0.0D0
-                  exact_psixx = 0.0D0
-                  exact_psizz = 0.0D0
-                  exact_psixy = 0.0D0
-                  exact_psiyz = 0.0D0
-                  exact_psixz = 0.0D0
-
-                  call Exact__Bona_Masso_data(
-     $                 decoded_exact_model,
-     $                 xx, yy, zz, tt,
-     $                 gxxjunk, gyyjunk, gzzjunk, 
-     $                 gxyjunk, gyzjunk, gxzjunk,
-     $                 hxxjunk, hyyjunk, hzzjunk, 
-     $                 hxyjunk, hyzjunk, hxzjunk,
-     $                 exact_psi,
-     $                 exact_psix, exact_psiy, exact_psiz,
-     $                 exact_psixx, exact_psiyy, exact_psizz,
-     $                 exact_psixy, exact_psiyz, exact_psixz,
-     $                 dxgxxjunk, dxgyyjunk, dxgzzjunk, 
-     $                 dxgxyjunk, dxgyzjunk, dxgxzjunk,
-     $                 dygxxjunk, dygyyjunk, dygzzjunk, 
-     $                 dygxyjunk, dygyzjunk, dygxzjunk,
-     $                 dzgxxjunk, dzgyyjunk, dzgzzjunk, 
-     $                 dzgxyjunk, dzgyzjunk, dzgxzjunk,
-     $                 alpjunk, axjunk, ayjunk, azjunk, 
-     $                 betax(i,j,k), betay(i,j,k), betaz(i,j,k),
-     $                 bxxjunk, bxyjunk, bxzjunk, 
-     $                 byxjunk, byyjunk, byzjunk, 
-     $                 bzxjunk, bzyjunk, bzzjunk)
-                  betax(i,j,k) = betax(i,j,k) + shift_add_x
-                  betay(i,j,k) = betay(i,j,k) + shift_add_y
-                  betaz(i,j,k) = betaz(i,j,k) + shift_add_z
-
+                  if ( set_dtlapse ) then
+                     dtalp(i,j,k) = dtalptmp
+                  end if
+                  if ( set_dtshift ) then
+                     dtbetax(i,j,k) = dtbetaxtmp
+                     dtbetay(i,j,k) = dtbetaytmp
+                     dtbetaz(i,j,k) = dtbetaztmp
+                  end if
                end do
             end do
          end do

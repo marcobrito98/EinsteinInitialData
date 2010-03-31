@@ -70,28 +70,30 @@ C     time t+1. This is to provide boundary conditions for testing
 C     elliptic gauge conditions. If they are not used, they will be
 C     overwritten by Exact__gauge.
 
-#define EXACTDATAPOINT                                          \
-               call Exact__Bona_Masso_data(                     \
-                   decoded_exact_model,                         \
-                   x(i,j,k), y(i,j,k), z(i,j,k), tplusone,      \
-                   gxx(i,j,k), gyy(i,j,k), gzz(i,j,k),          \
-                   gxy(i,j,k), gyz(i,j,k), gxz(i,j,k),          \
-                   kxx(i,j,k), kyy(i,j,k), kzz(i,j,k),          \
-                   kxy(i,j,k), kyz(i,j,k), kxz(i,j,k),          \
-                   exact_psi,                                   \
-                   exact_psix, exact_psiy, exact_psiz,          \
-                   exact_psixx, exact_psiyy, exact_psizz,       \
-                   exact_psixy, exact_psiyz, exact_psixz,       \
-                   dxgxxjunk, dxgyyjunk, dxgzzjunk,             \
-                   dxgxyjunk, dxgyzjunk, dxgxzjunk,             \
-                   dygxxjunk, dygyyjunk, dygzzjunk,             \
-                   dygxyjunk, dygyzjunk, dygxzjunk,             \
-                   dzgxxjunk, dzgyyjunk, dzgzzjunk,             \
-                   dzgxyjunk, dzgyzjunk, dzgxzjunk,             \
-                   alp(i,j,k), axjunk, ayjunk, azjunk,          \
-                   betax(i,j,k), betay(i,j,k), betaz(i,j,k),    \
-                   bxxjunk, bxyjunk, bxzjunk,                   \
-                   byxjunk, byyjunk, byzjunk,                   \
+#define EXACTDATAPOINT                                                  \
+               call Exact__Bona_Masso_data(                             \
+                   decoded_exact_model,                                 \
+                   x(i,j,k), y(i,j,k), z(i,j,k), tplusone,              \
+                   gxx(i,j,k), gyy(i,j,k), gzz(i,j,k),                  \
+                   gxy(i,j,k), gyz(i,j,k), gxz(i,j,k),                  \
+                   kxx(i,j,k), kyy(i,j,k), kzz(i,j,k),                  \
+                   kxy(i,j,k), kyz(i,j,k), kxz(i,j,k),                  \
+                   exact_psi,                                           \
+                   exact_psix, exact_psiy, exact_psiz,                  \
+                   exact_psixx, exact_psiyy, exact_psizz,               \
+                   exact_psixy, exact_psiyz, exact_psixz,               \
+                   dxgxxjunk, dxgyyjunk, dxgzzjunk,                     \
+                   dxgxyjunk, dxgyzjunk, dxgxzjunk,                     \
+                   dygxxjunk, dygyyjunk, dygzzjunk,                     \
+                   dygxyjunk, dygyzjunk, dygxzjunk,                     \
+                   dzgxxjunk, dzgyyjunk, dzgzzjunk,                     \
+                   dzgxyjunk, dzgyzjunk, dzgxzjunk,                     \
+                   alp(i,j,k), dtalp(i,j,k),                            \
+                   axjunk, ayjunk, azjunk,                              \
+                   betax(i,j,k), betay(i,j,k), betaz(i,j,k),            \
+                   dtbetax(i,j,k), dtbetay(i,j,k), dtbetaz(i,j,k),      \
+                   bxxjunk, bxyjunk, bxzjunk,                           \
+                   byxjunk, byyjunk, byzjunk,                           \
                    bzxjunk, bzyjunk, bzzjunk)
 
       if (cctk_bbox(1) .eq. 1) then 

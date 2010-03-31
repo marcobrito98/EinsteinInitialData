@@ -24,13 +24,21 @@ EXTENDS KEYWORD shift_evolution_method
   "exact" :: "Use shift from exact solution"
 }
 
-EXTENDS KEYWORD initial_lapse 
+EXTENDS KEYWORD initial_lapse
 {
   "exact" :: "Initial lapse from exact solution"
 }
-EXTENDS KEYWORD initial_shift 
+EXTENDS KEYWORD initial_shift
 {
   "exact" :: "Initial shift from exact solution"
+}
+EXTENDS KEYWORD initial_dtlapse
+{
+  "exact" :: "Initial dtlapse from exact solution"
+}
+EXTENDS KEYWORD initial_dtshift
+{
+  "exact" :: "Initial dtshift from exact solution"
 }
 
 EXTENDS KEYWORD evolution_method
@@ -63,12 +71,12 @@ BOOLEAN exblend_gauge "Blend the lapse and shift with the exact solution?"
 
 REAL exblend_rout "Outer boundary of blending region"
 {
-: :: "Positive means radial value, negative means use outer bound of grid"
+*:* :: "Positive means radial value, negative means use outer bound of grid"
 } -1.0
 
 REAL exblend_width "Width of blending zone"
 {
-: :: "Positive means width in radius, negative means width = exbeldn_width*dx"
+*:* :: "Positive means width in radius, negative means width = exbeldn_width*dx"
 } -3.0
 
 ################################################################################
@@ -79,12 +87,12 @@ private:
 
 REAL slice_Gauss_ampl "Amplitude of Gauss slice in exact"
 {
-0.0: :: "Positive please"
+0.0:* :: "Positive please"
 } 0.0
 
 REAL slice_Gauss_width "Width of Gauss slice in exact"
 {
-0.0: :: "Positive please"
+0.0:* :: "Positive please"
 } 1.0
 
 # this parameter is used directly in our schedule.ccl file
@@ -603,7 +611,7 @@ REAL multi_BH__z3 "multi-BH: z coord of black hole number 3"
 # black hole #4
 REAL multi_BH__mass4 "multi-BH: mass of black hole number 4"
 {
-0.0: :: "any real number >= 0"
+0.0:* :: "any real number >= 0"
 } 0.0
 REAL multi_BH__x4 "multi-BH: x coord of black hole number 4"
 {
@@ -626,12 +634,12 @@ REAL multi_BH__z4 "multi-BH: z coord of black hole number 4"
 
 REAL Alvi__mass1 "Alvi: mass of BH number 1"
 {
-0.0: :: "any real number >= 0"
+0.0:* :: "any real number >= 0"
 } 1.0
 
 REAL Alvi__mass2 "Alvi: mass of BH number 2"
 {
-0.0: :: "any real number >= 0"
+0.0:* :: "any real number >= 0"
 } 1.0
 
 REAL Alvi__separation "Alvi: spatial separation of the black holes"
@@ -872,19 +880,19 @@ REAL Gowdy_wave__amplitude "Gowdy-wave: amplitude parameter"
 
 REAL boost_rotation_symmetric__scale "boost-rotation symmetric: length scale"
 {
-0.0: :: "Positive please"
+0.0:* :: "Positive please"
 } 1.0
 
 REAL boost_rotation_symmetric__amp \
   "boost-rotation symmetric: dimensionless amplitude"
 {
-0.0: :: "Positive please"
+0.0:* :: "Positive please"
 } 0.1
 
 REAL boost_rotation_symmetric__min_d \
   "boost-rotation symmetric: dimensionless safety distance"
 {
-(0.0: :: "any positive real number"
+(0.0:* :: "any positive real number"
 } 0.01
 
 ################################################################################
