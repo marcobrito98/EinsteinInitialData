@@ -53,9 +53,6 @@ c output arguments
      $          guxx, guyy, guzz, guxy, guyz, guxz,
      $          psi
 
-c intrinsic functions called
-      CCTK_REAL sqrt
-
 c static local variables describing Lorentz transformation
       logical   firstcall
       data      firstcall /.true./
@@ -68,9 +65,8 @@ c static local variables describing Lorentz transformation
       CCTK_REAL R(0:3,0:3)
       save      firstcall
       save      gamma
-      save      vv, nn
+      save      vv
       save      parallel, perp
-      save      Cx_par, Cx_perp
       save      partial_Mx_wrt_Cx
       save      partial_Cx_wrt_Mx
       save      R
@@ -145,7 +141,8 @@ c
 c compute Lorentz transformation information on first call
 c
       if (firstcall) then
-         firstcall = .false.
+c$omp critical
+      if (firstcall) then
 
 c boost velocity
          vv(1) = boost_vx
@@ -295,6 +292,9 @@ c     Mbetax(3) =   Nbetax(1)
 c     Mbetax(i) + R(i,j) Nbetax(j)   [wrong]
 c     Mbetax(i) + R(j,i) Nbetax(j)   [correct]
 
+         firstcall = .false.
+      end if
+c$omp end critical
       end if
 
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
