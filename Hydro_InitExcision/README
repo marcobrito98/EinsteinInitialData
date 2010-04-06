@@ -1,0 +1,10 @@
+Cactus Code Thorn Whisky_InitExcision
+Author(s)    : Andrea Nerozzi
+               Frank Löffler
+Maintainer(s): Frank Löffler
+Licence      : GPLv2+
+--------------------------------------------------------------------------
+
+1. Purpose
+
+Setup initial excision masks specified by parameters for testing.

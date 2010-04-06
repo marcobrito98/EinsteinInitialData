@@ -1,0 +1,5 @@
+# Interface definition for thorn Whisky_InitExcision
+
+implements: Whisky_InitExcision
+inherits: Whisky
+
