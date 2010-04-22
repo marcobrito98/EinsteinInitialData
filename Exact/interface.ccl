@@ -10,6 +10,8 @@ friend: ADMCoupling
 INCLUDES SOURCE: Scalar_CalcTmunu.inc in CalcTmunu.inc
 INCLUDES       : Scalar_CalcTmunu_temps.inc in CalcTmunu_temps.inc
 
+USES INCLUDE   : Slicing.h
+
 ################################################################################
 
 #

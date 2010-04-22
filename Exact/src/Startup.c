@@ -2,7 +2,7 @@
 /* $Header$ */
 
 #include "cctk.h"
-#include "CactusEinstein/CoordGauge/src/Slicing.h"
+#include "Slicing.h"
 
 /*
  * prototypes for scheduled routines
