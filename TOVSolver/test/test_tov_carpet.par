@@ -1,5 +1,5 @@
 !DESC "Carpet unigrid, one TOV" 
-ActiveThorns = "time MoL coordbase symbase cartgrid3d ioutil boundary admbase staticconformal spacemask admcoupling coordgauge admmacros hydrobase whisky whisky_init_data whisky_tovsolverc eos_base eos_ideal_fluid eos_polytrope bssn_mol admconstraints Constants LocalReduce Carpet CarpetLib CarpetInterp CarpetReduce CarpetIOScalar CarpetIOBasic LoopControl TmunuBase InitBase"
+ActiveThorns = "time MoL coordbase symbase cartgrid3d ioutil boundary admbase staticconformal spacemask admcoupling coordgauge admmacros hydrobase grhydro grhydro_initdata tovsolver eos_base eos_idealfluid eos_polytrope bssn_mol admconstraints Constants LocalReduce Carpet CarpetLib CarpetInterp CarpetReduce CarpetIOScalar CarpetIOBasic LoopControl TmunuBase InitBase"
 
 TmunuBase::stress_energy_storage	=	yes
 TmunuBase::stress_energy_at_RHS		=	yes
@@ -58,10 +58,10 @@ ADMBase::initial_data  = "tov"
 ADMBase::initial_lapse = "tov"
 ADMBase::initial_shift = "tov"
 
-whiskytovsolver::TOV_Rho_Central[0] = 1.28e-3
-whiskytovsolver::TOV_Gamma[0]       = 2.0
-whiskytovsolver::TOV_K[0]           = 100.0
-whiskytovsolver::TOV_Combine_Method = "maximum"
+tovsolver::TOV_Rho_Central[0] = 1.28e-3
+tovsolver::TOV_Gamma[0]       = 2.0
+tovsolver::TOV_K[0]           = 100.0
+tovsolver::TOV_Combine_Method = "maximum"
 
 EOS_Polytrope::eos_gamma            = 2.0
 EOS_Polytrope::eos_k                = 100.0

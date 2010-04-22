@@ -66,7 +66,7 @@ void TOV_C_ParamCheck(CCTK_ARGUMENTS)
 	    CCTK_WARN(1, "TOV_Solve_for_TOVs is depreciated. "
                    "Use TOV_Enforce_Interpolation=\"yes\" instead.\n");
 	    if (CCTK_ParameterSet("TOV_Enforce_Interpolation",
-                            "Whisky_TOVSolverC",
+                            "TOVSolver",
                             "true"))
 	      CCTK_WARN(0, "Error while steering this parameter.\n");
 	    else
@@ -989,7 +989,7 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
 void TOV_Prepare_Fake_Evolution(CCTK_ARGUMENTS)
 {
     if (CCTK_ParameterSet("TOV_Populate_Timelevels",
-                          "Whisky_TOVSolverC",
+                          "TOVSolver",
                           "1"))
         CCTK_WARN(0,
                   "Could not prepare for fake evolution - steering failed\n");
@@ -1034,10 +1034,10 @@ void TOV_Set_ProperPositions(CCTK_ARGUMENTS)
   if (CCTK_ParameterSet("par_b", "TwoPunctures", tmp))
     CCTK_WARN(0, "Could not set par_b");
   snprintf(tmp, 1023, "%g", TOV_Position_x[0] * factor);
-  if (CCTK_ParameterSet("TOV_Position_x[0]", "Whisky_TOVSolverC", tmp))
+  if (CCTK_ParameterSet("TOV_Position_x[0]", "TOVSolver", tmp))
     CCTK_WARN(0, "Could not set x[0]");
   snprintf(tmp, 1023, "%g", TOV_Position_x[1] * factor);
-  if (CCTK_ParameterSet("TOV_Position_x[1]", "Whisky_TOVSolverC", tmp))
+  if (CCTK_ParameterSet("TOV_Position_x[1]", "TOVSolver", tmp))
     CCTK_WARN(0, "Could not set x[1]");
 
   // printf("proper distance: %g, coordinate distance: %g\n", prop_dist, coord_dist);

@@ -1,4 +1,4 @@
-ActiveThorns = "time MoL pugh pughreduce pughslab coordbase symbase cartgrid3d ioutil ioascii iobasic boundary admbase staticconformal spacemask admcoupling coordgauge admmacros hydrobase whisky whisky_init_data whisky_tovsolverc nanchecker eos_base eos_ideal_fluid eos_polytrope bssn_mol admconstraints constants LocalReduce TmunuBase InitBase"
+ActiveThorns = "time MoL pugh pughreduce pughslab coordbase symbase cartgrid3d ioutil ioascii iobasic boundary admbase staticconformal spacemask admcoupling coordgauge admmacros hydrobase grhydro grhydro_initdata tovsolver nanchecker eos_base eos_idealfluid eos_polytrope bssn_mol admconstraints constants LocalReduce TmunuBase InitBase"
 
 TmunuBase::stress_energy_storage	=	yes
 TmunuBase::stress_energy_at_RHS		=	yes
@@ -47,19 +47,19 @@ ADMBase::initial_data  = "tov"
 ADMBase::initial_lapse = "tov"
 ADMBase::initial_shift = "tov"
 
-whiskytovsolver::TOV_Num_TOVs       = 2
-whiskytovsolver::TOV_Num_Radial     = 200000
-whiskytovsolver::TOV_Combine_Method = "maximum"
+tovsolver::TOV_Num_TOVs       = 2
+tovsolver::TOV_Num_Radial     = 200000
+tovsolver::TOV_Combine_Method = "maximum"
 
-whiskytovsolver::TOV_Rho_Central[0] = 0.16e-3
-whiskytovsolver::TOV_Gamma[0]       = 2.0
-whiskytovsolver::TOV_K[0]           = 100.0
-whiskytovsolver::TOV_Position_x[0]  = -15.0
+tovsolver::TOV_Rho_Central[0] = 0.16e-3
+tovsolver::TOV_Gamma[0]       = 2.0
+tovsolver::TOV_K[0]           = 100.0
+tovsolver::TOV_Position_x[0]  = -15.0
 
-whiskytovsolver::TOV_Rho_Central[1] = 0.32e-3
-whiskytovsolver::TOV_Gamma[1]       = 2.0
-whiskytovsolver::TOV_K[1]           = 100.0
-whiskytovsolver::TOV_Position_x[1]  = 15.0
+tovsolver::TOV_Rho_Central[1] = 0.32e-3
+tovsolver::TOV_Gamma[1]       = 2.0
+tovsolver::TOV_K[1]           = 100.0
+tovsolver::TOV_Position_x[1]  = 15.0
 
 EOS_Polytrope::eos_gamma            = 2.0
 EOS_Polytrope::eos_k                = 100.0

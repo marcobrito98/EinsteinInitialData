@@ -1,6 +1,6 @@
-# Interface definition for thorn TOVSolverC
+# Interface definition for thorn TOVSolver
 
-implements: WhiskyTOVSolver
+implements: TOVSolver
 inherits: Whisky, Constants
 
 USES INCLUDE: constants.h

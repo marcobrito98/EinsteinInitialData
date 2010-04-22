@@ -65,7 +65,7 @@ CCTK_INT TOV_Set_Rho_ADM(CCTK_POINTER_TO_CONST cctkGH,
   assert(TOV_phi_1d!=0);
   assert(TOV_m_1d!=0);
 
-  /* CCTK_INFO("Request for Sources from TOVSolverC"); */
+  /* CCTK_INFO("Request for Sources from TOVSolver"); */
   /* TOV_debug_input_points(size,x,y,z); */
   /* loop over all points we got */
 
@@ -136,7 +136,7 @@ CCTK_INT TOV_Set_Momentum_Source(
   assert(TOV_phi_1d!=0);
   assert(TOV_m_1d!=0);
 
-  /* CCTK_INFO("Request for Momentum-Sources from TOVSolverC"); */
+  /* CCTK_INFO("Request for Momentum-Sources from TOVSolver"); */
   /* loop over all points we got */
 
   for (i=0; i<size; i++)
@@ -207,7 +207,7 @@ CCTK_INT TOV_Set_Initial_Guess_for_u(
   assert(TOV_phi_1d!=0);
   assert(TOV_m_1d!=0);
 
-  CCTK_INFO("Using initial guess from TOVSolverC");
+  CCTK_INFO("Using initial guess from TOVSolver");
   /* TOV_debug_input_points(size,x,y,z); */
 
   /* loop over all points we got */
@@ -578,7 +578,7 @@ CCTK_INT TOV_Rescale_Sources(
     fclose(debugfile);
 
   switch(*(const CCTK_INT*)CCTK_ParameterGet("TOV_Populate_Timelevels",
-                                     "Whisky_TOVSolverC", &type))
+                                             "TOVSolver", &type))
   {
     case 3:
         TOV_Copy(size, rho_p_p,  rho);

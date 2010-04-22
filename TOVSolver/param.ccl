@@ -7,10 +7,10 @@ CCTK_INT TOV_Num_TOVs "The number of TOVs"
 
 CCTK_INT TOV_Solve_for_TOVs "Solve for TOVs even if no TOV initial data was requested?"
 {
-  0:3 :: "depreciated in favour of Whisky_TOVSolverC::TOV_Enforce_Interpolation"
+  0:3 :: "depreciated in favour of TOVSolver::TOV_Enforce_Interpolation"
 } 3
 
-BOOLEAN TOV_Enforce_Interpolation "Enforce the interpolation of the data onto the Whisky GFs even without tov as specified initial data" STEERABLE=always
+BOOLEAN TOV_Enforce_Interpolation "Enforce the interpolation of the data onto the Hydro GFs even without tov as specified initial data" STEERABLE=always
 {
 } "no"
 
