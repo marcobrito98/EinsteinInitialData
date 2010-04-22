@@ -13,7 +13,7 @@
 #include <cctk_Arguments.h>
 #include <cctk_Parameters.h>
 
-#include "AEIThorns/Constants/src/constants.h"
+#include "constants.h"
 
 #include "tov.h"
 
