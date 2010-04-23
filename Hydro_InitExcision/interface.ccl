@@ -1,5 +1,5 @@
-# Interface definition for thorn Whisky_InitExcision
+# Interface definition for thorn Hydro_InitExcision
 
-implements: Whisky_InitExcision
-inherits: Whisky
+implements: Hydro_InitExcision
+inherits: HydroBase, Grid, SpaceMask
 

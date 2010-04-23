@@ -53,11 +53,11 @@ ADMBase::initial_shift			=	"none"
 ADMBase::metric_type			= 	"physical"
 SpaceMask::use_mask = "yes"
 
-ActiveThorns = "eos_base eos_ideal_fluid eos_polytrope"
+ActiveThorns = "eos_base eos_idealfluid eos_polytrope"
 
-EOS_Ideal_Fluid::eos_ideal_fluid_gamma	=	1.66666666666666
+EOS_IdealFluid::eos_ideal_fluid_gamma	=	1.66666666666666
 
-ActiveThorns = "tmunubase hydrobase whisky initbase"
+ActiveThorns = "tmunubase hydrobase grhydro initbase"
 
 hydrobase::timelevels = 2
 hydrobase::evolution_method       = "whisky"
@@ -69,16 +69,16 @@ whisky::whisky_stencil			=	2
 whisky::recon_method			=	"eno"
 whisky::bound				=	"flat"
 
-ActiveThorns = "whisky_init_data"
+ActiveThorns = "grhydro_initdata"
 
 hydrobase::initial_hydro	=	"shocktube"
-whisky_init_data::shocktube_type	    =	"xshock"
-whisky_init_data::shock_case          =	"Simple"
-whisky_init_data::change_shock_direction = "yes"
+grhydro_initdata::shocktube_type	    =	"xshock"
+grhydro_initdata::shock_case          =	"Simple"
+grhydro_initdata::change_shock_direction = "yes"
 
-ActiveThorns = "whisky_initexcision"
+ActiveThorns = "hydro_initexcision"
 
-whisky_initexcision::whisky_initexcision = "yes"
-whisky_initexcision::whisky_initexcision_type ="x-axis"
-whisky_initexcision::whisky_initexcision_fraction=0.75
-whisky_initexcision::whisky_initexcision_flip    =1
+hydro_initexcision::hydro_initexcision = "yes"
+hydro_initexcision::hydro_initexcision_type ="x-axis"
+hydro_initexcision::hydro_initexcision_fraction=0.75
+hydro_initexcision::hydro_initexcision_flip    =1

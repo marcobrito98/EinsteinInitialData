@@ -1,9 +1,5 @@
-# Main make.code.defn file for thorn Hydra
-# $Header$
-
 # Source files in this directory
-
-SRCS = 	Whisky_InitExcision.c
+SRCS = 	Hydro_InitExcision.c
 
 # Subdirectories containing source files
 SUBDIRS = 
