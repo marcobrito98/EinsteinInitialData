@@ -50,8 +50,8 @@ c@@*/
       real*8 t1,t2,t3,t4
       real*8 gtil,dngtil,dnngtil,dnnngtil,dnnnngtil,dnnnnngtil,
      $     dnnnnnngtil,dnnnnnnngtil
-      real*8 rhsmax,rmax,odd_get2d,adm,Jmom,mass,a,r_iso,rBL
-      real*8,parameter :: rbh_tol = 1.0d-7,rbh_eps = 1.0d-10
+      real*8 rhsmax,rmax,odd_get2d,adm,Jmom,mass,a,r_iso,rBL,rbh_eps
+      real*8,parameter :: rbh_tol = 1.0d-7
       integer,parameter :: itmax = 100 
       real*8 pi,zero,one,two
       CCTK_REAL :: xmin,xmax,ymin,ymax,zmin,zmax
@@ -70,6 +70,7 @@ c@@*/
       CCTK_INT,     dimension(6), parameter :: type_codes = CCTK_VARIABLE_REAL
 
 
+      rbh_eps = 1.0d-10
       pi = 4.0d0*atan(1.0d0)
 c     DO NOT use integer*4
       ne = neta
