@@ -52,7 +52,7 @@ c@@   */
      $     o48,o49,o50,o51,o52,o53,o54,o55,o56,o57,o58,o59,o60,o61,o62,
      $     o63,o64,o65,o66,o67
       real*8 rmax,adm
-      real*8,parameter :: dbh_eps = 1.0d-9
+      real*8 dbh_eps
       real*8 pi
       integer :: ne, nq, np
       integer :: nx,ny,nz
@@ -68,6 +68,7 @@ c@@   */
       CCTK_POINTER, dimension(10) :: in_arrays, out_arrays
       CCTK_INT,     dimension(10), parameter :: type_codes = CCTK_VARIABLE_REAL
 
+      dbh_eps = 1.0d-9
 
 c Check if we should create and store conformal factor stuff
 
