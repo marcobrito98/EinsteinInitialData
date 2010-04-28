@@ -1,0 +1,60 @@
+ActiveThorns = "time MoL pugh pughreduce pughslab coordbase symbase cartgrid3d ioutil ioascii iobasic boundary admbase staticconformal spacemask admcoupling coordgauge admmacros hydrobase grhydro grhydro_initdata tovsolver nanchecker eos_base eos_idealfluid eos_polytrope admconstraints Constants LocalReduce TmunuBase InitBase"
+
+TmunuBase::stress_energy_storage	=	yes
+TmunuBase::stress_energy_at_RHS		=	yes
+
+time::dtfac = 0.375
+
+ADMConstraints::constraints_persist	= yes
+admconstraints::bound     = "static"
+
+boundary::radpower        = 2
+
+SpaceMask::use_mask = "yes"
+
+grid::type            = "byrange"
+grid::domain          = "full"
+grid::xyzmin          = -15.0
+grid::xyzmax          =  15.001
+driver::ghost_size    =   3
+driver::global_nsize  =  33
+
+cactus::cctk_itlast   =       0
+
+methodoflines::ode_method        = "icn"
+
+hydrobase::timelevels             = 2
+hydrobase::evolution_method       = "whisky"
+
+whisky::riemann_solver            = "Marquina"
+whisky::whisky_eos_type           = "Polytype"
+whisky::whisky_eos_table          = "2D_Polytrope"
+whisky::recon_method              = "ppm"
+whisky::whisky_stencil            = 3
+whisky::bound                     = "none"
+whisky::tvd_limiter               = "VanLeerMC2"
+whisky::rho_abs_min               = 1.e-7
+whisky::initial_atmosphere_factor = 0.999
+
+ADMBase::initial_data  = "tov"
+ADMBase::initial_lapse = "tov"
+ADMBase::initial_shift = "tov"
+
+tovsolver::TOV_Rho_Central[0] = 1.28e-3
+tovsolver::TOV_Gamma[0]       = 2.0
+tovsolver::TOV_K[0]           = 100.0
+tovsolver::TOV_Combine_Method = "maximum"
+
+EOS_Polytrope::eos_gamma            = 2.0
+EOS_Polytrope::eos_k                = 100.0
+
+
+IO::out_dir			= $parfile
+IO::out_fileinfo="none"
+
+IOBasic::outScalar_every = 1
+IOBasic::outScalar_vars  = "whisky::w_lorentz hydrobase::rho hydrobase::press hydrobase::eps HydroBase::vel whisky::dens whisky::tau whisky::scon admbase::lapse admbase::metric admbase::curv admconstraints::ham admconstraints::momentum"
+
+IOASCII::out1D_every     = 1
+IOASCII::out1D_vars      = "whisky::w_lorentz hydrobase::rho hydrobase::press hydrobase::eps HydroBase::vel whisky::dens whisky::tau whisky::scon admbase::lapse admbase::metric admbase::curv admconstraints::ham admconstraints::momentum"
+IOASCII::out_format      = ".10e"

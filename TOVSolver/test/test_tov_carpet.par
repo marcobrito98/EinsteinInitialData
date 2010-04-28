@@ -1,17 +1,10 @@
 !DESC "Carpet unigrid, one TOV" 
-ActiveThorns = "time MoL coordbase symbase cartgrid3d ioutil boundary admbase staticconformal spacemask admcoupling coordgauge admmacros hydrobase grhydro grhydro_initdata tovsolver eos_base eos_idealfluid eos_polytrope bssn_mol admconstraints Constants LocalReduce Carpet CarpetLib CarpetInterp CarpetReduce CarpetIOScalar CarpetIOBasic LoopControl TmunuBase InitBase"
+ActiveThorns = "time MoL coordbase symbase cartgrid3d ioutil boundary admbase staticconformal spacemask admcoupling coordgauge admmacros hydrobase grhydro grhydro_initdata tovsolver eos_base eos_idealfluid eos_polytrope admconstraints Constants LocalReduce Carpet CarpetLib CarpetInterp CarpetReduce CarpetIOScalar CarpetIOBasic LoopControl TmunuBase InitBase"
 
 TmunuBase::stress_energy_storage	=	yes
 TmunuBase::stress_energy_at_RHS		=	yes
 
 time::dtfac = 0.375
-
-admbase::evolution_method        = "adm_bssn"
-admbase::lapse_evolution_method  = "1+log"
-admbase::shift_evolution_method  = "gamma0"
-
-adm_bssn::bound           = "radiative"
-adm_bssn::harmonic_f      = 2.0
 
 ADMConstraints::constraints_persist	= yes
 admconstraints::bound     = "static"
