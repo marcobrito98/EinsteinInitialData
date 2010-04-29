@@ -10,13 +10,6 @@
 
 #define TINY 1.0e-20
 #define SWAP(a,b) {temp=(a);(a)=(b);(b)=temp;}
-#define NR_END 1
-#define FREE_ARG char*
-
-typedef struct DCOMPLEX
-{
-  CCTK_REAL r, i;
-} dcomplex;
 
 #define nrerror TP_nrerror
 #define ivector TP_ivector
@@ -49,32 +42,6 @@ int minimum3 (int i, int j, int k);
 int maximum2 (int i, int j);
 int maximum3 (int i, int j, int k);
 int pow_int (int mantisse, int exponent);
-#if 0
-CCTK_REAL atanh (CCTK_REAL x);
-CCTK_REAL asinh (CCTK_REAL x);
-CCTK_REAL acosh (CCTK_REAL x);
-#endif
-
-dcomplex Cadd (dcomplex a, dcomplex b);
-dcomplex Csub (dcomplex a, dcomplex b);
-dcomplex Cmul (dcomplex a, dcomplex b);
-dcomplex RCmul (CCTK_REAL x, dcomplex a);
-dcomplex Cdiv (dcomplex a, dcomplex b);
-dcomplex Complex (CCTK_REAL re, CCTK_REAL im);
-dcomplex Conjg (dcomplex z);
-CCTK_REAL Cabs (dcomplex z);
-
-dcomplex Csqrt (dcomplex z);
-dcomplex Cexp (dcomplex z);
-dcomplex Clog (dcomplex z);
-dcomplex Csin (dcomplex z);
-dcomplex Ccos (dcomplex z);
-dcomplex Ctan (dcomplex z);
-dcomplex Ccot (dcomplex z);
-dcomplex Csinh (dcomplex z);
-dcomplex Ccosh (dcomplex z);
-dcomplex Ctanh (dcomplex z);
-dcomplex Ccoth (dcomplex z);
 
 void chebft_Zeros (CCTK_REAL u[], int n, int inv);
 void chebft_Extremes (CCTK_REAL u[], int n, int inv);

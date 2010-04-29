@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stddef.h>
 #include <stdlib.h>
+#include <assert.h>
 #include "TP_utilities.h"
 
 #include "cctk_Functions.h"
@@ -13,12 +14,13 @@ int *
 ivector (long nl, long nh)
 /* allocate an int vector with subscript range v[nl..nh] */
 {
-  int *v;
+  int *retval;
 
-  v = (int *) malloc ((size_t) ((nh - nl + 1 + NR_END) * sizeof (int)));
-  if (!v)
+  retval = malloc(sizeof(int)*(nh-nl+1));
+  if(retval == NULL)
     CCTK_WARN (CCTK_WARN_ABORT, "allocation failure in ivector()");
-  return v - nl + NR_END;
+
+  return retval - nl;
 }
 
 /*---------------------------------------------------------------------------*/
@@ -26,12 +28,13 @@ CCTK_REAL *
 dvector (long nl, long nh)
 /* allocate a CCTK_REAL vector with subscript range v[nl..nh] */
 {
-  CCTK_REAL *v;
+  CCTK_REAL *retval;
 
-  v = (CCTK_REAL *) malloc ((size_t) ((nh - nl + 1 + NR_END) * sizeof (CCTK_REAL)));
-  if (!v)
+  retval = malloc(sizeof(CCTK_REAL)*(nh-nl+1));
+  if(retval == NULL)
     CCTK_WARN (CCTK_WARN_ABORT, "allocation failure in dvector()");
-  return v - nl + NR_END;
+
+  return retval - nl;
 }
 
 /*---------------------------------------------------------------------------*/
@@ -39,59 +42,57 @@ int **
 imatrix (long nrl, long nrh, long ncl, long nch)
 /* allocate a int matrix with subscript range m[nrl..nrh][ncl..nch] */
 {
-  long i, nrow = nrh - nrl + 1, ncol = nch - ncl + 1;
-  int **m;
+  int **retval;
 
-  /* allocate pointers to rows */
-  m = (int **) malloc ((size_t) ((nrow + NR_END) * sizeof (int *)));
-  if (!m)
-    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure 1 in matrix()");
-  m += NR_END;
-  m -= nrl;
+  retval = malloc(sizeof(int *)*(nrh-nrl+1));
+  if(retval == NULL)
+    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure (1) in imatrix()");
 
+  /* get all memory for the matrix in on chunk */
+  retval[0] = malloc(sizeof(int)*(nrh-nrl+1)*(nch-ncl+1));
+  if(retval[0] == NULL)
+    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure (2) in imatrix()");
 
-  /* allocate rows and set pointers to them */
-  m[nrl] = (int *) malloc ((size_t) ((nrow * ncol + NR_END) * sizeof (int)));
-  if (!m[nrl])
-    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure 2 in matrix()");
-  m[nrl] += NR_END;
-  m[nrl] -= ncl;
+  /* apply column and row offsets */
+  retval[0] -= ncl;
+  retval -= nrl;
 
-  for (i = nrl + 1; i <= nrh; i++)
-    m[i] = m[i - 1] + ncol;
+  /* slice chunk into rows */
+  long width = (nch-ncl+1);
+  for(long i = nrl+1 ; i <= nrh ; i++)
+    retval[i] = retval[i-1] + width;
+  assert(retval[nrh]-retval[nrl] == (nrh-nrl)*width);
 
-  /* return pointer to array of pointers to rows */
-  return m;
+  return retval;
 }
 
 /*---------------------------------------------------------------------------*/
 CCTK_REAL **
 dmatrix (long nrl, long nrh, long ncl, long nch)
-/* allocate a CCTK_REAL matrix with subscript range m[nrl..nrh][ncl..nch] */
+/* allocate a double matrix with subscript range m[nrl..nrh][ncl..nch] */
 {
-  long i, nrow = nrh - nrl + 1, ncol = nch - ncl + 1;
-  CCTK_REAL **m;
+  CCTK_REAL **retval;
 
-  /* allocate pointers to rows */
-  m = (CCTK_REAL **) malloc ((size_t) ((nrow + NR_END) * sizeof (CCTK_REAL *)));
-  if (!m)
-    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure 1 in matrix()");
-  m += NR_END;
-  m -= nrl;
+  retval = malloc(sizeof(CCTK_REAL *)*(nrh-nrl+1));
+  if(retval == NULL)
+    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure (1) in dmatrix()");
 
-  /* allocate rows and set pointers to them */
-  m[nrl] =
-    (CCTK_REAL *) malloc ((size_t) ((nrow * ncol + NR_END) * sizeof (CCTK_REAL)));
-  if (!m[nrl])
-    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure 2 in matrix()");
-  m[nrl] += NR_END;
-  m[nrl] -= ncl;
+  /* get all memory for the matrix in on chunk */
+  retval[0] = malloc(sizeof(CCTK_REAL)*(nrh-nrl+1)*(nch-ncl+1));
+  if(retval[0] == NULL)
+    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure (2) in dmatrix()");
 
-  for (i = nrl + 1; i <= nrh; i++)
-    m[i] = m[i - 1] + ncol;
+  /* apply column and row offsets */
+  retval[0] -= ncl;
+  retval -= nrl;
 
-  /* return pointer to array of pointers to rows */
-  return m;
+  /* slice chunk into rows */
+  long width = (nch-ncl+1);
+  for(long i = nrl+1 ; i <= nrh ; i++)
+    retval[i] = retval[i-1] + width;
+  assert(retval[nrh]-retval[nrl] == (nrh-nrl)*width);
+
+  return retval;
 }
 
 /*---------------------------------------------------------------------------*/
@@ -99,46 +100,42 @@ CCTK_REAL ***
 d3tensor (long nrl, long nrh, long ncl, long nch, long ndl, long ndh)
 /* allocate a CCTK_REAL 3tensor with range t[nrl..nrh][ncl..nch][ndl..ndh] */
 {
-  long i, j, nrow = nrh - nrl + 1, ncol = nch - ncl + 1, ndep = ndh - ndl + 1;
-  CCTK_REAL ***t;
+  CCTK_REAL ***retval;
 
-  /* allocate pointers to pointers to rows */
-  t = (CCTK_REAL ***) malloc ((size_t) ((nrow + NR_END) * sizeof (CCTK_REAL **)));
-  if (!t)
-    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure 1 in f3tensor()");
-  t += NR_END;
-  t -= nrl;
+  /* get memory for index structures */
+  retval = malloc(sizeof(CCTK_REAL **)*(nrh-nrl+1));
+  if(retval == NULL)
+    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure (1) in dmatrix()");
 
-  /* allocate pointers to rows and set pointers to them */
-  t[nrl] =
-    (CCTK_REAL **)
-    malloc ((size_t) ((nrow * ncol + NR_END) * sizeof (CCTK_REAL *)));
-  if (!t[nrl])
-    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure 2 in f3tensor()");
-  t[nrl] += NR_END;
-  t[nrl] -= ncl;
+  retval[0] = malloc(sizeof(CCTK_REAL *)*(nrh-nrl+1)*(nch-ncl+1));
+  if(retval[0] == NULL)
+    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure (2) in dmatrix()");
 
-  /* allocate rows and set pointers to them */
-  t[nrl][ncl] =
-    (CCTK_REAL *)
-    malloc ((size_t) ((nrow * ncol * ndep + NR_END) * sizeof (CCTK_REAL)));
-  if (!t[nrl][ncl])
-    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure 3 in f3tensor()");
-  t[nrl][ncl] += NR_END;
-  t[nrl][ncl] -= ndl;
+  /* get all memory for the tensor in on chunk */
+  retval[0][0] = malloc(sizeof(CCTK_REAL)*(nrh-nrl+1)*(nch-ncl+1)*(nrh-nrl+1));
+  if(retval[0][0] == NULL)
+    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure (3) in dmatrix()");
 
-  for (j = ncl + 1; j <= nch; j++)
-    t[nrl][j] = t[nrl][j - 1] + ndep;
-  for (i = nrl + 1; i <= nrh; i++)
-  {
-    t[i] = t[i - 1] + ncol;
-    t[i][ncl] = t[i - 1][ncl] + ncol * ndep;
-    for (j = ncl + 1; j <= nch; j++)
-      t[i][j] = t[i][j - 1] + ndep;
+  /* apply all offsets */
+  retval[0][0] -= ndl;
+  retval[0] -= ncl;
+  retval -= nrl;
+
+  /* slice chunk into rows and columns */
+  long width = (nch-ncl+1);
+  long depth = (ndh-ndl+1);
+  for(long i = nrl+1 ; i <= nrh ; i++) {
+    retval[i] = retval[i-1] + width;
+    retval[i][0] = retval[i-1][0] + width*depth;
+    for(long j = ncl+1 ; j <= nch ; j++) {
+      retval[i][j] = retval[i][j-1] + depth;
+    }
+    assert(retval[i][nch]-retval[i][ncl] == (ndh-ndl)*depth);
   }
+  assert(retval[nrh]-retval[nrl] == (nrh-nrl)*width);
+  assert(retval[nrh][nch]-retval[nrl][ncl] == (nrh-nrl)*(nch-ncl)*depth);
 
-  /* return pointer to array of pointers to rows */
-  return t;
+  return retval;
 }
 
 /*--------------------------------------------------------------------------*/
@@ -146,15 +143,15 @@ void
 free_ivector (int *v, long nl, long nh)
 /* free an int vector allocated with ivector() */
 {
-  free ((FREE_ARG) (v + nl - NR_END));
+  free(v+nl);
 }
 
 /*--------------------------------------------------------------------------*/
 void
 free_dvector (CCTK_REAL *v, long nl, long nh)
-/* free a CCTK_REAL vector allocated with dvector() */
+/* free an double vector allocated with dvector() */
 {
-  free ((FREE_ARG) (v + nl - NR_END));
+  free(v+nl);
 }
 
 /*--------------------------------------------------------------------------*/
@@ -162,8 +159,8 @@ void
 free_imatrix (int **m, long nrl, long nrh, long ncl, long nch)
 /* free an int matrix allocated by imatrix() */
 {
-  free ((FREE_ARG) (m[nrl] + ncl - NR_END));
-  free ((FREE_ARG) (m + nrl - NR_END));
+  free(m[nrl]+ncl);
+  free(m+nrl);
 }
 
 /*--------------------------------------------------------------------------*/
@@ -171,8 +168,8 @@ void
 free_dmatrix (CCTK_REAL **m, long nrl, long nrh, long ncl, long nch)
 /* free a CCTK_REAL matrix allocated by dmatrix() */
 {
-  free ((FREE_ARG) (m[nrl] + ncl - NR_END));
-  free ((FREE_ARG) (m + nrl - NR_END));
+  free(m[nrl]+ncl);
+  free(m+nrl);
 }
 
 /*--------------------------------------------------------------------------*/
@@ -181,9 +178,9 @@ free_d3tensor (CCTK_REAL ***t, long nrl, long nrh, long ncl, long nch,
 	       long ndl, long ndh)
 /* free a CCTK_REAL f3tensor allocated by f3tensor() */
 {
-  free ((FREE_ARG) (t[nrl][ncl] + ndl - NR_END));
-  free ((FREE_ARG) (t[nrl] + ncl - NR_END));
-  free ((FREE_ARG) (t + nrl - NR_END));
+  free(t[nrl][ncl]+ndl);
+  free(t[nrl]+ncl);
+  free(t+nrl);
 }
 
 /*--------------------------------------------------------------------------*/
@@ -240,277 +237,6 @@ pow_int (int mantisse, int exponent)
     result *= mantisse;
 
   return result;
-}
-
-/*--------------------------------------------------------------------------*/
-#if 0
-CCTK_REAL
-atanh (CCTK_REAL x)
-{
-  return 0.5 * log ((1 + x) / (1 - x));
-}
-
-/*--------------------------------------------------------------------------*/
-CCTK_REAL
-asinh (CCTK_REAL x)
-{
-  return log (x + sqrt (1 + x * x));
-}
-
-/*--------------------------------------------------------------------------*/
-CCTK_REAL
-acosh (CCTK_REAL x)
-{
-  return log (x + sqrt (x * x - 1));
-}
-#endif
-
-/*--------------------------------------------------------------------------*/
-dcomplex
-Cadd (dcomplex a, dcomplex b)
-{
-  dcomplex c;
-  c.r = a.r + b.r;
-  c.i = a.i + b.i;
-  return c;
-}
-
-/*--------------------------------------------------------------------------*/
-dcomplex
-Csub (dcomplex a, dcomplex b)
-{
-  dcomplex c;
-  c.r = a.r - b.r;
-  c.i = a.i - b.i;
-  return c;
-}
-
-/*--------------------------------------------------------------------------*/
-dcomplex
-Cmul (dcomplex a, dcomplex b)
-{
-  dcomplex c;
-  c.r = a.r * b.r - a.i * b.i;
-  c.i = a.i * b.r + a.r * b.i;
-  return c;
-}
-
-/*--------------------------------------------------------------------------*/
-dcomplex
-RCmul (CCTK_REAL x, dcomplex a)
-{
-  dcomplex c;
-  c.r = x * a.r;
-  c.i = x * a.i;
-  return c;
-}
-
-/*--------------------------------------------------------------------------*/
-dcomplex
-Cdiv (dcomplex a, dcomplex b)
-{
-  dcomplex c;
-  CCTK_REAL r, den;
-  if (fabs (b.r) >= fabs (b.i))
-  {
-    r = b.i / b.r;
-    den = b.r + r * b.i;
-    c.r = (a.r + r * a.i) / den;
-    c.i = (a.i - r * a.r) / den;
-  }
-  else
-  {
-    r = b.r / b.i;
-    den = b.i + r * b.r;
-    c.r = (a.r * r + a.i) / den;
-    c.i = (a.i * r - a.r) / den;
-  }
-  return c;
-}
-
-/*--------------------------------------------------------------------------*/
-dcomplex
-Complex (CCTK_REAL re, CCTK_REAL im)
-{
-  dcomplex c;
-  c.r = re;
-  c.i = im;
-  return c;
-}
-
-/*--------------------------------------------------------------------------*/
-dcomplex
-Conjg (dcomplex z)
-{
-  dcomplex c;
-  c.r = z.r;
-  c.i = -z.i;
-  return c;
-}
-
-/*--------------------------------------------------------------------------*/
-CCTK_REAL
-Cabs (dcomplex z)
-{
-  CCTK_REAL x, y, ans, temp;
-  x = fabs (z.r);
-  y = fabs (z.i);
-  if (x == 0.0)
-    ans = y;
-  else if (y == 0.0)
-    ans = x;
-  else if (x > y)
-  {
-    temp = y / x;
-    ans = x * sqrt (1.0 + temp * temp);
-  }
-  else
-  {
-    temp = x / y;
-    ans = y * sqrt (1.0 + temp * temp);
-  }
-  return ans;
-}
-
-/*--------------------------------------------------------------------------*/
-dcomplex
-Csqrt (dcomplex z)
-{
-  dcomplex c;
-  CCTK_REAL x, y, w, r;
-  if ((z.r == 0.0) && (z.i == 0.0))
-  {
-    c.r = 0.0;
-    c.i = 0.0;
-    return c;
-  }
-  else
-  {
-    x = fabs (z.r);
-    y = fabs (z.i);
-    if (x >= y)
-    {
-      r = y / x;
-      w = sqrt (x) * sqrt (0.5 * (1.0 + sqrt (1.0 + r * r)));
-    }
-    else
-    {
-      r = x / y;
-      w = sqrt (y) * sqrt (0.5 * (r + sqrt (1.0 + r * r)));
-    }
-    if (z.r >= 0.0)
-    {
-      c.r = w;
-      c.i = z.i / (2.0 * w);
-    }
-    else
-    {
-      c.i = (z.i >= 0) ? w : -w;
-      c.r = z.i / (2.0 * c.i);
-    }
-    return c;
-  }
-}
-
-/*--------------------------------------------------------------------------*/
-dcomplex
-Cexp (dcomplex z)
-{
-  dcomplex c;
-  CCTK_REAL exp_r = exp (z.r);
-
-  c.r = exp_r * cos (z.i);
-  c.i = exp_r * sin (z.i);
-
-  return c;
-}
-
-/*--------------------------------------------------------------------------*/
-dcomplex
-Clog (dcomplex z)
-{
-  dcomplex c;
-
-  c.r = 0.5 * log (z.r * z.r + z.i * z.i);
-  c.i = atan2 (z.i, z.r);
-
-  return c;
-}
-
-/*--------------------------------------------------------------------------*/
-dcomplex
-Csin (dcomplex z)
-{
-  dcomplex c;
-
-  c.r = sin (z.r) * cosh (z.i);
-  c.i = cos (z.r) * sinh (z.i);
-
-  return c;
-}
-/*--------------------------------------------------------------------------*/
-
-dcomplex
-Ccos (dcomplex z)
-{
-  dcomplex c;
-
-  c.r = cos (z.r) * cosh (z.i);
-  c.i = -sin (z.r) * sinh (z.i);
-
-  return c;
-}
-
-/*--------------------------------------------------------------------------*/
-dcomplex
-Ctan (dcomplex z)
-{
-  return Cdiv (Csin (z), Ccos (z));
-}
-
-/*--------------------------------------------------------------------------*/
-dcomplex
-Ccot (dcomplex z)
-{
-  return Cdiv (Ccos (z), Csin (z));
-}
-
-/*--------------------------------------------------------------------------*/
-dcomplex
-Csinh (dcomplex z)
-{
-  dcomplex c;
-
-  c.r = sinh (z.r) * cos (z.i);
-  c.i = cosh (z.r) * sin (z.i);
-
-  return c;
-}
-/*--------------------------------------------------------------------------*/
-
-dcomplex
-Ccosh (dcomplex z)
-{
-  dcomplex c;
-
-  c.r = cosh (z.r) * cos (z.i);
-  c.i = sinh (z.r) * sin (z.i);
-
-  return c;
-}
-
-/*--------------------------------------------------------------------------*/
-dcomplex
-Ctanh (dcomplex z)
-{
-  return Cdiv (Csinh (z), Ccosh (z));
-}
-
-/*--------------------------------------------------------------------------*/
-dcomplex
-Ccoth (dcomplex z)
-{
-  return Cdiv (Ccosh (z), Csinh (z));
 }
 
 /*--------------------------------------------------------------------------*/

@@ -6,6 +6,8 @@
 #include <math.h>
 #include <ctype.h>
 #include <time.h>
+#include <gsl/gsl_complex.h>
+#include <gsl/gsl_complex_math.h>
 #include "cctk_Parameters.h"
 #include "TP_utilities.h"
 #include "TwoPunctures.h"
@@ -58,59 +60,54 @@ C_To_c (int nvar, CCTK_REAL X, CCTK_REAL R, CCTK_REAL *x, CCTK_REAL *r,
 {
   DECLARE_CCTK_PARAMETERS;
   CCTK_REAL C_c2, U_cb, U_CB;
-  dcomplex C, C_c, C_cc, c, c_C, c_CC, U_c, U_cc, U_C, U_CC, One =
-    Complex (1., 0.);
+  gsl_complex C, C_c, C_cc, c, c_C, c_CC, U_c, U_cc, U_C, U_CC;
   int ivar;
 
-  C.r = X;
-  C.i = R;
+  C = gsl_complex_rect (X, R);
 
-  c = RCmul (par_b, Ccosh (C));	/* c=b*cosh(C)*/
-  c_C = RCmul (par_b, Csinh (C));
+  c = gsl_complex_mul_real (gsl_complex_cosh (C), par_b);	/* c=b*cosh(C)*/
+  c_C = gsl_complex_mul_real (gsl_complex_sinh (C), par_b);
   c_CC = c;
 
-  C_c = Cdiv (One, c_C);
-  C_cc = RCmul (-1., Cmul (Cmul (C_c, C_c), Cmul (C_c, c_CC)));
-  C_c2 = C_c.r * C_c.r + C_c.i * C_c.i;
+  C_c = gsl_complex_inverse (c_C);
+  C_cc = gsl_complex_negative (gsl_complex_mul (gsl_complex_mul (C_c, C_c), gsl_complex_mul (C_c, c_CC)));
+  C_c2 = gsl_complex_abs2 (C_c);
 
   for (ivar = 0; ivar < nvar; ivar++)
   {
     /* U_C = 0.5*(U_X3-i*U_R3)*/
     /* U_c = U_C*C_c = 0.5*(U_x3-i*U_r3)*/
-    U_C.r = 0.5 * U.d13[ivar];
-    U_C.i = -0.5 * U.d23[ivar];
-    U_c = Cmul (U_C, C_c);
-    U.d13[ivar] = 2. * U_c.r;
-    U.d23[ivar] = -2. * U_c.i;
+    U_C = gsl_complex_rect (0.5 * U.d13[ivar], -0.5 * U.d23[ivar]);
+    U_c = gsl_complex_mul (U_C, C_c);
+    U.d13[ivar] = 2. * GSL_REAL(U_c);
+    U.d23[ivar] = -2. * GSL_IMAG(U_c);
 
     /* U_C = 0.5*(U_X-i*U_R)*/
     /* U_c = U_C*C_c = 0.5*(U_x-i*U_r)*/
-    U_C.r = 0.5 * U.d1[ivar];
-    U_C.i = -0.5 * U.d2[ivar];
-    U_c = Cmul (U_C, C_c);
-    U.d1[ivar] = 2. * U_c.r;
-    U.d2[ivar] = -2. * U_c.i;
+    U_C = gsl_complex_rect (0.5 * U.d1[ivar], -0.5 * U.d2[ivar]);
+    U_c = gsl_complex_mul (U_C, C_c);
+    U.d1[ivar] = 2. * GSL_REAL(U_c);
+    U.d2[ivar] = -2. * GSL_IMAG(U_c);
 
     /* U_CC = 0.25*(U_XX-U_RR-2*i*U_XR)*/
     /* U_CB = d^2(U)/(dC*d\bar{C}) = 0.25*(U_XX+U_RR)*/
-    U_CC.r = 0.25 * (U.d11[ivar] - U.d22[ivar]);
-    U_CC.i = -0.5 * U.d12[ivar];
+    U_CC = gsl_complex_rect (0.25 * (U.d11[ivar] - U.d22[ivar]), -0.5 * U.d12[ivar]);
     U_CB = 0.25 * (U.d11[ivar] + U.d22[ivar]);
 
     /* U_cc = C_cc*U_C+(C_c)^2*U_CC*/
     U_cb = U_CB * C_c2;
-    U_cc = Cadd (Cmul (C_cc, U_C), Cmul (Cmul (C_c, C_c), U_CC));
+    U_cc = gsl_complex_add (gsl_complex_mul (C_cc, U_C), gsl_complex_mul (gsl_complex_mul (C_c, C_c), U_CC));
 
     /* U_xx = 2*(U_cb+Re[U_cc])*/
     /* U_rr = 2*(U_cb-Re[U_cc])*/
     /* U_rx = -2*Im[U_cc]*/
-    U.d11[ivar] = 2 * (U_cb + U_cc.r);
-    U.d22[ivar] = 2 * (U_cb - U_cc.r);
-    U.d12[ivar] = -2 * U_cc.i;
+    U.d11[ivar] = 2 * (U_cb + GSL_REAL(U_cc));
+    U.d22[ivar] = 2 * (U_cb - GSL_REAL(U_cc));
+    U.d12[ivar] = -2 * GSL_IMAG(U_cc);
   }
 
-  *x = c.r;
-  *r = c.i;
+  *x = GSL_REAL(c);
+  *r = GSL_IMAG(c);
 }
 
 /*-----------------------------------------------------------*/
