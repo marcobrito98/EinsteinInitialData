@@ -1,7 +1,7 @@
 # Interface definition for thorn TOVSolver
 
 implements: TOVSolver
-inherits: Whisky, Constants
+inherits: GRHydro, Constants
 
 USES INCLUDE: constants.h
 

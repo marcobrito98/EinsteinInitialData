@@ -372,45 +372,45 @@ CCTK_INT TOV_Rescale_Sources(
 
   CCTK_INFO("Rescaling Sources");
 
-  /* get Whisky variables */
+  /* get GRHydro variables */
   rho      =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "HydroBase::rho");
   press    =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "HydroBase::press");
   eps      =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "HydroBase::eps");
-  dens     =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "Whisky::dens");
-  tau      =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "Whisky::tau");
-  w_lorentz=(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "Whisky::w_lorentz");
+  dens     =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "GRHydro::dens");
+  tau      =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "GRHydro::tau");
+  w_lorentz=(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "GRHydro::w_lorentz");
   vel0     =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "HydroBase::vel[0]");
   vel1     =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "HydroBase::vel[1]");
   vel2     =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "HydroBase::vel[2]");
-  scon0       =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "Whisky::scon[0]");
-  scon1       =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "Whisky::scon[1]");
-  scon2       =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "Whisky::scon[2]");
+  scon0       =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "GRHydro::scon[0]");
+  scon1       =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "GRHydro::scon[1]");
+  scon2       =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "GRHydro::scon[2]");
 
   rho_p    =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "HydroBase::rho");
   press_p  =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "HydroBase::press");
   eps_p    =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "HydroBase::eps");
-  dens_p   =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "Whisky::dens");
-  tau_p    =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "Whisky::tau");
-  w_lorentz_p=(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "Whisky::w_lorentz");
+  dens_p   =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "GRHydro::dens");
+  tau_p    =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "GRHydro::tau");
+  w_lorentz_p=(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "GRHydro::w_lorentz");
   vel0_p   =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "HydroBase::vel[0]");
   vel1_p   =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "HydroBase::vel[1]");
   vel2_p   =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "HydroBase::vel[2]");
-  scon0_p     =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "Whisky::scon[0]");
-  scon1_p     =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "Whisky::scon[1]");
-  scon2_p     =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "Whisky::scon[2]");
+  scon0_p     =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "GRHydro::scon[0]");
+  scon1_p     =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "GRHydro::scon[1]");
+  scon2_p     =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "GRHydro::scon[2]");
 
   rho_p_p  =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "HydroBase::rho");
   press_p_p=(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "HydroBase::press");
   eps_p_p  =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "HydroBase::eps");
-  dens_p_p =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "Whisky::dens");
-  tau_p_p  =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "Whisky::tau");
-  w_lorentz_p_p=(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "Whisky::w_lorentz");
+  dens_p_p =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "GRHydro::dens");
+  tau_p_p  =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "GRHydro::tau");
+  w_lorentz_p_p=(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "GRHydro::w_lorentz");
   vel0_p_p =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "HydroBase::vel[0]");
   vel1_p_p =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "HydroBase::vel[1]");
   vel2_p_p =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "HydroBase::vel[2]");
-  scon0_p_p   =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "Whisky::scon[0]");
-  scon1_p_p   =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "Whisky::scon[1]");
-  scon2_p_p   =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "Whisky::scon[2]");
+  scon0_p_p   =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "GRHydro::scon[0]");
+  scon1_p_p   =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "GRHydro::scon[1]");
+  scon2_p_p   =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "GRHydro::scon[2]");
 
   /* get u */
   u=calloc(size, sizeof(CCTK_REAL));

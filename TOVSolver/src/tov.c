@@ -219,8 +219,8 @@ void TOV_C_Integrate_RHS(CCTK_ARGUMENTS)
     star_i = star * TOV_Num_Radial;
 
     /* check for parameters */
-    if ((TOV_Rho_Central[star]==0.0) && (whisky_rho_central>0.0))
-      rho_central=whisky_rho_central;
+    if ((TOV_Rho_Central[star]==0.0) && (GRHydro_rho_central>0.0))
+      rho_central=GRHydro_rho_central;
     else
       rho_central=TOV_Rho_Central[star];
 

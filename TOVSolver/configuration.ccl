@@ -1,4 +1,4 @@
-# Configuration definition for thorn Whisky
+# Configuration definition for thorn GRHydro
 
 REQUIRES THORNS: Boundary CartGrid3D SpaceMask
 

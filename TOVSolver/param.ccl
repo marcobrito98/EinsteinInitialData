@@ -158,12 +158,12 @@ shares:StaticConformal
 
 USES KEYWORD conformal_storage
 
-shares:Whisky
+shares:GRHydro
 
 USES real rho_abs_min
 USES real rho_rel_min
 USES REAL initial_rho_abs_min
 USES REAL initial_rho_rel_min
 USES REAL initial_atmosphere_factor
-USES real whisky_rho_central
+USES real GRHydro_rho_central
 
