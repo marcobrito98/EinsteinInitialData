@@ -35,11 +35,11 @@ ADMConstraints::constraints_persist	= yes
 
 IOBasic::outScalar_every                =       1
 IOBasic::outScalar_reductions = "minimum maximum"
-IOBasic::outScalar_vars  = "hydrobase::rho hydrobase::press hydrobase::eps hydrobase::vel whisky::dens whisky::tau whisky::scon whisky::w_lorentz"
+IOBasic::outScalar_vars  = "hydrobase::rho hydrobase::press hydrobase::eps hydrobase::vel GRHydro::dens GRHydro::tau GRHydro::scon GRHydro::w_lorentz"
 
 IOASCII::out1D_every                    =       10
 IOASCII::out1D_style                    = "gnuplot f(x)"
-IOASCII::out1D_vars      = "hydrobase::rho hydrobase::press hydrobase::eps hydrobase::vel whisky::dens whisky::tau whisky::scon whisky::w_lorentz"
+IOASCII::out1D_vars      = "hydrobase::rho hydrobase::press hydrobase::eps hydrobase::vel GRHydro::dens GRHydro::tau GRHydro::scon GRHydro::w_lorentz"
 
 ActiveThorns = "nanchecker mol"
 
@@ -60,14 +60,14 @@ EOS_IdealFluid::eos_ideal_fluid_gamma	=	1.66666666666666
 ActiveThorns = "tmunubase hydrobase grhydro initbase"
 
 hydrobase::timelevels = 2
-hydrobase::evolution_method       = "whisky"
+hydrobase::evolution_method       = "GRHydro"
 
-whisky::riemann_solver			=	"Marquina"
-whisky::whisky_eos_type			=	"General"
-whisky::whisky_eos_table		=	"Ideal_Fluid"
-whisky::whisky_stencil			=	2
-whisky::recon_method			=	"eno"
-whisky::bound				=	"flat"
+GRHydro::riemann_solver			=	"Marquina"
+GRHydro::GRHydro_eos_type			=	"General"
+GRHydro::GRHydro_eos_table		=	"Ideal_Fluid"
+GRHydro::GRHydro_stencil			=	2
+GRHydro::recon_method			=	"eno"
+GRHydro::bound				=	"flat"
 
 ActiveThorns = "grhydro_initdata"
 
