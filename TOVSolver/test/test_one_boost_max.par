@@ -24,17 +24,17 @@ cactus::cctk_itlast   =       0
 methodoflines::ode_method        = "icn"
 
 hydrobase::timelevels             = 2
-hydrobase::evolution_method       = "whisky"
+hydrobase::evolution_method       = "GRHydro"
 
-whisky::riemann_solver            = "Marquina"
-whisky::whisky_eos_type           = "Polytype"
-whisky::whisky_eos_table          = "2D_Polytrope"
-whisky::recon_method              = "ppm"
-whisky::whisky_stencil            = 3
-whisky::bound                     = "none"
-whisky::tvd_limiter               = "VanLeerMC2"
-whisky::rho_abs_min               = 1.e-7
-whisky::initial_atmosphere_factor = 0.999
+GRHydro::riemann_solver            = "Marquina"
+GRHydro::GRHydro_eos_type           = "Polytype"
+GRHydro::GRHydro_eos_table          = "2D_Polytrope"
+GRHydro::recon_method              = "ppm"
+GRHydro::GRHydro_stencil            = 3
+GRHydro::bound                     = "none"
+GRHydro::tvd_limiter               = "VanLeerMC2"
+GRHydro::rho_abs_min               = 1.e-7
+GRHydro::initial_atmosphere_factor = 0.999
 
 ADMBase::initial_data  = "tov"
 ADMBase::initial_lapse = "tov"
@@ -55,8 +55,8 @@ IO::out_dir			= $parfile
 IO::out_fileinfo="none"
 
 IOBasic::outScalar_every = 1
-IOBasic::outScalar_vars  = "whisky::w_lorentz hydrobase::rho hydrobase::press hydrobase::eps HydroBase::vel whisky::dens whisky::tau whisky::scon admbase::lapse admbase::metric admbase::curv admconstraints::ham admconstraints::momentum"
+IOBasic::outScalar_vars  = "GRHydro::w_lorentz hydrobase::rho hydrobase::press hydrobase::eps HydroBase::vel GRHydro::dens GRHydro::tau GRHydro::scon admbase::lapse admbase::metric admbase::curv admconstraints::ham admconstraints::momentum"
 
 IOASCII::out1D_every     = 1
-IOASCII::out1D_vars      = "whisky::w_lorentz hydrobase::rho hydrobase::press hydrobase::eps HydroBase::vel whisky::dens whisky::tau whisky::scon admbase::lapse admbase::metric admbase::curv admconstraints::ham admconstraints::momentum"
+IOASCII::out1D_vars      = "GRHydro::w_lorentz hydrobase::rho hydrobase::press hydrobase::eps HydroBase::vel GRHydro::dens GRHydro::tau GRHydro::scon admbase::lapse admbase::metric admbase::curv admconstraints::ham admconstraints::momentum"
 IOASCII::out_format      = ".10e"
