@@ -4,8 +4,8 @@ ActiveThorns = "Loopcontrol InitBase Carpet CarpetLib CarpetInterp CarpetReduce 
 ActiveThorns = "ADMBase"
 ActiveThorns = "StaticConformal"
 ActiveThorns = "ADMCoupling ADMMacros"
-ActiveThorns = "TmunuBase Constants SpaceMask Whisky HydroBase"
-ActiveThorns = "Whisky_TOVSolverC eos_base eos_ideal_fluid eos_polytrope"
+ActiveThorns = "TmunuBase Constants SpaceMask GRHydro HydroBase"
+ActiveThorns = "TOVSolver eos_base eos_idealfluid eos_polytrope"
 ActiveThorns = "TwoPunctures"
 ActiveThorns = "coordgauge boundary"
 
@@ -63,22 +63,22 @@ TwoPunctures::TP_Tiny = 1.e-10
 
 SpaceMask::use_mask = yes
 
-whisky::whisky_stencil            = 3
-whisky::whisky_eos_type           = "Polytype"
-whisky::whisky_eos_table          = "2D_Polytrope"
-whisky::recon_method              = "ppm"
-whisky::rho_abs_min               = 1.e-10
-whisky::initial_atmosphere_factor = 0.1
-#whisky::Whisky_MaxNumSandRVars    = 0
+GRHydro::GRHydro_stencil            = 3
+GRHydro::GRHydro_eos_type           = "Polytype"
+GRHydro::GRHydro_eos_table          = "2D_Polytrope"
+GRHydro::recon_method              = "ppm"
+GRHydro::rho_abs_min               = 1.e-10
+GRHydro::initial_atmosphere_factor = 0.1
+#GRHydro::GRHydro_MaxNumSandRVars    = 0
 hydrobase::timelevels = 3
 
-Whisky_TOVSolverC::TOV_Enforce_Interpolation = "yes"
-Whisky_TOVSolverC::TOV_Num_Radial     = 1000000
-Whisky_TOVSolverC::TOV_dr[0]          = 5.e-5
-Whisky_TOVSolverC::TOV_Position_x[0]  = -30
-Whisky_TOVSolverC::TOV_Rho_Central[0] = 5.e-4
-Whisky_TOVSolverC::TOV_Gamma[0]       = 2.0
-Whisky_TOVSolverC::TOV_K[0]           = 100.0
+TOVSolver::TOV_Enforce_Interpolation = "yes"
+TOVSolver::TOV_Num_Radial     = 1000000
+TOVSolver::TOV_dr[0]          = 5.e-5
+TOVSolver::TOV_Position_x[0]  = -30
+TOVSolver::TOV_Rho_Central[0] = 5.e-4
+TOVSolver::TOV_Gamma[0]       = 2.0
+TOVSolver::TOV_K[0]           = 100.0
 
 EOS_Polytrope::eos_gamma                =       2.0
 EOS_Polytrope::eos_k                    =       100.0
@@ -96,9 +96,9 @@ Carpet::init_3_timelevels         = no
 CarpetIOScalar::outScalar_reductions	= "minimum maximum norm1 norm2"
 
 IOScalar::outScalar_every	= 512
-IOScalar::outScalar_vars		= "admbase::metric admbase::curv TwoPunctures::puncture_u whisky::w_lorentz hydrobase::rho hydrobase::press hydrobase::eps HydroBase::vel whisky::dens whisky::tau whisky::scon admbase::lapse admbase::shift"
+IOScalar::outScalar_vars		= "admbase::metric admbase::curv TwoPunctures::puncture_u GRHydro::w_lorentz hydrobase::rho hydrobase::press hydrobase::eps HydroBase::vel GRHydro::dens GRHydro::tau GRHydro::scon admbase::lapse admbase::shift"
 IOASCII::out1D_every		= 512
-IOASCII::out1D_vars		= "admbase::metric admbase::curv TwoPunctures::puncture_u whisky::w_lorentz hydrobase::rho hydrobase::press hydrobase::eps HydroBase::vel whisky::dens whisky::tau whisky::scon admbase::lapse admbase::shift"
+IOASCII::out1D_vars		= "admbase::metric admbase::curv TwoPunctures::puncture_u GRHydro::w_lorentz hydrobase::rho hydrobase::press hydrobase::eps HydroBase::vel GRHydro::dens GRHydro::tau GRHydro::scon admbase::lapse admbase::shift"
 
 admbase::metric_type		= "physical"
 
