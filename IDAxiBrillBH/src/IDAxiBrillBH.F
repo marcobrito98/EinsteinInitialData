@@ -197,7 +197,7 @@ c Initialize some arrays
         qgrd(j) = (j-1.5d0)*dq
         do i=1,neb
           etagrd(i) = (i-2)*deta
-#include "CactusEinstein/IDAxiBrillBH/src/bhbrill.x"
+#include "EinsteinInitialData/IDAxiBrillBH/src/bhbrill.x"
         enddo
       enddo
 c Boundary conditions
@@ -499,10 +499,10 @@ c
          do j=1,ny
             do i=1,nx
 c     psix = \partial psi / \partial x / psi
-#include "CactusEinstein/IDAxiBrillBH/src/psi_1st_deriv.x"
+#include "EinsteinInitialData/IDAxiBrillBH/src/psi_1st_deriv.x"
 
 c     psixx = \partial^2\psi / \partial x^2 / psi
-#include "CactusEinstein/IDAxiBrillBH/src/psi_2nd_deriv.x"
+#include "EinsteinInitialData/IDAxiBrillBH/src/psi_2nd_deriv.x"
             enddo
          enddo
       enddo
@@ -514,7 +514,7 @@ c     Conformal metric
 c       gxx = ...
 c     Derivatives of the metric (currently commented-out)
 c       dxgxx = 1/2 \partial gxx / \partial x
-#include "CactusEinstein/IDAxiBrillBH/src/gij.x"
+#include "EinsteinInitialData/IDAxiBrillBH/src/gij.x"
 
                if (r(i,j,k) < 1.0d-10) then
                   
