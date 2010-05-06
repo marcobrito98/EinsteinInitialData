@@ -29,7 +29,7 @@ if (smooth_regions) {
       SCHEDULE NoExcision_Set_Zero IN ADMBase_PostInitial BEFORE NoExcision_CGSmoothing
       {
         LANG: Fortran
-      } "Set variables to zero in used defined regions"
+      } "Set variables to zero in user defined regions"
     }
 
     SCHEDULE GROUP NoExcision_CGSmoothing IN ADMBase_PostInitial
