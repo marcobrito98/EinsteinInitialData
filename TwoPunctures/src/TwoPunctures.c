@@ -216,7 +216,7 @@ TwoPunctures (CCTK_ARGUMENTS)
 #endif
   static CCTK_REAL *F = NULL;
   static derivs u, v;
-  CCTK_REAL admMass, M_p, M_m, tmp_p, tmp_m, um, up, new_mass, old_mass;
+  CCTK_REAL admMass;
 
   if (! F) {
     /* Solve only when called for the first time */
@@ -251,59 +251,75 @@ TwoPunctures (CCTK_ARGUMENTS)
       set_initial_guess(cctkGH, v);
     }
 
+    /* If bare masses are not given, iteratively solve for them given the 
+       target ADM masses target_M_plus and target_M_minus and with initial 
+       guesses given by par_m_plus and par_m_minus. */
     if(!(give_bare_mass)) {
-      * mp  = target_M_plus;
-      * mm  = target_M_minus;
-      
-      M_p= target_M_plus;
-      M_m= target_M_minus;
+      CCTK_REAL tmp, Mp_adm, Mm_adm, Mp_adm_err, Mm_adm_err, up, um;
+      char valbuf[100];
 
-      new_mass = 0;
-      old_mass = 1.;
-      while (new_mass<old_mass) {
-	old_mass = (double)*mp + (double)*mm;
-	Newton (cctkGH, nvar, n1, n2, n3, v, Newton_tol, 1);
+      CCTK_REAL M_p = target_M_plus;
+      CCTK_REAL M_m = target_M_minus;
 
-	F_of_v (cctkGH, nvar, n1, n2, n3, v, F, u);
+      CCTK_VInfo (CCTK_THORNSTRING, "Attempting to find bare masses.");
+      CCTK_VInfo (CCTK_THORNSTRING, "Target ADM masses: M_p=%g and M_m=%g",
+                  (double) M_p, (double) M_m);
+      CCTK_VInfo (CCTK_THORNSTRING, "ADM mass tolerance: %g", (double) adm_tol);
 
-	up  = PunctIntPolAtArbitPosition 
-	  (0, nvar, n1, n2, n3, v, par_b, 0., 0.);
-	um  = PunctIntPolAtArbitPosition 
-	  (0, nvar, n1, n2, n3, v, -par_b, 0., 0.);
+      /* Loop until both ADM masses are within adm_tol of their target */
+      do {
+        CCTK_VInfo (CCTK_THORNSTRING, "Bare masses: mp=%g, mm=%g",
+                    (double)*mp, (double)*mm);
+        Newton (cctkGH, nvar, n1, n2, n3, v, Newton_tol, 1);
 
-	for(int l=0; l<32;l++) {
-	  tmp_p=(4*par_b*um+ *mp +4*par_b);
-	  tmp_m=(4*par_b*up+ *mm +4*par_b);
-	  *mp = *mp - ((*mp*(up+1+M_m/tmp_p)-M_p)/
-		       (up+1+(M_m/tmp_p)-(*mp*M_m)/(pow(tmp_p,2))));
-	  *mm = *mm - ((*mm*(um+1+M_p/tmp_m)-M_m)/
-		       (um+1+(M_p/tmp_m)-(*mm*M_p)/(pow(tmp_m,2))));
-	}
-	char valbuf_p[100], valbuf_m[100];  
-	
-	sprintf (valbuf_p,"%f", (float) *mp);
-	CCTK_ParameterSet ("par_m_plus", "twopunctures", valbuf_p);
-	sprintf (valbuf_m,"%f", (float) *mm);
-	CCTK_ParameterSet ("par_m_minus", "twopunctures", valbuf_m);
-	new_mass = (double)*mp + (double)*mm;
-      }
-    } 
-    admMass = (*mp + *mm
-               - 4*par_b*PunctEvalAtArbitPosition(v.d0, 1, 0, 0, n1, n2, n3));
-    CCTK_VInfo (CCTK_THORNSTRING, "ADM mass is %g\n", (double)admMass);
+        F_of_v (cctkGH, nvar, n1, n2, n3, v, F, u);
+
+        up = PunctIntPolAtArbitPosition(0, nvar, n1, n2, n3, v, par_b, 0., 0.);
+        um = PunctIntPolAtArbitPosition(0, nvar, n1, n2, n3, v,-par_b, 0., 0.);
+
+        /* Calculate the ADM masses from the current bare mass guess */
+        Mp_adm = (1 + up) * *mp + *mp * *mm / (4. * par_b);
+        Mm_adm = (1 + um) * *mm + *mp * *mm / (4. * par_b);
+
+        /* Check how far the current ADM masses are from the target */
+        Mp_adm_err = fabs(M_p-Mp_adm);
+        Mm_adm_err = fabs(M_m-Mm_adm);
+        CCTK_VInfo (CCTK_THORNSTRING, "ADM mass error: M_p_err=%.4g, M_m_err=%.4g",
+                    (double)Mp_adm_err, (double)Mm_adm_err);
+        
+        /* Invert the ADM mass equation and update the bare mass guess so that
+           it gives the correct target ADM masses */
+        tmp = -4*par_b*( 1 + um + up + um*up ) + 
+                sqrt(16*par_b*M_m*(1 + um)*(1 + up) + 
+                  pow(-M_m + M_p + 4*par_b*(1 + um)*(1 + up),2));
+        *mp = (tmp + M_p - M_m)/(2.*(1 + up));
+        *mm = (tmp - M_p + M_m)/(2.*(1 + um));
+        
+        /* Set the par_m_plus and par_m_minus parameters */
+        sprintf (valbuf,"%.17g", (double) *mp);
+        CCTK_ParameterSet ("par_m_plus", "twopunctures", valbuf);
+        
+        sprintf (valbuf,"%.17g", (double) *mm);
+        CCTK_ParameterSet ("par_m_minus", "twopunctures", valbuf);
+        
+      } while ( (Mp_adm_err > adm_tol) ||
+                (Mm_adm_err > adm_tol) );
+                
+      CCTK_VInfo (CCTK_THORNSTRING, "Found bare masses.");
+    }
 
     Newton (cctkGH, nvar, n1, n2, n3, v, Newton_tol, Newton_maxit);
  
     F_of_v (cctkGH, nvar, n1, n2, n3, v, F, u);
 
     CCTK_VInfo (CCTK_THORNSTRING,
-		  "The two puncture masses are %g and %g",
-                (double) par_m_minus, (double) par_m_plus);
+		  "The two puncture masses are mp=%.17g and mm=%.17g",
+                (double) *mp, (double) *mm);
 
     /* print out ADM mass, eq.: \Delta M_ADM=2*r*u=4*b*V for A=1,B=0,phi=0 */
     admMass = (*mp + *mm
-               - 4*par_b*PunctEvalAtArbitPosition(v.d0, 1, 0, 0, n1, n2, n3));
-    CCTK_VInfo (CCTK_THORNSTRING, "ADM mass is %g", (double)admMass);
+               - 4*par_b*PunctEvalAtArbitPosition(v.d0, 1, 0, 0, n1, n2, n3));;
+    CCTK_VInfo (CCTK_THORNSTRING, "The total ADM mass is %g", (double) admMass);
   }
 
   if (CCTK_EQUALS(grid_setup_method, "Taylor expansion"))

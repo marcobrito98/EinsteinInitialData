@@ -518,8 +518,12 @@ Newton (CCTK_POINTER_TO_CONST const cctkGH,
 #pragma omp parallel for
     for (int j = 0; j < ntotal; j++)
       dv.d0[j] = 0;
-    printf ("Newton: it=%d \t |F|=%e\n", it, (double)dmax);
-    printf ("bare mass: mp=%g \t mm=%g\n", (double) par_m_plus, (double) par_m_minus);
+
+    if(verbose==1){
+      printf ("Newton: it=%d \t |F|=%e\n", it, (double)dmax);
+      printf ("bare mass: mp=%g \t mm=%g\n", (double) par_m_plus, (double) par_m_minus);
+    }
+
     fflush(stdout);
     ii =
       bicgstab (cctkGH,
@@ -536,7 +540,10 @@ Newton (CCTK_POINTER_TO_CONST const cctkGH,
       F_of_v (cctkGH, nvar, n1, n2, n3, v, F, u);
       dmax = norm_inf (F, ntotal);
   }
-  printf ("Newton: it=%d \t |F|=%e \n", it, (double)dmax);
+
+  if(verbose==1)
+    printf ("Newton: it=%d \t |F|=%e \n", it, (double)dmax);
+
   fflush(stdout);
 
   free_dvector (F, 0, ntotal - 1);

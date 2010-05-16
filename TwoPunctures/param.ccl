@@ -39,6 +39,10 @@ BOOLEAN give_bare_mass "User provides bare masses rather than target ADM masses"
 {
 } "yes"
 
+CCTK_REAL adm_tol "Tolerance of ADM masses when give_bare_mass=no"
+{
+  (0:*) :: ""
+} 1.0e-10
 
 KEYWORD grid_setup_method "How to fill the 3D grid from the spectral grid"
 {
