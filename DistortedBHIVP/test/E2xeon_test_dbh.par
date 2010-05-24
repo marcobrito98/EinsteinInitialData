@@ -2,11 +2,9 @@
 #!DESC "Initial data for axisymmetric distored black hole"
 ######################################################################
 
-ActiveThorns = "coordgauge admanalysis admbase admmacros staticconformal time boundary ADMCoupling ADMconstraints pugh pughreduce pughslab pughinterp LocalInterp SymBase CoordBase cartgrid3d ADM SpaceMask DistortedBHIVP ioascii iobasic ioutil LocalReduce"
+ActiveThorns = "coordgauge admanalysis admbase admmacros staticconformal time boundary ADMCoupling ADMconstraints pugh pughreduce pughslab pughinterp LocalInterp SymBase CoordBase cartgrid3d SpaceMask DistortedBHIVP ioascii iobasic ioutil LocalReduce"
 
 # GENERAL 
-
-admbase::evolution_method = "ADM"     
 
 driver::global_nx =  32
 driver::global_ny =  32
@@ -16,14 +14,7 @@ grid::type = "byspacing"
 grid::dxyz = 0.4
 grid::domain = "full"
 
-time::dtfac = 0.25   
-
-cactus::cctk_initial_time = 0.   
-cactus::cctk_itlast       = 1
-
-adm::method           = "stagleap" 
-adm::bound            = "static"
-admconstraints::bound = "static"
+cactus::cctk_itlast       = 0
 
 # MODEL 
 
@@ -42,7 +33,6 @@ distortedbhivp::interpolation_order = 1
 
 # GAUGE
 
-admbase::lapse_evolution_method    = "geodesic"
 admbase::metric_type               = "static conformal"
 staticconformal::conformal_storage = "factor+derivs+2nd derivs"
 
@@ -52,7 +42,6 @@ IO::out_fileinfo         = "none"
 IO::new_filename_scheme  = no
 
 IOASCII::out1d_every     =  1
-#IOBasic::outScalar_vars  = "admbase::metric admbase::curv admconstraints::ham"
 IOASCII::out1D_vars      = "admbase::metric admbase::curv admbase::lapse admconstraints::ham admanalysis::grr staticconformal::psi staticconformal::psix staticconformal::psiy staticconformal::psiz staticconformal::psixx staticconformal::psixy staticconformal::psixz staticconformal::psiyy staticconformal::psiyz staticconformal::psizz"
 IOBasic::outInfo_every   = 1
 IOBasic::outInfo_vars    = "admconstraints::ham admbase::gxx"
