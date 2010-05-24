@@ -39,8 +39,8 @@ void JFD_times_dv (int i, int j, int k, int nvar, int n1,
 		   int n2, int n3, derivs dv, derivs u, CCTK_REAL *values);
 void SetMatrix_JFD (int nvar, int n1, int n2, int n3,
 		    derivs u, int *ncols, int **cols, CCTK_REAL **Matrix);
-CCTK_REAL PunctEvalAtArbitPosition (CCTK_REAL *v, CCTK_REAL A, CCTK_REAL B, CCTK_REAL phi,
-				 int n1, int n2, int n3);
+CCTK_REAL PunctEvalAtArbitPosition (CCTK_REAL *v, int ivar, CCTK_REAL A, CCTK_REAL B, CCTK_REAL phi,
+				 int nvar, int n1, int n2, int n3);
 void calculate_derivs (int i, int j, int k, int ivar, int nvar, int n1,
 		       int n2, int n3, derivs v, derivs vv);
 CCTK_REAL interpol (CCTK_REAL a, CCTK_REAL b, CCTK_REAL c, derivs v);

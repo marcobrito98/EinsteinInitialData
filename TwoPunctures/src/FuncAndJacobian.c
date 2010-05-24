@@ -681,8 +681,8 @@ SetMatrix_JFD (int nvar, int n1, int n2, int n3, derivs u,
 /* --------------------------------------------------------------------------*/
 /* Calculates the value of v at an arbitrary position (A,B,phi)*/
 CCTK_REAL
-PunctEvalAtArbitPosition (CCTK_REAL *v, CCTK_REAL A, CCTK_REAL B, CCTK_REAL phi,
-			  int n1, int n2, int n3)
+PunctEvalAtArbitPosition (CCTK_REAL *v, int ivar, CCTK_REAL A, CCTK_REAL B, CCTK_REAL phi,
+			  int nvar, int n1, int n2, int n3)
 {
   int i, j, k, N;
   CCTK_REAL *p, *values1, **values2, result;
@@ -697,7 +697,7 @@ PunctEvalAtArbitPosition (CCTK_REAL *v, CCTK_REAL A, CCTK_REAL B, CCTK_REAL phi,
     for (j = 0; j < n2; j++)
     {
       for (i = 0; i < n1; i++)
-	p[i] = v[i + n1 * (j + n2 * k)];
+	p[i] = v[ivar + nvar * (i + n1 * (j + n2 * k))];
       chebft_Zeros (p, n1, 0);
       values2[j][k] = chebev (-1, 1, p, n1, A);
     }
@@ -834,7 +834,7 @@ PunctIntPolAtArbitPosition (int ivar, int nvar, int n1,
   A = 2 * tanh (0.5 * X) - 1;
   B = tan (0.5 * R - Piq);
 
-  result = PunctEvalAtArbitPosition (v.d0, A, B, phi, n1, n2, n3);
+  result = PunctEvalAtArbitPosition (v.d0, ivar, A, B, phi, nvar, n1, n2, n3);
 
   Ui = (A - 1) * result;
 

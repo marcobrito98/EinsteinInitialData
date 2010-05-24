@@ -318,7 +318,7 @@ TwoPunctures (CCTK_ARGUMENTS)
 
     /* print out ADM mass, eq.: \Delta M_ADM=2*r*u=4*b*V for A=1,B=0,phi=0 */
     admMass = (*mp + *mm
-               - 4*par_b*PunctEvalAtArbitPosition(v.d0, 1, 0, 0, n1, n2, n3));;
+               - 4*par_b*PunctEvalAtArbitPosition(v.d0, 0, 1, 0, 0, nvar, n1, n2, n3));
     CCTK_VInfo (CCTK_THORNSTRING, "The total ADM mass is %g", (double) admMass);
   }
 
