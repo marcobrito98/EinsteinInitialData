@@ -68,7 +68,7 @@ c@@   */
       CCTK_POINTER, dimension(10) :: in_arrays, out_arrays
       CCTK_INT,     dimension(10), parameter :: type_codes = CCTK_VARIABLE_REAL
 
-      dbh_eps = 1.0d-9
+      dbh_eps = tolerance
 
 c Check if we should create and store conformal factor stuff
 

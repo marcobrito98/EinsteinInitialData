@@ -9,7 +9,7 @@ c
       integer,intent(in) :: im,jm,km
       real*8,intent(inout) :: cc(im,jm,km),cn(im,jm,km),cs(im,jm,km),
      $     ce(im,jm,km),cw(im,jm,km),ct(im,jm,km),cb(im,jm,km)
-      real*8,intent(out) :: eps
+      real*8,intent(in) :: eps
       real*8,intent(out) :: rmax
       real*8 :: u(im,jm,km),rhs(im,jm,km)
 c     Local variable
@@ -88,11 +88,12 @@ c
 c
       integer,intent(in) :: im,jm,km
       integer,intent(in) :: ncyc
-      real*8,intent(out) :: cc(im*jm*km),cn(im*jm*km)
-      real*8,intent(out) :: cs(im*jm*km),ce(im*jm*km)
-      real*8,intent(out) :: cw(im*jm*km),ct(im*jm*km)
-      real*8,intent(out) :: cb(im*jm*km)
-      real*8,intent(out) :: tol,rnorm
+      real*8,intent(in) :: cc(im*jm*km),cn(im*jm*km)
+      real*8,intent(in) :: cs(im*jm*km),ce(im*jm*km)
+      real*8,intent(in) :: cw(im*jm*km),ct(im*jm*km)
+      real*8,intent(in) :: cb(im*jm*km)
+      real*8,intent(in)  :: tol
+      real*8,intent(out) :: rnorm
       integer,intent(out) :: ier
       real*8 x(im*jm*km),r(im*jm*km)
 c     Local variables
@@ -257,11 +258,12 @@ c
       implicit none
 c
       integer,intent(in) :: im,jm,km
-      real*8,intent(out) :: cc(im*jm*km),cn(im*jm*km)
-      real*8,intent(out) :: cs(im*jm*km),ce(im*jm*km)
-      real*8,intent(out) :: cw(im*jm*km),ct(im*jm*km)
-      real*8,intent(out) :: cb(im*jm*km)
-      real*8 :: x(im*jm*km), y(im*jm*km)
+      real*8,intent(in) :: cc(im*jm*km),cn(im*jm*km)
+      real*8,intent(in) :: cs(im*jm*km),ce(im*jm*km)
+      real*8,intent(in) :: cw(im*jm*km),ct(im*jm*km)
+      real*8,intent(in) :: cb(im*jm*km)
+      real*8,intent(in) :: x(im*jm*km)
+      real*8,intent(out) :: y(im*jm*km)
 c     Local variables
       integer :: i, j, k
 *
