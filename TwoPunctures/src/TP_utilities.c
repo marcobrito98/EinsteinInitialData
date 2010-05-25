@@ -124,16 +124,20 @@ d3tensor (long nrl, long nrh, long ncl, long nch, long ndl, long ndh)
   /* slice chunk into rows and columns */
   long width = (nch-ncl+1);
   long depth = (ndh-ndl+1);
+  for(long j = ncl+1 ; j <= nch ; j++) { /* first row of columns */
+    retval[nrl][j] = retval[nrl][j-1] + depth;
+  }
+  assert(retval[nrl][nch]-retval[nrl][ncl] == (nch-ncl)*depth);
   for(long i = nrl+1 ; i <= nrh ; i++) {
     retval[i] = retval[i-1] + width;
-    retval[i][0] = retval[i-1][0] + width*depth;
+    retval[i][ncl] = retval[i-1][ncl] + width*depth; /* first cell in column */
     for(long j = ncl+1 ; j <= nch ; j++) {
       retval[i][j] = retval[i][j-1] + depth;
     }
-    assert(retval[i][nch]-retval[i][ncl] == (ndh-ndl)*depth);
+    assert(retval[i][nch]-retval[i][ncl] == (nch-ncl)*depth);
   }
   assert(retval[nrh]-retval[nrl] == (nrh-nrl)*width);
-  assert(retval[nrh][nch]-retval[nrl][ncl] == (nrh-nrl)*(nch-ncl)*depth);
+  assert(&retval[nrh][nch][ndh]-&retval[nrl][ncl][ndl] == (nrh-nrl+1)*(nch-ncl+1)*(ndh-ndl+1)-1);
 
   return retval;
 }
