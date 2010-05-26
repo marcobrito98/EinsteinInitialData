@@ -9,7 +9,7 @@ c
       integer,intent(in) :: im,jm,km
       real*8,intent(inout) :: cc(im,jm,km),cn(im,jm,km),cs(im,jm,km),
      $     ce(im,jm,km),cw(im,jm,km),ct(im,jm,km),cb(im,jm,km)
-      real*8,intent(out) :: eps
+      real*8,intent(in) :: eps
       real*8,intent(out) :: rmax
       real*8,intent(inout) :: u(im,jm,km),rhs(im,jm,km)
 c     Local variable
