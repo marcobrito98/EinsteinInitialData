@@ -32,11 +32,11 @@ C     Grid parameters.
       ny = cctk_lsh(2)
       nz = cctk_lsh(3)
 
-      dx = cctk_delta_space(1)
-      dy = cctk_delta_space(2)
-      dz = cctk_delta_space(3)
+      dx = CCTK_DELTA_SPACE(1)
+      dy = CCTK_DELTA_SPACE(2)
+      dz = CCTK_DELTA_SPACE(3)
 
-      dt = cctk_delta_time
+      dt = CCTK_DELTA_TIME
 
 C     Lax, or forward in time, step. 
 C     dxA/dt has previously been stored in slicetmp2

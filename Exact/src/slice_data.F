@@ -28,9 +28,9 @@ C     Grid parameters.
       ny = cctk_lsh(2)
       nz = cctk_lsh(3)
 
-      dx = cctk_delta_space(1)
-      dy = cctk_delta_space(2)
-      dz = cctk_delta_space(3)
+      dx = CCTK_DELTA_SPACE(1)
+      dy = CCTK_DELTA_SPACE(2)
+      dz = CCTK_DELTA_SPACE(3)
 
 C     Sum over interior points on the slice.
 
