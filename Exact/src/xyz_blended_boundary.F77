@@ -102,7 +102,7 @@ C     (also to tell the models about the conformal_state)
                   exact_psiy = 0.0D0
                   exact_psiz = 0.0D0
                   exact_psixx = 0.0D0
-                  exact_psixx = 0.0D0
+                  exact_psiyy = 0.0D0
                   exact_psizz = 0.0D0
                   exact_psixy = 0.0D0
                   exact_psiyz = 0.0D0
