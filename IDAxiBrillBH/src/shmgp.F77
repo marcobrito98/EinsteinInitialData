@@ -314,7 +314,7 @@ c     I notice that this call does not correspond to the subroutine
 c     definition below.  The call passes three arguments too many.
 c     Maybe the three arguments pu(nic),pd(nic),pc(nic) should be
 c     omitted?
-      call CCTK_WARN (CCTK_WARN_ABORT, "Trying to find out whether this line is reached")
+c      call CCTK_WARN (CCTK_WARN_ABORT, "Trying to find out whether this line is reached")
 c    6 call ursrhs(f(n5),f(n5c),pu(nic),pd(nic),pc(nic),ru(nic),
 c     + rd(nic),rc(nic),im,jm,jmc,m,k+1,jr,irc)
     6 call ursrhs(f(n5),f(n5c),ru(nic),rd(nic),rc(nic),
