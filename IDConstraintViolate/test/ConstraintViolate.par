@@ -9,6 +9,8 @@ driver::global_nsize       = 10
 
 cactus::cctk_itlast        = 10
 
+IO::out_fileinfo         = "none"
+IO::parfile_write        = "no"
 IOBasic::outInfo_vars      = "admbase::alp admbase::gxx"
 IOBasic::outInfo_every     = 1
 IOASCII::out1D_vars        = "admbase::alp admbase::gxx admconstraints::ham admconstraints::momentum"
@@ -29,7 +31,7 @@ admbase::evolution_method        = "ADM"
 admbase::lapse_evolution_method  = "1+log"
 admbase::initial_lapse	         = "one"
 
-adm::bound                       = "radiative"      
+adm::bound                       = "static"      
 adm::method                      = "stagleap"
 
 #------------------------------------------------------------------------------
