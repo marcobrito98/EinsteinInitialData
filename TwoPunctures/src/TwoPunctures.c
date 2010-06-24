@@ -613,16 +613,6 @@ TwoPunctures (CCTK_ARGUMENTS)
     }   /* for j */
   }     /* for k */
 
-  for (int k = imin[2]; k < imax[2]; ++k)
-    for (int j = imin[1]; j < imax[1]; ++j)
-      for (int i = imin[0]; i < imax[0]; ++i)
-        {
-          int ijk = CCTK_GFINDEX3D(cctkGH, i, j, k);
-          x[ijk] += center_offset[0];
-          y[ijk] += center_offset[1];
-          z[ijk] += center_offset[2];
-        }
-
   if (use_sources && rescale_sources)
   {
     Rescale_Sources(cctkGH,
