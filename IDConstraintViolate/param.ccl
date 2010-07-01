@@ -7,19 +7,19 @@ uses KEYWORD metric_type
 
 extends KEYWORD initial_data
 {
-  "constraint violating gaussian" :: "Constraint violating gaussian"
+  "constraint violating gaussian" :: "Constraint violating Gaussian"
 }
 
 private:
 
-REAL radius "The radial position of the gaussian waves"
+REAL radius "The radial position of the Gaussian wave"
 {
- 0:* :: "Positive"
+  0:* :: "Positive"
 } 0.0
 
-REAL sigma "The sigma for the gaussian wave"
+REAL sigma "The sigma for the Gaussian wave"
 {
- 0:* :: "Positive"
+  (0:* :: "Positive"
 } 0.1
 
 REAL amplitude "The amplitude of the waves"
