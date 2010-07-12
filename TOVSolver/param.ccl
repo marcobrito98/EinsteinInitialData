@@ -89,11 +89,11 @@ BOOLEAN TOV_Fast_Interpolation "Use faster interpolation algorithm? Default is y
 {
 } "yes"
 
-BOOLEAN TOV_Clear_Initial_Data "Clear initial data? Default is yes."
+BOOLEAN TOV_Clear_Initial_Data "Clear initial data (spacetime)? Default is yes."
 {
 } "yes"
 
-BOOLEAN TOV_Use_Old_Initial_Data "Take old initial data into account? Default is no."
+BOOLEAN TOV_Use_Old_Initial_Data "Take old initial data into account (spacetime)? Default is no."
 {
 } "no"
 
