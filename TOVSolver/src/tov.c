@@ -604,22 +604,22 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
         }
       }
     }
-
-    if (!TOV_Use_Old_Matter_Initial_Data)
-    {
-      TOV_C_fill(rho,        LSH_MAX_I+1, 0.0);
-      TOV_C_fill(dens,       LSH_MAX_I+1, 0.0);
-      TOV_C_fill(eps,        LSH_MAX_I+1, 0.0);
-      TOV_C_fill(press,      LSH_MAX_I+1, 0.0);
-      TOV_C_fill(tau,        LSH_MAX_I+1, 0.0);
-      TOV_C_fill(w_lorentz,  LSH_MAX_I+1, 0.0);
-      TOV_C_fill(sx,         LSH_MAX_I+1, 0.0);
-      TOV_C_fill(sy,         LSH_MAX_I+1, 0.0);
-      TOV_C_fill(sz,         LSH_MAX_I+1, 0.0);
-      TOV_C_fill(velx,       LSH_MAX_I+1, 0.0);
-      TOV_C_fill(vely,       LSH_MAX_I+1, 0.0);
-      TOV_C_fill(velz,       LSH_MAX_I+1, 0.0);
-    }
+  }
+  if (!TOV_Use_Old_Matter_Initial_Data)
+  {
+    CCTK_INFO("Not using old matter initial data");
+    TOV_C_fill(rho,        LSH_MAX_I+1, 0.0);
+    TOV_C_fill(dens,       LSH_MAX_I+1, 0.0);
+    TOV_C_fill(eps,        LSH_MAX_I+1, 0.0);
+    TOV_C_fill(press,      LSH_MAX_I+1, 0.0);
+    TOV_C_fill(tau,        LSH_MAX_I+1, 0.0);
+    TOV_C_fill(w_lorentz,  LSH_MAX_I+1, 0.0);
+    TOV_C_fill(sx,         LSH_MAX_I+1, 0.0);
+    TOV_C_fill(sy,         LSH_MAX_I+1, 0.0);
+    TOV_C_fill(sz,         LSH_MAX_I+1, 0.0);
+    TOV_C_fill(velx,       LSH_MAX_I+1, 0.0);
+    TOV_C_fill(vely,       LSH_MAX_I+1, 0.0);
+    TOV_C_fill(velz,       LSH_MAX_I+1, 0.0);
   }
   /* use the fast interpolation? only useful for testing this */
   if (TOV_Fast_Interpolation == 0)
