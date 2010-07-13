@@ -308,11 +308,11 @@ void newton_raphson(CCTK_REAL *vx, CCTK_REAL *vy, CCTK_REAL *vz,
         if (count > 100)
         {
           CCTK_VWarn(1, __LINE__, __FILE__, CCTK_THORNSTRING, \
-                     "Failed to converge IVP rescaling\nat (%.3g %.3g %.3g)\n"\
-                     " orig_rho:%g rho:%g, v^2=%g, rel_diff=%g", \
+                     "Failed to converge IVP rescaling, trying slow bisection method\n"\
+                     "  at (%.3g %.3g %.3g)\n"\
+                     "  orig_rho:%g rho:%g, v^2=%g, rel_diff=%g", \
                      x, y, z, rho_orig, *rhonew, *v_2,
                      fabs(*rhonew-*rhoold)/fabs(*rhonew));
-          CCTK_WARN(1, "trying slow bisection method");
           bisection(vx,vy,vz,rhoold,rhonew,w_lorentz_2,v_2,
                     Gamma, K,
                     source, mom_source_x, mom_source_y, mom_source_z,
