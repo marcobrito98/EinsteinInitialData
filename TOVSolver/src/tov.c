@@ -149,7 +149,7 @@ void TOV_C_Source_RHS(CCTK_REAL r, CCTK_REAL K, CCTK_REAL Gamma,
 
   r_minus_two_m = r - 2.0 * m;
 
-  if ((r==0.0) && (m==0.0))
+  if ((r<=0.0) && (m<=0.0))
   {
     source_data[1] = 0.0;
     source_data[2] = 0.0;
@@ -219,7 +219,7 @@ void TOV_C_Integrate_RHS(CCTK_ARGUMENTS)
     star_i = star * TOV_Num_Radial;
 
     /* check for parameters */
-    if ((TOV_Rho_Central[star]==0.0) && (GRHydro_rho_central>0.0))
+    if ((TOV_Rho_Central[star]<=0.0) && (GRHydro_rho_central>0.0))
       rho_central=GRHydro_rho_central;
     else
       rho_central=TOV_Rho_Central[star];
@@ -283,7 +283,7 @@ void TOV_C_Integrate_RHS(CCTK_ARGUMENTS)
       old_data[0] = TOV_press_1d[i];
       old_data[1] = TOV_m_1d[i];
       old_data[2] = TOV_phi_1d[i];
-      if (TOV_rbar_1d[i]==TOV_r_1d[i])
+      if (fabs(TOV_rbar_1d[i] - TOV_r_1d[i]) < LOCAL_TINY)
         old_data[3] = 0.0;
       else
         old_data[3] = log(TOV_rbar_1d[i] / TOV_r_1d[i]);
@@ -377,7 +377,7 @@ void TOV_C_Integrate_RHS(CCTK_ARGUMENTS)
   CCTK_VInfo(CCTK_THORNSTRING, "Information about the TOVs used:");
   CCTK_VInfo("", "TOV    radius    mass  bary_mass mass(g) cent.rho rho(cgi)        K   K(cgi)    Gamma");
   for (i=0; i<TOV_Num_TOVs; i++)
-    if (TOV_Gamma[i]==2.0)
+    if (fabs(TOV_Gamma[i] - 2.0) < LOCAL_TINY)
       CCTK_VInfo("","  %d  %8g %8g %8g %8.3g %8g %8.3g %8g %8.3g %8g",
                  i+1, TOV_R_Surface[i],
                  TOV_m_1d[(i+1)*TOV_Num_Radial-1],

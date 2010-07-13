@@ -367,10 +367,10 @@ CCTK_INT TOV_Rescale_Sources(
             *vel0_p_p, *vel1_p_p, *vel2_p_p, *scon0_p_p, *scon1_p_p, *scon2_p_p;
   CCTK_REAL *u, *source, *mom_source[3];
   CCTK_REAL psip, my_psi4, sqrt_det, vx, vy, vz, v_2,
-            w_lorentz_2, d_w_lorentz_2, D_h_w;
+            w_lorentz_2, D_h_w;
   CCTK_REAL vlowx, vlowy, vlowz;
-  CCTK_INT  i, type;
-  CCTK_REAL rhoold, rhonew, f, df;
+  CCTK_INT  type;
+  CCTK_REAL rhoold, rhonew;
   int i3D;
   static int debug = 1;
   FILE *debugfile = NULL;
@@ -440,7 +440,6 @@ CCTK_INT TOV_Rescale_Sources(
   {
     if (source[i3D]>0.0)
     {
-      int count=0;
       if (debug && (fabs(z[i3D])<1.e-15))
       {
         fprintf(debugfile,
@@ -464,8 +463,10 @@ CCTK_INT TOV_Rescale_Sources(
           rho[i3D] = 1.e-10;
       rhoold = rhonew = rho[i3D];
 #ifdef OLD_NR
+      int count=0;
       do
       {
+        CCTK_REAL f, df;
         count++;
         vx = mom_source[0][i3D]/my_psi4/
              (source[i3D]/my_psi4/my_psi4+TOV_K[0] * pow(rhonew, TOV_Gamma[0]));
@@ -498,7 +499,7 @@ CCTK_INT TOV_Rescale_Sources(
             TOV_K[0] * TOV_Gamma[0] * pow(rhonew, TOV_Gamma[0]-1.);
         */
         /* d_w_lorentz_2/drhonew */
-        d_w_lorentz_2 =
+        CCTK_REAL d_w_lorentz_2 =
              -2 * w_lorentz_2*w_lorentz_2 *
              v_2  * TOV_K[0]*TOV_Gamma[0]*pow(rhonew, TOV_Gamma[0]-1) /
              (source[i3D]/my_psi4/my_psi4 + TOV_K[0]*pow(rhonew, TOV_Gamma[0]));
@@ -647,8 +648,6 @@ void TOV_write_1D_datafile(CCTK_ARGUMENTS)
 
 void TOVSolverC_export_local_variables(CCTK_REAL **exported_TOV_press_1d, CCTK_REAL **exported_TOV_m_1d, CCTK_REAL **exported_TOV_phi_1d, CCTK_REAL **exported_TOV_rbar_1d, CCTK_REAL **exported_TOV_r_1d)
 {
-  int i;
-
   *exported_TOV_press_1d = TOV_press_1d;
   *exported_TOV_m_1d     = TOV_m_1d;
   *exported_TOV_phi_1d   = TOV_phi_1d;
