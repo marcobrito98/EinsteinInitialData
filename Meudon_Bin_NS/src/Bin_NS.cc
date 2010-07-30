@@ -11,7 +11,6 @@
 using namespace std;
 
 
-
 static void set_dt_from_domega (CCTK_ARGUMENTS,
                                 CCTK_REAL const* const var,
                                 CCTK_REAL      * const dtvar,
@@ -113,9 +112,9 @@ void ID_Bin_NS_initialise (CCTK_ARGUMENTS)
     
     alp[i] = bin_ns.nnn[i];
     
-    betax[i] = bin_ns.beta_x[i];
-    betay[i] = bin_ns.beta_y[i];
-    betaz[i] = bin_ns.beta_z[i];
+    betax[i] = -bin_ns.beta_x[i];
+    betay[i] = -bin_ns.beta_y[i];
+    betaz[i] = -bin_ns.beta_z[i];
     
     CCTK_REAL g[3][3];
     g[0][0] = bin_ns.g_xx[i];
@@ -158,24 +157,29 @@ void ID_Bin_NS_initialise (CCTK_ARGUMENTS)
     gyz[i] = g[1][2];
     gzz[i] = g[2][2];
     
-    kxx[i] = k[0][0];
-    kxy[i] = k[0][1];
-    kxz[i] = k[0][2];
-    kyy[i] = k[1][1];
-    kyz[i] = k[1][2];
-    kzz[i] = k[2][2];
+    kxx[i] = ku[0][0] * coord_unit;
+    kxy[i] = ku[0][1] * coord_unit;
+    kxz[i] = ku[0][2] * coord_unit;
+    kyy[i] = ku[1][1] * coord_unit;
+    kyz[i] = ku[1][2] * coord_unit;
+    kzz[i] = ku[2][2] * coord_unit;
     
     rho[i] = bin_ns.nbar[i] / rho_unit;
-    
+
     eps[i] = rho[i] * bin_ns.ener_spec[i] / ener_unit;
     
     vel[i          ] = bin_ns.u_euler_x[i] / vel_unit;
     vel[i+  npoints] = bin_ns.u_euler_y[i] / vel_unit;
     vel[i+2*npoints] = bin_ns.u_euler_z[i] / vel_unit;
-    
+
+    if (rho[i] < 1.e-20) {
+      rho[i          ] = 1.e-20;
+      vel[i          ] = 0.0;
+      vel[i+  npoints] = 0.0;
+      vel[i+2*npoints] = 0.0;
+    }
+
   } // for i
-  
-  
   
   CCTK_INFO ("Calculating time derivatives of lapse and shift");
   {
