@@ -1,6 +1,6 @@
-# Interface definition for thorn ID_Bin_NS
+# Interface definition for thorn Meudon_Bin_NS
 
-IMPLEMENTS: ID_Bin_NS
+IMPLEMENTS: Meudon_Bin_NS
 
 INHERITS: grid SummationByParts ADMBase HydroBase
 

@@ -1,3 +1,6 @@
+/* (c) 2009 Erik Schnetter
+ * (c) 2010 Frank Loeffler */
+
 #include <cstdio>
 #include <cassert>
 #include <vector>
@@ -7,9 +10,9 @@
 #include <cctk_Parameters.h>
 
 #include <bin_ns.h>
+#include <unites.h>
 
 using namespace std;
-
 
 static void set_dt_from_domega (CCTK_ARGUMENTS,
                                 CCTK_REAL const* const var,
@@ -17,13 +20,13 @@ static void set_dt_from_domega (CCTK_ARGUMENTS,
                                 CCTK_REAL const& omega)
 {
   DECLARE_CCTK_ARGUMENTS;
-  
+
   int const npoints = cctk_lsh[0] * cctk_lsh[1] * cctk_lsh[2];
   vector<CCTK_REAL> dxvar(npoints), dyvar(npoints);
-  
+
   Diff_gv (cctkGH, 0, var, &dxvar[0], -1);
   Diff_gv (cctkGH, 1, var, &dyvar[0], -1);
-  
+
 #pragma omp parallel for
   for (int i=0; i<npoints; ++i) {
     CCTK_REAL const ephix = +y[i];
@@ -33,59 +36,52 @@ static void set_dt_from_domega (CCTK_ARGUMENTS,
   }
 }
 
-
-
 extern "C"
-void ID_Bin_NS_initialise (CCTK_ARGUMENTS)
+void Meudon_Bin_NS_initialise (CCTK_ARGUMENTS)
 {
   DECLARE_CCTK_ARGUMENTS;
   DECLARE_CCTK_PARAMETERS;
-  
+
   CCTK_INFO ("Setting up LORENE Bin_NS initial data");
-  
+
   // Meudon data are distributed in SI units (MKSA).  Here are some
   // conversion factors.
-  
-  // Defined constants
-  CCTK_REAL const c_light = 299792458.0; // speed of light [m/s]
-  
-  // Constants of nature (IAU, CODATA):
-  CCTK_REAL const G_grav = 6.67428e-11; // gravitational constant [m^3/kg/s^2]
-  CCTK_REAL const M_sun  = 1.98892e+30; // solar mass [kg]
-  
+  // Be aware: these are the constants Lorene uses. They do differ from other
+  // conventions, but they gave the best results in some tests.
+
+  CCTK_REAL const c_light  = Unites::c_si;      // speed of light [m/s]
+  CCTK_REAL const nuc_dens = Unites::rhonuc_si; // Nuclear density as used in Lorene units [kg/m^3]
+  CCTK_REAL const G_grav   = Unites::g_si;      // gravitational constant [m^3/kg/s^2]
+  CCTK_REAL const M_sun    = Unites::msol_si;   // solar mass [kg]
+
   // Cactus units in terms of SI units:
   // (These are derived from M = M_sun, c = G = 1, and using 1/M_sun
   // for the magnetic field)
   CCTK_REAL const cactusM = M_sun;
   CCTK_REAL const cactusL = cactusM * G_grav / pow(c_light,2);
   CCTK_REAL const cactusT = cactusL / c_light;
-  
+
   // Other quantities in terms of Cactus units
-  CCTK_REAL const coord_unit = cactusL / 1.0e+3;         // from km
+  CCTK_REAL const coord_unit = cactusL / 1.0e+3;         // from km (~1.477)
   CCTK_REAL const rho_unit   = cactusM / pow(cactusL,3); // from kg/m^3
-  CCTK_REAL const ener_unit  = pow(cactusL,2);           // from c^2
-  CCTK_REAL const vel_unit   = cactusL / cactusT / c_light; // from c
-  
-  
-  
+
+
   CCTK_INFO ("Setting up coordinates");
-  
+
   int const npoints = cctk_lsh[0] * cctk_lsh[1] * cctk_lsh[2];
   vector<double> xx(npoints), yy(npoints), zz(npoints);
-  
+
 #pragma omp parallel for
   for (int i=0; i<npoints; ++i) {
     xx[i] = x[i] * coord_unit;
     yy[i] = y[i] * coord_unit;
     zz[i] = z[i] * coord_unit;
   }
-  
-  
-  
+
   CCTK_VInfo (CCTK_THORNSTRING, "Reading from file \"%s\"", filename);
-  
+
   Bin_NS bin_ns (npoints, &xx[0], &yy[0], &zz[0], filename);
-  
+
   CCTK_VInfo (CCTK_THORNSTRING, "omega [rad/s]:       %g", bin_ns.omega);
   CCTK_VInfo (CCTK_THORNSTRING, "dist [km]:           %g", bin_ns.dist);
   CCTK_VInfo (CCTK_THORNSTRING, "dist_mass [km]:      %g", bin_ns.dist_mass);
@@ -101,113 +97,104 @@ void ID_Bin_NS_initialise (CCTK_ARGUMENTS)
   CCTK_VInfo (CCTK_THORNSTRING, "rad2_y [km]:         %g", bin_ns.rad2_y);
   CCTK_VInfo (CCTK_THORNSTRING, "rad2_z [km]:         %g", bin_ns.rad2_z);
   CCTK_VInfo (CCTK_THORNSTRING, "rad2_x_opp [km]:     %g", bin_ns.rad2_x_opp);
+  double K = bin_ns.kappa_poly1 * pow(c_light, 6.0) /
+             ( pow(G_grav, 3.0) * M_sun * M_sun *
+               pow(nuc_dens, bin_ns.gamma_poly1-1.) );
+  CCTK_VInfo (CCTK_THORNSTRING, "K [ET unit]:         %.15g", K);
+
   assert (bin_ns.np == npoints);
-  
-  
-  
+
   CCTK_INFO ("Filling in Cactus grid points");
-  
+
 #pragma omp parallel for
   for (int i=0; i<npoints; ++i) {
-    
-    alp[i] = bin_ns.nnn[i];
-    
-    betax[i] = -bin_ns.beta_x[i];
-    betay[i] = -bin_ns.beta_y[i];
-    betaz[i] = -bin_ns.beta_z[i];
-    
-    CCTK_REAL g[3][3];
-    g[0][0] = bin_ns.g_xx[i];
-    g[0][1] = bin_ns.g_xy[i];
-    g[0][2] = bin_ns.g_xz[i];
-    g[1][1] = bin_ns.g_yy[i];
-    g[1][2] = bin_ns.g_yz[i];
-    g[2][2] = bin_ns.g_zz[i];
-    g[1][0] = g[0][1];
-    g[2][0] = g[0][2];
-    g[2][1] = g[1][2];
-    
-    CCTK_REAL ku[3][3];
-    ku[0][0] = bin_ns.k_xx[i];
-    ku[0][1] = bin_ns.k_xy[i];
-    ku[0][2] = bin_ns.k_xz[i];
-    ku[1][1] = bin_ns.k_yy[i];
-    ku[1][2] = bin_ns.k_yz[i];
-    ku[2][2] = bin_ns.k_zz[i];
-    ku[1][0] = ku[0][1];
-    ku[2][0] = ku[0][2];
-    ku[2][1] = ku[1][2];
-    
-    CCTK_REAL k[3][3];
-    for (int a=0; a<3; ++a) {
-      for (int b=0; b<3; ++b) {
-        k[a][b] = 0.0;
-        for (int c=0; c<3; ++c) {
-          for (int d=0; d<3; ++d) {
-            k[a][b] += g[a][c] * g[b][d] * ku[c][d];
-          }
-        }
-      }
+
+    if (CCTK_EQUALS(initial_lapse, "Meudon_Bin_NS")) { 
+      alp[i] = bin_ns.nnn[i];
     }
-    
-    gxx[i] = g[0][0];
-    gxy[i] = g[0][1];
-    gxz[i] = g[0][2];
-    gyy[i] = g[1][1];
-    gyz[i] = g[1][2];
-    gzz[i] = g[2][2];
-    
-    kxx[i] = ku[0][0] * coord_unit;
-    kxy[i] = ku[0][1] * coord_unit;
-    kxz[i] = ku[0][2] * coord_unit;
-    kyy[i] = ku[1][1] * coord_unit;
-    kyz[i] = ku[1][2] * coord_unit;
-    kzz[i] = ku[2][2] * coord_unit;
-    
-    rho[i] = bin_ns.nbar[i] / rho_unit;
 
-    eps[i] = rho[i] * bin_ns.ener_spec[i] / ener_unit;
-    
-    vel[i          ] = bin_ns.u_euler_x[i] / vel_unit;
-    vel[i+  npoints] = bin_ns.u_euler_y[i] / vel_unit;
-    vel[i+2*npoints] = bin_ns.u_euler_z[i] / vel_unit;
+    if (CCTK_EQUALS(initial_shift, "Meudon_Bin_NS")) { 
+      betax[i] = -bin_ns.beta_x[i];
+      betay[i] = -bin_ns.beta_y[i];
+      betaz[i] = -bin_ns.beta_z[i];
+    }
 
-    if (rho[i] < 1.e-20) {
-      rho[i          ] = 1.e-20;
-      vel[i          ] = 0.0;
-      vel[i+  npoints] = 0.0;
-      vel[i+2*npoints] = 0.0;
+    if (CCTK_EQUALS(initial_data, "Meudon_Bin_NS")) {
+      gxx[i] = bin_ns.g_xx[i];
+      gxy[i] = bin_ns.g_xy[i];
+      gxz[i] = bin_ns.g_xz[i];
+      gyy[i] = bin_ns.g_yy[i];
+      gyz[i] = bin_ns.g_yz[i];
+      gzz[i] = bin_ns.g_zz[i];
+
+      kxx[i] = bin_ns.k_xx[i] * coord_unit;
+      kxy[i] = bin_ns.k_xy[i] * coord_unit;
+      kxz[i] = bin_ns.k_xz[i] * coord_unit;
+      kyy[i] = bin_ns.k_yy[i] * coord_unit;
+      kyz[i] = bin_ns.k_yz[i] * coord_unit;
+      kzz[i] = bin_ns.k_zz[i] * coord_unit;
+    }
+
+    if (CCTK_EQUALS(initial_data, "Meudon_Bin_NS")) {
+      rho[i] = bin_ns.nbar[i] / rho_unit;
+      eps[i] = bin_ns.ener_spec[i];
+      // The following would recompute eps using the polytopic EOS, but
+      // setting eps directly seems to work as well
+      // eps[i] = K * pow(rho[i], bin_ns.gamma_poly1-1.) / (bin_ns.gamma_poly1-1.);
+
+      // TODO: we should really use some EOS calls for the pressure, but for the
+      //       moment this works with polytropes at least
+      press[i] = K * pow(rho[i], bin_ns.gamma_poly1);
+
+      vel[i          ] = bin_ns.u_euler_x[i];
+      vel[i+  npoints] = bin_ns.u_euler_y[i];
+      vel[i+2*npoints] = bin_ns.u_euler_z[i];
+
+      // Especially the velocity is set to strange values outside of the
+      // matter region, so take care of this in the following way
+      if (rho[i] < 1.e-20) {
+        rho[i          ] = 1.e-20;
+        vel[i          ] = 0.0;
+        vel[i+  npoints] = 0.0;
+        vel[i+2*npoints] = 0.0;
+        eps[i          ] = K * pow(rho[i], bin_ns.gamma_poly1-1.) / (bin_ns.gamma_poly1-1.);
+        press[i        ] = K * pow(rho[i], bin_ns.gamma_poly1);
+      }
     }
 
   } // for i
-  
-  CCTK_INFO ("Calculating time derivatives of lapse and shift");
+
   {
     // Angular velocity
     CCTK_REAL const omega = bin_ns.omega * cactusT;
-    
+
     // These initial data assume a helical Killing vector field
-    
-    if (CCTK_EQUALS (initial_dtlapse, "ID_Bin_NS")) {
-      set_dt_from_domega (CCTK_PASS_CTOC, alp, dtalp, omega);
-    } else if (CCTK_EQUALS (initial_dtlapse, "none")) {
-      // do nothing
-    } else {
-      CCTK_WARN (CCTK_WARN_ABORT, "internal error");
+
+    if (CCTK_EQUALS(initial_lapse, "Meudon_Bin_NS")) { 
+      if (CCTK_EQUALS (initial_dtlapse, "Meudon_Bin_NS")) {
+        CCTK_INFO ("Calculating time derivatives of lapse");
+        set_dt_from_domega (CCTK_PASS_CTOC, alp, dtalp, omega);
+      } else if (CCTK_EQUALS (initial_dtlapse, "none")) {
+        // do nothing
+      } else {
+        CCTK_WARN (CCTK_WARN_ABORT, "internal error");
+      }
     }
-    
-    if (CCTK_EQUALS (initial_dtshift, "ID_Bin_NS")) {
-      set_dt_from_domega (CCTK_PASS_CTOC, betax, dtbetax, omega);
-      set_dt_from_domega (CCTK_PASS_CTOC, betay, dtbetay, omega);
-      set_dt_from_domega (CCTK_PASS_CTOC, betaz, dtbetaz, omega);
-    } else if (CCTK_EQUALS (initial_dtshift, "none")) {
-      // do nothing
-    } else {
-      CCTK_WARN (CCTK_WARN_ABORT, "internal error");
+
+    if (CCTK_EQUALS(initial_shift, "Meudon_Bin_NS")) { 
+      if (CCTK_EQUALS (initial_dtshift, "Meudon_Bin_NS")) {
+        CCTK_INFO ("Calculating time derivatives of shift");
+        set_dt_from_domega (CCTK_PASS_CTOC, betax, dtbetax, omega);
+        set_dt_from_domega (CCTK_PASS_CTOC, betay, dtbetay, omega);
+        set_dt_from_domega (CCTK_PASS_CTOC, betaz, dtbetaz, omega);
+      } else if (CCTK_EQUALS (initial_dtshift, "none")) {
+        // do nothing
+      } else {
+        CCTK_WARN (CCTK_WARN_ABORT, "internal error");
+      }
     }
   }
-  
-  
-  
+
   CCTK_INFO ("Done.");
 }
+

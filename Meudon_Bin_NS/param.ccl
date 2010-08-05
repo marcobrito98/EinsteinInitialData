@@ -1,30 +1,30 @@
-# Parameter definitions for thorn ID_Bin_NS
+# Parameter definitions for thorn Meudon_Bin_NS
 
 SHARES: ADMBase
 
 EXTENDS KEYWORD initial_data
 {
-  "ID_Bin_NS" :: ""
+  "Meudon_Bin_NS" :: ""
 }
 
 EXTENDS KEYWORD initial_lapse
 {
-  "ID_Bin_NS" :: ""
+  "Meudon_Bin_NS" :: ""
 }
 
 EXTENDS KEYWORD initial_shift
 {
-  "ID_Bin_NS" :: ""
+  "Meudon_Bin_NS" :: ""
 }
 
 EXTENDS KEYWORD initial_dtlapse
 {
-  "ID_Bin_NS" :: ""
+  "Meudon_Bin_NS" :: ""
 }
 
 EXTENDS KEYWORD initial_dtshift
 {
-  "ID_Bin_NS" :: ""
+  "Meudon_Bin_NS" :: ""
 }
 
 
@@ -33,7 +33,7 @@ SHARES: HydroBase
 
 EXTENDS KEYWORD initial_hydro
 {
-  "ID_Bin_NS" :: ""
+  "Meudon_Bin_NS" :: ""
 }
 
 

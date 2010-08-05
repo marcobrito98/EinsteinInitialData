@@ -1,6 +1,7 @@
-Cactus Code Thorn ID_Bin_NS
-Author(s)    : Erik Schnetter <schnetter@cct.lsu.edu>
-Maintainer(s): Erik Schnetter <schnetter@cct.lsu.edu>
+Cactus Code Thorn Meudon_Bin_NS
+Author(s)    : Erik Schnetter
+               Frank Löffler
+Maintainer(s): Einstein Toolkit Maintainers
 Licence      : GPL
 --------------------------------------------------------------------------
 
@@ -8,5 +9,5 @@ Licence      : GPL
 
 Import LORENE Bin_NS binary neutron star initial data.
 
-This thorn is one of three closely related thorns ID_Bin_BH,
-ID_Bin_NS, and ID_Mag_NS which all import LORENE initial data.
+This thorn is one of three closely related thorns Meudon_Bin_BH,
+Meudon_Bin_NS, and Meudon_Mag_NS which all import LORENE initial data.
