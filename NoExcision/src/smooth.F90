@@ -42,7 +42,7 @@ subroutine NoExcision_Smooth (CCTK_ARGUMENTS)
              &           ((z - cz) / radz)**2)
         where (mask <= 0)
            mask = 0             ! outside
-        else where (mask >= smoothing_zone_width(n))
+        elsewhere (mask >= smoothing_zone_width(n))
            mask = 1             ! far inside
         elsewhere
            mask = mask / smoothing_zone_width(n) ! a bit inside
