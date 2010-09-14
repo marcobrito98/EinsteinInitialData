@@ -85,8 +85,7 @@ CCTK_INT TOV_Set_Rho_ADM(CCTK_POINTER_TO_CONST cctkGH,
                                &(TOV_press_1d[star_i]), &(TOV_phi_1d[star_i]),
                                &(TOV_rbar_1d[star_i]),  &(TOV_r_1d[star_i]),
                                &r_to_star, TOV_Surface[star],
-                               &press, &phi, &r,
-                               0, 1, NULL);
+                               &press, &phi, &r);
     press = (press > 0.0) ? press : 0.0;
     rho = pow(press/TOV_K[star], 1.0/TOV_Gamma[star]);
     eps = (rho > 0.0) ? press/(TOV_Gamma[star] - 1.0) / rho : 0.0;
@@ -156,8 +155,7 @@ CCTK_INT TOV_Set_Momentum_Source(
                                &(TOV_press_1d[star_i]), &(TOV_phi_1d[star_i]),
                                &(TOV_rbar_1d[star_i]),  &(TOV_r_1d[star_i]),
                                &r_to_star, TOV_Surface[star],
-                               &press, &phi, &r,
-                               0, 1, NULL);
+                               &press, &phi, &r);
     rho = pow(press/TOV_K[star], 1.0/TOV_Gamma[star]);
     gxx = r / (r_to_star + 1.0e-30) * r / (r_to_star + 1.0e-30);
     psip = pow(gxx, TOV_Momentum_Psi_Power/4.);
@@ -229,8 +227,7 @@ CCTK_INT TOV_Set_Initial_Guess_for_u(
                                &(TOV_press_1d[star_i]), &(TOV_phi_1d[star_i]),
                                &(TOV_rbar_1d[star_i]),  &(TOV_r_1d[star_i]),
                                &r_to_star, TOV_Surface[star],
-                               &press, &phi, &r,
-                               0, 1, NULL);
+                               &press, &phi, &r);
     rho = pow(press/TOV_K[star], 1.0/TOV_Gamma[star]);
     if (rho>0.0)
       eps = press/(TOV_Gamma[star] - 1.0) / rho;
