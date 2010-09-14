@@ -84,9 +84,7 @@ void TOV_C_fill(CCTK_REAL *var, CCTK_INT i, CCTK_REAL r)
 
 void TOV_Copy(CCTK_INT size, CCTK_REAL *var_p, CCTK_REAL *var)
 {
-    for(; size; )
-    {
-        --size;
-        var_p[size] = var[size];
-    }
+#pragma omp parallel for
+    for(int i=0; i<size; i++)
+        var_p[i] = var[i];
 }

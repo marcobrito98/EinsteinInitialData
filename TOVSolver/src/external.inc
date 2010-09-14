@@ -50,10 +50,6 @@ CCTK_INT TOV_Set_Rho_ADM(CCTK_POINTER_TO_CONST cctkGH,
                          const CCTK_REAL *z )
 {
   DECLARE_CCTK_PARAMETERS
-  CCTK_REAL r_to_star, press, phi, r;
-  CCTK_REAL rho, eps, gxx, w_lorentz_2;
-  CCTK_INT  star_i=0, star=0;
-  CCTK_INT  i;
 
   assert(TOV_Surface!=0);
   assert(TOV_R_Surface!=0);
@@ -69,8 +65,12 @@ CCTK_INT TOV_Set_Rho_ADM(CCTK_POINTER_TO_CONST cctkGH,
   /* TOV_debug_input_points(size,x,y,z); */
   /* loop over all points we got */
 
-  for (i=0; i<size; i++)
+  #pragma omp parallel for
+  for (CCTK_INT i=0; i<size; i++)
   {
+    CCTK_REAL r_to_star, press, phi, r;
+    CCTK_REAL rho, eps, gxx, w_lorentz_2;
+    CCTK_INT  star_i=0, star=0;
     /* calculate the distance to the star */
     star=get_nearest_star(x,y,z,i);
     star_i = star * TOV_Num_Radial;
@@ -165,8 +165,7 @@ CCTK_INT TOV_Set_Momentum_Source(
     w_lorentz_2 = 1./(1. - gxx*TOV_Velocity_x[star]*TOV_Velocity_x[star]
                          - gxx*TOV_Velocity_y[star]*TOV_Velocity_y[star]
                          - gxx*TOV_Velocity_z[star]*TOV_Velocity_z[star]);
-    rho_eps = w_lorentz_2 * rho +
-              w_lorentz_2*TOV_Gamma[star]/(TOV_Gamma[star]-1.) * press;
+    rho_eps = w_lorentz_2 * (rho + TOV_Gamma[star]/(TOV_Gamma[star]-1.) * press);
     switch(dir)
     {
       case 0: source[i]=psip*rho_eps*gxx*TOV_Velocity_x[star]; break;
@@ -365,7 +364,7 @@ CCTK_INT TOV_Rescale_Sources(
             *vel1_p, *vel2_p, *scon0_p, *scon1_p, *scon2_p;
   CCTK_REAL *rho_p_p, *press_p_p, *eps_p_p, *dens_p_p, *tau_p_p, *w_lorentz_p_p,
             *vel0_p_p, *vel1_p_p, *vel2_p_p, *scon0_p_p, *scon1_p_p, *scon2_p_p;
-  CCTK_REAL *u, *source, *mom_source[3];
+  CCTK_REAL *source, *mom_source[3];
   CCTK_REAL psip, my_psi4, sqrt_det, vx, vy, vz, v_2,
             w_lorentz_2, D_h_w;
   CCTK_REAL vlowx, vlowy, vlowz;
@@ -417,10 +416,6 @@ CCTK_INT TOV_Rescale_Sources(
   scon1_p_p   =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "GRHydro::scon[1]");
   scon2_p_p   =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "GRHydro::scon[2]");
 
-  /* get u */
-  u=calloc(size, sizeof(CCTK_REAL));
-  TOV_Set_Initial_Guess_for_u(cctkGH, size, u, x, y, z);
-
   /* get the old source */
   source=calloc(size, sizeof(CCTK_REAL));
   TOV_Set_Rho_ADM(cctkGH, size, source, x, y, z);
@@ -434,30 +429,29 @@ CCTK_INT TOV_Rescale_Sources(
   if (debug)
   {
     debugfile=fopen("tovdebug.dat", "w");
+    fprintf(debugfile, "# 1:x 2:y 3:psi4 4:source 5-7:mom_source_?, 8,9: ham-source, 10,11: momx-source\n");
   }
   /* loop over all points we got */
   for (i3D=0; i3D<size; i3D++)
   {
     if (source[i3D]>0.0)
     {
-      if (debug && (fabs(z[i3D])<1.e-15))
-      {
-        fprintf(debugfile,
-                "%.15g %.15g %.15g %.15g %.15g %.15g ",
-                x[i3D], y[i3D], source[i3D],
-                mom_source[0][i3D], mom_source[1][i3D], mom_source[1][i3D]);
-      }
       if (psi != NULL)
         my_psi4 = pow(psi[i3D], 4.0)*gxx[i3D];
       else
         my_psi4 = gxx[i3D];
-      /* we do not need u, we need gxx here, which will be stored in u! */
-      u[i3D] = pow(u[i3D]+1.0, 4.0);
-      /* We also store the original J^i in mom_source[i] */
-      psip = pow(u[i3D], TOV_Momentum_Psi_Power/4.);
+      /* We store the original J^i in mom_source[i] */
+      psip = pow(my_psi4, TOV_Momentum_Psi_Power/4.);
       mom_source[0][i3D] /= psip;
       mom_source[1][i3D] /= psip;
       mom_source[2][i3D] /= psip;
+      if (debug && (fabs(z[i3D])<1.e-15))
+      {
+        fprintf(debugfile,
+                "%.15g %.15g %.15g %.15g %.15g %.15g %.15g ",
+                x[i3D], y[i3D], my_psi4, source[i3D],
+                mom_source[0][i3D], mom_source[1][i3D], mom_source[1][i3D]);
+      }
 
       if (rho[i3D] < 1.e-10)
           rho[i3D] = 1.e-10;
@@ -523,12 +517,12 @@ CCTK_INT TOV_Rescale_Sources(
               (fabs(rhonew - rhoold) > 1.e-12)
             );
       if (count==1)
-          printf("Fast rescale! %g %g %g %g\n", u[i3D], my_psi4,
-                 mom_source[0][i3D]/u[i3D]/
-                  (source[i3D]/u[i3D]/u[i3D]+TOV_K[0]*
+          printf("Fast rescale! %g %g %g %g\n", my_psi4, my_psi4,
+                 mom_source[0][i3D]/my_psi4/
+                  (source[i3D]/my_psi4/my_psi4+TOV_K[0]*
                   pow(rhonew, TOV_Gamma[0])),
                  mom_source[0][i3D]/my_psi4/
-                  (source[i3D]/u[i3D]/my_psi4+TOV_K[0]*
+                  (source[i3D]/my_psi4/my_psi4+TOV_K[0]*
                   pow(rhonew, TOV_Gamma[0])));
 #else
       newton_raphson(&vx,&vy,&vz,&rhoold,&rhonew,&w_lorentz_2,&v_2,
@@ -614,7 +608,6 @@ CCTK_INT TOV_Rescale_Sources(
         TOV_Copy(size, w_lorentz_p, w_lorentz);
   }
   free(source);
-  free(u);
   return 1;
 }
 
