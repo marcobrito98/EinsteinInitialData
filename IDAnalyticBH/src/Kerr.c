@@ -132,7 +132,7 @@ void KerrID(CCTK_ARGUMENTS)
     p2=a_2+r_2-a*beta_phi;
     /* drdR=sqrt_Delta/R; */
     lapse=sqrt_Delta/sqrt(p2);
-    shift_phi=-2*m*rK*a/p2;
+    shift_phi=-2*m*rK*a/(p2*Sigma);
     
     /* Kerr metric in quasi-isotropic coordinates */
     /* ds^2=Phi4*(dR^2+R^2*dth^2+R^2*Chi^2*sin(th)^2*dphi^2) */
