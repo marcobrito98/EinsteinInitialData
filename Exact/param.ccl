@@ -103,6 +103,23 @@ KEYWORD overwrite_boundary "Overwrite g and K on the boundary"
 } "no"
 
 ################################################################################
+##### parameters for calculating the extrinsic curvature #######################
+################################################################################
+
+private:
+
+INT exact_order "finite differencing order"
+{
+2 :: "2"
+4 :: "4"
+} 2
+
+REAL exact_eps "finite differencing stencil size (in terms of the grid spacing)"
+{
+(0.0:* :: "Positive please"
+} 1.0e-6
+
+################################################################################
 ##### parameters for boosting any non-stress-energy-tensor model ###############
 ################################################################################
 
