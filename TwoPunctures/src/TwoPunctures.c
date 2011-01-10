@@ -219,6 +219,7 @@ TwoPunctures (CCTK_ARGUMENTS)
   CCTK_REAL admMass;
 
   if (! F) {
+    CCTK_REAL Mp_adm, Mm_adm, up, um;
     /* Solve only when called for the first time */
     F = dvector (0, ntotal - 1);
     allocate_derivs (&u, ntotal);
@@ -255,7 +256,7 @@ TwoPunctures (CCTK_ARGUMENTS)
        target ADM masses target_M_plus and target_M_minus and with initial 
        guesses given by par_m_plus and par_m_minus. */
     if(!(give_bare_mass)) {
-      CCTK_REAL tmp, Mp_adm, Mm_adm, Mp_adm_err, Mm_adm_err, up, um;
+      CCTK_REAL tmp, Mp_adm_err, Mm_adm_err;
       char valbuf[100];
 
       CCTK_REAL M_p = target_M_plus;
@@ -315,6 +316,16 @@ TwoPunctures (CCTK_ARGUMENTS)
     CCTK_VInfo (CCTK_THORNSTRING,
 		  "The two puncture masses are mp=%.17g and mm=%.17g",
                 (double) *mp, (double) *mm);
+
+    up = PunctIntPolAtArbitPosition(0, nvar, n1, n2, n3, v, par_b, 0., 0.);
+    um = PunctIntPolAtArbitPosition(0, nvar, n1, n2, n3, v,-par_b, 0., 0.);
+
+    /* Calculate the ADM masses from the current bare mass guess */
+    Mp_adm = (1 + up) * *mp + *mp * *mm / (4. * par_b);
+    Mm_adm = (1 + um) * *mm + *mp * *mm / (4. * par_b);
+
+    CCTK_VInfo (CCTK_THORNSTRING, "Puncture 1 ADM mass is %g", (double)Mp_adm);
+    CCTK_VInfo (CCTK_THORNSTRING, "Puncture 2 ADM mass is %g", (double)Mm_adm);
 
     /* print out ADM mass, eq.: \Delta M_ADM=2*r*u=4*b*V for A=1,B=0,phi=0 */
     admMass = (*mp + *mm
