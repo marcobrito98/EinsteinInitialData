@@ -193,6 +193,7 @@ void set_initial_guess(CCTK_POINTER_TO_CONST cctkGH,
 }
 
 /* -------------------------------------------------------------------*/
+void TwoPunctures(CCTK_ARGUMENTS);
 void
 TwoPunctures (CCTK_ARGUMENTS)
 {
@@ -402,10 +403,10 @@ TwoPunctures (CCTK_ARGUMENTS)
 
         const int ind = CCTK_GFINDEX3D (cctkGH, i, j, k);
 
-        CCTK_REAL x1, y1, z1;
-        x1 = x[ind] - center_offset[0];
-        y1 = y[ind] - center_offset[1];
-        z1 = z[ind] - center_offset[2];
+        CCTK_REAL xx, yy, zz;
+        xx = x[ind] - center_offset[0];
+        yy = y[ind] - center_offset[1];
+        zz = z[ind] - center_offset[2];
 
         /* We implement swapping the x and z coordinates as follows.
            The bulk of the code that performs the actual calculations
@@ -415,24 +416,24 @@ TwoPunctures (CCTK_ARGUMENTS)
            main loop-- we swap everything back.  */
         if (swap_xz) {
           /* Swap the x and z coordinates */
-          SWAP (x1, z1);
+          SWAP (xx, zz);
         }
 
         CCTK_REAL r_plus
-          = sqrt(pow(x1 - par_b, 2) + pow(y1, 2) + pow(z1, 2));
+          = sqrt(pow(xx - par_b, 2) + pow(yy, 2) + pow(zz, 2));
         CCTK_REAL r_minus
-          = sqrt(pow(x1 + par_b, 2) + pow(y1, 2) + pow(z1, 2));
+          = sqrt(pow(xx + par_b, 2) + pow(yy, 2) + pow(zz, 2));
 
         CCTK_REAL U;
         switch (gsm)
         {
         case GSM_Taylor_expansion:
           U = PunctTaylorExpandAtArbitPosition
-            (0, nvar, n1, n2, n3, v, x1, y1, z1);
+            (0, nvar, n1, n2, n3, v, xx, yy, zz);
           break;
         case GSM_evaluation:
           U = PunctIntPolAtArbitPosition
-            (0, nvar, n1, n2, n3, v, x1, y1, z1);
+            (0, nvar, n1, n2, n3, v, xx, yy, zz);
           break;
         default:
           assert (0);
@@ -463,9 +464,9 @@ TwoPunctures (CCTK_ARGUMENTS)
         CCTK_REAL static_psi = 1;
         
         CCTK_REAL Aij[3][3];
-        BY_Aijofxyz (x1, y1, z1, Aij);
+        BY_Aijofxyz (xx, yy, zz, Aij);
 
-        CCTK_REAL old_alp;
+        CCTK_REAL old_alp=1.0;
         if (multiply_old_lapse)
             old_alp = alp[ind];
 
@@ -480,9 +481,9 @@ TwoPunctures (CCTK_ARGUMENTS)
           pyy = pyz = pzz = 0.0;
 
           /* first puncture */
-          xp = x1 - par_b;
-          yp = y1;
-          zp = z1;
+          xp = xx - par_b;
+          yp = yy;
+          zp = zz;
           rp = sqrt (xp*xp + yp*yp + zp*zp);
           rp = pow (pow (rp, 4) + pow (TP_epsilon, 4), 0.25);
           if (rp < TP_Tiny)
@@ -511,9 +512,9 @@ TwoPunctures (CCTK_ARGUMENTS)
           pzz += zp*zp*s5 + s3;
 
           /* second puncture */
-          xp = x1 + par_b;
-          yp = y1;
-          zp = z1;
+          xp = xx + par_b;
+          yp = yy;
+          zp = zz;
           rp = sqrt (xp*xp + yp*yp + zp*zp);
           rp = pow (pow (rp, 4) + pow (TP_epsilon, 4), 0.25);
           if (rp < TP_Tiny)
