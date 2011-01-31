@@ -54,9 +54,11 @@ ADMBase::initial_shift			=	"none"
 ADMBase::metric_type			= 	"physical"
 SpaceMask::use_mask = "yes"
 
-ActiveThorns = "eos_base eos_idealfluid eos_polytrope"
+ActiveThorns = "eos_omni"
 
-EOS_IdealFluid::eos_ideal_fluid_gamma	=	1.66666666666666
+eos_omni::gl_gamma = 1.66666666666666
+eos_omni::gl_k     = 80.0
+eos_omni::poly_k   = 80.0
 
 ActiveThorns = "tmunubase hydrobase grhydro initbase"
 
