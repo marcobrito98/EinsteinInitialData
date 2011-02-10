@@ -1,5 +1,5 @@
 !DESC "Carpet unigrid, one TOV" 
-ActiveThorns = "time MoL coordbase symbase cartgrid3d ioutil boundary admbase staticconformal spacemask admcoupling coordgauge admmacros hydrobase grhydro grhydro_initdata tovsolver eos_base eos_idealfluid eos_polytrope admconstraints Constants LocalReduce Carpet CarpetLib CarpetInterp CarpetReduce CarpetIOScalar CarpetIOBasic LoopControl TmunuBase InitBase"
+ActiveThorns = "time MoL coordbase symbase cartgrid3d ioutil boundary admbase staticconformal spacemask admcoupling coordgauge admmacros hydrobase grhydro grhydro_initdata tovsolver eos_omni admconstraints Constants LocalReduce Carpet CarpetLib CarpetInterp CarpetReduce CarpetIOScalar CarpetIOBasic LoopControl TmunuBase InitBase"
 
 TmunuBase::stress_energy_storage	=	yes
 TmunuBase::stress_energy_at_RHS		=	yes
@@ -55,9 +55,6 @@ tovsolver::TOV_Rho_Central[0] = 1.28e-3
 tovsolver::TOV_Gamma[0]       = 2.0
 tovsolver::TOV_K[0]           = 100.0
 tovsolver::TOV_Combine_Method = "maximum"
-
-EOS_Polytrope::eos_gamma            = 2.0
-EOS_Polytrope::eos_k                = 100.0
 
 Carpet::prolongation_order_space  = 3
 Carpet::prolongation_order_time   = 2
