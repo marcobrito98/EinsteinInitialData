@@ -103,6 +103,11 @@ void KerrID(CCTK_ARGUMENTS)
                  conformal_storage);                            /*NOTREACHED*/
     }
   }      
+  else
+  {
+    *conformal_state = 0;
+  }
+
 
 
   /* printf("npoints: %i\n",npoints); */
@@ -311,15 +316,22 @@ void KerrID(CCTK_ARGUMENTS)
     }
     IDAnalyticBH_zero_CCTK_REAL_array(npoints, gxz);
     IDAnalyticBH_zero_CCTK_REAL_array(npoints, gyz);
-    IDAnalyticBH_zero_CCTK_REAL_array(npoints, psix);
-    IDAnalyticBH_zero_CCTK_REAL_array(npoints, psiy);
-    IDAnalyticBH_zero_CCTK_REAL_array(npoints, psiz);
-    IDAnalyticBH_zero_CCTK_REAL_array(npoints, psixx);
-    IDAnalyticBH_zero_CCTK_REAL_array(npoints, psixy);
-    IDAnalyticBH_zero_CCTK_REAL_array(npoints, psixz);
-    IDAnalyticBH_zero_CCTK_REAL_array(npoints, psiyy);
-    IDAnalyticBH_zero_CCTK_REAL_array(npoints, psiyz);
-    IDAnalyticBH_zero_CCTK_REAL_array(npoints, psizz);
+
+    if (psix && *conformal_state < 2)
+    {
+      IDAnalyticBH_zero_CCTK_REAL_array(npoints, psix);
+      IDAnalyticBH_zero_CCTK_REAL_array(npoints, psiy);
+      IDAnalyticBH_zero_CCTK_REAL_array(npoints, psiz);
+    }
+    if (psixx && *conformal_state < 3)
+    {
+      IDAnalyticBH_zero_CCTK_REAL_array(npoints, psixx);
+      IDAnalyticBH_zero_CCTK_REAL_array(npoints, psixy);
+      IDAnalyticBH_zero_CCTK_REAL_array(npoints, psixz);
+      IDAnalyticBH_zero_CCTK_REAL_array(npoints, psiyy);
+      IDAnalyticBH_zero_CCTK_REAL_array(npoints, psiyz);
+      IDAnalyticBH_zero_CCTK_REAL_array(npoints, psizz);
+    }
   }
   
   return;
