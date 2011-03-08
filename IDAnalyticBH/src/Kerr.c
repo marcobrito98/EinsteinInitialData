@@ -117,8 +117,12 @@ void KerrID(CCTK_ARGUMENTS)
     /* Define coordinate functions */
     xx=x[i];  yy=y[i];  zz=z[i];
     rho_2=xx*xx+yy*yy;
-    if (rho_2<epsilon) rho_2=epsilon;
     rho=sqrt(rho_2);
+    if (rho<epsilon) {
+      xx=epsilon;
+      rho_2=xx*xx+yy*yy;
+      rho=sqrt(rho_2);
+    }
     R_2=rho_2+zz*zz;
     R=sqrt(R_2);
     R_3=R*R_2;
