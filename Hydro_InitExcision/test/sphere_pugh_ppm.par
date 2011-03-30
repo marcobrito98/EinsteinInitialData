@@ -36,15 +36,15 @@ ADMConstraints::constraints_persist	= yes
 
 IOBasic::outScalar_every                =       1
 IOBasic::outScalar_reductions = "minimum maximum"
-IOBasic::outScalar_vars  = "hydrobase::rho hydrobase::press hydrobase::eps hydrobase::vel GRHydro::dens GRHydro::tau GRHydro::scon GRHydro::w_lorentz"
+IOBasic::outScalar_vars  = "hydrobase::rho hydrobase::press hydrobase::eps hydrobase::vel GRHydro::dens GRHydro::tau GRHydro::scon HydroBase::w_lorentz"
 
 IOASCII::out1D_every                    =      10
 IOASCII::out1D_style                    = "gnuplot f(x)"
-IOASCII::out1D_vars      = "hydrobase::rho hydrobase::press hydrobase::eps hydrobase::vel GRHydro::dens GRHydro::tau GRHydro::scon GRHydro::w_lorentz"
+IOASCII::out1D_vars      = "hydrobase::rho hydrobase::press hydrobase::eps hydrobase::vel GRHydro::dens GRHydro::tau GRHydro::scon HydroBase::w_lorentz"
 
 IOASCII::out2D_every                    =      25
 IOASCII::out2D_vars      = "hydrobase::rho"
-#IOASCII::out2D_vars      = "hydrobase::rho hydrobase::press hydrobase::eps hydrobase::vel GRHydro::dens GRHydro::tau GRHydro::scon GRHydro::w_lorentz"
+#IOASCII::out2D_vars      = "hydrobase::rho hydrobase::press hydrobase::eps hydrobase::vel GRHydro::dens GRHydro::tau GRHydro::scon HydroBase::w_lorentz"
 
 ActiveThorns = "nanchecker mol"
 
