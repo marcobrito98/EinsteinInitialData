@@ -63,5 +63,5 @@ IO::out_dir			= $parfile
 IO::out_fileinfo= "none"
 
 IOScalar::outScalar_every = 1
-IOScalar::outScalar_vars  = "hydrobase::rho hydrobase::press hydrobase::eps hydrobase::vel GRHydro::dens GRHydro::tau GRHydro::scon admbase::lapse admbase::metric admbase::curv admconstraints::ham admconstraints::momentum GRHydro::w_lorentz"
+IOScalar::outScalar_vars  = "hydrobase::rho hydrobase::press hydrobase::eps hydrobase::vel GRHydro::dens GRHydro::tau GRHydro::scon admbase::lapse admbase::metric admbase::curv admconstraints::ham admconstraints::momentum HydroBase::w_lorentz"
 IOScalar::outScalar_reductions  = "minimum maximum norm1 norm2"

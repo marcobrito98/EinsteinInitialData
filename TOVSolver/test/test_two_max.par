@@ -58,9 +58,9 @@ IO::out_fileinfo="none"
 IO::out_dir			= $parfile
 
 IOBasic::outScalar_every = 1
-IOBasic::outScalar_vars  = "GRHydro::w_lorentz hydrobase::rho hydrobase::press hydrobase::eps HydroBase::vel GRHydro::dens GRHydro::tau GRHydro::scon admbase::lapse admbase::metric admbase::curv admconstraints::ham admconstraints::momentum"
+IOBasic::outScalar_vars  = "HydroBase::w_lorentz hydrobase::rho hydrobase::press hydrobase::eps HydroBase::vel GRHydro::dens GRHydro::tau GRHydro::scon admbase::lapse admbase::metric admbase::curv admconstraints::ham admconstraints::momentum"
 
 IOASCII::out1D_every     = 1
-IOASCII::out1D_vars      = "GRHydro::w_lorentz hydrobase::rho hydrobase::press hydrobase::eps HydroBase::vel GRHydro::dens GRHydro::tau GRHydro::scon admbase::lapse admbase::metric admbase::curv admconstraints::ham admconstraints::momentum"
+IOASCII::out1D_vars      = "HydroBase::w_lorentz hydrobase::rho hydrobase::press hydrobase::eps HydroBase::vel GRHydro::dens GRHydro::tau GRHydro::scon admbase::lapse admbase::metric admbase::curv admconstraints::ham admconstraints::momentum"
 IOASCII::out_format      = ".10e"
 
