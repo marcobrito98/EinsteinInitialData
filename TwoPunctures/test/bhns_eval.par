@@ -5,7 +5,7 @@ ActiveThorns = "ADMBase"
 ActiveThorns = "StaticConformal"
 ActiveThorns = "ADMCoupling ADMMacros"
 ActiveThorns = "TmunuBase Constants SpaceMask GRHydro HydroBase"
-ActiveThorns = "TOVSolver eos_base eos_idealfluid eos_polytrope"
+ActiveThorns = "TOVSolver eos_omni"
 ActiveThorns = "TwoPunctures"
 ActiveThorns = "coordgauge boundary"
 
@@ -79,9 +79,6 @@ TOVSolver::TOV_Position_x[0]  = -30
 TOVSolver::TOV_Rho_Central[0] = 5.e-4
 TOVSolver::TOV_Gamma[0]       = 2.0
 TOVSolver::TOV_K[0]           = 100.0
-
-EOS_Polytrope::eos_gamma                =       2.0
-EOS_Polytrope::eos_k                    =       100.0
 
 IO::out_dir			= $parfile
 IO::out_fileinfo= "axis labels"
