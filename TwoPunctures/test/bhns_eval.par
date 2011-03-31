@@ -96,9 +96,9 @@ Carpet::init_3_timelevels         = no
 CarpetIOScalar::outScalar_reductions	= "minimum maximum norm1 norm2"
 
 IOScalar::outScalar_every	= 512
-IOScalar::outScalar_vars		= "admbase::metric admbase::curv TwoPunctures::puncture_u GRHydro::w_lorentz hydrobase::rho hydrobase::press hydrobase::eps HydroBase::vel GRHydro::dens GRHydro::tau GRHydro::scon admbase::lapse admbase::shift"
+IOScalar::outScalar_vars		= "admbase::metric admbase::curv TwoPunctures::puncture_u HydroBase::w_lorentz hydrobase::rho hydrobase::press hydrobase::eps HydroBase::vel GRHydro::dens GRHydro::tau GRHydro::scon admbase::lapse admbase::shift"
 IOASCII::out1D_every		= 512
-IOASCII::out1D_vars		= "admbase::metric admbase::curv TwoPunctures::puncture_u GRHydro::w_lorentz hydrobase::rho hydrobase::press hydrobase::eps HydroBase::vel GRHydro::dens GRHydro::tau GRHydro::scon admbase::lapse admbase::shift"
+IOASCII::out1D_vars		= "admbase::metric admbase::curv TwoPunctures::puncture_u HydroBase::w_lorentz hydrobase::rho hydrobase::press hydrobase::eps HydroBase::vel GRHydro::dens GRHydro::tau GRHydro::scon admbase::lapse admbase::shift"
 
 admbase::metric_type		= "physical"
 
