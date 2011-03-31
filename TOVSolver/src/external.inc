@@ -379,7 +379,7 @@ CCTK_INT TOV_Rescale_Sources(
   eps      =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "HydroBase::eps");
   dens     =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "GRHydro::dens");
   tau      =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "GRHydro::tau");
-  w_lorentz=(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "GRHydro::w_lorentz");
+  w_lorentz=(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "HydroBase::w_lorentz");
   vel0     =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "HydroBase::vel[0]");
   vel1     =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "HydroBase::vel[1]");
   vel2     =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "HydroBase::vel[2]");
@@ -392,7 +392,7 @@ CCTK_INT TOV_Rescale_Sources(
   eps_p    =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "HydroBase::eps");
   dens_p   =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "GRHydro::dens");
   tau_p    =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "GRHydro::tau");
-  w_lorentz_p=(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "GRHydro::w_lorentz");
+  w_lorentz_p=(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "HydroBase::w_lorentz");
   vel0_p   =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "HydroBase::vel[0]");
   vel1_p   =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "HydroBase::vel[1]");
   vel2_p   =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "HydroBase::vel[2]");
@@ -405,7 +405,7 @@ CCTK_INT TOV_Rescale_Sources(
   eps_p_p  =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "HydroBase::eps");
   dens_p_p =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "GRHydro::dens");
   tau_p_p  =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "GRHydro::tau");
-  w_lorentz_p_p=(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "GRHydro::w_lorentz");
+  w_lorentz_p_p=(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "HydroBase::w_lorentz");
   vel0_p_p =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "HydroBase::vel[0]");
   vel1_p_p =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "HydroBase::vel[1]");
   vel2_p_p =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "HydroBase::vel[2]");
