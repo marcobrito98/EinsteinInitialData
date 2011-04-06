@@ -13,7 +13,7 @@ void TOV_debug_input_points(CCTK_INT size,
     fclose(f);
 }
 
-inline int get_nearest_star(const CCTK_REAL *x, const CCTK_REAL *y,
+static inline int get_nearest_star(const CCTK_REAL *x, const CCTK_REAL *y,
                             const CCTK_REAL *z, const int i)
 {
     DECLARE_CCTK_PARAMETERS
