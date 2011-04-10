@@ -4,15 +4,15 @@
 ActiveThorns = "Time CartGrid3D CoordBase SymBase Boundary PUGH PUGHReduce PUGHSlab IOAscii IOUtil IOBasic ADMBase ADMCoupling StaticConformal CoordGauge Exact"
 
 # Grid
-driver::global_nx = 31
-driver::global_ny = 31
-driver::global_nz = 31
+driver::global_nx = 30
+driver::global_ny = 30
+driver::global_nz = 30
 driver::ghost_size = 1
 grid::type    = "byrange"
 grid::domain  = "full"
 
 # n.b. this does NOT put a grid point at the origin:
-#      the grid points are at -2.9, -2.7, ... -0.1, +0.1, 0.3, ..., 2.9
+#      the grid points are at -2.9, -2.5, ... -0.1, +0.3, 0.5, ..., 2.9
 grid::xyzmin = -2.9
 grid::xyzmax =  2.9
 
