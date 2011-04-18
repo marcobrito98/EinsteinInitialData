@@ -3,7 +3,7 @@
 \begin{document}
 
 % The title of the document (not necessarily the name of the Thorn)
-\title{Whisky\_InitExcision - Initial Excision for Whisky}
+\title{Hydro\_InitExcision - Initial Excision for Hydro Evolutions}
 
 % The author of the documentation - on one line, otherwise it does not work
 \author{Andrea Nerozzi, Frank L\"offler}
@@ -22,8 +22,9 @@
 
 % Add an abstract for this thorn's documentation
 \begin{abstract}
-  This thorn is initialising the excision-spacemask for Whisky to
-  specified forms.
+  This thorn initialises the excision-spacemask for GRHydro to
+  specified forms. It is based on a similar version used to initialise
+  the excision-mask for Whisky code.
 \end{abstract}
 
 % The following sections are suggestive only.
@@ -36,14 +37,14 @@ You have to activate it in your parameter file and specify at least the
 following:
 
 \begin{verbatim}
-whisky_initexcision::whisky_initexcision = "yes"
+hydro_initexcision::hydro_initexcision = "yes"
 \end{verbatim}
 
 In addition to that you may want to specify the type of excision zone
 you want to have. You can do this by
 
 \begin{verbatim}
-whisky_initexcision::whisky_initexcision_type = <TYPE>
+hydro_initexcision::hydro_initexcision_type = <TYPE>
 \end{verbatim}
 
 where \begin{verbatim}<TYPE>\end{verbatim} is one of the following list:
