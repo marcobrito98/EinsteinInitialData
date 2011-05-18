@@ -773,11 +773,14 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
                                 my_psi4);
 
         rho[i3D] = max_rho;
-        /* Set atmosphere according to chosen star */
-        if(rho[i3D] <= TOV_Atmosphere[star])
-          rho[i3D] = TOV_Atmosphere[star];
         eps[i3D] = eps_point[star];
         press[i3D] = press_point[star];
+        /* Set atmosphere according to chosen star */
+        if(rho[i3D] <= TOV_Atmosphere[star]) {
+          rho[i3D] = TOV_Atmosphere[star];
+	  press[i3D] = TOV_K[star] * pow(rho[i3D],TOV_Gamma[star]);
+          eps[i3D] = press[i3D]/(TOV_Gamma[star]-1.0)/rho[i3D];
+	}
 
       }
       else if (CCTK_EQUALS(TOV_Combine_Method, "average"))
@@ -823,8 +826,11 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
           }
 
           /* Reset atmosphere according to chosen star */
-          if(rho[i3D] <= TOV_Atmosphere[star_i])
+          if(rho[i3D] <= TOV_Atmosphere[star_i]) {
             rho[i3D] = TOV_Atmosphere[star_i];
+	    press[i3D] = TOV_K[star_i] * pow(rho[i3D],TOV_Gamma[star_i]);
+            eps[i3D] = press[i3D]/(TOV_Gamma[star_i]-1.0)/rho[i3D];
+	  }
         }
 
         if (TOV_Conformal_Flat_Three_Metric)
