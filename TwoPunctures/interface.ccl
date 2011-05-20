@@ -4,7 +4,7 @@ IMPLEMENTS: TwoPunctures
 
 INHERITS: ADMBase StaticConformal grid
 
-REAL puncture_u TYPE=gf
+REAL puncture_u TYPE=gf tags='prolongation="none"'
 
 CCTK_INT FUNCTION Set_Rho_ADM(              \
     CCTK_POINTER_TO_CONST IN  cctkGH,       \
