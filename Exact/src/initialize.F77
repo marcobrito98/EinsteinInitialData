@@ -61,6 +61,7 @@ C     Set data pointwise.
       nz = cctk_lsh(3)
 
 C$omp parallel do private(
+C$omp$     i, j, k,
 C$omp$     tt, xx, yy, zz,
 C$omp$     alpjunk, dtalpjunk, axjunk, ayjunk, azjunk, 
 C$omp$     betaxjunk, betayjunk, betazjunk,

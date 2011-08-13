@@ -89,6 +89,7 @@ C
       if ( set_lapse .or. set_shift .or. set_dtlapse .or. set_dtshift) then
 
 C$omp    parallel do private (
+C$omp$     i, j, k,
 C$omp$     tt, xx, yy, zz,
 C$omp$     alptmp, dtalptmp, axtmp, aytmp, aztmp, 
 C$omp$     betaxtmp, betaytmp, betaztmp,
