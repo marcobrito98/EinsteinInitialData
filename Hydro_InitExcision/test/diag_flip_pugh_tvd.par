@@ -50,7 +50,7 @@ MoL::MoL_Intermediate_Steps		=	2
 ActiveThorns = "ADMBase StaticConformal SpaceMask CoordGauge ADMMacros ADMCoupling"
 
 ADMBase::evolution_method		=	"none"
-ADMBase::initial_shift			=	"none"
+ADMBase::initial_shift			=	"zero"
 ADMBase::metric_type			= 	"physical"
 SpaceMask::use_mask = "yes"
 
