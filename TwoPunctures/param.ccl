@@ -23,6 +23,9 @@ SHARES: StaticConformal
 
 USES KEYWORD conformal_storage
 
+SHARES: IO
+
+USES STRING out_dir
 
 
 RESTRICTED:

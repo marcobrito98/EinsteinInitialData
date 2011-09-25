@@ -220,7 +220,7 @@ TwoPunctures (CCTK_ARGUMENTS)
   CCTK_REAL admMass;
 
   if (! F) {
-    CCTK_REAL Mp_adm, Mm_adm, up, um;
+    CCTK_REAL up, um;
     /* Solve only when called for the first time */
     F = dvector (0, ntotal - 1);
     allocate_derivs (&u, ntotal);
@@ -257,7 +257,7 @@ TwoPunctures (CCTK_ARGUMENTS)
        target ADM masses target_M_plus and target_M_minus and with initial 
        guesses given by par_m_plus and par_m_minus. */
     if(!(give_bare_mass)) {
-      CCTK_REAL tmp, Mp_adm_err, Mm_adm_err;
+      CCTK_REAL tmp, mp_adm_err, mm_adm_err;
       char valbuf[100];
 
       CCTK_REAL M_p = target_M_plus;
@@ -280,14 +280,14 @@ TwoPunctures (CCTK_ARGUMENTS)
         um = PunctIntPolAtArbitPosition(0, nvar, n1, n2, n3, v,-par_b, 0., 0.);
 
         /* Calculate the ADM masses from the current bare mass guess */
-        Mp_adm = (1 + up) * *mp + *mp * *mm / (4. * par_b);
-        Mm_adm = (1 + um) * *mm + *mp * *mm / (4. * par_b);
+        *mp_adm = (1 + up) * *mp + *mp * *mm / (4. * par_b);
+        *mm_adm = (1 + um) * *mm + *mp * *mm / (4. * par_b);
 
         /* Check how far the current ADM masses are from the target */
-        Mp_adm_err = fabs(M_p-Mp_adm);
-        Mm_adm_err = fabs(M_m-Mm_adm);
+        mp_adm_err = fabs(M_p-*mp_adm);
+        mm_adm_err = fabs(M_m-*mm_adm);
         CCTK_VInfo (CCTK_THORNSTRING, "ADM mass error: M_p_err=%.4g, M_m_err=%.4g",
-                    (double)Mp_adm_err, (double)Mm_adm_err);
+                    (double) mp_adm_err, (double) mm_adm_err);
         
         /* Invert the ADM mass equation and update the bare mass guess so that
            it gives the correct target ADM masses */
@@ -304,8 +304,8 @@ TwoPunctures (CCTK_ARGUMENTS)
         sprintf (valbuf,"%.17g", (double) *mm);
         CCTK_ParameterSet ("par_m_minus", "twopunctures", valbuf);
         
-      } while ( (Mp_adm_err > adm_tol) ||
-                (Mm_adm_err > adm_tol) );
+      } while ( (mp_adm_err > adm_tol) ||
+                (mm_adm_err > adm_tol) );
                 
       CCTK_VInfo (CCTK_THORNSTRING, "Found bare masses.");
     }
@@ -322,16 +322,40 @@ TwoPunctures (CCTK_ARGUMENTS)
     um = PunctIntPolAtArbitPosition(0, nvar, n1, n2, n3, v,-par_b, 0., 0.);
 
     /* Calculate the ADM masses from the current bare mass guess */
-    Mp_adm = (1 + up) * *mp + *mp * *mm / (4. * par_b);
-    Mm_adm = (1 + um) * *mm + *mp * *mm / (4. * par_b);
+    *mp_adm = (1 + up) * *mp + *mp * *mm / (4. * par_b);
+    *mm_adm = (1 + um) * *mm + *mp * *mm / (4. * par_b);
 
-    CCTK_VInfo (CCTK_THORNSTRING, "Puncture 1 ADM mass is %g", (double)Mp_adm);
-    CCTK_VInfo (CCTK_THORNSTRING, "Puncture 2 ADM mass is %g", (double)Mm_adm);
+    CCTK_VInfo (CCTK_THORNSTRING, "Puncture 1 ADM mass is %g", (double) *mp_adm);
+    CCTK_VInfo (CCTK_THORNSTRING, "Puncture 2 ADM mass is %g", (double) *mm_adm);
 
     /* print out ADM mass, eq.: \Delta M_ADM=2*r*u=4*b*V for A=1,B=0,phi=0 */
     admMass = (*mp + *mm
                - 4*par_b*PunctEvalAtArbitPosition(v.d0, 0, 1, 0, 0, nvar, n1, n2, n3));
     CCTK_VInfo (CCTK_THORNSTRING, "The total ADM mass is %g", (double) admMass);
+    *E = admMass;
+
+    /*
+      Run this in Mathematica (version 8 or later) with
+        math -script <file>
+
+      Needs["SymbolicC`"];
+      co = Table["center_offset[" <> ToString[i] <> "]", {i, 0, 2}];
+      r1 = co + {"par_b", 0, 0};
+      r2 = co + {-"par_b", 0, 0};
+      {p1, p2} = Table["par_P_" <> bh <> "[" <> ToString[i] <> "]", {bh, {"plus", "minus"}}, {i, 0, 2}];
+      {s1, s2} = Table["par_S_" <> bh <> "[" <> ToString[i] <> "]", {bh, {"plus", "minus"}}, {i, 0, 2}];
+
+      J = Cross[r1, p1] + Cross[r2, p2] + s1 + s2;
+
+      JVar = Table["*J" <> ToString[i], {i, 1, 3}];
+      Print[OutputForm@StringReplace[
+        ToCCodeString@MapThread[CAssign[#1, CExpression[#2]] &, {JVar, J}], 
+        "\"" -> ""]];
+     */
+
+    *J1 = -(center_offset[2]*par_P_minus[1]) + center_offset[1]*par_P_minus[2] - center_offset[2]*par_P_plus[1] + center_offset[1]*par_P_plus[2] + par_S_minus[0] + par_S_plus[0];
+    *J2 = center_offset[2]*par_P_minus[0] - center_offset[0]*par_P_minus[2] + par_b*par_P_minus[2] + center_offset[2]*par_P_plus[0] - center_offset[0]*par_P_plus[2] - par_b*par_P_plus[2] + par_S_minus[1] + par_S_plus[1];
+    *J3 = -(center_offset[1]*par_P_minus[0]) + center_offset[0]*par_P_minus[1] - par_b*par_P_minus[1] - center_offset[1]*par_P_plus[0] + center_offset[0]*par_P_plus[1] + par_b*par_P_plus[1] + par_S_minus[2] + par_S_plus[2];
   }
 
   if (CCTK_EQUALS(grid_setup_method, "Taylor expansion"))
