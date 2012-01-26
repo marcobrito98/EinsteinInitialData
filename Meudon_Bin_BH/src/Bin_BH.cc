@@ -2,6 +2,7 @@
 #include <cmath>
 #include <cstdio>
 #include <vector>
+#include <ios>
 
 #include <cctk.h>
 #include <cctk_Arguments.h>
@@ -63,6 +64,7 @@ void ID_Bin_BH_initialise (CCTK_ARGUMENTS)
   
   CCTK_VInfo (CCTK_THORNSTRING, "Reading from file \"%s\"", filename);
   
+  try {
   Bin_BH bin_bh (npoints, &xx[0], &yy[0], &zz[0], 1, filename);
   
   CCTK_VInfo (CCTK_THORNSTRING, "Omega [1/a]: %g", bin_bh.omega);
@@ -165,4 +167,8 @@ void ID_Bin_BH_initialise (CCTK_ARGUMENTS)
   
   
   CCTK_INFO ("Done.");
+  } catch (ios::failure e) {
+    CCTK_VWarn (CCTK_WARN_ABORT, __LINE__, __FILE__, CCTK_THORNSTRING,
+                "Could not read initial data from file '%s': %s", filename, e.what());
+  }
 }
