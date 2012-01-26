@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <cassert>
 #include <vector>
+#include <ios>
 
 #include <cctk.h>
 #include <cctk_Arguments.h>
@@ -80,6 +81,7 @@ void Meudon_Bin_NS_initialise (CCTK_ARGUMENTS)
 
   CCTK_VInfo (CCTK_THORNSTRING, "Reading from file \"%s\"", filename);
 
+  try {
   Bin_NS bin_ns (npoints, &xx[0], &yy[0], &zz[0], filename);
 
   CCTK_VInfo (CCTK_THORNSTRING, "omega [rad/s]:       %g", bin_ns.omega);
@@ -196,5 +198,9 @@ void Meudon_Bin_NS_initialise (CCTK_ARGUMENTS)
   }
 
   CCTK_INFO ("Done.");
+  } catch (ios::failure e) {
+    CCTK_VWarn (CCTK_WARN_ABORT, __LINE__, __FILE__, CCTK_THORNSTRING,
+                "Could not read initial data from file '%s': %s", filename, e.what());
+  }
 }
 
