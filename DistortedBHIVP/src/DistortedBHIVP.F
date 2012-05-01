@@ -577,10 +577,10 @@ c     Now compute on the Cartesian coordinate.
 c     
 c     Compute eta,q,phi at the each points of cartesian grid
 
-      eta = 0.5d0*dlog(x**2+y**2+z**2)
+      eta = 0.5d0*log(x**2+y**2+z**2)
       abseta = abs(eta)
-      q = datan2(sqrt(x**2+y**2),z)
-      phi = datan2(y,x)
+      q = atan2(sqrt(x**2+y**2),z)
+      phi = atan2(y,x)
 
       do k = 1,nz
          do j = 1,ny
