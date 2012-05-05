@@ -67,7 +67,7 @@ module NoExcision_mod
       select case (order)
       case (2) 
 
-!$OMP PARALLEL DO PRIVATE(j,i) SCHEDULE(GUIDED)
+!$OMP PARALLEL DO PRIVATE(k,j,i) SCHEDULE(GUIDED)
         do k = 2, nz-1
           do j = 2, ny-1
             do i = 2, nx-1
@@ -88,7 +88,7 @@ module NoExcision_mod
 
       case (4)
 
-!$OMP PARALLEL DO PRIVATE(j,i) SCHEDULE(GUIDED)
+!$OMP PARALLEL DO PRIVATE(k,j,i) SCHEDULE(GUIDED)
         do k = 3, nz-2
           do j = 3, ny-2
             do i = 3, nx-2
@@ -113,7 +113,7 @@ module NoExcision_mod
 
       case (6)
 
-!$OMP PARALLEL DO PRIVATE(j,i) SCHEDULE(GUIDED)
+!$OMP PARALLEL DO PRIVATE(k,j,i) SCHEDULE(GUIDED)
         do k = 4, nz-3
           do j = 4, ny-3
             do i = 4, nx-3
@@ -220,7 +220,7 @@ module NoExcision_mod
 
       if (do_inf_reduction) linfred = 0.0
 
-!$OMP PARALLEL DO SCHEDULE(guided) PRIVATE(j,i) REDUCTION(+:lsumred) &
+!$OMP PARALLEL DO SCHEDULE(guided) PRIVATE(k,j,i) REDUCTION(+:lsumred) &
 !$OMP REDUCTION(max:linfred)
       do k = 1 + offset, nz - offset
         do j = 1 + offset, ny - offset
