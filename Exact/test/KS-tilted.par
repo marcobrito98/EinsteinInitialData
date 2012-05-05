@@ -10,19 +10,23 @@ IO::parfile_write = "no"
 
 ActiveThorns = "AEILocalInterp LocalInterp LocalReduce"
 
-ActiveThorns = "SphericalSurface"
-
 ActiveThorns = "PUGH PUGHInterp PUGHReduce PUGHSlab"
 driver::global_nsize = 49
 driver::ghost_size   =  2
 
 ActiveThorns = "NaNChecker"
 
-ActiveThorns = "Boundary CartGrid3D CoordBase SymBase SymBase"
+ActiveThorns = "Boundary CartGrid3D CoordBase SymBase SymBase SphericalSurface CoordBase"
 CartGrid3D::type         = "byspacing"
 CartGrid3D::domain       = "full"
 CartGrid3D::dxyz         = 0.125
 CartGrid3D::avoid_origin = no
+CoordBase::boundary_size_x_upper = 2
+CoordBase::boundary_size_y_upper = 2
+CoordBase::boundary_size_z_upper = 2
+CoordBase::boundary_size_x_lower = 2
+CoordBase::boundary_size_y_lower = 2
+CoordBase::boundary_size_z_lower = 2
 
 ActiveThorns = "ADMBase ADMCoupling ADMMacros CoordGauge SpaceMask StaticConformal TmunuBase"
 SpaceMask::use_mask = yes
@@ -34,9 +38,9 @@ ADMBase::initial_shift          = "exact"
 Exact::exact_model              = "Kerr/Kerr-Schild"
 Exact::rotation_euler_theta     = 0.4 # in radians, approx. 23 degrees
 
-ActiveThorns = "LegoExcision"
-LegoExcision::fixed_excision = "sphere"
-LegoExcision::fixed_size     = 1.01
+ActiveThorns = "NoExcision"
+NoExcision::num_regions      = 1
+NoExcision::radius[0]        = 0.8
 
 ActiveThorns = "Time"
 Time::dtfac = 0.25
@@ -44,15 +48,21 @@ Time::dtfac = 0.25
 ActiveThorns = "MoL"
 MoL::ODE_Method = "RK3"
 
-ActiveThorns = "BSSN_MoL"
-BSSN_MoL::excise       = yes
-BSSN_MoL::excisionType = "lego"
-
-ADMBase::evolution_method = ADM_BSSN
-ADM_BSSN::stencil_size               = 2
-ADM_BSSN::advection                  = "upwind2"
-ADM_BSSN::bound                      = "newrad"
-ADM_BSSN::BSSN_MaxNumConstrainedVars = 16
+ActiveThorns = "ML_BSSN ML_BSSN_Helper GenericFD LoopControl TmunuBase NewRad"
+ADMBase::evolution_method = ML_BSSN
+ML_BSSN::fdOrder                     = 2
+ML_BSSN::my_initial_boundary_condition = "extrapolate-gammas"
+ML_BSSN::my_rhs_boundary_condition     = "NewRad"
+# These are necessary
+ML_BSSN::ML_log_confac_bound = "none"
+ML_BSSN::ML_metric_bound     = "none"
+ML_BSSN::ML_Gamma_bound      = "none"
+ML_BSSN::ML_trace_curv_bound = "none"
+ML_BSSN::ML_curv_bound       = "none"
+ML_BSSN::ML_lapse_bound      = "none"
+ML_BSSN::ML_dtlapse_bound    = "none"
+ML_BSSN::ML_shift_bound      = "none"
+ML_BSSN::ML_dtshift_bound    = "none"
 
 ActiveThorns = "ADMConstraints"
 
