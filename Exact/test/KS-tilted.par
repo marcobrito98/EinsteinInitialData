@@ -37,10 +37,13 @@ ADMBase::initial_lapse          = "exact"
 ADMBase::initial_shift          = "exact"
 Exact::exact_model              = "Kerr/Kerr-Schild"
 Exact::rotation_euler_theta     = 0.4 # in radians, approx. 23 degrees
+Exact::exact_eps                = 1e-3
 
 ActiveThorns = "NoExcision"
 NoExcision::num_regions      = 1
 NoExcision::radius[0]        = 0.8
+NoExcision::Minkowski_scale[0] = 2.6637047122099 # value found at r=0.875
+NoExcision::reduce_rhs[0] = yes
 
 ActiveThorns = "Time"
 Time::dtfac = 0.25
@@ -69,9 +72,9 @@ ActiveThorns = "ADMConstraints"
 ActiveThorns = "AHFinderDirect"
 AHFinderDirect::output_OpenDX_control_files    = no
 AHFinderDirect::geometry_interpolator_name     = "Lagrange polynomial interpolation"
-AHFinderDirect::geometry_interpolator_pars     = "order=4"
+AHFinderDirect::geometry_interpolator_pars     = "order=2"
 AHFinderDirect::surface_interpolator_name      = "Lagrange polynomial interpolation"
-AHFinderDirect::surface_interpolator_pars      = "order=4"
+AHFinderDirect::surface_interpolator_pars      = "order=2"
 
 ActiveThorns = "IOBasic"
 IOBasic::outInfo_every      = 1

@@ -25,6 +25,7 @@ ADMBase::initial_lapse = "exact"
 ADMBase::initial_shift = "exact"
 Exact::exact_model = "Schwarzschild/EF"
 Exact::Schwarzschild_EF__mass = 1.0
+Exact::exact_eps = 1e-3
 
 # Gauge
 ADMBase::lapse_evolution_method = "exact"
