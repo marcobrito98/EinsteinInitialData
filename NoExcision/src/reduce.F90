@@ -52,7 +52,8 @@ subroutine NoExcision_Reduce (cctk_iteration, cctk_lsh, rhs, x, y, z)
 
         dist2 = (x - cx)**2 + (y - cy)**2 + (z - cz)**2
 
-#warning "TODO: reduce not only the RHS, but also drive the variables towards Minkowski"
+        ! TODO: reduce not only the RHS, but also drive the variables
+        ! towards Minkowski
         where (dist2 <= 1)
            rhs = smooth (rhs, rhs * reduction_factor(n), dist2)
         end where
