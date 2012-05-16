@@ -10,26 +10,7 @@
 
 \documentclass{article}
 
-\newif\ifpdf
-\ifx\pdfoutput\undefined
-\pdffalse % we are not running PDFLaTeX
-\else
-\pdfoutput=1 % we are running PDFLaTeX
-\pdftrue
-\fi
-
-\ifpdf
-\usepackage[pdftex]{graphicx}
-\else
-\usepackage{graphicx}
-\fi
-
-\parskip = 0 pt
-\parindent = 0pt
-\oddsidemargin = 0 cm
-\textwidth = 16 cm
-\topmargin = -1 cm
-\textheight = 24 cm
+\usepackage{../../../../doc/latex/cactus}
 
 \begin{document}
 \title{Creating Constraint Violating Initial Data}
@@ -38,9 +19,13 @@
 
 \maketitle
 
-\abstract{The \texttt{IDConstraintViolate} thorn creates initial data
+% Do not delete next line
+% START CACTUS THORNGUIDE
+
+\begin{abstract}
+The \texttt{IDConstraintViolate} thorn creates initial data
 which purposefully violates the constraint equations for testing purposes.
-}
+\end{abstract}
 
 
 \section{Gaussian}
@@ -56,5 +41,8 @@ g_{xy} = g_{xz} = g_{yz} &=& 0
 K_{ij} &=& 0
 \end{eqnarray*}
 where the size and shape of the Gaussian is specified by parameters, $A$={\tt amplitude}, $r_0$={\tt radius} and $\sigma$={\tt sigma}.
+
+% Do not delete next line
+% END CACTUS THORNGUIDE
 
 \end{document}
