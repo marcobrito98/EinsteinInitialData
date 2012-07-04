@@ -88,25 +88,25 @@ C
 
       if ( set_lapse .or. set_shift .or. set_dtlapse .or. set_dtshift) then
 
-C$o mp    parallel do private (
-C$o mp$     i, j, k,
-C$o mp$     tt, xx, yy, zz,
-C$o mp$     alptmp, dtalptmp, axtmp, aytmp, aztmp, 
-C$o mp$     betaxtmp, betaytmp, betaztmp,
-C$o mp$     dtbetaxtmp, dtbetaytmp, dtbetaztmp,
-C$o mp$     bxxtmp, bxytmp, bxztmp, 
-C$o mp$     byxtmp, byytmp, byztmp, 
-C$o mp$     bzxtmp, bzytmp, bzztmp,
-C$o mp$     dxgxxtmp, dxgyytmp, dxgzztmp, 
-C$o mp$     dxgxytmp, dxgyztmp, dxgxztmp,
-C$o mp$     dygxxtmp, dygyytmp, dygzztmp, 
-C$o mp$     dygxytmp, dygyztmp, dygxztmp,
-C$o mp$     dzgxxtmp, dzgyytmp, dzgzztmp, 
-C$o mp$     dzgxytmp, dzgyztmp, dzgxztmp,
-C$o mp$     exact_psi,
-C$o mp$     exact_psix, exact_psiy, exact_psiz,
-C$o mp$     exact_psixx, exact_psiyy, exact_psizz,
-C$o mp$     exact_psixy, exact_psiyz, exact_psixz)
+C.omp    parallel do private (
+C.omp$     i, j, k,
+C.omp$     tt, xx, yy, zz,
+C.omp$     alptmp, dtalptmp, axtmp, aytmp, aztmp, 
+C.omp$     betaxtmp, betaytmp, betaztmp,
+C.omp$     dtbetaxtmp, dtbetaytmp, dtbetaztmp,
+C.omp$     bxxtmp, bxytmp, bxztmp, 
+C.omp$     byxtmp, byytmp, byztmp, 
+C.omp$     bzxtmp, bzytmp, bzztmp,
+C.omp$     dxgxxtmp, dxgyytmp, dxgzztmp, 
+C.omp$     dxgxytmp, dxgyztmp, dxgxztmp,
+C.omp$     dygxxtmp, dygyytmp, dygzztmp, 
+C.omp$     dygxytmp, dygyztmp, dygxztmp,
+C.omp$     dzgxxtmp, dzgyytmp, dzgzztmp, 
+C.omp$     dzgxytmp, dzgyztmp, dzgxztmp,
+C.omp$     exact_psi,
+C.omp$     exact_psix, exact_psiy, exact_psiz,
+C.omp$     exact_psixx, exact_psiyy, exact_psizz,
+C.omp$     exact_psixy, exact_psiyz, exact_psixz)
          do k=1,nz
             do j=1,ny
                do i=1,nx
