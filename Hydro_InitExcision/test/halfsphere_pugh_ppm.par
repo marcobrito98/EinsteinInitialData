@@ -46,6 +46,10 @@ IOASCII::out2D_every                    =      25
 IOASCII::out2D_vars      = "hydrobase::rho"
 #IOASCII::out2D_vars      = "hydrobase::rho hydrobase::press hydrobase::eps hydrobase::vel GRHydro::dens GRHydro::tau GRHydro::scon HydroBase::w_lorentz"
 
+IOASCII::out3D_every                    =      1
+IOASCII::out3D_vars      = "hydrobase::vel[1]"
+ioascii::out_format = ".15e"
+
 ActiveThorns = "nanchecker mol"
 
 MoL::ode_method				=	"rk2"
