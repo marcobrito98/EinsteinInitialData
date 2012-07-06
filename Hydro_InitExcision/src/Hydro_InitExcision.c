@@ -12,6 +12,7 @@
 #include "cctk_Arguments.h"
 #include <stdio.h>
 #include <math.h>
+#include <assert.h>
 
  /*@@
    @routine    Excision Mask 
@@ -34,17 +35,46 @@ void Hydro_InitExcisionMask(CCTK_ARGUMENTS)
   DECLARE_CCTK_ARGUMENTS;
   DECLARE_CCTK_PARAMETERS;
 
+  enum domain_vals {full = 0, octant, n_domain_vals};
+  enum hydro_initexcision_type_vals {
+    box = 0, xaxis, yaxis, zaxis, diagonal, sphere, 
+    n_hydro_initexcision_type_vals
+  };
+  const char * domain_val_keywords[n_domain_vals] = {"full", "octant"};
+  const char * hydro_initexcision_type_val_keywords[n_hydro_initexcision_type_vals] = {
+    "box", "x-axis", "y-axis", "z-axis", "diagonal", "sphere"
+  };
+
   CCTK_INT  i,j,k, nx, ny, nz, point;
   CCTK_INT excised, normal;
   CCTK_REAL emask_excised, emask_normal;
   CCTK_REAL x_min, x_max, y_min, y_max, z_min, z_max;
   CCTK_REAL x_size, y_size, z_size;
   CCTK_REAL x_frac, y_frac, z_frac;
+  enum domain_vals domain_val;
+  enum hydro_initexcision_type_vals hydro_initexcision_type_val;
 
   if (hydro_initexcision)
   {
     CCTK_INFO("Setting up Hydro Initial Excision region.");
   }
+
+  /* decode keyword parameters */
+  for (domain_val = 0 ; domain_val < n_domain_vals ; domain_val++)
+  {
+    if (CCTK_Equals(domain, domain_val_keywords[domain_val]))
+      break;
+  }
+  assert(domain_val < n_domain_vals);
+  for (hydro_initexcision_type_val = 0 ; 
+       hydro_initexcision_type_val < n_hydro_initexcision_type_vals ; 
+       hydro_initexcision_type_val++)
+  {
+    if (CCTK_Equals(hydro_initexcision_type, 
+          hydro_initexcision_type_val_keywords[hydro_initexcision_type_val]))
+      break;
+  }
+  assert(hydro_initexcision_type_val < n_hydro_initexcision_type_vals);
 
   nx = cctk_lsh[0];
   ny = cctk_lsh[1];
@@ -84,9 +114,9 @@ void Hydro_InitExcisionMask(CCTK_ARGUMENTS)
         {
           if (hydro_initexcision_old_mask)
             emask[point]=emask_normal;
-          if (CCTK_Equals(hydro_initexcision_type,"box"))
+          if (hydro_initexcision_type_val == box)
           {
-              if (CCTK_Equals(domain,"full"))
+              if (domain_val == full)
               {
                  if ( (hydro_initexcision_coordinate_length <= 0.0) &&
                       ( ( x_frac > 0.5 - hydro_initexcision_fraction) &&
@@ -115,7 +145,7 @@ void Hydro_InitExcisionMask(CCTK_ARGUMENTS)
                     hydro_excision_mask[point] = normal;
                  }
               }
-              else if (CCTK_Equals(domain,"octant"))
+              else if (domain_val == octant)
               {
                  if ( ( (hydro_initexcision_coordinate_length <= 0.0) &&
                         ( x_frac < hydro_initexcision_fraction) &&
@@ -142,7 +172,7 @@ void Hydro_InitExcisionMask(CCTK_ARGUMENTS)
                  }
               }
           }
-          else if (CCTK_Equals(hydro_initexcision_type,"x-axis"))
+          else if (hydro_initexcision_type_val == xaxis)
           {
             if ( x_frac < 1.0-hydro_initexcision_fraction )
             {
@@ -155,7 +185,7 @@ void Hydro_InitExcisionMask(CCTK_ARGUMENTS)
                 emask[point]=emask_excised;
             }
           }
-          else if (CCTK_Equals(hydro_initexcision_type,"y-axis"))
+          else if (hydro_initexcision_type_val == yaxis)
           {
             if ( y_frac < 1.0-hydro_initexcision_fraction )
             {
@@ -168,7 +198,7 @@ void Hydro_InitExcisionMask(CCTK_ARGUMENTS)
                 emask[point]=emask_excised;
             }
           }
-          else if (CCTK_Equals(hydro_initexcision_type,"z-axis"))
+          else if (hydro_initexcision_type_val == zaxis)
           {
             if ( z_frac < 1.0-hydro_initexcision_fraction )
             {
@@ -181,7 +211,7 @@ void Hydro_InitExcisionMask(CCTK_ARGUMENTS)
                 emask[point]=emask_excised;
             }
           }
-          else if (CCTK_Equals(hydro_initexcision_type,"diagonal"))
+          else if (hydro_initexcision_type_val == diagonal)
           {
             if ( x_frac + y_frac + z_frac <
                  3.0*(1.0-hydro_initexcision_fraction) )
@@ -195,7 +225,7 @@ void Hydro_InitExcisionMask(CCTK_ARGUMENTS)
                 emask[point]=emask_excised;
             }
           }
-          else if (CCTK_Equals(hydro_initexcision_type,"sphere"))
+          else if (hydro_initexcision_type_val == sphere)
           {
             if ( (hydro_initexcision_coordinate_length <= 0.0) &&
                  ( ( (x[point]-hydro_initexcision_position_x) *
