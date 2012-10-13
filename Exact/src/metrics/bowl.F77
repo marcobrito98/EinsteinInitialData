@@ -82,6 +82,7 @@ c output arguments
 
 c local static variables
       logical firstcall,evolve
+      integer type
       CCTK_REAL a,c,s
       CCTK_REAL dx,dy,dz
       CCTK_REAL t0,st
@@ -90,7 +91,6 @@ c local static variables
 c$omp threadprivate (firstcall,evolve,type,a,c,s,dx,dy,dz,t0,st)
 
 c local variables
-      integer type
       character*100 warn_buffer
 
       CCTK_REAL r,r2,rr2
