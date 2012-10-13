@@ -31,23 +31,14 @@ c output arguments
      $       guxx, guyy, guzz, guxy, guyz, guzx
       CCTK_REAL psi
       LOGICAL   Tmunu_flag
-
-c local static variables
-      logical firstcall
-      data firstcall /.true./
-      save firstcall, arad, marad
     
       CCTK_REAL arad, marad
 
 C This is a vacuum spacetime with no cosmological constant
       Tmunu_flag = .false.
 
-      if (firstcall) then
-          arad = Kerr_BoyerLindquist__spin
-         marad = Kerr_BoyerLindquist__mass
-          firstcall = .false.
-      end if
-
+       arad = Kerr_BoyerLindquist__spin
+      marad = Kerr_BoyerLindquist__mass
      
       gdtt = -(y**2*arad**2+x**2-2*marad*x)/(x**2+y**2*arad**2)
       gdtx = 2*(arad*marad*x*(y**2-1))/(x**2+y**2*arad**2)

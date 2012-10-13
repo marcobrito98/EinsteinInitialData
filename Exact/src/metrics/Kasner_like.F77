@@ -35,21 +35,13 @@ c output arguments
       CCTK_REAL psi
       LOGICAL   Tmunu_flag
 
-c local static variables
-      logical firstcall
-      data firstcall /.true./
-      save firstcall, qq
-
 c local variables
       CCTK_REAL qq,a1,a3
  
 c this model sets the stress-energy tensor in the "CalcTmunu" code
       Tmunu_flag = .true.
 
-      if (firstcall) then
-          qq = Kasner_like__q
-          firstcall = .false.
-      end if
+      qq = Kasner_like__q
 
       a1= t**(2.d0*qq)
       a3= t**(2.d0-4.d0*qq)    

@@ -37,23 +37,15 @@ c output arguments
       CCTK_REAL psi
       LOGICAL   Tmunu_flag
 
-c local static variables
-      logical firstcall
-      CCTK_REAL arad
-      data firstcall /.true./
-      save firstcall, arad
-
 c local variables
+      CCTK_REAL arad
       CCTK_REAL am
 
 C This model has a cosmological constant
 C ==> it sets the stress-energy tensor in the "CalcTmunu" code
       Tmunu_flag = .true.
 
-      if (firstcall) then
-          arad = de_Sitter__scale
-          firstcall = .false.
-      end if
+      arad = de_Sitter__scale
  
       am=arad*t**(4.0D0/3.0D0)     
 

@@ -36,28 +36,19 @@ c functions local to this file
       CCTK_REAL gfunc
 
 c local variables
+      CCTK_REAL h, d, numlim
       CCTK_REAL a, b, mu0, mu1, lam1, mu2, lam2,
      $    lam3, mu4, lam4, mu5, lam5, num, div, f,
      $    elam, emu0, delta, tmp
-
-c local static variables
-      logical firstcall
-      CCTK_REAL h, d, numlim
-      data firstcall /.true./
-      save firstcall, h, d, numlim
 
 C This is a vacuum spacetime with no cosmological constant
       Tmunu_flag = .false.
 
 C     Get parameters of the exact solution.
 
-      if (firstcall) then
-         h      = boost_rotation_symmetric__scale
-         d      = boost_rotation_symmetric__amp
-         numlim = boost_rotation_symmetric__min_d
-
-         firstcall = .false.
-      end if
+      h      = boost_rotation_symmetric__scale
+      d      = boost_rotation_symmetric__amp
+      numlim = boost_rotation_symmetric__min_d
 
 C     Intermediate quantities.
 

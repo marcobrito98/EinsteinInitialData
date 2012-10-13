@@ -29,27 +29,17 @@ c output arguments
       CCTK_REAL psi
       LOGICAL   Tmunu_flag
 
-c static locals
-      logical firstcall
-      CCTK_REAL m1,m2,b
-      data firstcall /.true./
-      save firstcall, m1,m2,b
-c$omp threadprivate (firstcall, m1,m2,b)
-
 c locals
+      CCTK_REAL m1,m2,b
       CCTK_REAL rin1,rin2,rout,x1,x2, r1, r2, r3, results(10)
 
 C this is a vacuum solution with no cosmological constant
 C ==> it does not set the stress-energy tensor
       Tmunu_flag = .false.
 
-      if (firstcall) then
-         m1 = Alvi__mass1
-         m2 = Alvi__mass2
-         b  = Alvi__separation
-
-         firstcall = .false.
-      end if
+      m1 = Alvi__mass1
+      m2 = Alvi__mass2
+      b  = Alvi__separation
 
       rin1 = dsqrt(m1*b)
       rin2 = dsqrt(m2*b)

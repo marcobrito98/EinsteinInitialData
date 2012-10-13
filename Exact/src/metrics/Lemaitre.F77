@@ -36,26 +36,17 @@ c output arguments
       CCTK_REAL psi
       LOGICAL   Tmunu_flag
       
-
-c local static variables
-      logical firstcall
-      CCTK_REAL ka, la, e0, r0
-      data firstcall /.true./
-      save firstcall, ka, la, e0, r0
-    
 c local variables
+      CCTK_REAL ka, la, e0, r0
       CCTK_REAL unu, ra, ra2, Pii
 
 c this model sets the stress-energy tensor in the "CalcTmunu" code
       Tmunu_flag = .true.
 
-      if (firstcall) then
-          ka = Lemaitre__kappa
-          e0 = Lemaitre__epsilon0
-          la = Lemaitre__Lambda 
-          r0 = Lemaitre__R0
-          firstcall = .false.
-      end if
+      ka = Lemaitre__kappa
+      e0 = Lemaitre__epsilon0
+      la = Lemaitre__Lambda 
+      r0 = Lemaitre__R0
 
        Pii = acos(-1.0D0)
 

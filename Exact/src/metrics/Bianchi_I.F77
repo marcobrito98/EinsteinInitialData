@@ -33,23 +33,14 @@ c output arguments
       CCTK_REAL psi
       LOGICAL   Tmunu_flag
 
-c local static variables
-      logical firstcall
-      CCTK_REAL arad
-      data firstcall /.true./
-      save firstcall, arad
-c$omp threadprivate (firstcall, arad)
- 
 c local variables
+      CCTK_REAL arad
       CCTK_REAL bx, by
 
 C This is a vacuum spacetime with no cosmological constant
       Tmunu_flag = .false.
 
-      if (firstcall) then
-          arad = Bianchi_I__scale
-          firstcall = .false.
-      end if
+      arad = Bianchi_I__scale
 
       bx = arad*sin(x+t)
       by = arad*cos(x+t)

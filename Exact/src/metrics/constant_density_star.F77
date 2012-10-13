@@ -44,13 +44,8 @@ c output arguments
       CCTK_REAL psi
       LOGICAL   Tmunu_flag
 
-c local static variables
-      logical firstcall
-      CCTK_REAL mass,radius
-      data firstcall /.true./
-      save firstcall, mass, radius
-
 c local variables
+      CCTK_REAL mass,radius
       CCTK_REAL r,c,psi4
 
 c constants
@@ -63,14 +58,8 @@ c ==> it sets the stress-energy tensor in the "CalcTmunu" code
 
 c     Get parameters of the metric.
 
-      if (firstcall) then
-
-         mass   = constant_density_star__mass
-         radius = constant_density_star__radius
-
-         firstcall = .false.
-
-      end if
+      mass   = constant_density_star__mass
+      radius = constant_density_star__radius
 
 c     Find r.
 

@@ -31,22 +31,14 @@ c output arguments
       CCTK_REAL psi
       LOGICAL   Tmunu_flag
 
-c local static variables
-      logical firstcall
-      CCTK_REAL arad
-      data firstcall /.true./
-      save firstcall, arad
-    
 c local variables
+      CCTK_REAL arad
       CCTK_REAL am
 
 C This model has a cosmological constant
       Tmunu_flag = .true.
 
-      if (firstcall) then
-          arad = anti_de_Sitter_Lambda__scale
-          firstcall = .false.
-      end if
+      arad = anti_de_Sitter_Lambda__scale
 
       am=exp(2.0D0*sqrt(-arad/3.0D0)*x)   
        

@@ -33,22 +33,13 @@ c output arguments
       CCTK_REAL psi
       LOGICAL   Tmunu_flag
 
-c local static variables
-      logical firstcall
+c local variables
       CCTK_REAL arad
-      data firstcall /.true./
-      save firstcall, arad
-c$omp threadprivate (firstcall, arad)
- 
 
 C This is a vacuum spacetime with no cosmological constant
       Tmunu_flag = .false.
 
-      if (firstcall) then
-          arad = Goedel__scale
-          firstcall = .false.
-      end if
-
+      arad = Goedel__scale
      
       gdtt = -arad*arad
       gdtx = 0.d0

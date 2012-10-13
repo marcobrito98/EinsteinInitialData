@@ -33,24 +33,15 @@ c output arguments
       CCTK_REAL psi
       LOGICAL   Tmunu_flag
 
-c local static variables
-      logical firstcall
-      CCTK_REAL lam, mas
-      data firstcall /.true./
-      save firstcall, lam, mas
-
 c local variables
+      CCTK_REAL lam, mas
       CCTK_REAL r2, ppp, unu, doi
 
 C This model has a cosmological constant
       Tmunu_flag = .true.
 
-
-      if (firstcall) then
-          lam = Schwarzschild_Lemaitre__Lambda
-          mas = Schwarzschild_Lemaitre__mass
-          firstcall = .false.
-      end if
+      lam = Schwarzschild_Lemaitre__Lambda
+      mas = Schwarzschild_Lemaitre__mass
  
       r2 =x*x+y*y+z*z
 

@@ -31,22 +31,14 @@ c output arguments
       CCTK_REAL psi
       LOGICAL   Tmunu_flag
 
-c local static variables
-      logical firstcall
-      data firstcall /.true./
-      save firstcall, pp1, pp2
- 
 c local variables
       CCTK_REAL pp1,pp2,a1,a2,a3
  
 C This is a vacuum spacetime with no cosmological constant
       Tmunu_flag = .true.
 
-      if (firstcall) then
-          pp1= Kasner_generalized__p1
-          pp2= Kasner_generalized__p2
-          firstcall = .false.
-      end if
+      pp1= Kasner_generalized__p1
+      pp2= Kasner_generalized__p2
 
       a1= t**(2.d0*pp1)
       a2= t**(2.d0*pp2)

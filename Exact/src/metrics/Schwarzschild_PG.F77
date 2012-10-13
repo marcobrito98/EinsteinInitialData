@@ -33,13 +33,8 @@ c output arguments
       CCTK_REAL psi
       LOGICAL   Tmunu_flag
 
-c local static variables
-      logical firstcall
-      CCTK_REAL eps, m
-      data firstcall /.true./
-      save firstcall, eps, m
-
 c local variables
+      CCTK_REAL eps, m
       CCTK_REAL r, bx, by, bz, b2
 
 C This is a vacuum spacetime with no cosmological constant
@@ -47,11 +42,8 @@ C This is a vacuum spacetime with no cosmological constant
 
 C     Get parameters of the exact solution.
 
-      if (firstcall) then
-         eps = Schwarzschild_PG__epsilon
-         m   = Schwarzschild_PG__mass
-         firstcall = .false.
-      end if
+      eps = Schwarzschild_PG__epsilon
+      m   = Schwarzschild_PG__mass
 
       r = max(sqrt(x**2 + y**2 + z**2), eps)
       bx = sqrt(2.d0 * m / r) * x / r
