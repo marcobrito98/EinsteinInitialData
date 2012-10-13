@@ -70,6 +70,8 @@ c static local variables describing Lorentz transformation
       save      partial_Mx_wrt_Cx
       save      partial_Cx_wrt_Mx
       save      R
+c$omp threadprivate (firstcall, gamma, vv, parallel, perp, 
+c$omp+               partial_Mx_wrt_Cx,partial_Cx_wrt_Mx, R)
 
 c coordinates and 4-metric
       CCTK_REAL Cx(0:3)
@@ -140,8 +142,6 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 c
 c compute Lorentz transformation information on first call
 c
-      if (firstcall) then
-c$omp critical
       if (firstcall) then
 
 c boost velocity
@@ -293,8 +293,6 @@ c     Mbetax(i) + R(i,j) Nbetax(j)   [wrong]
 c     Mbetax(i) + R(j,i) Nbetax(j)   [correct]
 
          firstcall = .false.
-      end if
-c$omp end critical
       end if
 
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc

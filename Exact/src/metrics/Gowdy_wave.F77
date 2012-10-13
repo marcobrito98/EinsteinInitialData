@@ -44,6 +44,7 @@ c local static variables
       CCTK_REAL Bessel_J0, Bessel_J1
       data firstcall /.true./
       save firstcall, amp, PI, twoPI, Bessel_J0, Bessel_J1
+c$omp threadprivate (firstcall, amp, PI, twoPI, Bessel_J0, Bessel_J1)
  
 c local variables
       CCTK_REAL Bessel_J0_t, Bessel_J1_t

@@ -38,6 +38,7 @@ c local static variables
       CCTK_REAL arad
       data firstcall /.true./
       save firstcall, arad
+c$omp threadprivate (firstcall, arad)
  
 c local variables
       CCTK_REAL bx, by

@@ -34,6 +34,7 @@ c static locals
       CCTK_REAL m1,m2,b
       data firstcall /.true./
       save firstcall, m1,m2,b
+c$omp threadprivate (firstcall, m1,m2,b)
 
 c locals
       CCTK_REAL rin1,rin2,rout,x1,x2, r1, r2, r3, results(10)

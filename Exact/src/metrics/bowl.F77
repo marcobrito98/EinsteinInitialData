@@ -87,6 +87,7 @@ c local static variables
       CCTK_REAL t0,st
       data firstcall /.true./
       save firstcall,evolve,type,a,c,s,dx,dy,dz,t0,st
+c$omp threadprivate (firstcall,evolve,type,a,c,s,dx,dy,dz,t0,st)
 
 c local variables
       integer type

@@ -60,25 +60,25 @@ C     Set data pointwise.
       ny = cctk_lsh(2)
       nz = cctk_lsh(3)
 
-C.omp parallel do private(
-C.omp$     i, j, k,
-C.omp$     tt, xx, yy, zz,
-C.omp$     alpjunk, dtalpjunk, axjunk, ayjunk, azjunk, 
-C.omp$     betaxjunk, betayjunk, betazjunk,
-C.omp$     dtbetaxjunk, dtbetayjunk, dtbetazjunk,
-C.omp$     bxxjunk, bxyjunk, bxzjunk, 
-C.omp$     byxjunk, byyjunk, byzjunk, 
-C.omp$     bzxjunk, bzyjunk, bzzjunk,
-C.omp$     dxgxxjunk, dxgyyjunk, dxgzzjunk, 
-C.omp$     dxgxyjunk, dxgyzjunk, dxgxzjunk,
-C.omp$     dygxxjunk, dygyyjunk, dygzzjunk, 
-C.omp$     dygxyjunk, dygyzjunk, dygxzjunk,
-C.omp$     dzgxxjunk, dzgyyjunk, dzgzzjunk, 
-C.omp$     dzgxyjunk, dzgyzjunk, dzgxzjunk,
-C.omp$     exact_psi,
-C.omp$     exact_psix, exact_psiy, exact_psiz,
-C.omp$     exact_psixx, exact_psiyy, exact_psizz,
-C.omp$     exact_psixy, exact_psiyz, exact_psixz)
+C$omp parallel do private(
+C$omp$     i, j, k,
+C$omp$     tt, xx, yy, zz,
+C$omp$     alpjunk, dtalpjunk, axjunk, ayjunk, azjunk, 
+C$omp$     betaxjunk, betayjunk, betazjunk,
+C$omp$     dtbetaxjunk, dtbetayjunk, dtbetazjunk,
+C$omp$     bxxjunk, bxyjunk, bxzjunk, 
+C$omp$     byxjunk, byyjunk, byzjunk, 
+C$omp$     bzxjunk, bzyjunk, bzzjunk,
+C$omp$     dxgxxjunk, dxgyyjunk, dxgzzjunk, 
+C$omp$     dxgxyjunk, dxgyzjunk, dxgxzjunk,
+C$omp$     dygxxjunk, dygyyjunk, dygzzjunk, 
+C$omp$     dygxyjunk, dygyzjunk, dygxzjunk,
+C$omp$     dzgxxjunk, dzgyyjunk, dzgzzjunk, 
+C$omp$     dzgxyjunk, dzgyzjunk, dzgxzjunk,
+C$omp$     exact_psi,
+C$omp$     exact_psix, exact_psiy, exact_psiz,
+C$omp$     exact_psixx, exact_psiyy, exact_psizz,
+C$omp$     exact_psixy, exact_psiyz, exact_psixz)
       do k=1,nz
          do j=1,ny
             do i=1,nx

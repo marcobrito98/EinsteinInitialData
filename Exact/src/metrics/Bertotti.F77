@@ -35,6 +35,7 @@ c static local variables
       logical firstcall
       data firstcall /.true./
       save firstcall, baza
+c$omp threadprivate (firstcall, baza)
 
 c local variables
       CCTK_REAL baza
