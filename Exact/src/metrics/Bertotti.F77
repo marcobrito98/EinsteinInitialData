@@ -31,12 +31,6 @@ c output arguments
       CCTK_REAL psi
       LOGICAL   Tmunu_flag
 
-c static local variables
-      logical firstcall
-      data firstcall /.true./
-      save firstcall, baza
-c$omp threadprivate (firstcall, baza)
-
 c local variables
       CCTK_REAL baza
       CCTK_REAL unu, doi
@@ -45,10 +39,7 @@ C this model has a cosmological constant
 C ==> it sets the stress-energy tensor in the "CalcTmunu" code
       Tmunu_flag = .true.
 
-      if (firstcall) then
-          baza = Bertotti__Lambda
-          firstcall = .false.
-      end if
+      baza = Bertotti__Lambda
 
       unu=exp(2.0D0*sqrt(-baza)*x)
       doi=exp(2.0D0*sqrt(-baza)*z)   
