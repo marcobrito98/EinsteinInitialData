@@ -118,8 +118,8 @@ void Hydro_InitExcisionMask(CCTK_ARGUMENTS)
           {
               if (domain_val == full)
               {
-                 if ( (hydro_initexcision_coordinate_length <= 0.0) &&
-                      ( ( x_frac > 0.5 - hydro_initexcision_fraction) &&
+                 if ( ( (hydro_initexcision_coordinate_length <= 0.0) &&
+                        ( x_frac > 0.5 - hydro_initexcision_fraction) &&
                         ( x_frac < 0.5 + hydro_initexcision_fraction) &&
                         ( y_frac > 0.5 - hydro_initexcision_fraction) &&
                         ( y_frac < 0.5 + hydro_initexcision_fraction) &&
@@ -227,8 +227,8 @@ void Hydro_InitExcisionMask(CCTK_ARGUMENTS)
           }
           else if (hydro_initexcision_type_val == sphere)
           {
-            if ( (hydro_initexcision_coordinate_length <= 0.0) &&
-                 ( ( (x[point]-hydro_initexcision_position_x) *
+            if ( ( (hydro_initexcision_coordinate_length <= 0.0) &&
+                   ( (x[point]-hydro_initexcision_position_x) *
                      (x[point]-hydro_initexcision_position_x) +
                      (y[point]-hydro_initexcision_position_y) *
                      (y[point]-hydro_initexcision_position_y) +
