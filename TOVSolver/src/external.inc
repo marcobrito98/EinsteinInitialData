@@ -3,6 +3,10 @@
 void TOV_debug_input_points(CCTK_INT size,
                        const CCTK_REAL *x,
                        const CCTK_REAL *y,
+                       const CCTK_REAL *z);
+void TOV_debug_input_points(CCTK_INT size,
+                       const CCTK_REAL *x,
+                       const CCTK_REAL *y,
                        const CCTK_REAL *z)
 {
     FILE *f;
@@ -69,7 +73,7 @@ CCTK_INT TOV_Set_Rho_ADM(CCTK_POINTER_TO_CONST cctkGH,
   for (CCTK_INT i=0; i<size; i++)
   {
     CCTK_REAL r_to_star, press, phi, r;
-    CCTK_REAL rho, eps, gxx, w_lorentz_2;
+    CCTK_REAL rho, gxx, w_lorentz_2;
     CCTK_INT  star_i=0, star=0;
     /* calculate the distance to the star */
     star=get_nearest_star(x,y,z,i);
@@ -88,14 +92,12 @@ CCTK_INT TOV_Set_Rho_ADM(CCTK_POINTER_TO_CONST cctkGH,
                                &press, &phi, &r);
     press = (press > 0.0) ? press : 0.0;
     rho = pow(press/TOV_K[star], 1.0/TOV_Gamma[star]);
-    eps = (rho > 0.0) ? press/(TOV_Gamma[star] - 1.0) / rho : 0.0;
     gxx = r / (r_to_star + 1.0e-30) * r / (r_to_star + 1.0e-30);
     /* velocity components as in gr-qc/9811015 */
     w_lorentz_2 = 1. / (1. - gxx*TOV_Velocity_x[star]*TOV_Velocity_x[star]
                            - gxx*TOV_Velocity_y[star]*TOV_Velocity_y[star]
                            - gxx*TOV_Velocity_z[star]*TOV_Velocity_z[star]);
     if (rho > 0.0)
-      /* source[i]=gxx*gxx*rho*(1.0+eps); */
       source[i]=gxx*gxx* (w_lorentz_2*rho +
                           (w_lorentz_2*TOV_Gamma[star]/(TOV_Gamma[star]-1.)-1.)*
                           press);
@@ -212,7 +214,7 @@ CCTK_INT TOV_Set_Initial_Guess_for_u(
   /* loop over all points we got */
   for (i=0; i<size; i++)
   {
-    CCTK_REAL rho, eps, gxx;
+    CCTK_REAL gxx;
     /* calculate the distance to the stars and choose the closest */
     star=get_nearest_star(x,y,z,i);
     star_i = star * TOV_Num_Radial;
@@ -228,11 +230,6 @@ CCTK_INT TOV_Set_Initial_Guess_for_u(
                                &(TOV_rbar_1d[star_i]),  &(TOV_r_1d[star_i]),
                                &r_to_star, TOV_Surface[star],
                                &press, &phi, &r);
-    rho = pow(press/TOV_K[star], 1.0/TOV_Gamma[star]);
-    if (rho>0.0)
-      eps = press/(TOV_Gamma[star] - 1.0) / rho;
-    else
-      eps = 0.0;
     gxx = r / (r_to_star + 1.0e-30) * r / (r_to_star + 1.0e-30);
     u[i]=pow(gxx, 0.25) - 1.0;
   }
@@ -240,6 +237,16 @@ CCTK_INT TOV_Set_Initial_Guess_for_u(
 }
 
 
+void bisection     (CCTK_REAL *vx, CCTK_REAL *vy, CCTK_REAL *vz,
+                    CCTK_REAL *rhoold, CCTK_REAL *rhonew,
+                    CCTK_REAL *w_lorentz_2, CCTK_REAL *v_2,
+                    CCTK_REAL Gamma, CCTK_REAL K,
+                    CCTK_REAL source,
+                    CCTK_REAL mom_source_x,
+                    CCTK_REAL mom_source_y,
+                    CCTK_REAL mom_source_z,
+                    CCTK_REAL my_psi4,
+                    CCTK_REAL x, CCTK_REAL y, CCTK_REAL z, CCTK_REAL rho_orig);
 void bisection     (CCTK_REAL *vx, CCTK_REAL *vy, CCTK_REAL *vz,
                     CCTK_REAL *rhoold, CCTK_REAL *rhonew,
                     CCTK_REAL *w_lorentz_2, CCTK_REAL *v_2,
@@ -278,6 +285,16 @@ void bisection     (CCTK_REAL *vx, CCTK_REAL *vy, CCTK_REAL *vz,
     } while (ub-lb < 1.e-10);
 }
 
+void newton_raphson(CCTK_REAL *vx, CCTK_REAL *vy, CCTK_REAL *vz,
+                    CCTK_REAL *rhoold, CCTK_REAL *rhonew,
+                    CCTK_REAL *w_lorentz_2, CCTK_REAL *v_2,
+                    CCTK_REAL Gamma, CCTK_REAL K,
+                    CCTK_REAL source,
+                    CCTK_REAL mom_source_x,
+                    CCTK_REAL mom_source_y,
+                    CCTK_REAL mom_source_z,
+                    CCTK_REAL my_psi4,
+                    CCTK_REAL x, CCTK_REAL y, CCTK_REAL z, CCTK_REAL rho_orig);
 void newton_raphson(CCTK_REAL *vx, CCTK_REAL *vy, CCTK_REAL *vz,
                     CCTK_REAL *rhoold, CCTK_REAL *rhonew,
                     CCTK_REAL *w_lorentz_2, CCTK_REAL *v_2,
@@ -581,6 +598,7 @@ CCTK_INT TOV_Rescale_Sources(
   {
     case 3:
         TOV_Copy(size, rho_p_p,  rho);
+        TOV_Copy(size, press_p_p,press);
         TOV_Copy(size, eps_p_p,  eps);
         TOV_Copy(size, vel0_p_p, vel0);
         TOV_Copy(size, vel1_p_p, vel1);
@@ -593,6 +611,7 @@ CCTK_INT TOV_Rescale_Sources(
         TOV_Copy(size, w_lorentz_p_p, w_lorentz);
     case 2:
         TOV_Copy(size, rho_p,  rho);
+        TOV_Copy(size, press_p,press);
         TOV_Copy(size, eps_p,  eps);
         TOV_Copy(size, vel0_p, vel0);
         TOV_Copy(size, vel1_p, vel1);

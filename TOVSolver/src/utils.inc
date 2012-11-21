@@ -76,12 +76,14 @@ void TOV_C_FreeMemory (CCTK_ARGUMENTS)
 
 /* - utility routine
    - fills an real-array 'var' of size 'i' with value 'r' */
+void TOV_C_fill(CCTK_REAL *var, CCTK_INT i, CCTK_REAL r);
 void TOV_C_fill(CCTK_REAL *var, CCTK_INT i, CCTK_REAL r)
 {
   for (i-- ;i >= 0; i--)
     var[i]=r;
 }
 
+void TOV_Copy(CCTK_INT size, CCTK_REAL *var_p, CCTK_REAL *var);
 void TOV_Copy(CCTK_INT size, CCTK_REAL *var_p, CCTK_REAL *var)
 {
 #pragma omp parallel for

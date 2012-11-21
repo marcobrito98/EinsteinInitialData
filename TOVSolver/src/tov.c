@@ -125,11 +125,13 @@ void TOV_C_ParamCheck(CCTK_ARGUMENTS)
    @endhistory
 @@*/
 void TOV_C_Source_RHS(CCTK_REAL r, CCTK_REAL K, CCTK_REAL Gamma,
+                      CCTK_REAL old_data[NUMVARS], CCTK_REAL source_data[NUMVARS]);
+void TOV_C_Source_RHS(CCTK_REAL r, CCTK_REAL K, CCTK_REAL Gamma,
                       CCTK_REAL old_data[NUMVARS], CCTK_REAL source_data[NUMVARS])
 {
   CCTK_REAL LOCAL_TINY, PI;
-  CCTK_REAL press, rho, eps, mu, m, phi, mbary, rprop;
-  CCTK_REAL log_rbar_over_r, r_minus_two_m;
+  CCTK_REAL press, rho, eps, mu, m;
+  CCTK_REAL r_minus_two_m;
 
   LOCAL_TINY = 1.0e-35;
   PI=4.0*atan(1.0);
@@ -138,10 +140,6 @@ void TOV_C_Source_RHS(CCTK_REAL r, CCTK_REAL K, CCTK_REAL Gamma,
   if (press < LOCAL_TINY)
     press = LOCAL_TINY;
   m               = old_data[1];
-  phi             = old_data[2];
-  log_rbar_over_r = old_data[3];
-  mbary           = old_data[4];
-  rprop           = old_data[5];
 
   rho = pow(press / K, 1.0 / Gamma);
   eps = press / (Gamma - 1.0) / rho;
@@ -414,6 +412,11 @@ CCTK_INT TOV_C_find_index(CCTK_INT   array_size,
                           CCTK_REAL *array,
                           CCTK_REAL  goal,
                           CCTK_INT   lower_index,
+                          CCTK_INT   upper_index);
+CCTK_INT TOV_C_find_index(CCTK_INT   array_size,
+                          CCTK_REAL *array,
+                          CCTK_REAL  goal,
+                          CCTK_INT   lower_index,
                           CCTK_INT   upper_index)
 {
   CCTK_INT middle_index;
@@ -432,6 +435,17 @@ CCTK_INT TOV_C_find_index(CCTK_INT   array_size,
 /* utility rountine
  * interpolates from (thorn-internal) 1D-data to Cactus 3D-grid */
 /* input is all but *press_point *phi_point and *r_point */
+void TOV_C_interp_tov_isotropic(
+                                CCTK_INT  star,
+                                CCTK_REAL *TOV_press_1d_local,
+                                CCTK_REAL *TOV_phi_1d_local,
+                                CCTK_REAL *TOV_rbar_1d_local,
+                                CCTK_REAL *TOV_r_1d_local,
+                                CCTK_REAL *r,
+                                CCTK_REAL surface,
+                                CCTK_REAL *press_point,
+                                CCTK_REAL *phi_point,
+                                CCTK_REAL *r_point);
 void TOV_C_interp_tov_isotropic(
                                 CCTK_INT  star,
                                 CCTK_REAL *TOV_press_1d_local,
