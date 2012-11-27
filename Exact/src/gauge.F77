@@ -82,8 +82,8 @@ C
       if ( is_later_slice ) then
          set_lapse   = CCTK_Equals(lapse_evolution_method, "exact").ne.0
          set_shift   = CCTK_Equals(shift_evolution_method, "exact").ne.0
-         set_dtlapse = .false.
-         set_dtshift = .false.
+         set_dtlapse = CCTK_Equals(dtlapse_evolution_method, "exact").ne.0
+         set_dtshift = CCTK_Equals(dtshift_evolution_method, "exact").ne.0
       end if
 
       if ( set_lapse .or. set_shift .or. set_dtlapse .or. set_dtshift) then

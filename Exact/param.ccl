@@ -24,6 +24,15 @@ EXTENDS KEYWORD shift_evolution_method
   "exact" :: "Use shift from exact solution"
 }
 
+EXTENDS KEYWORD dtlapse_evolution_method
+{
+  "exact" :: "Use lapse from exact solution"
+}
+EXTENDS KEYWORD dtshift_evolution_method
+{
+  "exact" :: "Use shift from exact solution"
+}
+
 EXTENDS KEYWORD initial_lapse
 {
   "exact" :: "Initial lapse from exact solution"
