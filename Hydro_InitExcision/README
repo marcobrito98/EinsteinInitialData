@@ -13,7 +13,7 @@ Setup initial excision masks specified by parameters for testing.
 
 This thorn was developed within the Whisky code under the name
 Whisky_InitExcision, was made public by the group of Whisky
-developers and was then included in the EinsteinToolkit using it's
+developers and was then included in the EinsteinToolkit using its
 present name, because it is independend of any hydro evolution code,
 as long as that uses HydroBase.
 
