@@ -346,7 +346,11 @@ cdir$ noinline
      + im,jm,jmc,ifd,i9,j9,k,m,jr,tol,rmax,ipc,irc)
       if(k.eq.m.and.rmax.lt.tol) go to 60
          if(k.eq.m.and.tol.ge.-.5) then
-      if(rmaxo.ne.0.) rate=rmax/rmaxo
+      if(rmaxo.ne.0.) then
+        rate=rmax/rmaxo
+      else
+        rate=1.
+      endif
       rmaxo=rmax
       if(mcyc.eq.0) rmax0=rmax
       resid(mcyc)=rmax
@@ -529,7 +533,7 @@ c .....................................................................
       jm1=jm-1
       jblack=5-jred
 c                                    add correction to next finer grid
- 1000    if(iadd.eq.1) then
+         if(iadd.eq.1) then
       jc=3-jred
       do 10 j=jblack,jm1,2
       jc=jc+1
@@ -537,13 +541,13 @@ c                                    add correction to next finer grid
    10 q(i,j)=q(i,j)+pd(i,jc)*qc(i,jc)+pu(i,jc)*qc(i,jc+1)
 c
 c                       interpolate solution to next finer grid in fmg
- 1001    else
+         else
       jc=3-jred
       do 40 j=jblack,jm1,2
       jc=jc+1
       do 40 i=2,im1
    40 q(i,j)=pd(i,jc)*qc(i,jc)+pu(i,jc)*qc(i,jc+1)
- 1002    endif
+         endif
       return
       end
 c----------------------------------------------------------------------
@@ -606,32 +610,32 @@ c                                              usual red/black relaxatio
       nrel=2
       jrb=jred
 c                                             ipc ..brbr relaxation swee
- 1000    if(iprcud.eq.1) then
+         if(iprcud.eq.1) then
       nrel=ipc
       if(mod(ipc,2).eq.0) jrb=jblack
 c                                     1 black relax for calc g pu,pd,ru,
- 1001    elseif(iprcud.eq.2) then
+         elseif(iprcud.eq.2) then
       nrel=1
       jrb=jblack
- 1002    endif
+         endif
 c
 c
       do 109 nrr=1,nrel
- 5000    if(jrb.eq.jblack) then
+         if(jrb.eq.jblack) then
 c                                                             black rela
- 6000    if(jblack.le.jm1) then
- 1400    if(iprcud.ne.2) then
+         if(jblack.le.jm1) then
+         if(iprcud.ne.2) then
 c
       do 110 j=jblack,jm1,2
       do 110 i=2,im1
   110 q(i,j)=f(i,j)-as(i,j)*q(i,j-1)-an(i,j)*q(i,j+1)
- 7000    if(ifd.eq.9) then
+         if(ifd.eq.9) then
       do 120 j=jblack,jm1,2
       do 120 i=2,im1
   120 q(i,j)=q(i,j)-asw(i,j)*q(i-1,j-1)-ase(i,j)*q(i+1,j-1)-
      + anw(i,j)*q(i-1,j+1)-ane(i,j)*q(i+1,j+1)
- 7001    endif
- 1401    endif
+         endif
+         endif
 c                                                black tridiagonal solve
 c**
 c**  Moved calculation of loop 129 from loop 130 for vectorization
@@ -667,19 +671,19 @@ cmic$ do parallel
   130 continue
 cmic$ end do
 cmic$ end parallel
- 6001    endif
+         endif
 c                                                             red relax
- 5001    else
+         else
 c
       do 210 j=jred,jm1,2
       do 210 i=2,im1
   210 q(i,j)=f(i,j)-as(i,j)*q(i,j-1)-an(i,j)*q(i,j+1)
- 1100    if(ifd.eq.9) then
+         if(ifd.eq.9) then
       do 220 j=jred,jm1,2
       do 220 i=2,im1
   220 q(i,j)=q(i,j)-asw(i,j)*q(i-1,j-1)-ase(i,j)*q(i+1,j-1)-
      + anw(i,j)*q(i-1,j+1)-ane(i,j)*q(i+1,j+1)
- 1101    endif
+         endif
 c                                                      tridiagonal solve
 c                          nman=1 ==> avoid singularity on coarsest grid
       imm=im1
@@ -723,7 +727,7 @@ cmic$ do parallel
   230 continue
 cmic$ end do
 cmic$ end parallel
- 5002    endif
+         endif
       jrb=5-jrb
   109 continue
       return
@@ -756,31 +760,31 @@ c......................................................................
       do 10 i=2,im1
    10 fc(i,jc)=f(i,j)-as(i,j)*q(i,j-1)-an(i,j)*q(i,j+1)-
      + aw(i,j)*q(i-1,j)-ae(i,j)*q(i+1,j)-ac(i,j)*q(i,j)
- 1000    if(ifd.eq.9) then
+         if(ifd.eq.9) then
       jc=1
       do 20 j=jred,jm1,2
       jc=jc+1
       do 20 i=2,im1
    20 fc(i,jc)=fc(i,jc)-asw(i,j)*q(i-1,j-1)-ane(i,j)*q(i+1,j+1)-
      + ase(i,j)*q(i+1,j-1)-anw(i,j)*q(i-1,j+1)
- 1001    endif
+         endif
 c                                           zero out qc as initial guess
       do 25 jc=1,jmc
       do 25 i=1,im
    25 qc(i,jc)=0.
 c                                        if kf=m calculate residual norm
- 2000    if((kf.eq.m.and.tol.ge.0.).or.tol.eq.-.5) then
+         if((kf.eq.m.and.tol.ge.0.).or.tol.eq.-.5) then
       do 30 jc=2,jmc1
       do 30 i=2,im1
       resmax=abs(fc(i,jc))
    30 if(resmax.gt.rmax) rmax=resmax
- 2001    endif
+         endif
 c                                                 weight rhs if irc.ge.1
- 3000    if(irc.eq.1.and.ipc.ge.1) then
+         if(irc.eq.1.and.ipc.ge.1) then
       do 40 jc=2,jmc1
       do 40 i=2,im1
    40 fc(i,jc)=rc(i,jc)*fc(i,jc)
- 3001    endif
+         endif
 c
       return
       end
@@ -796,18 +800,18 @@ c......................................................................
       jm1=jm-1
       im1=im-1
       jc=1
- 1000    if(irc.eq.0) then
+         if(irc.eq.0) then
       do 10 j=jred,jm1,2
       jc=jc+1
       do 10 i=2,im1
    10 fc(i,jc)=ru(i,jc-1)*f(i,j-1)+rd(i,jc)*f(i,j+1)+f(i,j)
- 1001    else
+         else
       do 20 j=jred,jm1,2
       jc=jc+1
       do 20 i=2,im1
    20 fc(i,jc)=ru(i,jc-1)*f(i,j-1)+rd(i,jc)*f(i,j+1)+
      + rc(i,jc)*f(i,j)
- 1002    endif
+         endif
       return
       end
 c----------------------------------------------------------------------
@@ -868,7 +872,7 @@ c                           zeroing out connections to fictitious points
     4 an(i,j)=0.
       as(i,2)=0.
     3 an(i,jm1)=0.
- 1000    if(ifd.eq.9) then
+         if(ifd.eq.9) then
       do 5 j=1,jm
       do 6 i=1,im,im1
       asw(i,j)=0.
@@ -889,7 +893,7 @@ c                           zeroing out connections to fictitious points
       asw(i,2)=0.
       ane(i,jm1)=0.
     7 anw(i,jm1)=0.
- 1001 endif
+      endif
 c
       do 9 jc=1,jmc
       do 9 i=1,im
@@ -904,7 +908,7 @@ c                               calculation of interpolation coeficients
 c
 
 c                                                              define pc
- 2000    if(ipc.ge.1) then
+         if(ipc.ge.1) then
       do 20 j=2,jm1
       do 20 i=2,im1
       fw(i,j)=0.
@@ -925,31 +929,31 @@ c                                                              scale pc
       if(pc(i,jc).eq.0.) pc(i,jc)=pcscale
    50 pc(i,jc)=pc(i,jc)/pcmax
 c
- 2001    else
+         else
       do 55 jc=2,jmc1
       do 55 i=2,im1
    55 pc(i,jc)=1.
- 2002    endif
+         endif
 c
 c                                                              define pu
       jc=3-jred
       do 60 j=jblack,jm1,2
       jc=jc+1
- 4000    if(ipc.eq.0) then
+         if(ipc.eq.0) then
       do 70 i=2,im1
    70 qw(i,j)=-an(i,j)
- 5000    if(ifd.eq.9) then
+         if(ifd.eq.9) then
       do 80 i=2,im1
    80 qw(i,j)=qw(i,j)-ane(i,j)-anw(i,j)
- 5001    endif
- 4001    else
+         endif
+         else
       do 90 i=2,im1
    90 qw(i,j)=-an(i,j)*pc(i,jc+1)
- 6000    if(ifd.eq.9) then
+         if(ifd.eq.9) then
       do 100 i=2,im1
   100 qw(i,j)=qw(i,j)-ane(i,j)*pc(i+1,jc+1)-anw(i,j)*pc(i-1,jc+1)
- 6001    endif
- 4002    endif
+         endif
+         endif
    60 continue
 c                                                          solve for pu
       call urelax(ac,aw,as,ae,an,asw,ase,ane,anw,fw,qw,gam,im,jm,
@@ -959,33 +963,33 @@ c
       jc=3-jred
       do 102 j=jblack,jm1,2
       jc=jc+1
- 3020    if(j.lt.jm1) then
+         if(j.lt.jm1) then
       do 103 i=2,im1
   103 pu(i,jc)=qw(i,j)
- 3021    endif
+         endif
   102 continue
 c
 c                                                              define pd
       jc=3-jred
       do 106 j=jblack,jm1,2
       jc=jc+1
- 8000    if(ipc.eq.0) then
+         if(ipc.eq.0) then
       do 130 i=2,im1
   130 qw(i,j)=-as(i,j)
- 9000    if(ifd.eq.9) then
+         if(ifd.eq.9) then
       do 140 i=2,im1
   140 qw(i,j)=qw(i,j)-ase(i,j)-asw(i,j)
- 9001    endif
+         endif
 c
- 8001    else
+         else
 c
       do 150 i=2,im1
   150 qw(i,j)=-as(i,j)*pc(i,jc)
- 1100    if(ifd.eq.9) then
+         if(ifd.eq.9) then
       do 160 i=2,im1
   160 qw(i,j)=qw(i,j)-ase(i,j)*pc(i+1,jc)-asw(i,j)*pc(i-1,jc)
- 1101    endif
- 8002    endif
+         endif
+         endif
   106 continue
 c                                                          solve for pd
       call urelax(ac,aw,as,ae,an,asw,ase,ane,anw,fw,qw,gam,im,jm,
@@ -994,16 +998,16 @@ c
       jc=3-jred
       do 105 j=jblack,jm1,2
       jc=jc+1
- 7010    if(j.gt.2) then
+         if(j.gt.2) then
       do 104 i=2,im1
   104 pd(i,jc)=qw(i,j)
- 7011    endif
+         endif
   105 continue
 c
 c                                            define restriction operator
 c
 c                                                              define rc
- 1200    if(irc.eq.1) then
+         if(irc.eq.1) then
       do 500 jc=2,jmc1
       do 500 i=2,im1
   500 rc(i,jc)=pc(i,jc)
@@ -1011,22 +1015,22 @@ c                                                              define rc
       do 502 jc=2,jmc1
       do 502 i=2,im1
   502 rc(i,jc)=1.
- 1201    endif
+         endif
 c   
 c                                           compute qw = -Cb(inv) * eb*
- 1300    if(irurd.ge.1) then
+         if(irurd.ge.1) then
       jc=3-jred
- 3300    if(irurd.eq.1) then
+         if(irurd.eq.1) then
       do 560 j=jblack,jm1,2
       jc=jc+1
       do 560 i=2,im1
   560 qw(i,j)=1.
- 3301    elseif(irurd.eq.2) then
+         elseif(irurd.eq.2) then
       do 561 j=jblack,jm1,2
       jc=jc+1
       do 561 i=2,im1
   561 qw(i,j)=(pd(i,jc)*pc(i,jc)+pu(i,jc)*pc(i,jc+1))
- 3302    endif
+         endif
 c
       call urelax(ac,aw,as,ae,an,asw,ase,ane,anw,fw,qw,gam,im,jm,
      + i9,j9,ifd,nman,kf,m,jred,ipc,2)
@@ -1035,26 +1039,26 @@ c
       do 566 j=jblack,jm1,2
       jc=jc+1
 c                                           compute ru = -b(j+1) * qw
- 1400    if(j.lt.jm1) then
+         if(j.lt.jm1) then
       do 570 i=2,im1
   570 ru(i,jc)=-as(i,j+1)*qw(i,j)
- 1500    if(ifd.eq.9) then
+         if(ifd.eq.9) then
       do 580 i=2,im1
   580 ru(i,jc)=ru(i,jc)-ase(i,j+1)*qw(i+1,j)-asw(i,j+1)*qw(i-1,j)
- 1501    endif
- 1401    endif
+         endif
+         endif
 c                             compute rd = -a(j-1) * c(j)(inv) * qw
- 1600    if(j.gt.2) then
+         if(j.gt.2) then
       do 650 i=2,im1
   650 rd(i,jc)=-an(i,j-1)*qw(i,j)
- 1700    if(ifd.eq.9) then
+         if(ifd.eq.9) then
       do 660 i=2,im1
   660 rd(i,jc)=rd(i,jc)-ane(i,j-1)*qw(i+1,j)-anw(i,j-1)*qw(i-1,j)
- 1701    endif
- 1601    endif
+         endif
+         endif
   566 continue
 c
- 1301    else
+         else
 c                                              else set ru=pu and rd=pd
       jc=3-jred
       do 670 j=jblack,jm1,2
@@ -1062,11 +1066,11 @@ c                                              else set ru=pu and rd=pd
       do 670 i=2,im1
       ru(i,jc)=pu(i,jc)
   670 rd(i,jc)=pd(i,jc)
- 1303    endif
+         endif
 c
 c                                   calculating the coarse grid operator
 c
- 1800    if(ipc+irc+irurd.eq.0) then
+         if(ipc+irc+irurd.eq.0) then
       j=jred-2
       do 200 jc=2,jmc1
       j=j+2
@@ -1086,7 +1090,7 @@ c
       asec(i,jc)=pd(i+1,jc-1)*ae(i,j-1)*pu(i,jc-1)
       anec(i,jc)=pu(i+1,jc)*ae(i,j+1)*pd(i,jc)
   200 anwc(i,jc)=pu(i-1,jc)*aw(i,j+1)*pd(i,jc)
- 1900    if(ifd.eq.9) then
+         if(ifd.eq.9) then
       j=jred-2
       do 210 jc=2,jmc1
       j=j+2
@@ -1099,9 +1103,9 @@ c
       asec(i,jc)=asec(i,jc)+ase(i,j-1)*pu(i,jc-1)+pd(i+1,jc-1)*ase(i,j)
       anec(i,jc)=anec(i,jc)+ane(i,j+1)*pd(i,jc)+pu(i+1,jc)*ane(i,j)
   210 anwc(i,jc)=anwc(i,jc)+anw(i,j+1)*pd(i,jc)+pu(i-1,jc)*anw(i,j)
- 1901    endif
+         endif
 c
- 1801    else
+         else
 c
       j=jred-2
       do 300 jc=2,jmc1
@@ -1130,7 +1134,7 @@ c
       asec(i,jc)=ru(i,jc-1)*ae(i,j-1)*pd(i+1,jc-1)
       anec(i,jc)=rd(i,jc)*ae(i,j+1)*pu(i+1,jc)
   300 anwc(i,jc)=rd(i,jc)*aw(i,j+1)*pu(i-1,jc)
- 2100    if(ifd.eq.9) then
+         if(ifd.eq.9) then
       j=jred-2
       do 310 jc=2,jmc1
       j=j+2
@@ -1151,8 +1155,8 @@ c
      +                      rc(i,jc)*ane(i,j)*pu(i+1,jc)
   310 anwc(i,jc)=anwc(i,jc)+rd(i,jc)*anw(i,j+1)*pc(i-1,jc+1)+
      +                      rc(i,jc)*anw(i,j)*pu(i-1,jc)
- 2101    endif
- 1802    endif
+         endif
+         endif
 cxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
          if(iprsol.eq.2.and.kf.eq.m.and.ifd.eq.5) then
       do 111 j=2,jm1

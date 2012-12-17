@@ -57,7 +57,7 @@ c@@*/
       CCTK_REAL o60,o61,o62,o63,o64,o65,o66,o67,o68,o69
       CCTK_REAL o70,o71,o72,o73,o74,o75,o76,o77,o78,o79
       CCTK_REAL o80,o81,o82,o83,o84,o85,o86,o87,o88,o89
-      CCTK_REAL o90,o91,o92,o93,o94,o95,o96,o97,o98,o99
+      CCTK_REAL o90,o91,o92,o93,o94,o95,o96
       integer i22
       CCTK_REAL pi
       CCTK_REAL adm
