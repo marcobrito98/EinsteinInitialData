@@ -26,14 +26,17 @@ C $Header$
       DECLARE_CCTK_FUNCTIONS      
 
 c input arguments
-      CCTK_REAL x, y, z, t
+      CCTK_REAL t
+      CCTK_DECLARE(CCTK_REAL, x,)
+      CCTK_DECLARE(CCTK_REAL, y,)
+      CCTK_DECLARE(CCTK_REAL, z,)
 
 c output arguments
       CCTK_REAL gdtt, gdtx, gdty, gdtz, 
      $       gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $       gutt, gutx, guty, gutz, 
      $       guxx, guyy, guzz, guxy, guyz, guzx
-      CCTK_REAL psi
+      CCTK_DECLARE(CCTK_REAL, psi,)
       LOGICAL   Tmunu_flag
       
 c local variables

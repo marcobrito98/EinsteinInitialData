@@ -1,4 +1,4 @@
-C Bertotti spacetime with cosmological constant
+C Anti DeSitter metric spacetime with csomological constant
 C
 C Author : D. Vulcanov (Timisoara, Romania)
 C see ../../README for copyright & licensing info
@@ -8,7 +8,7 @@ C $Header$
 #include "cctk.h"
 #include "cctk_Parameters.h"
 
-      subroutine Exact__Bertotti(
+      subroutine Exact__anti_de_Sitter_Lambda(
      $     x, y, z, t,
      $     gdtt, gdtx, gdty, gdtz, 
      $     gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
@@ -21,48 +21,48 @@ C $Header$
       DECLARE_CCTK_PARAMETERS
 
 c input arguments
-      CCTK_REAL x, y, z, t
+      CCTK_REAL x
+      CCTK_DECLARE(CCTK_REAL, y,)
+      CCTK_DECLARE(CCTK_REAL, z,)
+      CCTK_DECLARE(CCTK_REAL, t,)
 
 c output arguments
       CCTK_REAL gdtt, gdtx, gdty, gdtz, 
      $       gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $       gutt, gutx, guty, gutz, 
      $       guxx, guyy, guzz, guxy, guyz, guzx
-      CCTK_REAL psi
+      CCTK_DECLARE(CCTK_REAL, psi,)
       LOGICAL   Tmunu_flag
 
 c local variables
-      CCTK_REAL baza
-      CCTK_REAL unu, doi
- 
-C this model has a cosmological constant
-C ==> it sets the stress-energy tensor in the "CalcTmunu" code
+      CCTK_REAL arad
+      CCTK_REAL am
+
+C This model has a cosmological constant
       Tmunu_flag = .true.
 
-      baza = Bertotti__Lambda
+      arad = anti_de_Sitter_Lambda__scale
 
-      unu=exp(2.0D0*sqrt(-baza)*x)
-      doi=exp(2.0D0*sqrt(-baza)*z)   
-
+      am=exp(2.0D0*sqrt(-arad/3.0D0)*x)   
        
-      gdtt = -unu
+      gdtt = -am 
       gdtx = 0.0D0 
       gdty = 0.0D0
       gdtz = 0.0D0
       gdxx = 1.0D0
-      gdyy = doi
-      gdzz = 1.0D0
+      gdyy = am
+      gdzz = am
       gdxy = 0.0D0
       gdyz = 0.0D0
       gdzx = 0.0D0
 
-      gutt = -1.0D0/unu
+      gutt = -1.0D0/am
       gutx = 0.0D0
       guty = 0.0D0
       gutz = 0.0D0
       guxx = 1.0D0
-      guyy = 1.0D0/doi
-      guzz = 1.0D0
+      guyy = 1.0D0/am
+      guzz = 1.0D0/am
       guxy = 0.0D0
       guyz = 0.0D0
       guzx = 0.0D0

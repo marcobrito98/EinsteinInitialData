@@ -4,22 +4,22 @@
 # Source files in this directory
 SRCS = ParamCheck.c			\
        Startup.c			\
-       decode_pars.F77			\
-       initialize.F77			\
+       decode_pars.F			\
+       initialize.F			\
 					\
        slice_initialize.F		\
        slice_evolve.F			\
        slice_data.F			\
 					\
-       gauge.F77			\
-       Bona_Masso_data.F77		\
+       gauge.F			\
+       Bona_Masso_data.F		\
 					\
-       boost.F77			\
-       metric.F77			\
+       boost.F			\
+       metric.F			\
 					\
-       boundary.F77			\
-       blended_boundary.F77		\
-       xyz_blended_boundary.F77		\
+       boundary.F			\
+       blended_boundary.F		\
+       xyz_blended_boundary.F		\
        linear_extrap_one_bndry.F
 
 # Subdirectories containing source files to be compiled

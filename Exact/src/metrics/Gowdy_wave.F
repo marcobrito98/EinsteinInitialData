@@ -27,14 +27,16 @@ C @@
       DECLARE_CCTK_PARAMETERS
 
 c input arguments
-      CCTK_REAL x, y, z, t
+      CCTK_REAL z, t
+      CCTK_DECLARE(CCTK_REAL, x,)
+      CCTK_DECLARE(CCTK_REAL, y,)
 
 c output arguments
       CCTK_REAL gdtt, gdtx, gdty, gdtz, 
      $       gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $       gutt, gutx, guty, gutz, 
      $       guxx, guyy, guzz, guxy, guyz, guzx
-      CCTK_REAL psi
+      CCTK_DECLARE(CCTK_REAL, psi,)
       LOGICAL   Tmunu_flag
 
 c local static variables

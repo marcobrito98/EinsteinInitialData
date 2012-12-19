@@ -27,7 +27,8 @@ C of this thorn.
       DECLARE_CCTK_FUNCTIONS
 
 c input arguments
-      CCTK_REAL x, y, z, t
+      CCTK_REAL x, y, z
+      CCTK_DECLARE(CCTK_REAL, t,)
 
 c output arguments
       CCTK_REAL gdtt, gdtx, gdty, gdtz, 

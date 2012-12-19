@@ -36,7 +36,7 @@ c output arguments
      $       gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $       gutt, gutx, guty, gutz, 
      $       guxx, guyy, guzz, guxy, guyz, guzx
-      CCTK_REAL psi
+      CCTK_DECLARE(CCTK_REAL, psi,)
       LOGICAL   Tmunu_flag
 
 c local variables
@@ -44,7 +44,7 @@ c local variables
 
 c local variables
       CCTK_REAL t1, x1, y1, z1, rho1,
-     $     gamma, t0, z0, x0, y0, rho02, r02, r0, costheta0, 
+     $     gamma, t0, z0, x0, y0, r0, costheta0, 
      $     lt0, lx0, ly0, lz0, hh, lt, lx, ly, lz
 
       CCTK_REAL gd(3,3), gdt(3,3), det, jac(3,3)

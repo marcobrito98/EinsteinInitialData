@@ -29,7 +29,7 @@ c output arguments
      $       gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $       gutt, gutx, guty, gutz,
      $       guxx, guyy, guzz, guxy, guyz, guzx
-      CCTK_REAL psi
+      CCTK_DECLARE(CCTK_REAL, psi,)
       LOGICAL   Tmunu_flag
 
 c functions local to this file

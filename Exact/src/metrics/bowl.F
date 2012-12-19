@@ -77,7 +77,7 @@ c output arguments
      $          gdxx, gdyy, gdzz, gdxy, gdyz, gdzx,
      $          gutt, gutx, guty, gutz, 
      $          guxx, guyy, guzz, guxy, guyz, guzx
-      CCTK_REAL psi
+      CCTK_DECLARE(CCTK_REAL, psi,)
       LOGICAL   Tmunu_flag
 
 c local static variables
@@ -197,6 +197,8 @@ c        I use the same trick as above.
       else
          write (warn_buffer, '(a,i8)')
      $         'Unknown type = ', type
+c        silence compiler warning about uninitialized variable
+         rr2 = one
          call CCTK_WARN(0, warn_buffer)
 
       end if

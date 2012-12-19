@@ -13,13 +13,13 @@ C $Header$
 
 c #define-ing the symbol EXACT_NO_F90 will turn this subroutine into a no-op
 #ifndef EXACT_NO_F90
-      integer i, j, k, l, m, n, p, q, s
+      integer i, j, k, l, m, n, p, q
       integer nx,ny,nz
       integer ierr
 
       CCTK_REAL s1d(4,3), nd(4), nu(4), norm, gd(4,4), gu(4,4), g3(3,3),
      $   gd_p(4,4), gd_m(4,4), gd1d(4,4,4), s2d(4,3,3), k3(3,3), 
-     $   ex_eps, d3(3,3,3), dx, dy, dz, exact_psi
+     $   ex_eps, dx, dy, dz, exact_psi
       parameter (ex_eps=1.d-6)
 
 C     Grid parameters.
