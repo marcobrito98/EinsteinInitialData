@@ -30,7 +30,7 @@ IOBasic::outInfo_every 			= 	1
 IOBasic::outScalar_style    = "gnuplot"
 IOBasic::outInfo_vars 			= 	"hydrobase::rho"
 
-ActiveThorns = "ADMConstraints admbase admcoupling spacemask staticconformal"
+ActiveThorns = "tmunubase ADMConstraints admbase admcoupling spacemask staticconformal"
 
 ADMConstraints::constraints_persist	= yes
 

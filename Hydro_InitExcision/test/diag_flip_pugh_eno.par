@@ -30,7 +30,7 @@ IOBasic::outInfo_every 			= 	1
 IOBasic::outScalar_style    = "gnuplot"
 IOBasic::outInfo_vars 			= 	"hydrobase::rho"
 
-ActiveThorns = "ADMConstraints admbase admcoupling spacemask staticconformal"
+ActiveThorns = "tmunubase ADMConstraints admbase admcoupling spacemask staticconformal"
 
 ADMConstraints::constraints_persist	= yes
 
@@ -60,7 +60,7 @@ eos_omni::gl_gamma = 1.66666666666666
 eos_omni::gl_k     = 80.0
 eos_omni::poly_k   = 80.0
 
-ActiveThorns = "tmunubase hydrobase grhydro initbase"
+ActiveThorns = "hydrobase grhydro initbase"
 
 hydrobase::timelevels = 2
 hydrobase::evolution_method       = "GRHydro"
