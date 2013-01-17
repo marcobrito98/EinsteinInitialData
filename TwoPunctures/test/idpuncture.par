@@ -3,7 +3,7 @@
 ActiveThorns = "Boundary CartGrid3D Time CoordBase SymBase"
 ActiveThorns = "PUGH PUGHReduce PUGHSlab"
 ActiveThorns = "IOASCII IOBasic IOUtil"
-ActiveThorns = "ADMBase StaticConformal"
+ActiveThorns = "TmunuBase ADMBase StaticConformal"
 ActiveThorns = "ADMConstraints ADMCoupling ADMMacros SpaceMask"
 ActiveThorns = "IDPuncture TATelliptic TATJacobi TATMG TATPETSc"
 

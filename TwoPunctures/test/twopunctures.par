@@ -4,7 +4,7 @@ ActiveThorns = "Boundary CartGrid3D Time CoordBase SymBase"
 ActiveThorns = "PUGH PUGHReduce PUGHSlab LocalReduce"
 ActiveThorns = "IOASCII IOBasic IOUtil"
 ActiveThorns = "ADMBase StaticConformal"
-ActiveThorns = "ADMConstraints ADMCoupling ADMMacros SpaceMask"
+ActiveThorns = "TmunuBase ADMConstraints ADMCoupling ADMMacros SpaceMask"
 ActiveThorns = "TwoPunctures"
 
 Cactus::cctk_itlast		= 0
