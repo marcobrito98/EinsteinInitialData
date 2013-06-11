@@ -216,7 +216,7 @@ TwoPunctures (CCTK_ARGUMENTS)
   int percent10 = 0;
 #endif
   static CCTK_REAL *F = NULL;
-  static derivs u, v;
+  static derivs u, v, cf_v;
   CCTK_REAL admMass;
 
   if (! F) {
@@ -225,6 +225,7 @@ TwoPunctures (CCTK_ARGUMENTS)
     F = dvector (0, ntotal - 1);
     allocate_derivs (&u, ntotal);
     allocate_derivs (&v, ntotal);
+    allocate_derivs (&cf_v, ntotal);
 
     if (use_sources) {
       CCTK_INFO ("Solving puncture equation for BH-NS/NS-NS system");
@@ -236,6 +237,16 @@ TwoPunctures (CCTK_ARGUMENTS)
     /* initialise to 0 */
     for (int j = 0; j < ntotal; j++)
     {
+      cf_v.d0[j] = 0.0;
+      cf_v.d1[j] = 0.0;
+      cf_v.d2[j] = 0.0;
+      cf_v.d3[j] = 0.0;
+      cf_v.d11[j] = 0.0;
+      cf_v.d12[j] = 0.0;
+      cf_v.d13[j] = 0.0;
+      cf_v.d22[j] = 0.0;
+      cf_v.d23[j] = 0.0;
+      cf_v.d33[j] = 0.0;
       v.d0[j] = 0.0;
       v.d1[j] = 0.0;
       v.d2[j] = 0.0;
@@ -270,7 +281,7 @@ TwoPunctures (CCTK_ARGUMENTS)
 
       /* Loop until both ADM masses are within adm_tol of their target */
       do {
-        CCTK_VInfo (CCTK_THORNSTRING, "Bare masses: mp=%g, mm=%g",
+        CCTK_VInfo (CCTK_THORNSTRING, "Bare masses: mp=%.15g, mm=%.15g",
                     (double)*mp, (double)*mm);
         Newton (cctkGH, nvar, n1, n2, n3, v, Newton_tol, 1);
 
@@ -286,8 +297,8 @@ TwoPunctures (CCTK_ARGUMENTS)
         /* Check how far the current ADM masses are from the target */
         mp_adm_err = fabs(M_p-*mp_adm);
         mm_adm_err = fabs(M_m-*mm_adm);
-        CCTK_VInfo (CCTK_THORNSTRING, "ADM mass error: M_p_err=%.4g, M_m_err=%.4g",
-                    (double) mp_adm_err, (double) mm_adm_err);
+        CCTK_VInfo (CCTK_THORNSTRING, "ADM mass error: M_p_err=%.15g, M_m_err=%.15g",
+                    (double)mp_adm_err, (double)mm_adm_err);
         
         /* Invert the ADM mass equation and update the bare mass guess so that
            it gives the correct target ADM masses */
@@ -299,10 +310,10 @@ TwoPunctures (CCTK_ARGUMENTS)
         
         /* Set the par_m_plus and par_m_minus parameters */
         sprintf (valbuf,"%.17g", (double) *mp);
-        CCTK_ParameterSet ("par_m_plus", "twopunctures", valbuf);
+        CCTK_ParameterSet ("par_m_plus", "TwoPunctures", valbuf);
         
         sprintf (valbuf,"%.17g", (double) *mm);
-        CCTK_ParameterSet ("par_m_minus", "twopunctures", valbuf);
+        CCTK_ParameterSet ("par_m_minus", "TwoPunctures", valbuf);
         
       } while ( (mp_adm_err > adm_tol) ||
                 (mm_adm_err > adm_tol) );
@@ -313,6 +324,8 @@ TwoPunctures (CCTK_ARGUMENTS)
     Newton (cctkGH, nvar, n1, n2, n3, v, Newton_tol, Newton_maxit);
  
     F_of_v (cctkGH, nvar, n1, n2, n3, v, F, u);
+
+    SpecCoef(n1, n2, n3, 0, v.d0, cf_v.d0);
 
     CCTK_VInfo (CCTK_THORNSTRING,
 		  "The two puncture masses are mp=%.17g and mm=%.17g",
@@ -456,8 +469,7 @@ TwoPunctures (CCTK_ARGUMENTS)
             (0, nvar, n1, n2, n3, v, xx, yy, zz);
           break;
         case GSM_evaluation:
-          U = PunctIntPolAtArbitPosition
-            (0, nvar, n1, n2, n3, v, xx, yy, zz);
+          U = PunctIntPolAtArbitPositionFast(0, nvar, n1, n2, n3, cf_v, xx, yy, zz);
           break;
         default:
           assert (0);
@@ -664,6 +676,7 @@ TwoPunctures (CCTK_ARGUMENTS)
     free_dvector (F, 0, ntotal - 1);
     free_derivs (&u, ntotal);
     free_derivs (&v, ntotal);
+    free_derivs (&cf_v, ntotal);
   }
 }
 

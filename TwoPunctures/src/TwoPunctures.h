@@ -50,6 +50,13 @@ CCTK_REAL PunctTaylorExpandAtArbitPosition (int ivar, int nvar, int n1,
 CCTK_REAL PunctIntPolAtArbitPosition (int ivar, int nvar, int n1,
 				   int n2, int n3, derivs v, CCTK_REAL x,
 				   CCTK_REAL y, CCTK_REAL z);
+void SpecCoef(int n1, int n2, int n3, int ivar, CCTK_REAL *v, CCTK_REAL *cf);
+CCTK_REAL PunctEvalAtArbitPositionFast (CCTK_REAL *v, int ivar, CCTK_REAL A, CCTK_REAL B, CCTK_REAL phi,
+                                 int nvar, int n1, int n2, int n3);
+CCTK_REAL PunctIntPolAtArbitPositionFast (int ivar, int nvar, int n1,
+                                   int n2, int n3, derivs v, CCTK_REAL x,
+                                   CCTK_REAL y, CCTK_REAL z);
+
 
 /* Routines in  "CoordTransf.c"*/
 void AB_To_XR (int nvar, CCTK_REAL A, CCTK_REAL B, CCTK_REAL *X,
