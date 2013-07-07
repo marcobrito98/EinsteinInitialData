@@ -829,6 +829,10 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
                          (r_to_star[star_i] * r_to_star[star_i] + 1.0e-30)) /
                         my_psi4;
           rho[i3D] += rho_point[star_i];
+	  if( fabs(x[i3D]-15.0) <= 1.0e-10 ||
+	      fabs(x[i3D]+15.0) <= 1.0e-10 ) {
+	    fprintf(stderr,"%22.14E %22.14E\n",x[i3D],rho[i3D]);
+	  }
           eps[i3D] += eps_point[star_i];
           press[i3D] += press_point[star_i];
           /* we still have to know if we are inside one star - and which */
@@ -904,6 +908,7 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
                                          (1.0 + eps[i3D]) +
                               press[i3D]*(w_lorentz[i3D]*w_lorentz[i3D]-1.0) ) -
                  dens[i3D];
+      abort();
     }
   /* if used, recalculate the derivatives of the conformal factor */
   if (*conformal_state > 1)

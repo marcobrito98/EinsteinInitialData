@@ -45,13 +45,13 @@ tovsolver::TOV_Num_Radial     = 200000
 tovsolver::TOV_Combine_Method = "average"
 
 tovsolver::TOV_Rho_Central[0] = 0.16e-3
-tovsolver::TOV_Gamma[0]       = 2.0
-tovsolver::TOV_K[0]           = 100.0
+tovsolver::TOV_Gamma        = 2.0
+tovsolver::TOV_K            = 100.0
 tovsolver::TOV_Position_x[0]  = -15.0
 
 tovsolver::TOV_Rho_Central[1] = 0.32e-3
-tovsolver::TOV_Gamma[1]       = 2.0
-tovsolver::TOV_K[1]           = 100.0
+tovsolver::TOV_Gamma        = 2.0
+tovsolver::TOV_K            = 100.0
 tovsolver::TOV_Position_x[1]  = 15.0
 
 IO::out_fileinfo="none"
