@@ -91,7 +91,7 @@ CCTK_INT TOV_Set_Rho_ADM(CCTK_POINTER_TO_CONST cctkGH,
                                &r_to_star, TOV_Surface[star],
                                &press, &phi, &r);
     press = (press > 0.0) ? press : 0.0;
-    rho = pow(press/TOV_K[star], 1.0/TOV_Gamma[star]);
+    rho = pow(press/TOV_K, 1.0/TOV_Gamma);
     gxx = r / (r_to_star + 1.0e-30) * r / (r_to_star + 1.0e-30);
     /* velocity components as in gr-qc/9811015 */
     w_lorentz_2 = 1. / (1. - gxx*TOV_Velocity_x[star]*TOV_Velocity_x[star]
@@ -99,7 +99,7 @@ CCTK_INT TOV_Set_Rho_ADM(CCTK_POINTER_TO_CONST cctkGH,
                            - gxx*TOV_Velocity_z[star]*TOV_Velocity_z[star]);
     if (rho > 0.0)
       source[i]=gxx*gxx* (w_lorentz_2*rho +
-                          (w_lorentz_2*TOV_Gamma[star]/(TOV_Gamma[star]-1.)-1.)*
+                          (w_lorentz_2*TOV_Gamma/(TOV_Gamma-1.)-1.)*
                           press);
     else
       source[i]=0.0;
@@ -158,14 +158,14 @@ CCTK_INT TOV_Set_Momentum_Source(
                                &(TOV_rbar_1d[star_i]),  &(TOV_r_1d[star_i]),
                                &r_to_star, TOV_Surface[star],
                                &press, &phi, &r);
-    rho = pow(press/TOV_K[star], 1.0/TOV_Gamma[star]);
+    rho = pow(press/TOV_K, 1.0/TOV_Gamma);
     gxx = r / (r_to_star + 1.0e-30) * r / (r_to_star + 1.0e-30);
     psip = pow(gxx, TOV_Momentum_Psi_Power/4.);
     /* velocity components as in gr-qc/9811015 */
     w_lorentz_2 = 1./(1. - gxx*TOV_Velocity_x[star]*TOV_Velocity_x[star]
                          - gxx*TOV_Velocity_y[star]*TOV_Velocity_y[star]
                          - gxx*TOV_Velocity_z[star]*TOV_Velocity_z[star]);
-    rho_eps = w_lorentz_2 * (rho + TOV_Gamma[star]/(TOV_Gamma[star]-1.) * press);
+    rho_eps = w_lorentz_2 * (rho + TOV_Gamma/(TOV_Gamma-1.) * press);
     switch(dir)
     {
       case 0: source[i]=psip*rho_eps*gxx*TOV_Velocity_x[star]; break;
@@ -477,11 +477,11 @@ CCTK_INT TOV_Rescale_Sources(
         CCTK_REAL f, df;
         count++;
         vx = mom_source[0][i3D]/my_psi4/
-             (source[i3D]/my_psi4/my_psi4+TOV_K[0] * pow(rhonew, TOV_Gamma[0]));
+             (source[i3D]/my_psi4/my_psi4+TOV_K * pow(rhonew, TOV_Gamma));
         vy = mom_source[1][i3D]/my_psi4/
-             (source[i3D]/my_psi4/my_psi4+TOV_K[0] * pow(rhonew, TOV_Gamma[0]));
+             (source[i3D]/my_psi4/my_psi4+TOV_K * pow(rhonew, TOV_Gamma));
         vz = mom_source[2][i3D]/my_psi4/
-             (source[i3D]/my_psi4/my_psi4+TOV_K[0] * pow(rhonew, TOV_Gamma[0]));
+             (source[i3D]/my_psi4/my_psi4+TOV_K * pow(rhonew, TOV_Gamma));
         v_2 = my_psi4*(vx*vx+vy*vy+vz*vz);
         if (count > 100)
           CCTK_VWarn(count<110, __LINE__, __FILE__, CCTK_THORNSTRING, \
@@ -492,36 +492,36 @@ CCTK_INT TOV_Rescale_Sources(
         /* velocity components as in gr-qc/9811015 */
         w_lorentz_2 = 1./(1.- v_2);
         /*
-        f = TOV_K[0] / (TOV_Gamma[0]-1.0) * pow(rhonew, TOV_Gamma[0]) +
+        f = TOV_K / (TOV_Gamma-1.0) * pow(rhonew, TOV_Gamma) +
             rhonew - source[i3D];
-        df = TOV_K[0] * TOV_Gamma[0] / (TOV_Gamma[0]-1.0) *
-             pow(rhonew, TOV_Gamma[0]-1.0) + 1.0;
+        df = TOV_K * TOV_Gamma / (TOV_Gamma-1.0) *
+             pow(rhonew, TOV_Gamma-1.0) + 1.0;
         */
         f = my_psi4*my_psi4*(
             w_lorentz_2 * rhonew +
-            (w_lorentz_2*TOV_Gamma[0]/(TOV_Gamma[0]-1.)-1.) *
-            TOV_K[0] * pow(rhonew, TOV_Gamma[0])) - source[i3D];
+            (w_lorentz_2*TOV_Gamma/(TOV_Gamma-1.)-1.) *
+            TOV_K * pow(rhonew, TOV_Gamma)) - source[i3D];
         /*
         df= w_lorentz_2 +
-            (w_lorentz_2*TOV_Gamma[0]/(TOV_Gamma[0]-1.)-1.) *
-            TOV_K[0] * TOV_Gamma[0] * pow(rhonew, TOV_Gamma[0]-1.);
+            (w_lorentz_2*TOV_Gamma/(TOV_Gamma-1.)-1.) *
+            TOV_K * TOV_Gamma * pow(rhonew, TOV_Gamma-1.);
         */
         /* d_w_lorentz_2/drhonew */
         CCTK_REAL d_w_lorentz_2 =
              -2 * w_lorentz_2*w_lorentz_2 *
-             v_2  * TOV_K[0]*TOV_Gamma[0]*pow(rhonew, TOV_Gamma[0]-1) /
-             (source[i3D]/my_psi4/my_psi4 + TOV_K[0]*pow(rhonew, TOV_Gamma[0]));
+             v_2  * TOV_K*TOV_Gamma*pow(rhonew, TOV_Gamma-1) /
+             (source[i3D]/my_psi4/my_psi4 + TOV_K*pow(rhonew, TOV_Gamma));
         df = my_psi4*my_psi4*(
              d_w_lorentz_2*rhonew + w_lorentz_2 +
-             d_w_lorentz_2*TOV_Gamma[0]/(TOV_Gamma[0]-1.)*
-              TOV_K[0] * pow(rhonew, TOV_Gamma[0]) +
-             (w_lorentz_2*TOV_Gamma[0]/(TOV_Gamma[0]-1.)-1.) *
-               TOV_K[0] * TOV_Gamma[0] * pow(rhonew, TOV_Gamma[0]-1.));
+             d_w_lorentz_2*TOV_Gamma/(TOV_Gamma-1.)*
+              TOV_K * pow(rhonew, TOV_Gamma) +
+             (w_lorentz_2*TOV_Gamma/(TOV_Gamma-1.)-1.) *
+               TOV_K * TOV_Gamma * pow(rhonew, TOV_Gamma-1.));
         /*
         df= 1. + my_psi4*v_2/(rhonew*rhonew) +
-            ((TOV_Gamma[0]+(2.-TOV_Gamma[0])*my_psi4*v_2/(rhonew*rhonew))
-             / (TOV_Gamma[0]-1.) - 1.)
-            * TOV_K[0] * TOV_Gamma[0] * pow(rhonew, TOV_Gamma[0]-1.);
+            ((TOV_Gamma+(2.-TOV_Gamma)*my_psi4*v_2/(rhonew*rhonew))
+             / (TOV_Gamma-1.) - 1.)
+            * TOV_K * TOV_Gamma * pow(rhonew, TOV_Gamma-1.);
         */
 
         rhoold = rhonew;
@@ -533,22 +533,22 @@ CCTK_INT TOV_Rescale_Sources(
       if (count==1)
           printf("Fast rescale! %g %g %g %g\n", my_psi4, my_psi4,
                  mom_source[0][i3D]/my_psi4/
-                  (source[i3D]/my_psi4/my_psi4+TOV_K[0]*
-                  pow(rhonew, TOV_Gamma[0])),
+                  (source[i3D]/my_psi4/my_psi4+TOV_K*
+                  pow(rhonew, TOV_Gamma)),
                  mom_source[0][i3D]/my_psi4/
-                  (source[i3D]/my_psi4/my_psi4+TOV_K[0]*
-                  pow(rhonew, TOV_Gamma[0])));
+                  (source[i3D]/my_psi4/my_psi4+TOV_K*
+                  pow(rhonew, TOV_Gamma)));
 #else
       newton_raphson(&vx,&vy,&vz,&rhoold,&rhonew,&w_lorentz_2,&v_2,
-                     TOV_Gamma[0], TOV_K[0],
+                     TOV_Gamma, TOV_K,
                      source[i3D],
                      mom_source[0][i3D],mom_source[1][i3D],mom_source[2][i3D],
                      my_psi4, x[i3D], y[i3D], z[i3D], rho[i3D]);
 #endif
       rho[i3D]   = rhonew;
-      press[i3D] = TOV_K[0] * pow(rhonew, TOV_Gamma[0]);
-      eps[i3D]   = TOV_K[0] * pow(rhonew, TOV_Gamma[0] - 1.0) /
-                              (TOV_Gamma[0] - 1.0);
+      press[i3D] = TOV_K * pow(rhonew, TOV_Gamma);
+      eps[i3D]   = TOV_K * pow(rhonew, TOV_Gamma - 1.0) /
+                              (TOV_Gamma - 1.0);
       sqrt_det   = pow(my_psi4, 1.5);
       w_lorentz[i3D] = sqrt(w_lorentz_2);
       dens[i3D] = sqrt_det * w_lorentz[i3D] * rho[i3D];
@@ -575,11 +575,11 @@ CCTK_INT TOV_Rescale_Sources(
                 "%.15g %.15g %.15g %.15g\n", /*7*/
                 gxx[i3D]*gxx[i3D]*( /* ham - source*/
                   w_lorentz_2*rho[i3D]+
-                  (w_lorentz_2*TOV_Gamma[0]/(TOV_Gamma[0]-1.)-1.)*press[i3D]),
+                  (w_lorentz_2*TOV_Gamma/(TOV_Gamma-1.)-1.)*press[i3D]),
                 gxx[i3D]*gxx[i3D]*( /* ham - source */
                   w_lorentz_2*(rho[i3D]*(1.+eps[i3D])+press[i3D])-press[i3D]),
                 (w_lorentz_2 * rho[i3D] + /* momx - source */
-                 w_lorentz_2*TOV_Gamma[0]/(TOV_Gamma[0]-1.) * press[i3D])*
+                 w_lorentz_2*TOV_Gamma/(TOV_Gamma-1.) * press[i3D])*
                  gxx[i3D]*vel0[i3D],
                 w_lorentz_2 * (rho[i3D]* /* momx - source */
                  (1.+eps[i3D])+ press[i3D])*

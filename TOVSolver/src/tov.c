@@ -260,8 +260,8 @@ void TOV_C_Integrate_RHS(CCTK_ARGUMENTS)
     TOV_C_fill(&(TOV_rprop_1d[star_i]), TOV_Num_Radial, 0.0);
 
     /* set start values */
-    TOV_press_1d[star_i] = TOV_K[star] *
-                            pow(rho_central, TOV_Gamma[star]);
+    TOV_press_1d[star_i] = TOV_K *
+                            pow(rho_central, TOV_Gamma);
     /* TOV_r_1d    [star_i] = LOCAL_TINY;
     TOV_rbar_1d [star_i] = LOCAL_TINY;*/
 
@@ -293,25 +293,25 @@ void TOV_C_Integrate_RHS(CCTK_ARGUMENTS)
       TOV_C_fill(source_data, 6, 0.0);
 
       TOV_C_Source_RHS(TOV_r_1d[i],
-                     TOV_K[star], TOV_Gamma[star],
+                     TOV_K, TOV_Gamma,
                      in_data, source_data);
 
       RKLOOP k1[rk] = TOV_dr[star] * source_data[rk];
       RKLOOP in_data[rk] = old_data[rk] + 0.5 * k1[rk];
       TOV_C_Source_RHS(TOV_r_1d[i]+ 0.5 * TOV_dr[star],
-                       TOV_K[star], TOV_Gamma[star],
+                       TOV_K, TOV_Gamma,
                        in_data, source_data);
 
       RKLOOP k2[rk] = TOV_dr[star] * source_data[rk];
       RKLOOP in_data[rk] = old_data[rk] + 0.5 * k2[rk];
       TOV_C_Source_RHS(TOV_r_1d[i]+ 0.5 * TOV_dr[star],
-                       TOV_K[star], TOV_Gamma[star],
+                       TOV_K, TOV_Gamma,
                        in_data, source_data);
 
       RKLOOP k3[rk] = TOV_dr[star] * source_data[rk];
       RKLOOP in_data[rk] = old_data[rk] + k3[rk];
       TOV_C_Source_RHS(TOV_r_1d[i]+ TOV_dr[star],
-                       TOV_K[star], TOV_Gamma[star],
+                       TOV_K, TOV_Gamma,
                        in_data, source_data);
       RKLOOP k4[rk] = TOV_dr[star] * source_data[rk];
       RKLOOP new_data[rk] = old_data[rk] + (k1[rk] + k4[rk] + 2.0 * (k2[rk] + k3[rk])) /6.0;
@@ -327,7 +327,7 @@ void TOV_C_Integrate_RHS(CCTK_ARGUMENTS)
       if (TOV_press_1d[i+1] < 0.0)
           TOV_press_1d[i+1] = 0.0;
 
-      local_rho = pow(TOV_press_1d[i+1] / TOV_K[star], 1.0 / TOV_Gamma[star]);
+      local_rho = pow(TOV_press_1d[i+1] / TOV_K, 1.0 / TOV_Gamma);
 
       /* scan for the surface */
       if ( (local_rho <= 0.0) ||
@@ -373,7 +373,7 @@ void TOV_C_Integrate_RHS(CCTK_ARGUMENTS)
   CCTK_VInfo(CCTK_THORNSTRING, "Information about the TOVs used:");
   CCTK_VInfo("", "TOV    radius    mass  bary_mass mass(g) cent.rho rho(cgi)        K   K(cgi)    Gamma");
   for (i=0; i<TOV_Num_TOVs; i++)
-    if (fabs(TOV_Gamma[i] - 2.0) < LOCAL_TINY)
+    if (fabs(TOV_Gamma - 2.0) < LOCAL_TINY)
       CCTK_VInfo("","  %d  %8g %8g %8g %8.3g %8g %8.3g %8g %8.3g %8g",
                  i+1, TOV_R_Surface[i],
                  TOV_m_1d[(i+1)*TOV_Num_Radial-1],
@@ -383,11 +383,11 @@ void TOV_C_Integrate_RHS(CCTK_ARGUMENTS)
                  TOV_Rho_Central[i]/pow(CONSTANT_G_cgi,3.0)/
                                     pow(CONSTANT_Msolar_cgi,2.0)*
                                     pow(CONSTANT_c_cgi,6.0),
-                 TOV_K[i],
-                 TOV_K[i]*pow(CONSTANT_G_cgi,3.0)*
+                 TOV_K,
+                 TOV_K*pow(CONSTANT_G_cgi,3.0)*
                           pow(CONSTANT_Msolar_cgi,2.0)/
                           pow(CONSTANT_c_cgi,4.0),
-                 TOV_Gamma[i]);
+                 TOV_Gamma);
     else
       CCTK_VInfo("","  %d  %8g %8g %8.3g %8g %8.3g %8g %8g",
                  i+1, TOV_R_Surface[i],
@@ -397,7 +397,7 @@ void TOV_C_Integrate_RHS(CCTK_ARGUMENTS)
                  TOV_Rho_Central[i]/pow(CONSTANT_G_cgi,3.0)/
                                     pow(CONSTANT_Msolar_cgi,2.0)*
                                     pow(CONSTANT_c_cgi,6.0),
-                 TOV_K[i], TOV_Gamma[i]);
+                 TOV_K, TOV_Gamma);
 
 }
 
@@ -657,17 +657,17 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
 
         /* is some perturbation wanted? */
         if (Perturb[star] == 0)
-          rho_point[star] = pow(press_point[star]/TOV_K[star],
-                                1.0/TOV_Gamma[star]);
+          rho_point[star] = pow(press_point[star]/TOV_K,
+                                1.0/TOV_Gamma);
         else
-          rho_point[star] = pow(press_point[star]/TOV_K[star],
-                                1.0/TOV_Gamma[star]) *
+          rho_point[star] = pow(press_point[star]/TOV_K,
+                                1.0/TOV_Gamma) *
                             (1.0 +
                              Pert_Amplitude[star] *
                                cos(PI/2.0 * r[i3D] / TOV_R_Surface[star]));
 
         if (rho_point[star] > local_tiny)
-          eps_point[star] = press_point[star] / (TOV_Gamma[star] - 1.0)
+          eps_point[star] = press_point[star] / (TOV_Gamma - 1.0)
                                               /  rho_point[star];
         else
           eps_point[star] = 0.0;
@@ -792,8 +792,8 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
         /* Set atmosphere according to chosen star */
         if(rho[i3D] <= TOV_Atmosphere[star]) {
           rho[i3D] = TOV_Atmosphere[star];
-	  press[i3D] = TOV_K[star] * pow(rho[i3D],TOV_Gamma[star]);
-          eps[i3D] = press[i3D]/(TOV_Gamma[star]-1.0)/rho[i3D];
+	  press[i3D] = TOV_K * pow(rho[i3D],TOV_Gamma);
+          eps[i3D] = press[i3D]/(TOV_Gamma-1.0)/rho[i3D];
 	}
 
       }
@@ -829,10 +829,6 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
                          (r_to_star[star_i] * r_to_star[star_i] + 1.0e-30)) /
                         my_psi4;
           rho[i3D] += rho_point[star_i];
-	  if( fabs(x[i3D]-15.0) <= 1.0e-10 ||
-	      fabs(x[i3D]+15.0) <= 1.0e-10 ) {
-	    fprintf(stderr,"%22.14E %22.14E\n",x[i3D],rho[i3D]);
-	  }
           eps[i3D] += eps_point[star_i];
           press[i3D] += press_point[star_i];
           /* we still have to know if we are inside one star - and which */
@@ -843,13 +839,25 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
             star=star_i;
           }
 
+
           /* Reset atmosphere according to chosen star */
-          if(rho[i3D] <= TOV_Atmosphere[star_i]) {
-            rho[i3D] = TOV_Atmosphere[star_i];
-	    press[i3D] = TOV_K[star_i] * pow(rho[i3D],TOV_Gamma[star_i]);
-            eps[i3D] = press[i3D]/(TOV_Gamma[star_i]-1.0)/rho[i3D];
-	  }
+	  /* It is absolutely idiotic to have different 
+             atmosphere thresholds for different stars that are placed
+             on the same goddamn grid. This also screws symmetry, so 
+             we get rid of it /*
+	     /* if(rho[i3D] <= TOV_Atmosphere[star_i]) {
+	     rho[i3D] = TOV_Atmosphere[star_i];
+	     press[i3D] = TOV_K[star_i] * pow(rho[i3D],TOV_Gamma[star_i]);
+             eps[i3D] = press[i3D]/(TOV_Gamma[star_i]-1.0)/rho[i3D];
+	    } */ 
+
         }
+
+	if(rho[i3D] <= TOV_Atmosphere[0]) {
+	  rho[i3D] = TOV_Atmosphere[0];
+	  press[i3D] = TOV_K * pow(rho[i3D],TOV_Gamma);
+	  eps[i3D] = press[i3D]/(TOV_Gamma-1.0)/rho[i3D];
+	} 
 
         if (TOV_Conformal_Flat_Three_Metric)
         {
@@ -908,8 +916,9 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
                                          (1.0 + eps[i3D]) +
                               press[i3D]*(w_lorentz[i3D]*w_lorentz[i3D]-1.0) ) -
                  dens[i3D];
-      abort();
     }
+
+
   /* if used, recalculate the derivatives of the conformal factor */
   if (*conformal_state > 1)
     /* go again over all 3D-grid points */
