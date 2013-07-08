@@ -844,20 +844,21 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
 	  /* It is absolutely idiotic to have different 
              atmosphere thresholds for different stars that are placed
              on the same goddamn grid. This also screws symmetry, so 
-             we get rid of it /*
-	     /* if(rho[i3D] <= TOV_Atmosphere[star_i]) {
+             we get rid of it \*
+	     \* */ if(rho[i3D] <= TOV_Atmosphere[star_i]) {
 	     rho[i3D] = TOV_Atmosphere[star_i];
-	     press[i3D] = TOV_K[star_i] * pow(rho[i3D],TOV_Gamma[star_i]);
-             eps[i3D] = press[i3D]/(TOV_Gamma[star_i]-1.0)/rho[i3D];
-	    } */ 
+	     press[i3D] = TOV_K * pow(rho[i3D],TOV_Gamma);
+             eps[i3D] = press[i3D]/(TOV_Gamma-1.0)/rho[i3D];
+	    } /**/ 
 
         }
-
+#if 0
 	if(rho[i3D] <= TOV_Atmosphere[0]) {
 	  rho[i3D] = TOV_Atmosphere[0];
 	  press[i3D] = TOV_K * pow(rho[i3D],TOV_Gamma);
 	  eps[i3D] = press[i3D]/(TOV_Gamma-1.0)/rho[i3D];
 	} 
+#endif
 
         if (TOV_Conformal_Flat_Three_Metric)
         {
