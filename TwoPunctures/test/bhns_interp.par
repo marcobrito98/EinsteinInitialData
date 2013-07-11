@@ -77,8 +77,8 @@ TOVSolver::TOV_Num_Radial     = 1000000
 TOVSolver::TOV_dr[0]          = 5.e-5
 TOVSolver::TOV_Position_x[0]  = -30
 TOVSolver::TOV_Rho_Central[0] = 5.e-4
-TOVSolver::TOV_Gamma[0]       = 2.0
-TOVSolver::TOV_K[0]           = 100.0
+TOVSolver::TOV_Gamma          = 2.0
+TOVSolver::TOV_K              = 100.0
 
 IO::out_dir			= $parfile
 IO::out_fileinfo= "axis labels"
