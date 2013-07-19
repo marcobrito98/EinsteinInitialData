@@ -7,7 +7,6 @@ void TOV_C_AllocateMemory(CCTK_ARGUMENTS)
   assert(TOV_Surface==0);
   assert(TOV_R_Surface==0);
   assert(TOV_RProp_Surface==0);
-  assert(TOV_Atmosphere==0);
 
   assert(TOV_r_1d==0);
   assert(TOV_rbar_1d==0);
@@ -20,7 +19,6 @@ void TOV_C_AllocateMemory(CCTK_ARGUMENTS)
   TOV_Surface = malloc(TOV_Num_TOVs * sizeof(CCTK_REAL));
   TOV_R_Surface = malloc(TOV_Num_TOVs * sizeof(CCTK_REAL));
   TOV_RProp_Surface = malloc(TOV_Num_TOVs * sizeof(CCTK_REAL));
-  TOV_Atmosphere = malloc(TOV_Num_TOVs * sizeof(CCTK_REAL));
 
   TOV_r_1d = malloc(TOV_Num_Radial * TOV_Num_TOVs * sizeof(CCTK_REAL));
   TOV_rbar_1d = malloc(TOV_Num_Radial * TOV_Num_TOVs * sizeof(CCTK_REAL));
@@ -39,7 +37,6 @@ void TOV_C_FreeMemory (CCTK_ARGUMENTS)
   assert(TOV_Surface!=0);
   assert(TOV_R_Surface!=0);
   assert(TOV_RProp_Surface!=0);
-  assert(TOV_Atmosphere!=0);
 
   assert(TOV_r_1d!=0);
   assert(TOV_rbar_1d!=0);
@@ -50,7 +47,6 @@ void TOV_C_FreeMemory (CCTK_ARGUMENTS)
   free(TOV_Surface);
   free(TOV_R_Surface);
   free(TOV_RProp_Surface);
-  free(TOV_Atmosphere);
 
   free(TOV_r_1d);
   free(TOV_rbar_1d);
@@ -63,7 +59,6 @@ void TOV_C_FreeMemory (CCTK_ARGUMENTS)
   TOV_Surface=0;
   TOV_R_Surface=0;
   TOV_RProp_Surface=0;
-  TOV_Atmosphere=0;
 
   TOV_r_1d=0;
   TOV_rbar_1d=0;

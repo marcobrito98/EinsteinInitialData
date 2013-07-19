@@ -30,9 +30,6 @@ schedule GROUP TOV_Initial_Data IN HydroBase_Initial
   SYNC: press
   SYNC: eps
   SYNC: vel
-  SYNC: dens
-  SYNC: tau
-  SYNC: scon
   SYNC: w_lorentz
 } "Group for the TOV initial data"
 

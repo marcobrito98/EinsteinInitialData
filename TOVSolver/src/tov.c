@@ -42,7 +42,6 @@
 CCTK_REAL * TOV_Surface=0;
 CCTK_REAL * TOV_R_Surface=0;
 CCTK_REAL * TOV_RProp_Surface=0;
-CCTK_REAL * TOV_Atmosphere=0;
 
 CCTK_REAL * TOV_r_1d=0;
 CCTK_REAL * TOV_rbar_1d=0;
@@ -200,7 +199,6 @@ void TOV_C_Integrate_RHS(CCTK_ARGUMENTS)
   assert(TOV_Surface!=0);
   assert(TOV_R_Surface!=0);
   assert(TOV_RProp_Surface!=0);
-  assert(TOV_Atmosphere!=0);
 
   assert(TOV_r_1d!=0);
   assert(TOV_rbar_1d!=0);
@@ -221,20 +219,6 @@ void TOV_C_Integrate_RHS(CCTK_ARGUMENTS)
       rho_central=GRHydro_rho_central;
     else
       rho_central=TOV_Rho_Central[star];
-
-    if (rho_abs_min > 0.0)
-      TOV_Atmosphere[star] = rho_abs_min;
-    else
-      TOV_Atmosphere[star] = rho_central * rho_rel_min;
-
-    if (initial_rho_abs_min > 0.0)
-      TOV_Atmosphere[star] = initial_rho_abs_min;
-    else
-      if (initial_rho_rel_min > 0.0)
-        TOV_Atmosphere[star] = rho_central * initial_rho_rel_min;
-
-    if (initial_atmosphere_factor > 0.0)
-      TOV_Atmosphere[star] *= initial_atmosphere_factor;
 
     /* Set conformal state like set in parameter file if we do not use
      * the old initial data. In this case we have to use what we get */
@@ -526,10 +510,9 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
 
   CCTK_INT i,j,k, i3D, star;
   CCTK_REAL *r_to_star;
-  CCTK_REAL g_diag, max_g_diag, max_rho, det, sqrt_det;
+  CCTK_REAL g_diag, max_g_diag, max_rho;
   CCTK_REAL my_velx, my_vely, my_velz, my_psi4;
-  CCTK_REAL vlowx, vlowy, vlowz;
-  CCTK_REAL D_h_w, PI, local_tiny;
+  CCTK_REAL PI, local_tiny;
 
   CCTK_INT tov_lapse;
 
@@ -543,7 +526,6 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
 
   assert(TOV_Surface!=0);
   assert(TOV_R_Surface!=0);
-  assert(TOV_Atmosphere!=0);
 
   assert(TOV_r_1d!=0);
   assert(TOV_rbar_1d!=0);
@@ -608,14 +590,9 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
   {
     CCTK_INFO("Not using old matter initial data");
     TOV_C_fill(rho,        LSH_MAX_I+1, 0.0);
-    TOV_C_fill(dens,       LSH_MAX_I+1, 0.0);
     TOV_C_fill(eps,        LSH_MAX_I+1, 0.0);
     TOV_C_fill(press,      LSH_MAX_I+1, 0.0);
-    TOV_C_fill(tau,        LSH_MAX_I+1, 0.0);
     TOV_C_fill(w_lorentz,  LSH_MAX_I+1, 0.0);
-    TOV_C_fill(sx,         LSH_MAX_I+1, 0.0);
-    TOV_C_fill(sy,         LSH_MAX_I+1, 0.0);
-    TOV_C_fill(sz,         LSH_MAX_I+1, 0.0);
     TOV_C_fill(velx,       LSH_MAX_I+1, 0.0);
     TOV_C_fill(vely,       LSH_MAX_I+1, 0.0);
     TOV_C_fill(velz,       LSH_MAX_I+1, 0.0);
@@ -789,12 +766,6 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
         rho[i3D] = max_rho;
         eps[i3D] = eps_point[star];
         press[i3D] = press_point[star];
-        /* Set atmosphere according to chosen star */
-        if(rho[i3D] <= TOV_Atmosphere[star]) {
-          rho[i3D] = TOV_Atmosphere[star];
-	  press[i3D] = TOV_K * pow(rho[i3D],TOV_Gamma);
-          eps[i3D] = press[i3D]/(TOV_Gamma-1.0)/rho[i3D];
-	}
 
       }
       else if (CCTK_EQUALS(TOV_Combine_Method, "average"))
@@ -832,32 +803,12 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
           eps[i3D] += eps_point[star_i];
           press[i3D] += press_point[star_i];
           /* we still have to know if we are inside one star - and which */
-          if ( (rho_point[star_i] > max_rho) &&
-               (rho_point[star_i] > TOV_Atmosphere[star_i]))
+          if (rho_point[star_i] > max_rho)
           {
             max_rho=rho_point[star_i];
             star=star_i;
           }
-
-
-          /* Reset atmosphere according to chosen star */
-	  /* It is absolutely idiotic to have different 
-             atmosphere thresholds for different stars that are placed
-             on the same goddamn grid. This also screws symmetry, so 
-             we get rid of it /*
-	     /* if(rho[i3D] <= TOV_Atmosphere[star_i]) {
-	     rho[i3D] = TOV_Atmosphere[star_i];
-	     press[i3D] = TOV_K[star_i] * pow(rho[i3D],TOV_Gamma[star_i]);
-             eps[i3D] = press[i3D]/(TOV_Gamma[star_i]-1.0)/rho[i3D];
-	    } */ 
-
         }
-
-	if(rho[i3D] <= TOV_Atmosphere[0]) {
-	  rho[i3D] = TOV_Atmosphere[0];
-	  press[i3D] = TOV_K * pow(rho[i3D],TOV_Gamma);
-	  eps[i3D] = press[i3D]/(TOV_Gamma-1.0)/rho[i3D];
-	} 
 
         if (TOV_Conformal_Flat_Three_Metric)
         {
@@ -888,34 +839,6 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
                                 2*gxz[i3D] * velx[i3D] * velz[i3D]+
                                 2*gyz[i3D] * vely[i3D] * velz[i3D]) * my_psi4);
       }
-      /* now all combine methods are doing the same */
-      if ((TOV_Num_TOVs==1) && (rho[i3D] <= TOV_Atmosphere[0]))
-      {
-        velx[i3D] = vely[i3D] = velz[i3D] = 0.0;
-        w_lorentz[i3D] = 1.0;
-      }
-
-      SpatialDet(gxx[i3D],gxy[i3D],gxz[i3D],gyy[i3D],gyz[i3D],gzz[i3D],&det);
-
-      sqrt_det=sqrt(det) * pow(my_psi4, 1.5);
-      dens[i3D] = sqrt_det * w_lorentz[i3D] * rho[i3D];
-
-      /* this variable is only for temporal storage */
-      D_h_w = dens[i3D] * (1 + eps[i3D] + press[i3D]/rho[i3D]) * w_lorentz[i3D];
-
-      vlowx = gxx[i3D]*velx[i3D] + gxy[i3D]*vely[i3D] + gxz[i3D]*velz[i3D];
-      vlowy = gxy[i3D]*velx[i3D] + gyy[i3D]*vely[i3D] + gyz[i3D]*velz[i3D];
-      vlowz = gxz[i3D]*velx[i3D] + gyz[i3D]*vely[i3D] + gzz[i3D]*velz[i3D];
-
-      sx[i3D] = D_h_w * vlowx;
-      sy[i3D] = D_h_w * vlowy;
-      sz[i3D] = D_h_w * vlowz;
-
-      /* One could use D_h_w here, but it would introduce more error */
-      tau[i3D] = sqrt_det * (rho[i3D]  *w_lorentz[i3D]*w_lorentz[i3D] *
-                                         (1.0 + eps[i3D]) +
-                              press[i3D]*(w_lorentz[i3D]*w_lorentz[i3D]-1.0) ) -
-                 dens[i3D];
     }
 
 
@@ -976,11 +899,6 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
         TOV_Copy(i3D, velx_p_p, velx);
         TOV_Copy(i3D, vely_p_p, vely);
         TOV_Copy(i3D, velz_p_p, velz);
-        TOV_Copy(i3D, dens_p_p, dens);
-        TOV_Copy(i3D, tau_p_p,  tau);
-        TOV_Copy(i3D, sx_p_p,   sx);
-        TOV_Copy(i3D, sy_p_p,   sy);
-        TOV_Copy(i3D, sz_p_p,   sz);
         TOV_Copy(i3D, w_lorentz_p_p, w_lorentz);
     case 2:
         TOV_Copy(i3D, gxx_p,  gxx);
@@ -991,11 +909,6 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
         TOV_Copy(i3D, velx_p, velx);
         TOV_Copy(i3D, vely_p, vely);
         TOV_Copy(i3D, velz_p, velz);
-        TOV_Copy(i3D, dens_p, dens);
-        TOV_Copy(i3D, tau_p,  tau);
-        TOV_Copy(i3D, sx_p,   sx);
-        TOV_Copy(i3D, sy_p,   sy);
-        TOV_Copy(i3D, sz_p,   sz);
         TOV_Copy(i3D, w_lorentz_p, w_lorentz);
   }
   CCTK_INFO("Done interpolation.");

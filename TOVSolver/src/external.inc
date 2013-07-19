@@ -57,7 +57,6 @@ CCTK_INT TOV_Set_Rho_ADM(CCTK_POINTER_TO_CONST cctkGH,
 
   assert(TOV_Surface!=0);
   assert(TOV_R_Surface!=0);
-  assert(TOV_Atmosphere!=0);
 
   assert(TOV_r_1d!=0);
   assert(TOV_rbar_1d!=0);
@@ -130,7 +129,6 @@ CCTK_INT TOV_Set_Momentum_Source(
 
   assert(TOV_Surface!=0);
   assert(TOV_R_Surface!=0);
-  assert(TOV_Atmosphere!=0);
 
   assert(TOV_r_1d!=0);
   assert(TOV_rbar_1d!=0);
@@ -200,7 +198,6 @@ CCTK_INT TOV_Set_Initial_Guess_for_u(
 
   assert(TOV_Surface!=0);
   assert(TOV_R_Surface!=0);
-  assert(TOV_Atmosphere!=0);
 
   assert(TOV_r_1d!=0);
   assert(TOV_rbar_1d!=0);
@@ -587,7 +584,6 @@ CCTK_INT TOV_Rescale_Sources(
                 );
       }
 
-      /* FIXME: check for Atmosphere */
     }
   }
   if (debug)

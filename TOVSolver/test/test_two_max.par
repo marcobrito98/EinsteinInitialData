@@ -43,9 +43,8 @@ ADMBase::initial_shift = "tov"
 tovsolver::TOV_Num_TOVs       = 2
 tovsolver::TOV_Num_Radial     = 200000
 tovsolver::TOV_Combine_Method = "maximum"
-
-tovsolver::TOV_Gamma       = 2.0
-tovsolver::TOV_K           = 100.0
+tovsolver::TOV_Gamma          = 2.0
+tovsolver::TOV_K              = 100.0
 
 tovsolver::TOV_Rho_Central[0] = 0.16e-3
 tovsolver::TOV_Position_x[0]  = -15.0
