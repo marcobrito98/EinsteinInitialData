@@ -112,7 +112,7 @@ d3tensor (long nrl, long nrh, long ncl, long nch, long ndl, long ndh)
     CCTK_WARN (CCTK_WARN_ABORT, "allocation failure (2) in dmatrix()");
 
   /* get all memory for the tensor in on chunk */
-  retval[0][0] = malloc(sizeof(CCTK_REAL)*(nrh-nrl+1)*(nch-ncl+1)*(nrh-nrl+1));
+  retval[0][0] = malloc(sizeof(CCTK_REAL)*(nrh-nrl+1)*(nch-ncl+1)*(ndh-ndl+1));
   if(retval[0][0] == NULL)
     CCTK_WARN (CCTK_WARN_ABORT, "allocation failure (3) in dmatrix()");
 
