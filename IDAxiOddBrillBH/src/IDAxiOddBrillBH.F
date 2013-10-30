@@ -34,26 +34,26 @@ c@@*/
       DECLARE_CCTK_PARAMETERS
       DECLARE_CCTK_FUNCTIONS
 
-      real*8 deta,dq
-      real*8, allocatable :: ac(:,:),ae(:,:),aw(:,:),an(:,:),as(:,:),
+      CCTK_REAL deta,dq
+      CCTK_REAL, allocatable :: ac(:,:),ae(:,:),aw(:,:),an(:,:),as(:,:),
      $     rhs(:,:),qfetaeta(:,:),qfqq(:,:),ksq(:,:), 
      $     psi2dv(:,:),dpsi2dv(:,:),ddpsi2dv(:,:),
      $     detapsisph(:,:),dqpsisph(:,:),detaetapsisph(:,:),
      $     detaqpsisph(:,:),dqqpsisph(:,:),
      $     etagrd(:),qgrd(:)
-      real*8 o1,o2,o3,o4,o5,o6,o7,o8,o9,o10,
+      CCTK_REAL o1,o2,o3,o4,o5,o6,o7,o8,o9,o10,
      $     o11,o12,o13,o14,o15,o16,o17,o18,o19,
      $     o20,o21,o22,o23,o24,o25,o26,o27,o28,o29,
      $     o30,o31,o32,o33,o34,o35,o36,o37,o38,o39,
      $     o40,o41,o42,o43,o44,o45,o46,o47,o48,o49,
      $     o50,o51
-      real*8 t1,t2,t3,t4
-      real*8 gtil,dngtil,dnngtil,dnnngtil,dnnnngtil,dnnnnngtil,
+      CCTK_REAL t1,t2,t3,t4
+      CCTK_REAL gtil,dngtil,dnngtil,dnnngtil,dnnnngtil,dnnnnngtil,
      $     dnnnnnngtil,dnnnnnnngtil
-      real*8 rhsmax,rmax,odd_get2d,adm,Jmom,mass,a,r_iso,rBL,rbh_eps
-      real*8,parameter :: rbh_tol = 1.0d-7
+      CCTK_REAL rhsmax,rmax,odd_get2d,adm,Jmom,mass,a,r_iso,rBL,rbh_eps
+      CCTK_REAL,parameter :: rbh_tol = 1.0d-7
       integer,parameter :: itmax = 100 
-      real*8 pi,zero,one,two
+      CCTK_REAL pi,zero,one,two
       CCTK_REAL :: xmin,xmax,ymin,ymax,zmin,zmax
       integer :: ne, nq
       integer :: nx,ny,nz
@@ -419,10 +419,10 @@ c     Now compute on the Cartesian coordinate.
 c     
 c     Compute eta,q,phi at the each points of cartesian grid
          
-      eta = 0.5d0 * dlog(x**2 + y**2 + z**2)
+      eta = 0.5 * log(x**2 + y**2 + z**2)
       abseta = abs (eta)
-      q = datan2 (sqrt (x**2 + y**2),z)
-      phi = datan2 (y, x)
+      q = atan2 (sqrt (x**2 + y**2),z)
+      phi = atan2 (y, x)
       
       do k = 1,nz
          do j = 1,ny
