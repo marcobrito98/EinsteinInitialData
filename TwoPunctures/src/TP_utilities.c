@@ -18,7 +18,7 @@ ivector (long nl, long nh)
 
   retval = malloc(sizeof(int)*(nh-nl+1));
   if(retval == NULL)
-    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure in ivector()");
+    CCTK_ERROR ("allocation failure in ivector()");
 
   return retval - nl;
 }
@@ -32,7 +32,7 @@ dvector (long nl, long nh)
 
   retval = malloc(sizeof(CCTK_REAL)*(nh-nl+1));
   if(retval == NULL)
-    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure in dvector()");
+    CCTK_ERROR ("allocation failure in dvector()");
 
   return retval - nl;
 }
@@ -46,12 +46,12 @@ imatrix (long nrl, long nrh, long ncl, long nch)
 
   retval = malloc(sizeof(int *)*(nrh-nrl+1));
   if(retval == NULL)
-    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure (1) in imatrix()");
+    CCTK_ERROR ("allocation failure (1) in imatrix()");
 
   /* get all memory for the matrix in on chunk */
   retval[0] = malloc(sizeof(int)*(nrh-nrl+1)*(nch-ncl+1));
   if(retval[0] == NULL)
-    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure (2) in imatrix()");
+    CCTK_ERROR ("allocation failure (2) in imatrix()");
 
   /* apply column and row offsets */
   retval[0] -= ncl;
@@ -75,12 +75,12 @@ dmatrix (long nrl, long nrh, long ncl, long nch)
 
   retval = malloc(sizeof(CCTK_REAL *)*(nrh-nrl+1));
   if(retval == NULL)
-    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure (1) in dmatrix()");
+    CCTK_ERROR ("allocation failure (1) in dmatrix()");
 
   /* get all memory for the matrix in on chunk */
   retval[0] = malloc(sizeof(CCTK_REAL)*(nrh-nrl+1)*(nch-ncl+1));
   if(retval[0] == NULL)
-    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure (2) in dmatrix()");
+    CCTK_ERROR ("allocation failure (2) in dmatrix()");
 
   /* apply column and row offsets */
   retval[0] -= ncl;
@@ -105,16 +105,16 @@ d3tensor (long nrl, long nrh, long ncl, long nch, long ndl, long ndh)
   /* get memory for index structures */
   retval = malloc(sizeof(CCTK_REAL **)*(nrh-nrl+1));
   if(retval == NULL)
-    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure (1) in dmatrix()");
+    CCTK_ERROR ("allocation failure (1) in d3tensor()");
 
   retval[0] = malloc(sizeof(CCTK_REAL *)*(nrh-nrl+1)*(nch-ncl+1));
   if(retval[0] == NULL)
-    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure (2) in dmatrix()");
+    CCTK_ERROR ("allocation failure (2) in d3tensor()");
 
   /* get all memory for the tensor in on chunk */
   retval[0][0] = malloc(sizeof(CCTK_REAL)*(nrh-nrl+1)*(nch-ncl+1)*(ndh-ndl+1));
   if(retval[0][0] == NULL)
-    CCTK_WARN (CCTK_WARN_ABORT, "allocation failure (3) in dmatrix()");
+    CCTK_ERROR ("allocation failure (3) in d3tensor()");
 
   /* apply all offsets */
   retval[0][0] -= ndl;
@@ -180,7 +180,7 @@ free_dmatrix (CCTK_REAL **m, long nrl, long nrh, long ncl, long nch)
 void
 free_d3tensor (CCTK_REAL ***t, long nrl, long nrh, long ncl, long nch,
 	       long ndl, long ndh)
-/* free a CCTK_REAL f3tensor allocated by f3tensor() */
+/* free a CCTK_REAL d3tensor allocated by d3tensor() */
 {
   free(t[nrl][ncl]+ndl);
   free(t[nrl]+ncl);
