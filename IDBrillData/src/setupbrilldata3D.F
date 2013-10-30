@@ -100,16 +100,16 @@ c              is not regular on the axis.
                   gzz(i,j,k) = e2q
                   gxy(i,j,k) = - (one - e2q)*x1*y1/rho2
 
-                  brillMlinear(i,j,k) = 0.25D0/e2q
+                  brillMlinear(i,j,k) = 0.25/e2q
      .                 *(brillq(rho1,z1+eps,phi) 
      .                 + brillq(rho1,z1-eps,phi) 
      .                 + brillq(rho1+eps,z1,phi) 
      .                 + brillq(rho1-eps,z1,phi) 
-     .                 - 4.0D0*brillq(rho1,z1,phi))
+     .                 - 4.0*brillq(rho1,z1,phi))
      .                 / eps**2
 
-                  brillMlinear(i,j,k) = brillMlinear(i,j,k) + 0.25D0/rho2
-     .               *(three*0.25D0*(brillq(rho1,z1,phi+eps)
+                  brillMlinear(i,j,k) = brillMlinear(i,j,k) + 0.25/rho2
+     .               *(three*0.25*(brillq(rho1,z1,phi+eps)
      .               - brillq(rho1,z1,phi-eps))**2
      .               + two*(brillq(rho1,z1,phi+eps)
      .               - two*brillq(rho1,z1,phi)
@@ -122,7 +122,7 @@ c              is not regular on the axis.
                   gzz(i,j,k) = one
                   gxy(i,j,k) = zero
 
-                  brillMlinear(i,j,k) = 0.25D0/e2q
+                  brillMlinear(i,j,k) = 0.25/e2q
      .                 *(brillq(rho1,z1+eps,phi) 
      .                 + brillq(rho1,z1-eps,phi) 
      .                 + two*brillq(eps,z1,phi) 

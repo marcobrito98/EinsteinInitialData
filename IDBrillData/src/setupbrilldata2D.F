@@ -33,7 +33,6 @@ c       f
       DECLARE_CCTK_PARAMETERS
 
       integer i,j,k
-      integer ierr
 
       CCTK_REAL x1,y1,z1,rho1
       CCTK_REAL brillq,eps
@@ -87,12 +86,12 @@ c              will not be regular on the axis.
                rhop = rho1 + eps
                rhom = rho1 - eps
 
-               brillMlinear(i,j,k) = 0.25D0
+               brillMlinear(i,j,k) = 0.25
      .              *(brillq(rho1,zp,zero)
      .              + brillq(rho1,zm,zero)
      .              + brillq(rhop,z1,zero)
      .              + brillq(rhom,z1,zero)
-     .              - 4.0D0*brillq(rho1,z1,zero))/eps**2
+     .              - 4.0*brillq(rho1,z1,zero))/eps**2
 
                brillNsource(i,j,k) = zero
 

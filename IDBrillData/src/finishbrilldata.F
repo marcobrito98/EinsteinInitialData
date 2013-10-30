@@ -31,8 +31,8 @@
 
 c     Numbers.
 
-      zero = 0.0D0
-      one  = 1.0D0
+      zero = 0.0
+      one  = 1.0
 
 c     Replace flat metric left over from elliptic solve by
 c     Brill metric calculated from q and Psi.
@@ -50,7 +50,7 @@ c     Brill metric calculated from q and Psi.
 
                phi = phif(x1,y1)
 
-               e2q  = exp(2.d0*brillq(rho1,z1,phi))
+               e2q  = exp(2.0*brillq(rho1,z1,phi))
 
 c              Fudge division by rho^2 on axis. (Physically, y^/rho^2,
 c              x^2/rho^2 and xy/rho^2 are of course regular.)
