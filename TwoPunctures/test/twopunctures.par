@@ -43,9 +43,6 @@ TwoPunctures::par_P_minus[1]    = -2.0
 TwoPunctures::par_S_minus[0]    = -1.0
 TwoPunctures::par_S_minus[2]    = -1.0
 
-ADMBase::metric_type		= "static conformal"
-StaticConformal::conformal_storage = "factor+derivs+2nd derivs"
-
 ADMBase::lapse_evolution_method	= "static"
 ADMBase::initial_lapse		= "one"
 
