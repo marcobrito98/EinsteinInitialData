@@ -50,7 +50,7 @@ IO::out_dir			= $parfile
 IO::out_fileinfo		= "axis labels"
 
 IOBasic::outScalar_every	= 1
-IOBasic::outScalar_vars		= "staticconformal::psi admbase::metric admbase::curv admconstraints::hamiltonian admconstraints::momentum TwoPunctures::puncture_u"
+IOBasic::outScalar_vars		= "admbase::metric admbase::curv admconstraints::hamiltonian admconstraints::momentum TwoPunctures::puncture_u"
 
 IOASCII::out1D_every		= 1
-IOASCII::out1D_vars		= "staticconformal::psi admbase::metric admbase::curv admconstraints::hamiltonian admconstraints::momentum TwoPunctures::puncture_u"
+IOASCII::out1D_vars		= "admbase::metric admbase::curv admconstraints::hamiltonian admconstraints::momentum TwoPunctures::puncture_u"
