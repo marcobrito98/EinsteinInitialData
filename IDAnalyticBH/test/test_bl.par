@@ -15,7 +15,6 @@ grid::domain               = "full"
 
 time::dtfac                =  0.25 
   
-admbase::metric_type      = "static conformal"
 admbase::evolution_method = "ADM"     
 admbase::lapse_evolution_method = "1+log"
 admbase::initial_data     = "bl_bh" 
@@ -45,9 +44,9 @@ adm::method                = "leapfrog"
 IO::out_dir               = "test_bl"
 IO::out_fileinfo         = "none"
 IOBasic::outInfo_every   = 1
-IOBasic::outInfo_vars    = "admbase::gxx staticconformal::psi"
+IOBasic::outInfo_vars    = "admbase::gxx"
 IOBasic::outScalar_every = 2
-IOBasic::outScalar_vars  = "admanalysis::grr staticconformal::psi"
+IOBasic::outScalar_vars  = "admanalysis::grr"
 
 
 # do not use the new scheme for names of output files
