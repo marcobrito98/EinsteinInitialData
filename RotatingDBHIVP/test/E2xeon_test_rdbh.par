@@ -2,7 +2,7 @@
 #!DESC "Initial data for axisymmetric distored black hole"
 ######################################################################
 
-ActiveThorns = "coordgauge admmacros admanalysis tmunubase admbase staticconformal time boundary ellbase pugh pughinterp pughreduce pughslab cartgrid3d ADM RotatingDBHIVP ioascii iobasic ioutil ADMCoupling CoordBase SpaceMask LocalReduce LocalInterp SymBase"
+ActiveThorns = "coordgauge admmacros admanalysis tmunubase admbase staticconformal time boundary ellbase pugh pughinterp pughreduce pughslab cartgrid3d RotatingDBHIVP ioascii iobasic ioutil ADMCoupling CoordBase SpaceMask LocalReduce LocalInterp SymBase"
 
 # GENERAL 
 
@@ -34,7 +34,6 @@ rotatingdbhivp::nphi     = 5
 rotatingdbhivp::interpolation_order = 1
 
 # GAUGE
-admbase::lapse_evolution_method    = "geodesic"
 admbase::metric_type               = "static conformal"
 staticconformal::conformal_storage = "factor+derivs+2nd derivs"
 
