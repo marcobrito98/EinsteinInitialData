@@ -1,7 +1,7 @@
-!DESC "1+log sliced Kerr black hole, ADM, double leapfrog"
+!DESC "1+log sliced Kerr black hole"
 
 #Required thorns
-ActiveThorns = "Boundary Time CartGrid3D CoordBase SymBase pugh pughslab pughreduce IOUtil iobasic ioascii ADMBase ADM ADMMacros ADMAnalysis SpaceMask CoordGauge IDAnalyticBH StaticConformal localreduce"
+ActiveThorns = "Boundary Time CartGrid3D CoordBase SymBase pugh pughslab pughreduce IOUtil iobasic ioascii ADMBase ADMAnalysis SpaceMask CoordGauge IDAnalyticBH StaticConformal localreduce ADMMacros"
 
 # GENERAL 
  
@@ -15,14 +15,10 @@ grid::domain               = "full"
 
 time::dtfac                =  0.25 
   
-admbase::evolution_method = "ADM"     
-admbase::lapse_evolution_method = "1+log"
 admbase::initial_data     = "kerr" 
 
-cactus::cctk_itlast        = 10      
+cactus::cctk_itlast        = 0
 
-adm::bound                 = "flat"      
-adm::method                = "leapfrog"
 admanalysis::normalize_dtheta_dphi = "yes"
 
 IO::out_dir               = "kerr"
