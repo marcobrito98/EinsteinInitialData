@@ -2,7 +2,7 @@
 #!DESC "Initial data for axisymmetric distored black hole"
 ######################################################################
 
-ActiveThorns = "coordgauge admanalysis tmunubase admbase admmacros staticconformal time boundary ADMCoupling ADMconstraints pugh pughreduce pughslab pughinterp LocalInterp SymBase CoordBase cartgrid3d SpaceMask DistortedBHIVP ioascii iobasic ioutil LocalReduce"
+ActiveThorns = "coordgauge admanalysis tmunubase admbase admmacros staticconformal time boundary ADMCoupling pugh pughreduce pughslab pughinterp LocalInterp SymBase CoordBase cartgrid3d SpaceMask DistortedBHIVP ioascii iobasic ioutil LocalReduce"
 
 # GENERAL 
 
@@ -44,9 +44,9 @@ IO::new_filename_scheme  = no
 
 IOASCII::out1d_every     =  1
 IOASCII::out1D_style     = "gnuplot f(x)"
-IOASCII::out1D_vars      = "admbase::metric admbase::curv admbase::lapse admconstraints::ham admanalysis::grr staticconformal::psi staticconformal::psix staticconformal::psiy staticconformal::psiz staticconformal::psixx staticconformal::psixy staticconformal::psixz staticconformal::psiyy staticconformal::psiyz staticconformal::psizz"
+IOASCII::out1D_vars      = "admbase::metric admbase::curv admbase::lapse admanalysis::grr staticconformal::psi staticconformal::psix staticconformal::psiy staticconformal::psiz staticconformal::psixx staticconformal::psixy staticconformal::psixz staticconformal::psiyy staticconformal::psiyz staticconformal::psizz"
 IOBasic::outInfo_every   = 1
-IOBasic::outInfo_vars    = "admconstraints::ham admbase::gxx"
+IOBasic::outInfo_vars    = "admbase::gxx"
 
 ##################################################################
 
