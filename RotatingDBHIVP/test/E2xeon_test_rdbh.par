@@ -2,11 +2,9 @@
 #!DESC "Initial data for axisymmetric distored black hole"
 ######################################################################
 
-ActiveThorns = "coordgauge admanalysis tmunubase admbase admmacros staticconformal time boundary ellbase ADMconstraints pugh pughinterp pughreduce pughslab cartgrid3d ADM RotatingDBHIVP ioascii iobasic ioutil ADMCoupling CoordBase SpaceMask LocalReduce LocalInterp SymBase"
+ActiveThorns = "coordgauge admmacros admanalysis tmunubase admbase staticconformal time boundary ellbase pugh pughinterp pughreduce pughslab cartgrid3d ADM RotatingDBHIVP ioascii iobasic ioutil ADMCoupling CoordBase SpaceMask LocalReduce LocalInterp SymBase"
 
 # GENERAL 
-
-admbase::evolution_method = "ADM"     
 
 driver::global_nx =  32
 driver::global_ny =  32
@@ -19,11 +17,7 @@ grid::domain = "full"
 time::dtfac = 0.25   
 
 cactus::cctk_initial_time = 0.   
-cactus::cctk_itlast       = 1
-
-adm::method           = "stagleap" 
-adm::bound            = "static"
-admconstraints::bound = "static"
+cactus::cctk_itlast       = 0
 
 # MODEL 
 
@@ -50,10 +44,10 @@ IO::out_fileinfo         = "none"
 IO::new_filename_scheme  = "no"
 
 IOASCII::out1d_every     =  1
-IOBasic::outScalar_vars  = "admbase::metric admbase::curv admconstraints::ham"
-IOASCII::out1D_vars      = "admbase::metric admbase::curv admbase::lapse admconstraints::ham staticconformal::psi staticconformal::confac_1derivs staticconformal::confac_2derivs"
+IOBasic::outScalar_vars  = "admbase::metric admbase::curv"
+IOASCII::out1D_vars      = "admbase::metric admbase::curv admbase::lapse staticconformal::psi staticconformal::confac_1derivs staticconformal::confac_2derivs"
 IOBasic::outInfo_every   = 1
-IOBasic::outInfo_vars    = "admconstraints::ham admbase::gxx"
+IOBasic::outInfo_vars    = "admbase::gxx"
 
 ##################################################################
 

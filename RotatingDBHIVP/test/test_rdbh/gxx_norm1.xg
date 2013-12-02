@@ -1,7 +1,6 @@
-"Parameter file test_rdbh.par
-"Created Sep 15 2003 14:58:30
+"Parameter file /home/knarf/Cactus/arrangements/EinsteinInitialData/RotatingDBHIVP/test/test_rdbh.par
+"Created Dec 02 2013 13:52:01-0600
 "x-label time
 "y-label ADMBASE::gxx
 "gxx v time
 0.0000000000000	1.0000000000000
-0.0250000000000	1.0000046217594
