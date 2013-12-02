@@ -2,10 +2,10 @@
 # single rotating black hole
 #==============================================================================
 
-ActiveThorns = " IDAxiOddBrillBH adm coordbase coordgauge staticconformal spacemask tmunubase admbase admcoupling admmacros admanalysis ellbase cartgrid3d time pugh pughreduce pughslab ioascii ioutil iobasic adm admconstraints boundary pughinterp LocalInterp nanchecker LocalInterp LocalReduce SymBase"
-IOBasic::outScalar_vars = " admbase::metric admbase::curv admbase::lapse admbase::shift admconstraints::momy admconstraints::ham "
-IOBasic::outInfo_vars = " admconstraints::ham admbase::alp "
-IOASCII::out1D_vars = " admbase::metric admbase::curv admbase::lapse admbase::shift admconstraints::momy admconstraints::ham "
+ActiveThorns = " IDAxiOddBrillBH coordbase coordgauge staticconformal spacemask tmunubase admbase admcoupling admmacros admanalysis ellbase cartgrid3d time pugh pughreduce pughslab ioascii ioutil iobasic boundary pughinterp LocalInterp nanchecker LocalInterp LocalReduce SymBase"
+IOBasic::outScalar_vars = " admbase::metric admbase::curv admbase::lapse admbase::shift "
+IOBasic::outInfo_vars = " admbase::alp "
+IOASCII::out1D_vars = " admbase::metric admbase::curv admbase::lapse admbase::shift "
 
 IOASCII::out2D_vars = ""
 
@@ -53,24 +53,8 @@ grid::domain                            = "full"
 
 pugh::ghost_size                        = 2
 
-cactus::cctk_itlast                     = 1
+cactus::cctk_itlast                     = 0
 
-
-#==============================================================================
-# Standard ADM_BSSN evolution
-#==============================================================================
-
-
-
-admbase::evolution_method              = "adm"
-
-
-#==============================================================================
-# lapse
-#==============================================================================
-
-
-admbase::lapse_evolution_method         = "geodesic"
 
 #==============================================================================
 # NaNchecker
