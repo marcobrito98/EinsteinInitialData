@@ -2,14 +2,13 @@
 !DESC "Initial data for axisymmetric distored black hole"
 ######################################################################
 
-ActiveThorns = "LocalInterp ADMCoupling Boundary time iobasic ADMconstraints pugh pughslab pughreduce CartGrid3D CoordBase SymBase TmunuBase ADMBase StaticConformal ADM admmacros coordgauge ADMAnalysis IDAxiBrillBH ioascii ioutil spacemask localreduce"
+ActiveThorns = "LocalInterp ADMCoupling Boundary time iobasic pugh pughslab pughreduce CartGrid3D CoordBase SymBase TmunuBase ADMBase StaticConformal admmacros coordgauge ADMAnalysis IDAxiBrillBH ioascii ioutil spacemask localreduce"
 
 #pugh::enable_all_storage = "yes"
 #cactus::cctk_show_banners = 0
 
 # GENERAL
 
-ADMBase::evolution_method = "ADM"
 ADMBase::metric_type = "static conformal"
 
 driver::global_nx =  33
@@ -24,10 +23,7 @@ grid::avoid_origin = no
 time::dtfac = 0.25   
 
 cactus::cctk_initial_time = 0.   
-cactus::cctk_itlast       = 1
-
-adm::method       = "stagleap" 
-adm::bound        = "static"
+cactus::cctk_itlast       = 0
 
 # MODEL
 ADMBase::initial_data = "axibrillbh"
@@ -41,16 +37,12 @@ idaxibrillbh::nq       = 27
 
 idaxibrillbh::interpolation_order          = 1
 
-# GAUGE
-ADMBase::lapse_evolution_method    = "geodesic"  
-
-
 # OUTPUT ########################################################
 IO::out_dir              = $parfile
 IO::out_fileinfo         = "none"
 IO::parfile_write        = "no"
 IOASCII::out1D_every     =  1
-IOASCII::out1D_vars      = "ADMBase::curv admbase::metric ADMAnalysis::grr admconstraints::ham StaticConformal::confac StaticConformal::confac_1derivs StaticConformal::confac_2derivs"
+IOASCII::out1D_vars      = "ADMBase::curv admbase::metric ADMAnalysis::grr StaticConformal::confac StaticConformal::confac_1derivs StaticConformal::confac_2derivs"
 IOBasic::outInfo_every   = 1
 IOBasic::outInfo_vars    = "admbase::gxx"
 
