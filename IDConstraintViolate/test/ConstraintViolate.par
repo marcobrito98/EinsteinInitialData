@@ -1,13 +1,13 @@
 
 !DESC "Constraint violating Gaussian initial data"
 
-ActiveThorns = "SpaceMask Boundary TmunuBase ADMBase ADM ADMMacros ADMCoupling ADMConstraints CoordGauge StaticConformal CartGrid3D CoordBase SymBase IOBasic IOUtil IOASCII IDConstraintViolate Pugh PughReduce PughSlab Time LocalReduce"
+ActiveThorns = "SpaceMask Boundary TmunuBase ADMBase ADMMacros ADMCoupling ADMConstraints CoordGauge StaticConformal CartGrid3D CoordBase SymBase IOBasic IOUtil IOASCII IDConstraintViolate Pugh PughReduce PughSlab Time LocalReduce"
  
 #------------------------------------------------------------------------------
 
 driver::global_nsize       = 10
 
-cactus::cctk_itlast        = 10
+cactus::cctk_itlast        = 0
 
 IO::out_fileinfo         = "none"
 IO::parfile_write        = "no"
@@ -27,11 +27,6 @@ time::dtfac                      = 0.25
  
 admbase::metric_type             = "physical"
 admbase::initial_data            = "constraint violating gaussian"  
-admbase::evolution_method        = "ADM"     
-admbase::lapse_evolution_method  = "1+log"
 admbase::initial_lapse	         = "one"
-
-adm::bound                       = "static"      
-adm::method                      = "stagleap"
 
 #------------------------------------------------------------------------------
