@@ -1,9 +1,9 @@
 #########################################################
-!DESC "Linearized plane wave along x-line, ADM, Leapfrog"
+!DESC "Linearized plane wave along x-line"
 #########################################################
 
 # Required thorns
-ActiveThorns = "Boundary time pugh pughslab pughreduce CartGrid3D CoordBase SymBase ADMBase ADM ADMMacros StaticConformal CoordGauge IDLinearWaves ioascii ioutil iobasic localreduce"
+ActiveThorns = "Boundary time pugh pughslab pughreduce CartGrid3D CoordBase SymBase ADMBase ADMMacros StaticConformal CoordGauge IDLinearWaves ioascii ioutil iobasic localreduce"
 
 # GENERAL 
 
@@ -17,19 +17,14 @@ grid::dxyz         = 0.01
 grid::domain     =  "full"
 
 cactus::cctk_initial_time  =  0.     
-cactus::cctk_itlast        =  100      
+cactus::cctk_itlast        =  0
 
 
 # Einstein 
 
 admbase::metric_type       =  "static conformal"
 admbase::initial_data      =  "planewaves"
-admbase::evolution_method  =  "ADM"     
 
-adm::method        =  "leapfrog" 
-adm::bound         =  "flat"
-
-admbase::lapse_evolution_method  =  "coordgauge"  
 coordgauge::lapse_list           =  "geodesic"  
 
 # IDLinearwaves
@@ -43,7 +38,7 @@ idlinearwaves::wavesgoing = "both"
 
 # Output
 
-IO::out_dir               = "test_pw_ADM_leap"
+IO::out_dir               = $parfile
 IO::out_fileinfo         = "none"
 IO::parfile_write        = "no"
 
