@@ -358,7 +358,7 @@ c     and outgoing to have the same sign.
                sinp = yp/(xp**2+yp**2)**0.5
                cosp = xp/(xp**2+yp**2)**0.5
                
-c     mvalue
+c     mvalue (Eq. 7 of PRD 26:745 (1982))
                if (m.eq.0) then
                   frr = 2-3*sint**2
                   frt = -3*sint*cost
@@ -393,6 +393,7 @@ c     mvalue
                   frp = sint*(1-2*sinp**2)
                   ftt1 = (1+cost**2)*2*sinp*cosp
                   ftt2 = -2*sinp*cosp
+                  ftp = cost*(1-2*cosp**2)
                   fpp1 = -ftt1
                   fpp2 = cost**2*2*sinp*cosp
                   drt = 8*sint*sinp*cosp
