@@ -19,3 +19,8 @@ TEST twopunctures
   ABSTOL 1.e-2
   RELTOL 1.e-2
 }
+
+TEST twopunctures_carpet
+{
+  NPROCS 2
+}
