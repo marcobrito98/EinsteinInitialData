@@ -514,9 +514,10 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
   CCTK_REAL my_velx, my_vely, my_velz, my_psi4;
   CCTK_REAL PI, local_tiny;
 
-  CCTK_INT tov_lapse;
+  CCTK_INT tov_lapse, tov_shift;
 
   tov_lapse = CCTK_EQUALS(initial_lapse, "tov");
+  tov_shift = CCTK_EQUALS(initial_shift, "tov");
 
   PI=4.0*atan(1.0);
   local_tiny=1.0e-14;
@@ -690,6 +691,7 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
               gxx[i3D] = max_g_diag/my_psi4;
               gyy[i3D] = max_g_diag/my_psi4;
               gzz[i3D] = max_g_diag/my_psi4;
+              gxy[i3D] = gxz[i3D] = gyz[i3D] = 0.0;
             }
           }
           /* check matter */
@@ -711,6 +713,12 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
             {
               if (tov_lapse)
                 alp[i3D] = exp(phi_point[star]);
+              if (tov_shift)
+              {
+                betax[i3D] = 0.0;
+                betay[i3D] = 0.0;
+                betaz[i3D] = 0.0;
+              }
               my_velx=TOV_Velocity_x[star];
               my_vely=TOV_Velocity_y[star];
               my_velz=TOV_Velocity_z[star];
@@ -720,6 +728,12 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
           {
             if (tov_lapse)
               alp[i3D] = exp(phi_point[star]);
+            if (tov_shift)
+            {
+              betax[i3D] = 0.0;
+              betay[i3D] = 0.0;
+              betaz[i3D] = 0.0;
+            }
             my_velx=TOV_Velocity_x[star];
             my_vely=TOV_Velocity_y[star];
             my_velz=TOV_Velocity_z[star];
@@ -734,15 +748,23 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
             psi[i3D] = pow(max_g_diag, 0.25);
             my_psi4 = max_g_diag;
             gxx[i3D] = gyy[i3D] = gzz[i3D] = 1.0;
+            gxy[i3D] = gxz[i3D] = gyz[i3D] = 0.0;
           }
           else
           {
             gxx[i3D] = max_g_diag;
             gyy[i3D] = max_g_diag;
             gzz[i3D] = max_g_diag;
+            gxy[i3D] = gxz[i3D] = gyz[i3D] = 0.0;
           }
           if (tov_lapse)
             alp[i3D] = exp(phi_point[star]);
+          if (tov_shift)
+          {
+            betax[i3D] = 0.0;
+            betay[i3D] = 0.0;
+            betaz[i3D] = 0.0;
+          }
           my_velx=TOV_Velocity_x[star];
           my_vely=TOV_Velocity_y[star];
           my_velz=TOV_Velocity_z[star];
@@ -783,6 +805,12 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
         {
           if (tov_lapse)
             alp[i3D] *= exp(phi_point[star_i]);
+          if (tov_shift)
+          {
+            betax[i3D] = 0.0;
+            betay[i3D] = 0.0;
+            betaz[i3D] = 0.0;
+          }
           if (TOV_Conformal_Flat_Three_Metric)
           {
             /* This is a hack, since it does not check if the input data is
@@ -793,7 +821,10 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
                       my_psi4 + pow(psi[i3D], 4.0) * gxx[i3D];
             psi[i3D] = pow(my_psi4, 0.25);
             if (!TOV_Use_Old_Initial_Data)
+            {
               gxx[i3D] = gyy[i3D] = gzz[i3D] = 1.0;
+              gxy[i3D] = gxz[i3D] = gyz[i3D] = 0.0;
+            }
           }
           else
             gxx[i3D] += (r_point[star_i] * r_point[star_i] /
@@ -894,22 +925,35 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
         TOV_Copy(i3D, gxx_p_p,  gxx);
         TOV_Copy(i3D, gyy_p_p,  gyy);
         TOV_Copy(i3D, gzz_p_p,  gzz);
+        TOV_Copy(i3D, gxy_p_p,  gxy);
+        TOV_Copy(i3D, gxz_p_p,  gxz);
+        TOV_Copy(i3D, gyz_p_p,  gyz);
         TOV_Copy(i3D, rho_p_p,  rho);
         TOV_Copy(i3D, eps_p_p,  eps);
         TOV_Copy(i3D, velx_p_p, velx);
         TOV_Copy(i3D, vely_p_p, vely);
         TOV_Copy(i3D, velz_p_p, velz);
         TOV_Copy(i3D, w_lorentz_p_p, w_lorentz);
+        // fall through
     case 2:
         TOV_Copy(i3D, gxx_p,  gxx);
         TOV_Copy(i3D, gyy_p,  gyy);
         TOV_Copy(i3D, gzz_p,  gzz);
+        TOV_Copy(i3D, gxy_p,  gxy);
+        TOV_Copy(i3D, gxz_p,  gxz);
+        TOV_Copy(i3D, gyz_p,  gyz);
         TOV_Copy(i3D, rho_p,  rho);
         TOV_Copy(i3D, eps_p,  eps);
         TOV_Copy(i3D, velx_p, velx);
         TOV_Copy(i3D, vely_p, vely);
         TOV_Copy(i3D, velz_p, velz);
         TOV_Copy(i3D, w_lorentz_p, w_lorentz);
+        break:
+    default:
+        CCTK_VWarn(CCTK_WARN_ABORT, __LINE__, __FILE__, CCTK_THORNSTRING,
+                   "Unsupported number of TOV_Populate_TimelevelsL: %d",
+                   TOV_Populate_Timelevels);
+        break;
   }
   CCTK_INFO("Done interpolation.");
 
