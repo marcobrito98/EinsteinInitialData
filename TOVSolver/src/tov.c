@@ -948,7 +948,7 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
         TOV_Copy(i3D, vely_p, vely);
         TOV_Copy(i3D, velz_p, velz);
         TOV_Copy(i3D, w_lorentz_p, w_lorentz);
-        break:
+        break;
     default:
         CCTK_VWarn(CCTK_WARN_ABORT, __LINE__, __FILE__, CCTK_THORNSTRING,
                    "Unsupported number of TOV_Populate_TimelevelsL: %d",
