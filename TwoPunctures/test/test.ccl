@@ -23,4 +23,8 @@ TEST twopunctures
 TEST twopunctures_carpet
 {
   NPROCS 2
+  # along the x-axis we encounter the singularity
+  RELTOL 2e-3 ^gxx\.x\.asc$
+  # the metric is singular and assumes large values near the punctures
+  RELTOL 2e-6 ^gxx\.[dyz]?\.asc$
 }
