@@ -332,7 +332,7 @@ REAL Minkowski_shift__sigma "Minkowski/shift: width of Gaussian"
 # FIXME: can this also be negative, i.e. range (-1,1)?
 REAL Minkowski_funny__amplitude "Minkowski/funny: amplitude of Gaussian"
 {
-[0.0:1.0 :: "any real number in the range [0,1)"
+0.0:1.0) :: "any real number in the range [0,1)"
 } 0.5
 
 REAL Minkowski_funny__sigma "Minkowski/funny: width of Gaussian"
@@ -869,12 +869,12 @@ REAL Kasner_like__q "Kasner-like: q parameter"
 
 REAL Kasner_generalized__p1 "Kasner-generalized: x exponent parameter"
 {
-[-1.0:1.0] :: "any real number in the range [-1,1]"
+-1.0:1.0 :: "any real number in the range [-1,1]"
 } 0.1
 
 REAL Kasner_generalized__p2 "Kasner-generalized: y exponent parameter"
 {
-[-1.0:1.0] :: "any real number in the range [-1,1]"
+-1.0:1.0 :: "any real number in the range [-1,1]"
 } 0.1
 
 ################################################################################
