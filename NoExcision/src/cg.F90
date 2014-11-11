@@ -33,7 +33,13 @@ subroutine NoExcision_CGInit_1 (CCTK_ARGUMENTS)
 
     call CCTK_INFO ( 'Starting smoothing procedure' )
 
-!$OMP PARALLEL WORKSHARE
+! This set of OpenMP directives have been removed due to triggering an
+! internal compiler error in the Intel 15.0.0 compiler. As this section
+! of the code is only compiled once, it shouldn't affect performance in
+! any significant way even for compilers that are able to generate
+! parallel code (none of the Intel compilers do this anyway).
+
+!!$OMP PARALLEL WORKSHARE
 
     resgxx = zero; resgxy = zero; resgxz = zero
     resgyy = zero; resgyz = zero; resgzz = zero
@@ -59,7 +65,7 @@ subroutine NoExcision_CGInit_1 (CCTK_ARGUMENTS)
     redkyy = zero; redkyz = zero; redkzz = zero
     red = zero; redx = zero; redy = zero; redz = zero
 
-!$OMP END PARALLEL WORKSHARE
+!!$OMP END PARALLEL WORKSHARE
 
     ! r = b - A x.
     ! Since x=0 and we actually use A':   b = -A' 0 and  r = b = -A' 0.
