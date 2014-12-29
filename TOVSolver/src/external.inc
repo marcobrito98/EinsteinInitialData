@@ -379,7 +379,7 @@ CCTK_INT TOV_Rescale_Sources(
   CCTK_REAL psip, my_psi4, sqrt_det, vx, vy, vz, v_2,
             w_lorentz_2, D_h_w;
   CCTK_REAL vlowx, vlowy, vlowz;
-  CCTK_INT  type;
+  int       type;
   CCTK_REAL rhoold, rhonew;
   int i3D;
   static int debug = 1;
@@ -636,7 +636,7 @@ void TOV_write_1D_datafile(CCTK_ARGUMENTS)
   file = fopen(TOV_save_to_datafile, "w");
   fprintf(file, "TOVSolver data file\n");
   fprintf(file, "version 1.0\n");
-  fprintf(file, "TOV_Num_Radial %d\n", TOV_Num_Radial);
+  fprintf(file, "TOV_Num_Radial %d\n", (int)TOV_Num_Radial);
   fprintf(file, "\n");
   for (i=0; i < TOV_Num_Radial; i++)
   {

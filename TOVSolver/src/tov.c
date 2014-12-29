@@ -231,7 +231,7 @@ void TOV_C_Integrate_RHS(CCTK_ARGUMENTS)
         else if (CCTK_EQUALS(conformal_storage,"factor+derivs+2nd derivs"))
           *conformal_state = 3;
         CCTK_VInfo(CCTK_THORNSTRING, "conformal_state set to %d",
-                   *conformal_state);
+                   (int)*conformal_state);
       }
 
     /* clear arrays first */
@@ -359,7 +359,7 @@ void TOV_C_Integrate_RHS(CCTK_ARGUMENTS)
   for (i=0; i<TOV_Num_TOVs; i++)
     if (fabs(TOV_Gamma - 2.0) < LOCAL_TINY)
       CCTK_VInfo("","  %d  %8g %8g %8g %8.3g %8g %8.3g %8g %8.3g %8g",
-                 i+1, TOV_R_Surface[i],
+                 (int)i+1, TOV_R_Surface[i],
                  TOV_m_1d[(i+1)*TOV_Num_Radial-1],
                  TOV_mbary_1d[(i+1)*TOV_Num_Radial-1],
                  TOV_m_1d[(i+1)*TOV_Num_Radial-1]*CONSTANT_Msolar_cgi,
@@ -374,7 +374,7 @@ void TOV_C_Integrate_RHS(CCTK_ARGUMENTS)
                  TOV_Gamma);
     else
       CCTK_VInfo("","  %d  %8g %8g %8.3g %8g %8.3g %8g %8g",
-                 i+1, TOV_R_Surface[i],
+                 (int)i+1, TOV_R_Surface[i],
                  TOV_m_1d[(i+1)*TOV_Num_Radial-1],
                  TOV_m_1d[(i+1)*TOV_Num_Radial-1]*CONSTANT_Msolar_cgi,
                  TOV_Rho_Central[i],
@@ -954,7 +954,7 @@ void TOV_C_Exact(CCTK_ARGUMENTS)
     default:
         CCTK_VWarn(CCTK_WARN_ABORT, __LINE__, __FILE__, CCTK_THORNSTRING,
                    "Unsupported number of TOV_Populate_TimelevelsL: %d",
-                   TOV_Populate_Timelevels);
+                   (int)TOV_Populate_Timelevels);
         break;
   }
   CCTK_INFO("Done interpolation.");
