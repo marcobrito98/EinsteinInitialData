@@ -44,7 +44,6 @@ c      c        \         z      rho                    phi          phi    /
       DECLARE_CCTK_FUNCTIONS
 
       integer i,j,k
-      integer ierr
 
       CCTK_REAL x1,y1,z1,rho1,rho2
       CCTK_REAL phi,phif,e2q
