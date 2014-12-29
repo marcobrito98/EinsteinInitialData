@@ -102,7 +102,7 @@ void IDAnalyticBH_ParamChecker(CCTK_ARGUMENTS)
   {
     CCTK_INFO("Brill Lindquist black holes");
     message = (char *)malloc(200*sizeof(char));
-    sprintf(message,"  %d black holes",bl_nbh);
+    sprintf(message,"  %d black holes",(int)bl_nbh);
     CCTK_INFO(message);
     if (bl_nbh > 0)
     {
