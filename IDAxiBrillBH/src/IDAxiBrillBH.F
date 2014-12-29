@@ -62,7 +62,7 @@ c@@*/
       CCTK_REAL pi
       CCTK_REAL adm
       CCTK_REAL exp_mhalf_eta, psi3d
-      integer :: nx,ny,nz
+      CCTK_INT nx,ny,nz
       integer i,j,k,nquads
       integer npoints,ierror
       integer neb, nqb

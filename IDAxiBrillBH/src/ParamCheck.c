@@ -67,7 +67,7 @@ void IDAxiBrillBH_ParamChecker(CCTK_ARGUMENTS)
   CCTK_VInfo(CCTK_THORNSTRING,"  ... wave amplitude: %f",amp);
   CCTK_VInfo(CCTK_THORNSTRING,"  ... wave center (in eta coords): %f",eta0);
   CCTK_VInfo(CCTK_THORNSTRING,"  ... wave sigma: %f",sigma);
-  CCTK_VInfo(CCTK_THORNSTRING,"  ... wave power of sin theta: %d",n);
+  CCTK_VInfo(CCTK_THORNSTRING,"  ... wave power of sin theta: %d",(int)n);
   CCTK_VInfo(CCTK_THORNSTRING,"  ... outer edge of eta grid: %f",etamax);
 
 }
