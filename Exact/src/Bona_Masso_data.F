@@ -24,6 +24,8 @@ c $Header$
      $     bxx, bxy, bxz, byx, byy, byz, bzx, bzy, bzz)
 
       implicit none
+      CCTK_INT, parameter :: izero = 0
+      integer, parameter :: ik = kind(izero)
       CCTK_INT decoded_exact_model
       logical psi_on
       CCTK_REAL x, y, z, t,
@@ -86,7 +88,7 @@ C     Calculate x-derivatives.
 
       call Exact__metric_deriv(
      $     decoded_exact_model,
-     $     1,
+     $     1_ik,
      $     x, y, z, t,
      $     dgdtt, dgdtx, dgdty, dgdtz,
      $     dgdxx, dgdyy, dgdzz, dgdxy, dgdyz, dgdxz,
@@ -115,7 +117,7 @@ C     Calculate y-derivatives.
 
       call Exact__metric_deriv(
      $     decoded_exact_model,
-     $     2,
+     $     2_ik,
      $     x, y, z, t,
      $     dgdtt, dgdtx, dgdty, dgdtz,
      $     dgdxx, dgdyy, dgdzz, dgdxy, dgdyz, dgdxz,
@@ -144,7 +146,7 @@ C     Calculate z-derivatives.
 
       call Exact__metric_deriv(
      $     decoded_exact_model,
-     $     3,
+     $     3_ik,
      $     x, y, z, t,
      $     dgdtt, dgdtx, dgdty, dgdtz,
      $     dgdxx, dgdyy, dgdzz, dgdxy, dgdyz, dgdxz,
@@ -173,7 +175,7 @@ C     Calculate t-derivatives, and extrinsic curvature.
 
       call Exact__metric_deriv(
      $     decoded_exact_model,
-     $     0,
+     $     0_ik,
      $     x, y, z, t,
      $     dgdtt, dgdtx, dgdty, dgdtz,
      $     dgdxx, dgdyy, dgdzz, dgdxy, dgdyz, dgdxz,
@@ -225,7 +227,7 @@ C     Calculate second derivatives of the conformal factor
       if (psi_on) then
         call Exact__metric_deriv2(
      $        decoded_exact_model,
-     $        1, 1,
+     $        1_ik, 1_ik,
      $        x, y, z, t,
      $        dgdtt, dgdtx, dgdty, dgdtz,
      $        dgdxx, dgdyy, dgdzz, dgdxy, dgdyz, dgdxz,
@@ -234,7 +236,7 @@ C     Calculate second derivatives of the conformal factor
      $        psixx)
         call Exact__metric_deriv2(
      $        decoded_exact_model,
-     $        1, 2,
+     $        1_ik, 2_ik,
      $        x, y, z, t,
      $        dgdtt, dgdtx, dgdty, dgdtz,
      $        dgdxx, dgdyy, dgdzz, dgdxy, dgdyz, dgdxz,
@@ -243,7 +245,7 @@ C     Calculate second derivatives of the conformal factor
      $        psixy)
         call Exact__metric_deriv2(
      $        decoded_exact_model,
-     $        1, 3,
+     $        1_ik, 3_ik,
      $        x, y, z, t,
      $        dgdtt, dgdtx, dgdty, dgdtz,
      $        dgdxx, dgdyy, dgdzz, dgdxy, dgdyz, dgdxz,
@@ -252,7 +254,7 @@ C     Calculate second derivatives of the conformal factor
      $        psixz)
         call Exact__metric_deriv2(
      $        decoded_exact_model,
-     $        2, 2,
+     $        2_ik, 2_ik,
      $        x, y, z, t,
      $        dgdtt, dgdtx, dgdty, dgdtz,
      $        dgdxx, dgdyy, dgdzz, dgdxy, dgdyz, dgdxz,
@@ -261,7 +263,7 @@ C     Calculate second derivatives of the conformal factor
      $        psiyy)
         call Exact__metric_deriv2(
      $        decoded_exact_model,
-     $        2, 3,
+     $        2_ik, 3_ik,
      $        x, y, z, t,
      $        dgdtt, dgdtx, dgdty, dgdtz,
      $        dgdxx, dgdyy, dgdzz, dgdxy, dgdyz, dgdxz,
@@ -270,7 +272,7 @@ C     Calculate second derivatives of the conformal factor
      $        psiyz)
         call Exact__metric_deriv2(
      $        decoded_exact_model,
-     $        3, 3,
+     $        3_ik, 3_ik,
      $        x, y, z, t,
      $        dgdtt, dgdtx, dgdty, dgdtz,
      $        dgdxx, dgdyy, dgdzz, dgdxy, dgdyz, dgdxz,
