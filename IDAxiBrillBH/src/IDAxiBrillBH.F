@@ -110,7 +110,8 @@ c
       call CCTK_InterpHandle(interp_handle,
      $                       interpolator_name_fstring(1:fstring_length))
       if (interp_handle .lt. 0) then
-        call CCTK_WARN(CCTK_WARN_ABORT, "Cannot get interpolator handle!  Did you forgot to activate a suitable local-interpolator thorn?")
+         call CCTK_ERROR("Cannot get interpolator handle!  did you forgot to activate a suitable local-interpolator thorn?")
+c     " (fix syntax highlighting)
       endif
 
 c
