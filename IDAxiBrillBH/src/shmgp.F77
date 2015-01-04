@@ -423,14 +423,14 @@ cdir$ noinline
       resid(mcyc)=rmax
       confac(mcyc)=rmax/rmaxo
       nb=0
-      ne=min0(6,mcyc)
+      ne=min(6,mcyc)
  2029 write(lout,2033) (mc,mc=nb,ne)
       write(lout,2032) (resid(mc),mc=nb,ne)
       write(lout,2031) (confac(mc),mc=nb,ne)
       nb=ne+1
-      ne=ne+min0(6,mcyc-ne)
+      ne=ne+min(6,mcyc-ne)
       if(nb.le.ne) go to 2029
-      fconfac=(rmax/rmax0)**(1./float(mcyc))
+      fconfac=(rmax/rmax0)**(1./dble(mcyc))
       write(lout,2034) fconfac
  2034 format(30x,6(1h*)/,' average convergence factor =',f7.3,/,
      + 30x,6(1h*))
@@ -1209,7 +1209,7 @@ c**********************************************************************
       jm1=jm-1
       ie=1
    20 ib=ie+1
-      ie=ib+min0(5,im1-ib)
+      ie=ib+min(5,im1-ib)
       do 10 j=jm1,2,-1
    10 write(lout,100) j,(q(i,j),i=ib,ie)
       if(ie.lt.im1) go to 20
