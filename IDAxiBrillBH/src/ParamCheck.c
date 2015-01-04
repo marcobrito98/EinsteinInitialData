@@ -49,16 +49,10 @@ void IDAxiBrillBH_ParamChecker(CCTK_ARGUMENTS)
   DECLARE_CCTK_PARAMETERS
 
   /* Do we know how to deal with this type of metric ? */
-  if( ! CCTK_EQUALS(metric_type, "static conformal"))
+  if( ! CCTK_EQUALS(metric_type, "static conformal") &&
+      ! CCTK_EQUALS(metric_type, "physical"))
   {
-    if (CCTK_EQUALS(metric_type, "physical"))
-    {
-      CCTK_PARAMWARN("\n\tPlease add code into IDAxiBrillBH.F to compute\n\tthe physical metric from the conformal metric.");
-    } 
-    else 
-    {
-      CCTK_PARAMWARN("Unknown ADMBase::metric_type - known types are \"physical\" and \"static conformal\"");
-    }
+    CCTK_PARAMWARN("Unknown ADMBase::metric_type - known types are \"physical\" and \"static conformal\"");
   }
 
   /* Report on parameters */
