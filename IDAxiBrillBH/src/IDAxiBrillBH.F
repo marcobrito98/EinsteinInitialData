@@ -489,7 +489,7 @@ c set up the interpolator array pointers
       call CCTK_InterpLocalUniform (ierror, 2,
      $                              interp_handle, param_table_handle,
      $                              coord_origin, coord_delta,
-     $                              npoints, type_codes(1), interp_coords,
+     $                              npoints, int(type_codes(1)), interp_coords,
      $                              6, in_array_dims, type_codes, in_arrays,
      $                              6, type_codes, out_arrays)
       if (ierror < 0) then
