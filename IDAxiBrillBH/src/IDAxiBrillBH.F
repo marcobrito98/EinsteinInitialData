@@ -28,11 +28,27 @@ c@@*/
 
       subroutine IDAxiBrillBH(CCTK_ARGUMENTS)
 
+      use cctk
+
       implicit none
 
       DECLARE_CCTK_ARGUMENTS
       DECLARE_CCTK_PARAMETERS
       DECLARE_CCTK_FUNCTIONS
+
+      interface
+      subroutine mgparm(m,ifd59,id5,id9,idi,idg,imx,jmx)
+      implicit CCTK_REAL (a-h,o-z)
+      end
+      subroutine mg5 (idim,ilower,iupper,jdim,jlower,jupper,
+     &     cc,cn,cs,cw,ce,u,rhs,
+     &     id5,id9,idi,idg,ifmg,eps,rmax,ier)
+      implicit CCTK_REAL (a-h,o-z)
+      CCTK_REAL cc(idim,jdim),cn(idim,jdim),cs(idim,jdim),cw(idim,jdim),
+     &     ce(idim,jdim),cnw(idim,jdim),cne(idim,jdim),csw(idim,jdim),
+     &     cse(idim,jdim),u(idim,jdim),rhs(idim,jdim)
+      end
+      end interface
 
       CCTK_REAL, parameter :: one = 1
       CCTK_REAL, parameter :: eps = 1.0e-10
