@@ -369,16 +369,13 @@ CCTK_INT TOV_Rescale_Sources(
     const CCTK_REAL       *gyz)
 {
   DECLARE_CCTK_PARAMETERS
-  CCTK_REAL *rho, *press, *eps, *dens, *tau, *w_lorentz, *vel0, *vel1, *vel2,
-            *scon0, *scon1, *scon2;
-  CCTK_REAL *rho_p, *press_p, *eps_p, *dens_p, *tau_p, *w_lorentz_p, *vel0_p,
-            *vel1_p, *vel2_p, *scon0_p, *scon1_p, *scon2_p;
-  CCTK_REAL *rho_p_p, *press_p_p, *eps_p_p, *dens_p_p, *tau_p_p, *w_lorentz_p_p,
-            *vel0_p_p, *vel1_p_p, *vel2_p_p, *scon0_p_p, *scon1_p_p, *scon2_p_p;
+  CCTK_REAL *rho, *press, *eps, *w_lorentz, *vel0, *vel1, *vel2;
+  CCTK_REAL *rho_p, *press_p, *eps_p, *w_lorentz_p, *vel0_p, *vel1_p, *vel2_p;
+  CCTK_REAL *rho_p_p, *press_p_p, *eps_p_p, *w_lorentz_p_p,
+            *vel0_p_p, *vel1_p_p, *vel2_p_p;
   CCTK_REAL *source, *mom_source[3];
-  CCTK_REAL psip, my_psi4, sqrt_det, vx, vy, vz, v_2,
-            w_lorentz_2, D_h_w;
-  CCTK_REAL vlowx, vlowy, vlowz;
+  CCTK_REAL psip, my_psi4, vx, vy, vz, v_2,
+            w_lorentz_2;
   int       type;
   CCTK_REAL rhoold, rhonew;
   int i3D;
@@ -387,45 +384,30 @@ CCTK_INT TOV_Rescale_Sources(
 
   CCTK_INFO("Rescaling Sources");
 
-  /* get GRHydro variables */
+  /* get Hydro variables */
   rho      =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "HydroBase::rho");
   press    =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "HydroBase::press");
   eps      =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "HydroBase::eps");
-  dens     =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "GRHydro::dens");
-  tau      =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "GRHydro::tau");
   w_lorentz=(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "HydroBase::w_lorentz");
   vel0     =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "HydroBase::vel[0]");
   vel1     =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "HydroBase::vel[1]");
   vel2     =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "HydroBase::vel[2]");
-  scon0       =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "GRHydro::scon[0]");
-  scon1       =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "GRHydro::scon[1]");
-  scon2       =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 0, "GRHydro::scon[2]");
 
   rho_p    =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "HydroBase::rho");
   press_p  =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "HydroBase::press");
   eps_p    =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "HydroBase::eps");
-  dens_p   =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "GRHydro::dens");
-  tau_p    =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "GRHydro::tau");
   w_lorentz_p=(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "HydroBase::w_lorentz");
   vel0_p   =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "HydroBase::vel[0]");
   vel1_p   =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "HydroBase::vel[1]");
   vel2_p   =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "HydroBase::vel[2]");
-  scon0_p     =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "GRHydro::scon[0]");
-  scon1_p     =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "GRHydro::scon[1]");
-  scon2_p     =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 1, "GRHydro::scon[2]");
 
   rho_p_p  =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "HydroBase::rho");
   press_p_p=(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "HydroBase::press");
   eps_p_p  =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "HydroBase::eps");
-  dens_p_p =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "GRHydro::dens");
-  tau_p_p  =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "GRHydro::tau");
   w_lorentz_p_p=(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "HydroBase::w_lorentz");
   vel0_p_p =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "HydroBase::vel[0]");
   vel1_p_p =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "HydroBase::vel[1]");
   vel2_p_p =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "HydroBase::vel[2]");
-  scon0_p_p   =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "GRHydro::scon[0]");
-  scon1_p_p   =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "GRHydro::scon[1]");
-  scon2_p_p   =(CCTK_REAL*)CCTK_VarDataPtr(cctkGH, 2, "GRHydro::scon[2]");
 
   /* get the old source */
   source=calloc(size, sizeof(CCTK_REAL));
@@ -546,25 +528,10 @@ CCTK_INT TOV_Rescale_Sources(
       press[i3D] = TOV_K * pow(rhonew, TOV_Gamma);
       eps[i3D]   = TOV_K * pow(rhonew, TOV_Gamma - 1.0) /
                               (TOV_Gamma - 1.0);
-      sqrt_det   = pow(my_psi4, 1.5);
       w_lorentz[i3D] = sqrt(w_lorentz_2);
-      dens[i3D] = sqrt_det * w_lorentz[i3D] * rho[i3D];
-      tau[i3D]  = sqrt_det * (rho[i3D]  *w_lorentz[i3D]*w_lorentz[i3D] *
-                                         (1.0 + eps[i3D]) +
-                              press[i3D]*(w_lorentz[i3D]*w_lorentz[i3D]-1.0) ) -
-                  dens[i3D];
       vel0[i3D] = vx;
       vel1[i3D] = vy;
       vel2[i3D] = vz;
-      D_h_w = dens[i3D] * (1 + eps[i3D] + press[i3D]/rho[i3D]) * w_lorentz[i3D];
-
-      vlowx = gxx[i3D]*vel0[i3D] + gxy[i3D]*vel1[i3D] + gxz[i3D]*vel2[i3D];
-      vlowy = gxy[i3D]*vel0[i3D] + gyy[i3D]*vel1[i3D] + gyz[i3D]*vel2[i3D];
-      vlowz = gxz[i3D]*vel0[i3D] + gyz[i3D]*vel1[i3D] + gzz[i3D]*vel2[i3D];
-
-      scon0[i3D] = D_h_w * vlowx;
-      scon1[i3D] = D_h_w * vlowy;
-      scon2[i3D] = D_h_w * vlowz;
 
       if (debug && (fabs(z[i3D])<1.e-15))
       {
@@ -599,11 +566,6 @@ CCTK_INT TOV_Rescale_Sources(
         TOV_Copy(size, vel0_p_p, vel0);
         TOV_Copy(size, vel1_p_p, vel1);
         TOV_Copy(size, vel2_p_p, vel2);
-        TOV_Copy(size, dens_p_p, dens);
-        TOV_Copy(size, tau_p_p,  tau);
-        TOV_Copy(size, scon0_p_p,   scon0);
-        TOV_Copy(size, scon1_p_p,   scon1);
-        TOV_Copy(size, scon2_p_p,   scon2);
         TOV_Copy(size, w_lorentz_p_p, w_lorentz);
     case 2:
         TOV_Copy(size, rho_p,  rho);
@@ -612,11 +574,6 @@ CCTK_INT TOV_Rescale_Sources(
         TOV_Copy(size, vel0_p, vel0);
         TOV_Copy(size, vel1_p, vel1);
         TOV_Copy(size, vel2_p, vel2);
-        TOV_Copy(size, dens_p, dens);
-        TOV_Copy(size, tau_p,  tau);
-        TOV_Copy(size, scon0_p,   scon0);
-        TOV_Copy(size, scon1_p,   scon1);
-        TOV_Copy(size, scon2_p,   scon2);
         TOV_Copy(size, w_lorentz_p, w_lorentz);
   }
   free(source);
