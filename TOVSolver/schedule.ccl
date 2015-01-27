@@ -72,7 +72,7 @@ if (TOV_fake_evolution)
   {
     LANG: C
   } "prepare for fake evolution"
-  schedule TOV_C_Exact IN MoL_PostStep AFTER GRHydro_PostStep
+  schedule TOV_C_Exact IN MoL_PostStep AFTER HydroBase_PostStep
   {
     LANG: C
   } "use fake evolution"
