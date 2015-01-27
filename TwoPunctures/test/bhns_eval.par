@@ -4,7 +4,7 @@ ActiveThorns = "Loopcontrol InitBase Carpet CarpetLib CarpetInterp CarpetReduce 
 ActiveThorns = "ADMBase"
 ActiveThorns = "StaticConformal"
 ActiveThorns = "ADMCoupling ADMMacros"
-ActiveThorns = "TmunuBase Constants SpaceMask GRHydro HydroBase"
+ActiveThorns = "TmunuBase Constants SpaceMask HydroBase"
 ActiveThorns = "TOVSolver eos_omni"
 ActiveThorns = "TwoPunctures"
 ActiveThorns = "coordgauge boundary"
@@ -63,15 +63,6 @@ TwoPunctures::TP_Tiny = 1.e-10
 
 SpaceMask::use_mask = yes
 
-GRHydro::GRHydro_stencil            = 3
-GRHydro::GRHydro_eos_type           = "Polytype"
-GRHydro::GRHydro_eos_table          = "2D_Polytrope"
-GRHydro::recon_method              = "ppm"
-GRHydro::rho_abs_min               = 1.e-10
-GRHydro::initial_atmosphere_factor = 0.1
-#GRHydro::GRHydro_MaxNumSandRVars    = 0
-hydrobase::timelevels = 3
-
 TOVSolver::TOV_Enforce_Interpolation = "yes"
 TOVSolver::TOV_Num_Radial     = 1000000
 TOVSolver::TOV_dr[0]          = 5.e-5
@@ -93,9 +84,9 @@ Carpet::init_3_timelevels         = no
 CarpetIOScalar::outScalar_reductions	= "minimum maximum norm1 norm2"
 
 IOScalar::outScalar_every	= 512
-IOScalar::outScalar_vars		= "admbase::metric admbase::curv TwoPunctures::puncture_u HydroBase::w_lorentz hydrobase::rho hydrobase::press hydrobase::eps HydroBase::vel GRHydro::dens GRHydro::tau GRHydro::scon admbase::lapse admbase::shift"
+IOScalar::outScalar_vars		= "admbase::metric admbase::curv TwoPunctures::puncture_u HydroBase::w_lorentz hydrobase::rho hydrobase::press hydrobase::eps HydroBase::vel admbase::lapse admbase::shift"
 IOASCII::out1D_every		= 512
-IOASCII::out1D_vars		= "admbase::metric admbase::curv TwoPunctures::puncture_u HydroBase::w_lorentz hydrobase::rho hydrobase::press hydrobase::eps HydroBase::vel GRHydro::dens GRHydro::tau GRHydro::scon admbase::lapse admbase::shift"
+IOASCII::out1D_vars		= "admbase::metric admbase::curv TwoPunctures::puncture_u HydroBase::w_lorentz hydrobase::rho hydrobase::press hydrobase::eps HydroBase::vel admbase::lapse admbase::shift"
 
 admbase::metric_type		= "physical"
 
