@@ -21,8 +21,8 @@ CCTK_INT TOV_Num_Radial "The number of radial points for the ODE integration"
 
 CCTK_REAL TOV_Rho_Central[10] "The central density"
 {
-  0.0:* :: "Must be positive"
-} 0.0
+  (0.0:* :: "Must be positive"
+} 1e-3
 
 CCTK_REAL TOV_Gamma "The polytropic constant in P = K rho^Gamma"
 {
@@ -168,5 +168,4 @@ USES real rho_rel_min
 USES REAL initial_rho_abs_min
 USES REAL initial_rho_rel_min
 USES REAL initial_atmosphere_factor
-USES real GRHydro_rho_central
 

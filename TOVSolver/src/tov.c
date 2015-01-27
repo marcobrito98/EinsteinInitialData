@@ -192,7 +192,6 @@ void TOV_C_Integrate_RHS(CCTK_ARGUMENTS)
             in_data[NUMVARS], new_data[NUMVARS],
             k1[NUMVARS], k2[NUMVARS], k3[NUMVARS], k4[NUMVARS];
   CCTK_REAL Surface_Mass, factor, local_rho;
-  CCTK_REAL rho_central;
 
   LOCAL_TINY = 1.0e-20;
 
@@ -213,12 +212,7 @@ void TOV_C_Integrate_RHS(CCTK_ARGUMENTS)
   {
     /* remember array index */
     star_i = star * TOV_Num_Radial;
-
-    /* check for parameters */
-    if ((TOV_Rho_Central[star]<=0.0) && (GRHydro_rho_central>0.0))
-      rho_central=GRHydro_rho_central;
-    else
-      rho_central=TOV_Rho_Central[star];
+    const CCTK_REAL rho_central=TOV_Rho_Central[star];
 
     /* Set conformal state like set in parameter file if we do not use
      * the old initial data. In this case we have to use what we get */
