@@ -484,7 +484,7 @@ JFD_times_dv (int i, int j, int k, int nvar, int n1, int n2,
   gagb = ga * gb;
 
   hp = 2 * Pi / n3;		/* hp: Stepsize with respect to (phi)*/
-  phi = hp * j;
+  phi = hp * k;
   gp = 1 / hp;
   gp2 = gp * gp;
   gagp = ga * gp;
