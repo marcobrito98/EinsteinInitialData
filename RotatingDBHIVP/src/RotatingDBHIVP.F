@@ -55,14 +55,14 @@ c@@*/
      $     t11,t12,t13,t14,t15,t16
       real*8 gtil,dngtil,dnngtil,dnnngtil,dnnnngtil,dnnnnngtil,
      $     dnnnnnngtil,dnnnnnnngtil
-      real*8 rhsmax,rmax,get3d,adm
+      real*8 rhsmax,rmax,adm
       real*8,parameter :: rbh_tol = 1.0d-7,rbh_eps = 1.0d-10
       integer,parameter :: itmax = 30 
       real*8 pi
       integer :: ne,nq,np
       integer :: nx,ny,nz
-      integer i,j,k,it,ier,nquads,nocts,order,ntries
-      integer npoints,handle,ierror
+      integer i,j,k,it,ier,nquads,nocts,ntries
+      integer npoints,ierror
       integer make_conformal_derivs
 
       integer       param_table_handle, interp_handle
