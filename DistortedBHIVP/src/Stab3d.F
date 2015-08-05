@@ -97,7 +97,7 @@ c
       integer,intent(out) :: ier
       real*8 x(im*jm*km),r(im*jm*km)
 c     Local variables
-      integer :: i,j,k,kk
+      integer :: i,kk
       real*8, allocatable :: p(:),Ap(:),w(:),As(:)
       real*8 :: omega, chi,chi1,chi2, delta, deltap, pp
 *
@@ -265,7 +265,7 @@ c
       real*8,intent(in) :: x(im*jm*km)
       real*8,intent(out) :: y(im*jm*km)
 c     Local variables
-      integer :: i, j, k
+      integer :: i
 *
 ***********************************************************************
 *
