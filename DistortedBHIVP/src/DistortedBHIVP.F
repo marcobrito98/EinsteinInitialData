@@ -50,14 +50,14 @@ c@@   */
      $     o18,o19,o20,o21,o22,o23,o24,o25,o26,o27,o28,o29,o30,o31,o32,
      $     o33,o34,o35,o36,o37,o38,o39,o40,o41,o42,o43,o44,o45,o46,o47,
      $     o48,o49,o50,o51,o52,o53,o54,o55,o56,o57,o58,o59,o60,o61,o62,
-     $     o63,o64,o65,o66,o67
+     $     o63,o64
       real*8 rmax,adm
       real*8 dbh_eps
       real*8 pi
       integer :: ne, nq, np
       integer :: nx,ny,nz
-      integer i,j,k,ier,nquads,nocts,order
-      integer npoints,handle,ierror
+      integer i,j,k,ier,nquads,nocts
+      integer npoints,ierror
       integer make_conformal_derivs
 
       integer       param_table_handle, interp_handle
@@ -694,7 +694,7 @@ c     Courvature
       kyz = 0.0d0
       kzz = 0.0d0
       
- 110  continue
+c 110  continue
 c     Set ADM mass
       i = ne-15
       adm = 0.0
