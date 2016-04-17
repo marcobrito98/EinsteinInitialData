@@ -30,9 +30,7 @@ IOBasic::outInfo_every 			= 	1
 IOBasic::outScalar_style    = "gnuplot"
 IOBasic::outInfo_vars 			= 	"hydrobase::rho"
 
-ActiveThorns = "tmunubase ADMConstraints admbase admcoupling spacemask staticconformal"
-
-ADMConstraints::constraints_persist	= yes
+ActiveThorns = "tmunubase admbase admcoupling spacemask staticconformal"
 
 IOBasic::outScalar_every                =       1
 IOBasic::outScalar_reductions = "minimum maximum"
