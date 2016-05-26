@@ -756,6 +756,13 @@ interpol (CCTK_REAL a, CCTK_REAL b, CCTK_REAL c, derivs v)
 }
 
 /* --------------------------------------------------------------------------*/
+static CCTK_REAL
+clamp_pm_one (CCTK_REAL val)
+{
+  return val < -1 ? -1 : val > 1 ? 1 : val;
+}
+
+/* --------------------------------------------------------------------------*/
 /* Calculates the value of v at an arbitrary position (x,y,z)*/
 CCTK_REAL
 PunctTaylorExpandAtArbitPosition (int ivar, int nvar, int n1,
@@ -780,12 +787,17 @@ PunctTaylorExpandAtArbitPosition (int ivar, int nvar, int n1,
   aux1 = 0.5 * (xs * xs + rs2 - 1);
   aux2 = sqrt (aux1 * aux1 + rs2);
   X = asinh (sqrt (aux1 + aux2));
+
+  /* Note: Range of R = asin(Q) is [0,pi] for Q in [0,1] */
   R = asin (min(1.0, sqrt (-aux1 + aux2)));
   if (x < 0)
     R = Pi - R;
 
-  A = 2 * tanh (0.5 * X) - 1;
-  B = tan (0.5 * R - Piq);
+  A = clamp_pm_one( 2 * tanh (0.5 * X) - 1 );
+
+  /* Note: Range of R/2 - pi/4 is [ -pi/4, pi/4 ] and so range of tan
+   * is [-1,1], for R in [0,pi]. */
+  B = clamp_pm_one( tan (0.5 * R - Piq) );
   al = Pi - acos (A);
   be = Pi - acos (B);
 
@@ -802,6 +814,8 @@ PunctTaylorExpandAtArbitPosition (int ivar, int nvar, int n1,
   free_derivs (&vv, 1);
 
   Ui = (A - 1) * result;
+
+  assert( isfinite( Ui ) );
 
   return Ui;
 }
@@ -837,6 +851,8 @@ PunctIntPolAtArbitPosition (int ivar, int nvar, int n1,
   result = PunctEvalAtArbitPosition (v.d0, ivar, A, B, phi, nvar, n1, n2, n3);
 
   Ui = (A - 1) * result;
+
+  assert( isfinite( Ui ) );
 
   return Ui;
 }
@@ -935,7 +951,7 @@ void SpecCoef(int n1, int n2, int n3, int ivar, CCTK_REAL *v, CCTK_REAL *cf)
   // VASILIS: Here v is a pointer to the values of the variable v at the collocation points and cf_v a pointer to the spectral coefficients that this routine calculates
 
 	int i, j, k, N, n, l, m;
-	double *p, ***values3, ***values4;
+	CCTK_REAL *p, ***values3, ***values4;
 	
 	N=maximum3(n1,n2,n3);
 	p=dvector(0,N);
