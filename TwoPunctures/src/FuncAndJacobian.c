@@ -950,7 +950,7 @@ void SpecCoef(int n1, int n2, int n3, int ivar, CCTK_REAL *v, CCTK_REAL *cf)
   DECLARE_CCTK_PARAMETERS;
   // VASILIS: Here v is a pointer to the values of the variable v at the collocation points and cf_v a pointer to the spectral coefficients that this routine calculates
 
-	int i, j, k, N, n, l, m;
+	int i, j, k, N, n, l;
 	CCTK_REAL *p, ***values3, ***values4;
 	
 	N=maximum3(n1,n2,n3);

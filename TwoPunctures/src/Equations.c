@@ -149,7 +149,6 @@ NonLinEquations (CCTK_REAL rho_adm,
 {
   DECLARE_CCTK_PARAMETERS;
   CCTK_REAL r_plus, r_minus, psi, psi2, psi4, psi7;
-  CCTK_REAL mu;
 
   r_plus = sqrt ((x - par_b) * (x - par_b) + y * y + z * z);
   r_minus = sqrt ((x + par_b) * (x + par_b) + y * y + z * z);
