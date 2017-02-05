@@ -60,5 +60,7 @@ void TwoPunctures_Metadata (CCTK_ARGUMENTS)
     o << "initial-bh-spin2z             = " << par_S_minus[2] << endl;
     o << "initial-bh-puncture-adm-mass1 = " << *mp_adm << endl;
     o << "initial-bh-puncture-adm-mass2 = " << *mm_adm << endl;
+    o << "initial-bh-puncture-bare-mass1 = " << *mp << endl;
+    o << "initial-bh-puncture-bare-mass2 = " << *mm << endl;
   }
 }

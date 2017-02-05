@@ -2,10 +2,10 @@
 
 if (CCTK_Equals(initial_data, "twopunctures"))
 {
-  STORAGE: energy, angular_momentum, puncture_adm_mass
+  STORAGE: energy, angular_momentum, puncture_adm_mass, bare_mass
 
   if (keep_u_around) {
-    STORAGE: puncture_u bare_mass
+    STORAGE: puncture_u
   }
 
   SCHEDULE TwoPunctures_ParamCheck AT PARAMCHECK
@@ -29,7 +29,7 @@ if (CCTK_Equals(initial_data, "twopunctures"))
   SCHEDULE TwoPunctures IN TwoPunctures_Group
   {
     LANG: C
-    STORAGE: puncture_u bare_mass
+    STORAGE: puncture_u
     # SYNC: ADMBase::metric ADMBase::curv ADMBase::lapse
   } "Create puncture black hole initial data"
 
