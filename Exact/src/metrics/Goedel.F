@@ -48,23 +48,23 @@ C This is a vacuum spacetime with no cosmological constant
       gdtx = 0.d0
       gdty = 0.d0
       gdtz = 0.d0
-      gdxx = (1/2)*arad*arad*exp(x)*exp(x)
+      gdxx = 0.5d0*arad*arad*exp(x)*exp(x)
       gdyy = -arad*arad
       gdzz =  arad*arad*exp(x)
       gdxy = 0.d0
       gdyz = 0.d0
       gdzx = arad*arad*exp(x)
 
-      gutt = -1/(arad*arad)
+      gutt = -1d0/(arad*arad)
       gutx = 0.d0
       guty = 0.d0
       gutz = 0.d0
-      guxx = -2/(arad*arad*exp(x)*exp(x))
-      guyy = -1/(arad*arad)
-      guzz = -1/(arad*arad*exp(x))
+      guxx = -2d0/(arad*arad*exp(x)*exp(x))
+      guyy = -1d0/(arad*arad)
+      guzz = -1d0/(arad*arad*exp(x))
       guxy = 0.d0
       guyz = 0.d0 
-      guzx = 2/(arad*arad*exp(x))
+      guzx = 2d0/(arad*arad*exp(x))
 
       return
       end
