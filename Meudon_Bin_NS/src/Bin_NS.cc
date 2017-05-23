@@ -98,13 +98,13 @@ void Meudon_Bin_NS_initialise (CCTK_ARGUMENTS)
   }
 
   // --------------------------------------------------------------
-  //   CHEKING FILE NAME EXISTENCE
+  //   CHECKING FILE NAME EXISTENCE
   // --------------------------------------------------------------
   FILE *file;
   if ((file = fopen(filename, "r")) != NULL) 
        fclose(file);
   else {
-      CCTK_VInfo (CCTK_THORNSTRING, "File \"%s\" do not exist. ABORTING", filename);
+      CCTK_VInfo (CCTK_THORNSTRING, "File \"%s\" does not exist. ABORTING", filename);
       /* CCTK_Exit(cctkGH, EXIT_FAILURE); */
       CCTK_Exit(cctkGH, 0);
   }
