@@ -178,30 +178,18 @@ void Meudon_Bin_NS_initialise (CCTK_ARGUMENTS)
 
     if (CCTK_EQUALS(initial_data, "Meudon_Bin_NS")) {
       rho[i] = bin_ns.nbar[i] / rho_unit;
-      //eps[i] = bin_ns.ener_spec[i];
-      // The following would recompute eps using the polytopic EOS, but
-      // setting eps directly seems to work as well
-      // eps[i] = K * pow(rho[i], bin_ns.gamma_poly1-1.) / (bin_ns.gamma_poly1-1.);
-
-      // TODO: we should really use some EOS calls for the pressure, but for the
-      //       moment this works with polytropes at least
-      //press[i] = K * pow(rho[i], bin_ns.gamma_poly1);
-      
-      
-
-      //Pressure from EOS_Omni call 
-      //We set keytemp=1 to have also the initial epsilon set by
-      //EOS_Omni from rho with T=0.
-      
+      if (!recalculate_eps)
+        eps[i] = bin_ns.ener_spec[i];
+      // Pressure from EOS_Omni call 
       if (CCTK_ActiveTimeLevelsVN(cctkGH, "HydroBase::temperatur") > 0 &&
           CCTK_ActiveTimeLevelsVN(cctkGH, "HydroBase::Y_e") > 0)
       {
-        EOS_Omni_press(*init_eos_key,1,eos_precision,1,&(rho[i]),&(eps[i]),
+        EOS_Omni_press(*init_eos_key,recalculate_eps,eos_precision,1,&(rho[i]),&(eps[i]),
                        &(temperature[i]),&(Y_e[i]),&(press[i]),&keyerr,&anyerr);
       }
       else
       {
-        EOS_Omni_press(*init_eos_key,1,eos_precision,1,&(rho[i]),&(eps[i]),
+        EOS_Omni_press(*init_eos_key,recalculate_eps,eos_precision,1,&(rho[i]),&(eps[i]),
                        NULL,NULL,&(press[i]),&keyerr,&anyerr);
       }
 
