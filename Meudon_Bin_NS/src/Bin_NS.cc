@@ -196,12 +196,12 @@ void Meudon_Bin_NS_initialise (CCTK_ARGUMENTS)
       if (CCTK_ActiveTimeLevelsVN(cctkGH, "HydroBase::temperatur") > 0 &&
           CCTK_ActiveTimeLevelsVN(cctkGH, "HydroBase::Y_e") > 0)
       {
-        EOS_Omni_press(*init_eos_key,1,1e-8,1,&(rho[i]),&(eps[i]),
+        EOS_Omni_press(*init_eos_key,1,eos_precision,1,&(rho[i]),&(eps[i]),
                        &(temperature[i]),&(Y_e[i]),&(press[i]),&keyerr,&anyerr);
       }
       else
       {
-        EOS_Omni_press(*init_eos_key,1,1e-8,1,&(rho[i]),&(eps[i]),
+        EOS_Omni_press(*init_eos_key,1,eos_precision,1,&(rho[i]),&(eps[i]),
                        NULL,NULL,&(press[i]),&keyerr,&anyerr);
       }
 

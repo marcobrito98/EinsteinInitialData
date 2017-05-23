@@ -52,3 +52,8 @@ STRING eos_table_filepath "Directory containing the EOS file used to generate th
 {
   "" :: "Directory name, default (empty string) is 'do not tell Lorene to overwrite info found in Lorene data'"
 } ""
+
+CCTK_REAL eos_precision "precision of EOS calculations in EOSOmni"
+{
+  0:* :: "any positive number"
+} 1.e-8
