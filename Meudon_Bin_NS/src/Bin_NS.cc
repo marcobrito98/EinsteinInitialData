@@ -189,19 +189,21 @@ void Meudon_Bin_NS_initialise (CCTK_ARGUMENTS)
       
       
 
-      //Press from EOS_Omni call 
+      //Pressure from EOS_Omni call 
       //We set keytemp=1 to have also the initial epsilon set by
       //EOS_Omni from rho with T=0.
       
-      if(*init_eos_key == 4){  //if evolve temperature (hot nuclear eos)
-	
-	EOS_Omni_press(*init_eos_key,1,1e-8,1,&(rho[i]),&(eps[i]),&(temperature[i]),&(Y_e[i]),&(press[i]),&keyerr,&anyerr);
+      if (CCTK_ActiveTimeLevelsVN(cctkGH, "HydroBase::temperatur") > 0 &&
+          CCTK_ActiveTimeLevelsVN(cctkGH, "HydroBase::Y_e") > 0)
+      {
+        EOS_Omni_press(*init_eos_key,1,1e-8,1,&(rho[i]),&(eps[i]),
+                       &(temperature[i]),&(Y_e[i]),&(press[i]),&keyerr,&anyerr);
       }
-      else {
-	EOS_Omni_press(*init_eos_key,1,1e-8,1,&(rho[i]),&(eps[i]),NULL,NULL,&(press[i]),&keyerr,&anyerr);
+      else
+      {
+        EOS_Omni_press(*init_eos_key,1,1e-8,1,&(rho[i]),&(eps[i]),
+                       NULL,NULL,&(press[i]),&keyerr,&anyerr);
       }
-      
-      
 
       vel[i          ] = bin_ns.u_euler_x[i];
       vel[i+  npoints] = bin_ns.u_euler_y[i];
