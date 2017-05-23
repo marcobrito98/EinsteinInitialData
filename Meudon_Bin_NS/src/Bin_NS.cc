@@ -181,7 +181,7 @@ void Meudon_Bin_NS_initialise (CCTK_ARGUMENTS)
       if (!recalculate_eps)
         eps[i] = bin_ns.ener_spec[i];
       // Pressure from EOS_Omni call 
-      if (CCTK_ActiveTimeLevelsVN(cctkGH, "HydroBase::temperatur") > 0 &&
+      if (CCTK_ActiveTimeLevelsVN(cctkGH, "HydroBase::temperature") > 0 &&
           CCTK_ActiveTimeLevelsVN(cctkGH, "HydroBase::Y_e") > 0)
       {
         EOS_Omni_press(*init_eos_key,recalculate_eps,eos_precision,1,&(rho[i]),&(eps[i]),
