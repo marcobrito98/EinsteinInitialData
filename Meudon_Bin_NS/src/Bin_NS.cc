@@ -102,11 +102,10 @@ void Meudon_Bin_NS_initialise (CCTK_ARGUMENTS)
   // --------------------------------------------------------------
   FILE *file;
   if ((file = fopen(filename, "r")) != NULL) 
-       fclose(file);
+     fclose(file);
   else {
-      CCTK_VInfo (CCTK_THORNSTRING, "File \"%s\" does not exist. ABORTING", filename);
-      /* CCTK_Exit(cctkGH, EXIT_FAILURE); */
-      CCTK_Exit(cctkGH, 0);
+     CCTK_VError(__LINE__, __FILE__, CCTK_THORNSTRING,
+                 "File \"%s\" does not exist. ABORTING", filename);
   }
   // Handle potentially different EOS table directory. LORENE recieves that via
   // environment variable
