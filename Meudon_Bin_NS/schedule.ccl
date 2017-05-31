@@ -11,4 +11,7 @@ if (CCTK_EQUALS (initial_data,    "Meudon_Bin_NS") ||
   {
     LANG: C
   } "Set up binary neutron star initial data"
+  
+  STORAGE:init_eos_key
+
 }

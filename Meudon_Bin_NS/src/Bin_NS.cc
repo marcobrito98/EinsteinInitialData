@@ -2,9 +2,12 @@
  * (c) 2010 Frank Loeffler */
 
 #include <cstdio>
+#include <cstring>
 #include <cassert>
 #include <vector>
 #include <ios>
+#include <iostream>
+#include <stdlib.h>
 
 #include <cctk.h>
 #include <cctk_Arguments.h>
@@ -14,6 +17,10 @@
 #include <unites.h>
 
 using namespace std;
+
+// define namespace here for old versions of Lorene that don't do so
+namespace Lorene {}
+using namespace Lorene;
 
 static void set_dt_from_domega (CCTK_ARGUMENTS,
                                 CCTK_REAL const* const var,
@@ -65,12 +72,23 @@ void Meudon_Bin_NS_initialise (CCTK_ARGUMENTS)
   // Other quantities in terms of Cactus units
   CCTK_REAL const coord_unit = cactusL / 1.0e+3;         // from km (~1.477)
   CCTK_REAL const rho_unit   = cactusM / pow(cactusL,3); // from kg/m^3
-
+  CCTK_INT keyerr = 0, anyerr = 0;
 
   CCTK_INFO ("Setting up coordinates");
 
   int const npoints = cctk_lsh[0] * cctk_lsh[1] * cctk_lsh[2];
   vector<double> xx(npoints), yy(npoints), zz(npoints);
+
+  //Get EOS_Omni handle 
+
+  if (!(*init_eos_key = EOS_Omni_GetHandle(eos_table)))
+    CCTK_WARN(0,"Cannot get initial eos handle, aborting...");
+  
+  CCTK_VInfo(CCTK_THORNSTRING, "Meudon_Bin_NS will use the %s equation of state.", eos_table);
+  CCTK_VInfo(CCTK_THORNSTRING, "Meudon_Bin_NS will use the %d eos handle", *init_eos_key);
+
+ 
+
 
 #pragma omp parallel for
   for (int i=0; i<npoints; ++i) {
@@ -78,6 +96,26 @@ void Meudon_Bin_NS_initialise (CCTK_ARGUMENTS)
     yy[i] = y[i] * coord_unit;
     zz[i] = z[i] * coord_unit;
   }
+
+  // --------------------------------------------------------------
+  //   CHECKING FILE NAME EXISTENCE
+  // --------------------------------------------------------------
+  FILE *file;
+  if ((file = fopen(filename, "r")) != NULL) 
+     fclose(file);
+  else {
+     CCTK_VError(__LINE__, __FILE__, CCTK_THORNSTRING,
+                 "File \"%s\" does not exist. ABORTING", filename);
+  }
+  // Handle potentially different EOS table directory. LORENE recieves that via
+  // environment variable
+  if (strlen(eos_table_filepath) > 0) {
+    if (setenv("LORENE_TABULATED_EOS_PATH", eos_table_filepath, 1)) {
+      CCTK_ERROR("Unable to set environment variable LORENE_TABULATED_EOS_PATH");
+
+    }
+  }
+
 
   CCTK_VInfo (CCTK_THORNSTRING, "Reading from file \"%s\"", filename);
 
@@ -99,9 +137,9 @@ void Meudon_Bin_NS_initialise (CCTK_ARGUMENTS)
   CCTK_VInfo (CCTK_THORNSTRING, "rad2_y [km]:         %g", bin_ns.rad2_y);
   CCTK_VInfo (CCTK_THORNSTRING, "rad2_z [km]:         %g", bin_ns.rad2_z);
   CCTK_VInfo (CCTK_THORNSTRING, "rad2_x_opp [km]:     %g", bin_ns.rad2_x_opp);
-  double K = bin_ns.kappa_poly1 * pow(c_light, 6.0) /
+  double K = bin_ns.kappa_poly1 * pow((pow(c_light, 6.0) /
              ( pow(G_grav, 3.0) * M_sun * M_sun *
-               pow(nuc_dens, bin_ns.gamma_poly1-1.) );
+               nuc_dens )),bin_ns.gamma_poly1-1.);
   CCTK_VInfo (CCTK_THORNSTRING, "K [ET unit]:         %.15g", K);
 
   assert (bin_ns.np == npoints);
@@ -139,14 +177,20 @@ void Meudon_Bin_NS_initialise (CCTK_ARGUMENTS)
 
     if (CCTK_EQUALS(initial_data, "Meudon_Bin_NS")) {
       rho[i] = bin_ns.nbar[i] / rho_unit;
-      eps[i] = bin_ns.ener_spec[i];
-      // The following would recompute eps using the polytopic EOS, but
-      // setting eps directly seems to work as well
-      // eps[i] = K * pow(rho[i], bin_ns.gamma_poly1-1.) / (bin_ns.gamma_poly1-1.);
-
-      // TODO: we should really use some EOS calls for the pressure, but for the
-      //       moment this works with polytropes at least
-      press[i] = K * pow(rho[i], bin_ns.gamma_poly1);
+      if (!recalculate_eps)
+        eps[i] = bin_ns.ener_spec[i];
+      // Pressure from EOS_Omni call 
+      if (CCTK_ActiveTimeLevelsVN(cctkGH, "HydroBase::temperature") > 0 &&
+          CCTK_ActiveTimeLevelsVN(cctkGH, "HydroBase::Y_e") > 0)
+      {
+        EOS_Omni_press(*init_eos_key,recalculate_eps,eos_precision,1,&(rho[i]),&(eps[i]),
+                       &(temperature[i]),&(Y_e[i]),&(press[i]),&keyerr,&anyerr);
+      }
+      else
+      {
+        EOS_Omni_press(*init_eos_key,recalculate_eps,eos_precision,1,&(rho[i]),&(eps[i]),
+                       NULL,NULL,&(press[i]),&keyerr,&anyerr);
+      }
 
       vel[i          ] = bin_ns.u_euler_x[i];
       vel[i+  npoints] = bin_ns.u_euler_y[i];
@@ -176,7 +220,7 @@ void Meudon_Bin_NS_initialise (CCTK_ARGUMENTS)
       if (CCTK_EQUALS (initial_dtlapse, "Meudon_Bin_NS")) {
         CCTK_INFO ("Calculating time derivatives of lapse");
         set_dt_from_domega (CCTK_PASS_CTOC, alp, dtalp, omega);
-      } else if (CCTK_EQUALS (initial_dtlapse, "none")) {
+      } else if (CCTK_EQUALS (initial_dtlapse, "none") or CCTK_EQUALS(initial_dtlapse,"zero")) {
         // do nothing
       } else {
         CCTK_WARN (CCTK_WARN_ABORT, "internal error");
@@ -189,7 +233,7 @@ void Meudon_Bin_NS_initialise (CCTK_ARGUMENTS)
         set_dt_from_domega (CCTK_PASS_CTOC, betax, dtbetax, omega);
         set_dt_from_domega (CCTK_PASS_CTOC, betay, dtbetay, omega);
         set_dt_from_domega (CCTK_PASS_CTOC, betaz, dtbetaz, omega);
-      } else if (CCTK_EQUALS (initial_dtshift, "none")) {
+      } else if (CCTK_EQUALS (initial_dtshift, "none") or CCTK_EQUALS(initial_dtshift,"zero")) {
         // do nothing
       } else {
         CCTK_WARN (CCTK_WARN_ABORT, "internal error");
