@@ -13,6 +13,9 @@
 using namespace std;
 
 
+// define namespace here for old versions of Lorene that don't do so
+namespace Lorene {}
+using namespace Lorene;
 
 static void set_dt_from_domega (CCTK_ARGUMENTS,
                                 CCTK_REAL const* const var,

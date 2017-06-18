@@ -12,6 +12,9 @@
 using namespace std;
 
 
+// define namespace here for old versions of Lorene that don't do so
+namespace Lorene {}
+using namespace Lorene;
 
 extern "C"
 void ID_Mag_NS_initialise (CCTK_ARGUMENTS)
