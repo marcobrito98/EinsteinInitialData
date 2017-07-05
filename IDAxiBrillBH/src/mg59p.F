@@ -789,7 +789,15 @@ c   Now call the multigrid routine
 
       integer iscale,itry
 
-
+c clear all arrays
+      ac = 0.
+      an = 0.
+      as = 0.
+      aw = 0.
+      ae = 0.
+      q = 0.
+      f = 0.
+      gam = 0.
 
       ier=0
 *

@@ -258,6 +258,10 @@ c .....................................................................
       common /io/ linp,lout
       CCTK_REAL one
       parameter (one=1)
+c clear arrays
+      resid = 0.
+      confac = 0.
+      np2 = -1
 c
 c-time           tsu0=second()
          if(iskip.eq.0) then
@@ -909,8 +913,8 @@ c
 
 c                                                              define pc
          if(ipc.ge.1) then
-      do 20 j=2,jm1
-      do 20 i=2,im1
+      do 20 j=1,jm
+      do 20 i=1,im
       fw(i,j)=0.
    20 qw(i,j)=1.
 c
