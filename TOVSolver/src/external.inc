@@ -582,7 +582,7 @@ CCTK_INT TOV_Rescale_Sources(
 
 void TOV_write_1D_datafile(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS
+  DECLARE_CCTK_ARGUMENTS_TOV_write_1D_datafile
   DECLARE_CCTK_PARAMETERS
   int i;
 

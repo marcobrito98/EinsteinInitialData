@@ -3,12 +3,13 @@ C $Header$
 #include "cctk.h"
 #include "cctk_Parameters.h"
 #include "cctk_Arguments.h"
+#include "cctk_Arguments_Exact.h"
 #include "cctk_Functions.h"
 #include "Exact.inc"
 
-      subroutine Exact__slice_initialize(CCTK_ARGUMENTS)
+      subroutine Exact__slice_initialize(CCTK_ARGUMENTS_Exact__slice_initialize)
       implicit none
-      DECLARE_CCTK_ARGUMENTS
+      DECLARE_CCTK_ARGUMENTS_Exact__slice_initialize
 
 c #define-ing the symbol EXACT_NO_F90 will turn this subroutine into a no-op
 #ifndef EXACT_NO_F90
@@ -26,7 +27,7 @@ C     exact solution, and the exact solution time is a Gaussian.
 
 C     Calculate Cauchy data and dx^A/dt.
 
-      call Exact__slice_data(CCTK_ARGUMENTS)
+      call Exact__slice_data(CCTK_ARGUMENTS_Exact__slice_data)
 
 C     This tells the code that what we have set is the physical metric,
 C     not a conformally rescaled one.

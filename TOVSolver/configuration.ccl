@@ -1,4 +1,4 @@
 # Configuration definition for thorn TOVSolver
 
-REQUIRES THORNS: Boundary CartGrid3D SpaceMask
+REQUIRES THORNS: Boundary2 CartGrid3D SpaceMask
 

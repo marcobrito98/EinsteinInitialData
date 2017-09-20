@@ -11,6 +11,7 @@
 
 #include <cctk.h>
 #include <cctk_Arguments.h>
+#include <cctk_Arguments_TOVSolver.h>
 #include <cctk_Parameters.h>
 
 #include "constants.h"
@@ -55,7 +56,7 @@ CCTK_REAL * TOV_rprop_1d=0;
 
 void TOV_C_ParamCheck(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS
+  DECLARE_CCTK_ARGUMENTS_TOV_C_ParamCheck
   DECLARE_CCTK_PARAMETERS
 
     if (TOV_Solve_for_TOVs != 3) 
@@ -182,7 +183,7 @@ void TOV_C_Source_RHS(CCTK_REAL r, CCTK_REAL K, CCTK_REAL Gamma,
 @@*/
 void TOV_C_Integrate_RHS(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS
+  DECLARE_CCTK_ARGUMENTS_TOV_C_Integrate_RHS
   DECLARE_CCTK_PARAMETERS
 
   CCTK_REAL LOCAL_TINY;
@@ -494,7 +495,7 @@ void TOV_C_interp_tov_isotropic(
 @@*/
 void TOV_C_Exact(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS
+  DECLARE_CCTK_ARGUMENTS_TOV_C_Exact
   DECLARE_CCTK_PARAMETERS
 
   CCTK_REAL *press_point, *rho_point, *eps_point,
@@ -988,7 +989,7 @@ inline static CCTK_REAL calc_coord_dist(CCTK_REAL prop_dist, CCTK_REAL M, CCTK_R
 /* Only works for equal-mass binary NS systems atm */
 void TOV_Set_ProperPositions(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS
+  DECLARE_CCTK_ARGUMENTS_TOV_Set_ProperPositions
   DECLARE_CCTK_PARAMETERS
 
   /* The specified parameters are given in proper distance */

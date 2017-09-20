@@ -21,6 +21,7 @@ c@@*/
 #include "cctk.h"
 #include "cctk_Parameters.h"
 #include "cctk_Arguments.h"
+#include "cctk_Arguments_Exact.h"
 #include "cctk_Functions.h"
 
 #include "param_defs.inc"
@@ -37,12 +38,15 @@ c	stress-energy tensor.
 c @enddesc
 c @version	$Header$
 c@@*/
+!	subroutine Exact__decode_pars(CCTK_ARGUMENTS_Exact__decode_pars)
 	subroutine Exact__decode_pars(CCTK_ARGUMENTS)
 	implicit none
+!	DECLARE_CCTK_ARGUMENTS_Exact__decode_pars
 	DECLARE_CCTK_ARGUMENTS
 	DECLARE_CCTK_PARAMETERS
 	DECLARE_CCTK_FUNCTIONS
 
+	     call CCTK_WARN(10, "YoYoYo")
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
 c
@@ -129,6 +133,7 @@ c miscellaneous spacetimes
 
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
+	     call CCTK_WARN(10, "YoYoYo")
 c
 c parameters for Schwarzschild-Lemaitre metric
 c (Schwarzschiled black hole with cosmological constant)
