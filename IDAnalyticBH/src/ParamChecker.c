@@ -15,6 +15,7 @@
 
 #include "cctk.h"
 #include "cctk_Arguments.h"
+#include "cctk_Arguments_IDAnalyticBH.h"
 #include "cctk_Parameters.h"
 
 #include "IDAnalyticBH.h"
@@ -65,7 +66,7 @@ CCTK_FILEVERSION(CactusEinstein_IDAnalyticBH_ParamChecker_c)
 
 void IDAnalyticBH_ParamChecker(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS
+  DECLARE_CCTK_ARGUMENTS_IDAnalyticBH_ParamChecker
   DECLARE_CCTK_PARAMETERS
 
   char *message;

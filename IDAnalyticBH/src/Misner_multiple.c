@@ -12,6 +12,7 @@
 
 #include "cctk.h"
 #include "cctk_Arguments.h"
+#include "cctk_Arguments_IDAnalyticBH.h"
 #include "cctk_Parameters.h"
 
 #include "IDAnalyticBH.h"
@@ -37,7 +38,7 @@ CCTK_FILEVERSION(CactusEinstein_IDAnalyticBH_Misner_multiple_c)
 @@*/
 void Misner_multiple(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS
+  DECLARE_CCTK_ARGUMENTS_Misner_multiple
   DECLARE_CCTK_PARAMETERS
 
   int i, npoints;

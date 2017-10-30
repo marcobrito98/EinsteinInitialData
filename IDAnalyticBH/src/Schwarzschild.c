@@ -14,6 +14,7 @@
 
 #include "cctk.h"
 #include "cctk_Arguments.h"
+#include "cctk_Arguments_IDAnalyticBH.h"
 #include "cctk_Parameters.h"
 
 #include "IDAnalyticBH.h"
@@ -24,7 +25,7 @@ CCTK_FILEVERSION(CactusEinstein_IDAnalyticBH_Schwarzschild_c)
 
 void Schwarzschild(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS
+  DECLARE_CCTK_ARGUMENTS_Schwarzschild
   DECLARE_CCTK_PARAMETERS
 
   const CCTK_REAL zero = 0.0, one = 1.0, two = 2.0, three = 3.0;

@@ -21,6 +21,14 @@ if (CCTK_Equals(initial_data,"schwarzschild"))
    {
      STORAGE: confac[1]
      LANG: C
+     READS: GRID::coordinates
+     WRITES: StaticConformal::conformal_state(everywhere) #scalar
+     WRITES: StaticConformal::psi(everywhere)
+     WRITES: StaticConformal::confac_1derivs(everywhere)
+     WRITES: StaticConformal::confac_2derivs(everywhere)
+     WRITES: ADMBase::metric(everywhere)
+     WRITES: ADMBase::alp(everywhere)
+     WRITES: ADMBase::curv(everywhere)
    } "Construct initial data for a single Schwarzschild black hole"
 }
 else if (CCTK_Equals(initial_data,"kerr")) 
@@ -33,6 +41,15 @@ else if (CCTK_Equals(initial_data,"kerr"))
    {	
      STORAGE: confac[1]
      LANG: C
+     READS: GRID::x, y, z
+     WRITES: StaticConformal::conformal_state(everywhere) #scalar
+     WRITES: StaticConformal::psi(everywhere)
+     WRITES: StaticConformal::confac_1derivs(everywhere)
+     WRITES: StaticConformal::confac_2derivs(everywhere)
+     WRITES: ADMBase::metric(everywhere)
+     WRITES: ADMBase::alp(everywhere)
+     WRITES: ADMBase::curv(everywhere)
+     WRITES: ADMBase::shift(everywhere)
    } "Construct initial data for a single Kerr black hole"
 
 }
@@ -45,6 +62,13 @@ else if (CCTK_Equals(initial_data,"bl_bh"))
    {
      STORAGE: confac[1]
      LANG: C
+     READS: GRID::x, y, z
+     WRITES: StaticConformal::conformal_state(everywhere) #scalar
+     WRITES: StaticConformal::psi(everywhere)
+     WRITES: StaticConformal::confac_1derivs(everywhere)
+     WRITES: StaticConformal::confac_2derivs(everywhere)
+     WRITES: ADMBase::metric(everywhere)
+     WRITES: ADMBase::curv(everywhere)
    } "Construct initial data for Brill Lindquist black holes"
 
 }
@@ -57,6 +81,14 @@ else if (CCTK_Equals(initial_data,"misner_bh"))
    {
      STORAGE: confac[1]
      LANG: C
+     READS: GRID::x, y, z
+     WRITES: StaticConformal::conformal_state(everywhere) #scalar
+     WRITES: StaticConformal::psi(everywhere)
+     WRITES: StaticConformal::confac_1derivs(everywhere)
+     WRITES: StaticConformal::confac_2derivs(everywhere)
+     WRITES: ADMBase::metric(everywhere)
+     WRITES: ADMBase::curv(everywhere)
+     WRITES: ADMBase::alp(everywhere)
    } "Construct initial data for two Misner black holes"
 
 }
@@ -66,6 +98,13 @@ else if (CCTK_Equals(initial_data,"multiple_misner_bh"))
    {
      STORAGE: confac[1]
      LANG: C
+     READS: GRID::x, y, z
+     WRITES: StaticConformal::conformal_state(everywhere) #scalar
+     WRITES: StaticConformal::psi(everywhere)
+     WRITES: StaticConformal::confac_1derivs(everywhere)
+     WRITES: StaticConformal::confac_2derivs(everywhere)
+     WRITES: ADMBase::metric(everywhere)
+     WRITES: ADMBase::curv(everywhere)
    } "Construct initial data for multiple Misner black holes"
 
 }

@@ -13,6 +13,7 @@
 
 #include "cctk.h"
 #include "cctk_Arguments.h"
+#include "cctk_Arguments_IDAnalyticBH.h"
 #include "cctk_Parameters.h"
 
 #include "IDAnalyticBH.h"
@@ -36,7 +37,7 @@ CCTK_FILEVERSION(CactusEinstein_IDAnalyticBH_BrillLindquist_c)
 @@*/
 void BrillLindquist(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS
+  DECLARE_CCTK_ARGUMENTS_BrillLindquist
   DECLARE_CCTK_PARAMETERS
 
   int n;
