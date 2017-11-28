@@ -52,7 +52,7 @@ void IDBrillData_ParamChecker(CCTK_ARGUMENTS)
   if( ! CCTK_Equals(metric_type, "physical") && 
       ! CCTK_Equals(metric_type, "static conformal"))
   {
-    CCTK_VParamWarn("Unknown ADMBase::metric_type (%s): "
+    CCTK_VPARAMWARN("Unknown ADMBase::metric_type (%s): "
                     "known types are \"physical\" and \"static conformal\"",
                     metric_type);
   }
