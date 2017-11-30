@@ -187,7 +187,7 @@ if (CCTK_Equals(overwrite_boundary,"exact"))
 }
 
 #######################################################
-##         Pseudo-Scheduling for Prototype CST Change       ##
+##    Pseudo-Scheduling for Prototype CST Change     ##
 #######################################################
 
 schedule Exact__slice_data
