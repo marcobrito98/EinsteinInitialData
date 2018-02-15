@@ -18,9 +18,9 @@ SRCS = ParamCheck.c			\
        metric.F			\
 					\
        boundary.F			\
+       Boundary.cc       \
        blended_boundary.F		\
-       xyz_blended_boundary.F		\
-       linear_extrap_one_bndry.F
+       xyz_blended_boundary.F
 
 # Subdirectories containing source files to be compiled
 # n.b. ./include/ contains source fragments to be included in other

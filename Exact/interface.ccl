@@ -5,6 +5,11 @@ implements: exact
 inherits: admbase grid coordgauge staticconformal
 friend: ADMCoupling
 
+CCTK_INT FUNCTION Carpet_SelectGroupForBC(CCTK_POINTER_TO_CONST IN GH, \
+  CCTK_INT IN faces, CCTK_INT IN boundary_width, CCTK_INT IN table_handle, \
+  CCTK_STRING IN group_name, CCTK_STRING IN bc_name)
+USES FUNCTION Carpet_SelectGroupForBC
+
 # evolution thorns need to include these files
 # to get our terms in the stress-energy tensor
 INCLUDES SOURCE: Scalar_CalcTmunu.inc in CalcTmunu.inc

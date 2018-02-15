@@ -32,8 +32,8 @@ Schedule Exact_ParamCheck at PARAMCHECK
 Schedule Exact__decode_pars in ADMBase_InitialData
 {
   LANG: Fortran
-  WRITES: Exact::decoded_exact_model #scalar
-  WRITES: Exact::Exact_pars_real #scalar
+  WRITES: Exact::decoded_exact_model(everywhere) #scalar
+  WRITES: Exact::Exact_pars_real(everywhere) #scalar
 } "decode/copy thorn Exact parameters into grid scalars"
 
 # Initial data (g and K) from a trivial slice through an exact solution.
@@ -45,12 +45,10 @@ if (CCTK_Equals(initial_data,"exact"))
     LANG: Fortran
     READS: GRID::x, y, z
     READS: Exact::decoded_exact_model #scalar
-    WRITES: StaticConformal::conformal_state #scalar
-    WRITES: ADMBase::metric(Everywhere)
-    WRITES: ADMBase::curv(Everywhere)
-    WRITES: StaticConformal::psi(Everywhere)
-    WRITES: StaticConformal::confac_1derivs(Everywhere)
+    WRITES: ADMBase::metric(Everywhere), curv
+    WRITES: StaticConformal::psi(Everywhere), confac_1derivs
     WRITES: StaticConformal::confac_2derivs(Everywhere)
+    WRITES: StaticConformal::conformal_state(everywhere) #scalar
   } "Set initial data from exact solution on a trivial slice"
 }
 
@@ -64,15 +62,16 @@ if ( (CCTK_Equals(initial_data,"slice")) && ! (CCTK_Equals(evolution_method,"sli
   {
     STORAGE: Exact_slice
     LANG: Fortran
+    SYNC: ADMBase::metric
+    SYNC: ADMBase::curv
+    SYNC: Exact_slicetemp2
     READS: GRID::x, y, z
-    READS: ADMBase::shift
-    READS: ADMBase::alp
+    READS: ADMBase::shift(interior), alp
     READS: StaticConformal::conformal_state #scalar
     READS: Exact::decoded_exact_model #scalar
+    WRITES: ADMBase::metric(interior), curv
     WRITES: Exact::Exact_slice(everywhere)
-    WRITES: ADMBase::metric(everywhere)
-    WRITES: ADMBase::curv(everywhere)
-    WRITES: Exact::Exact_slicetemp2(everywhere) #boundary?
+    WRITES: Exact::Exact_slicetemp2(interior)
   } "Set initial data from exact solution on an arbitrary slice"
 }
 
@@ -91,8 +90,7 @@ if ( (CCTK_Equals(initial_lapse,"exact")) || (CCTK_Equals(initial_shift,"exact")
     READS: GRID::x, y, z
     READS: StaticConformal::conformal_state #scalar
     READS: Exact::decoded_exact_model #scalar
-    WRITES: ADMBase::alp(everywhere), dtalp
-    WRITES: ADMBase::shift(everywhere), dtshift
+    WRITES: ADMBase::alp(everywhere), shift, dtalp, dtshift
   } "Set initial lapse and/or shift from exact solution on a trivial slice"
 }
 
@@ -110,12 +108,20 @@ if ( (CCTK_Equals(lapse_evolution_method,"exact")) || (CCTK_Equals(shift_evoluti
   schedule Exact__gauge at CCTK_PRESTEP
   {
     LANG: Fortran
+    READS: GRID::x, y, z
+    READS: StaticConformal::conformal_state #scalar
+    READS: Exact::decoded_exact_model #scalar
+    WRITES: ADMBase::alp(everywhere), shift, dtalp, dtshift
   } "Set evolution lapse and/or shift from exact solution on a trivial slice"
 
   # Necessary if MoL is used
   schedule Exact__gauge in MoL_PostStep BEFORE ADMBase_SetADMVars
   {
     LANG: Fortran
+    READS: GRID::x, y, z
+    READS: StaticConformal::conformal_state #scalar
+    READS: Exact::decoded_exact_model #scalar
+    WRITES: ADMBase::alp(everywhere), shift, dtalp, dtshift
   } "Set evolution lapse and/or shift from exact solution on a trivial slice"
 }
 
@@ -139,22 +145,34 @@ if ( (CCTK_Equals(evolution_method,"slice")) && (CCTK_Equals(initial_data,"slice
   schedule Exact__slice_initialize in ADMBase_InitialData after Exact__decode_pars
   {
     LANG: Fortran
+    SYNC: ADMBase::metric
+    SYNC: ADMBase::curv
+    SYNC: Exact_slicetemp2
+    READS: GRID::x, y, z
+    READS: ADMBase::shift(interior), alp
+    READS: StaticConformal::conformal_state #scalar
+    READS: Exact::decoded_exact_model #scalar
+    WRITES: ADMBase::metric(interior), curv
+    WRITES: Exact::Exact_slice(everywhere)
+    WRITES: Exact::Exact_slicetemp2(interior)
   } "Set initial data from exact solution on arbitrary slice"
 
   schedule Exact__slice_evolve at CCTK_EVOL
   {
     LANG: Fortran
+    SYNC: ADMBase::metric
+    SYNC: ADMBase::curv
+    SYNC: Exact_slice
+    SYNC: Exact_slicetemp1
+    SYNC: Exact_slicetemp2
     READS: GRID::x, y, z
-    READS: Exact::Exact_slice(everywhere)
-    READS: ADMBase::shift(everywhere)
-    READS: ADMBase::alp(everywhere)
+    READS: ADMBase::shift(interior), alp
+    READS: Exact::Exact_slice(everywhere), Exact_slicetemp2
     READS: StaticConformal::conformal_state(everywhere) #scalar
     READS: Exact::decoded_exact_model(everywhere) #scalar
-    WRITES: Exact::Exact_slicetemp1(everywhere)
-    WRITES: ADMBase::metric(everywhere)
-    WRITES: ADMBase::curv(everywhere)
-    WRITES: Exact::Exact_slice(everywhere)
-    WRITES: Exact::Exact_slicetemp2(everywhere) #boundary?
+    WRITES: ADMBase::metric(interior), curv
+    WRITES: Exact::Exact_slice(everywhere), Exact_slicetemp1
+    WRITES: Exact::Exact_slicetemp2(interior)
   } "Evolve arbitrary slice and extract Cauchy data"
 }
 
@@ -166,11 +184,23 @@ if (CCTK_Equals(evolution_method,"exact"))
   schedule Exact__initialize at CCTK_PRESTEP
   {
     LANG: Fortran
+    READS: GRID::x, y, z
+    READS: Exact::decoded_exact_model #scalar
+    WRITES: ADMBase::metric(Everywhere), curv
+    WRITES: StaticConformal::psi(Everywhere), confac_1derivs
+    WRITES: StaticConformal::confac_2derivs(Everywhere)
+    WRITES: StaticConformal::conformal_state(everywhere) #scalar
   } "Set data from exact solution on an exact slice"
   # Necessary if MoL is used
   schedule Exact__initialize in MoL_PostStep BEFORE ADMBase_SetADMVars
   {
     LANG: Fortran
+    READS: GRID::x, y, z
+    READS: Exact::decoded_exact_model #scalar
+    WRITES: ADMBase::metric(Everywhere), curv
+    WRITES: StaticConformal::psi(Everywhere), confac_1derivs
+    WRITES: StaticConformal::confac_2derivs(Everywhere)
+    WRITES: StaticConformal::conformal_state(everywhere) #scalar
   } "Set data from exact solution on an exact slice"
 }
 
@@ -183,8 +213,22 @@ if (CCTK_Equals(overwrite_boundary,"exact"))
   schedule Exact__boundary at CCTK_POSTSTEP
   {
     LANG: Fortran
+    READS: GRID::x, y, z
+    READS: StaticConformal::conformal_state(everywhere) #scalar
+    READS: Exact::decoded_exact_model(everywhere) #scalar
+    WRITES: ADMBase::metric(boundary), curv, alp, shift, dtalp, dtshift
   } "Overwrite g and K on the boundary with exact solution data"
 }
+
+schedule Exact_RegisterBC in Boundary2_Registration
+{
+  LANG: C
+} "Register boundary conditions that this thorn provides"
+
+schedule Exact_SelectBCs in Boundary2_Selection
+{
+  LANG: C
+} "Select boundary conditions for PreSync"
 
 #######################################################
 ##    Pseudo-Scheduling for Prototype CST Change     ##
@@ -193,20 +237,16 @@ if (CCTK_Equals(overwrite_boundary,"exact"))
 schedule Exact__slice_data
 {
   LANG: Fortran
+  SYNC: ADMBase::metric
+  SYNC: ADMBase::curv
+  SYNC: Exact_slicetemp2
   READS: GRID::x, y, z
   READS: Exact::Exact_slice(interior)
-  READS: ADMBase::shift(everywhere)
-  READS: ADMBase::alp(everywhere)
+  READS: ADMBase::shift(interior), alp
   READS: StaticConformal::conformal_state(everywhere) #scalar
   READS: Exact::decoded_exact_model(everywhere) #scalar
-  WRITES: ADMBase::metric(everywhere)
-  WRITES: ADMBase::curv(everywhere)
-  WRITES: Exact::Exact_slicetemp2(everywhere) #boundary?
-} ""
-
-schedule Exact__linear_extrap_one_bndry
-{
-  LANG: Fortran
+  WRITES: ADMBase::metric(interior), curv
+  WRITES: Exact::Exact_slicetemp2(interior)
 } ""
 
 ######################################################

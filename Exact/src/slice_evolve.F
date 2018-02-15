@@ -13,10 +13,8 @@ C
 #include "cctk_Functions.h"
 #include "Exact.inc"
 
-!      subroutine Exact__slice_evolve(CCTK_ARGUMENTS_Exact__slice_evolve)
       subroutine Exact__slice_evolve(CCTK_ARGUMENTS)
       implicit none
-!      DECLARE_CCTK_ARGUMENTS_Exact__slice_evolve
       DECLARE_CCTK_ARGUMENTS
 
 c #define-ing the symbol EXACT_NO_F90 will turn this subroutine into a no-op
@@ -49,15 +47,6 @@ C     by slice_data.
       slicetmp1y = slicey + 0.5d0 * dt * slicetmp2y
       slicetmp1z = slicez + 0.5d0 * dt * slicetmp2z
       slicetmp1t = slicet + 0.5d0 * dt * slicetmp2t
-
-C     Synchronize and bound slice.
-
-      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS_Exact__linear_extrap_one_bndry,slicetmp1x)
-      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS_Exact__linear_extrap_one_bndry,slicetmp1y)
-      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS_Exact__linear_extrap_one_bndry,slicetmp1z)
-      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS_Exact__linear_extrap_one_bndry,slicetmp1t)
-
-      call CCTK_SyncGroup(ierr,cctkGH,"Exact::Exact_slicetemp1")
 
 C     Prepare leapfrog step.
 C     Sum over interior points on the slice, now at midpoint slicetmp1.
@@ -103,30 +92,12 @@ C     Calculate n^A and dx^A/dt
          end do
       end do
 
-C     Synchronize and bound slicetmp2, which contains dx^A/dt.
-
-      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS_Exact__linear_extrap_one_bndry,slicetmp2x)
-      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS_Exact__linear_extrap_one_bndry,slicetmp2y)
-      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS_Exact__linear_extrap_one_bndry,slicetmp2z)
-      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS_Exact__linear_extrap_one_bndry,slicetmp2t)
-
-      call CCTK_SyncGroup(ierr,cctkGH,"Exact::Exact_slicetemp2")
-
 C Leapfrog step.
 
       slicex = slicex + dt * slicetmp2x
       slicey = slicey + dt * slicetmp2y
       slicez = slicez + dt * slicetmp2z
       slicet = slicet + dt * slicetmp2t
-
-C     Synchronize and bound slice.
-
-      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS_Exact__linear_extrap_one_bndry,slicex)
-      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS_Exact__linear_extrap_one_bndry,slicey)
-      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS_Exact__linear_extrap_one_bndry,slicez)
-      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS_Exact__linear_extrap_one_bndry,slicet)
-
-      call CCTK_SyncGroup(ierr,cctkGH,"Exact::Exact_slice")
 
 C     Extract Cauchy data at the new position, and store dxA/dt 
 C     for use in the next Lax step.
