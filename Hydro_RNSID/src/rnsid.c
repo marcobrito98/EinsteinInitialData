@@ -741,22 +741,6 @@ void Hydro_rnsid(const cGH *cctkGH,
 
               w_lorentz[i-1+nx*(j-1+ny*(k-1))] = W_ijk;
   
-              dens[i-1+nx*(j-1+ny*(k-1))] = sqrt(gamma_ijk)*W_ijk*rho_0_ijk;
-
-              tau[i-1+nx*(j-1+ny*(k-1))] = sqrt(gamma_ijk)*( rho_0_ijk*h_ijk
-                                           *SQ(W_ijk)-pressure_ijk - 
-                                           W_ijk*rho_0_ijk );
-
-              sx[i-1+nx*(j-1+ny*(k-1))] = sqrt(gamma_ijk)*rho_0_ijk*h_ijk
-                                          *SQ(W_ijk*B_ijk/exp_nu_ijk)*
-                                          (omega_ijk-Omega_ijk)*y_j/exp_nu_ijk;
-
-              sy[i-1+nx*(j-1+ny*(k-1))] = - sqrt(gamma_ijk)*rho_0_ijk*h_ijk
-                                          *SQ(W_ijk*B_ijk/exp_nu_ijk)*
-                                          (omega_ijk-Omega_ijk)*x_i/exp_nu_ijk;
-
-              sz[i-1+nx*(j-1+ny*(k-1))] = 0.0;
-
               velx[i-1+nx*(j-1+ny*(k-1))] = (omega_ijk-Omega_ijk)
                                               *y_j/exp_nu_ijk;
 
@@ -778,11 +762,6 @@ void Hydro_rnsid(const cGH *cctkGH,
                 velx[i-1+nx*(j-1+ny*(k-1))] = 0.0;
                 vely[i-1+nx*(j-1+ny*(k-1))] = 0.0;
                 velz[i-1+nx*(j-1+ny*(k-1))] = 0.0;
-                dens[i-1+nx*(j-1+ny*(k-1))] = dens_atm;
-                tau[i-1+nx*(j-1+ny*(k-1))] = tau_atm;
-                sx[i-1+nx*(j-1+ny*(k-1))] = 0.0;
-                sy[i-1+nx*(j-1+ny*(k-1))] = 0.0;
-                sz[i-1+nx*(j-1+ny*(k-1))] = 0.0;
               } 
               /* *************************************** */
               /* ATMOSPERE SETTINGs                      */
