@@ -58,7 +58,7 @@ void Bndry_Exact_extrap(const cGH *cctkGH, CCTK_INT num_vars, CCTK_INT *var_indi
   int ny = cctkGH->cctk_lsh[1]-1;
   int nz = cctkGH->cctk_lsh[2]-1;
 
-  CCTK_REAL *var = (CCTK_REAL *)CCTK_PSVarDataPtr(cctkGH, 0, CCTK_FullName(var_indices[0]));
+  CCTK_REAL *var = (CCTK_REAL *)CCTK_VarDataPtr(cctkGH, 0, CCTK_FullName(var_indices[0]));
 
   //Linear extrapolation from the interiors to the boundaries.
   //Does not support octant or quadrant.

@@ -4,7 +4,7 @@ C $Header$
 
 #include "cctk.h"
 #include "cctk_Arguments.h"
-#include "cctk_Arguments_Exact.h"
+#include "cctk_Arguments_Checked.h"
 #include "Exact.inc"
 
 c #define-ing the symbol EXACT_NO_F90 will turn this file into a no-op
