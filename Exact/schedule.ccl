@@ -220,12 +220,12 @@ if (CCTK_Equals(overwrite_boundary,"exact"))
   } "Overwrite g and K on the boundary with exact solution data"
 }
 
-schedule Exact_RegisterBC in Boundary2_Registration
+schedule Exact_RegisterBC in PreSync_Registration
 {
   LANG: C
 } "Register boundary conditions that this thorn provides"
 
-schedule Exact_SelectBCs in Boundary2_Selection
+schedule Exact_SelectBCs in PreSync_Selection
 {
   LANG: C
 } "Select boundary conditions for PreSync"
