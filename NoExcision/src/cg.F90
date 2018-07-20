@@ -513,25 +513,25 @@ subroutine NoExcision_CGApplySym(CCTK_ARGUMENTS)
   
     select case ( sym_selector )
     case (1, 4)
-      ierr = Carpet_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
+      ierr = Boundary_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
                                              'NoExcision::cg_d_lapse', 'None' )
       if ( ierr /= 0 ) then
         call CCTK_WARN ( 0, 'Could not select cg_d_lapse for boundary condition' )
       end if
   
-      ierr = Carpet_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
+      ierr = Boundary_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
                                              'NoExcision::cg_d_shift', 'None' )
       if ( ierr /= 0 ) then
         call CCTK_WARN ( 0, 'Could not select cg_d_shift for boundary condition' )
       end if
   
-      ierr = Carpet_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
+      ierr = Boundary_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
                                              'NoExcision::cg_d_curv', 'None' )
       if ( ierr /= 0 ) then
         call CCTK_WARN ( 0, 'Could not select cg_d_curv for boundary condition' )
       end if
   
-      ierr = Carpet_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
+      ierr = Boundary_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
                                              'NoExcision::cg_d_metric', 'None' )
       if ( ierr /= 0 ) then
         call CCTK_WARN ( 0, 'Could not select cg_d_metric for boundary condition' )
@@ -540,25 +540,25 @@ subroutine NoExcision_CGApplySym(CCTK_ARGUMENTS)
   
     select case ( sym_selector )
     case (1, 3)
-      ierr = Carpet_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
+      ierr = Boundary_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
                                              'NoExcision::cg_res_lapse', 'None' )
       if ( ierr /= 0 ) then
         call CCTK_WARN ( 0, 'Could not select cg_res_lapse for boundary condition' )
       end if
   
-      ierr = Carpet_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
+      ierr = Boundary_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
                                              'NoExcision::cg_res_shift', 'None' )
       if ( ierr /= 0 ) then
         call CCTK_WARN ( 0, 'Could not select cg_res_shift for boundary condition' )
       end if
   
-      ierr = Carpet_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
+      ierr = Boundary_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
                                              'NoExcision::cg_res_curv', 'None' )
       if ( ierr /= 0 ) then
         call CCTK_WARN ( 0, 'Could not select cg_res_curv for boundary condition' )
       end if
   
-      ierr = Carpet_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
+      ierr = Boundary_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
                                              'NoExcision::cg_res_metric', 'None' )
       if ( ierr /= 0 ) then
         call CCTK_WARN ( 0, 'Could not select cg_res_metric for boundary condition' )
@@ -567,7 +567,7 @@ subroutine NoExcision_CGApplySym(CCTK_ARGUMENTS)
   
     select case ( sym_selector )
     case (1, 2, 3)
-      ierr = Carpet_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
+      ierr = Boundary_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
                                              'NoExcision::cg_red_all', 'None' )
       if ( ierr /= 0 ) then
         call CCTK_WARN ( 0, 'Could not select cg_red_all for boundary condition' )
@@ -576,25 +576,25 @@ subroutine NoExcision_CGApplySym(CCTK_ARGUMENTS)
   
     select case ( sym_selector )
     case (2)
-      ierr = Carpet_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
+      ierr = Boundary_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
                                              'NoExcision::cg_q_lapse', 'None' )
       if ( ierr /= 0 ) then
         call CCTK_WARN ( 0, 'Could not select cg_q_lapse for boundary condition' )
       end if
   
-      ierr = Carpet_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
+      ierr = Boundary_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
                                              'NoExcision::cg_q_shift', 'None' )
       if ( ierr /= 0 ) then
         call CCTK_WARN ( 0, 'Could not select cg_q_shift for boundary condition' )
       end if
   
-      ierr = Carpet_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
+      ierr = Boundary_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
                                              'NoExcision::cg_q_curv', 'None' )
       if ( ierr /= 0 ) then
         call CCTK_WARN ( 0, 'Could not select cg_q_curv for boundary condition' )
       end if
   
-      ierr = Carpet_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
+      ierr = Boundary_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
                                              'NoExcision::cg_q_metric', 'None' )
       if ( ierr /= 0 ) then
         call CCTK_WARN ( 0, 'Could not select cg_q_metric for boundary condition' )
@@ -603,25 +603,25 @@ subroutine NoExcision_CGApplySym(CCTK_ARGUMENTS)
   
     select case ( sym_selector )
     case (3)
-      ierr = Carpet_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
+      ierr = Boundary_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
                                                 'ADMBase::lapse', 'None' )
       if ( ierr /= 0 ) then
         call CCTK_WARN ( 0, 'Could not select lapse for boundary condition' )
       end if
   
-      ierr = Carpet_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
+      ierr = Boundary_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
                                                 'ADMBase::shift', 'None' )
       if ( ierr /= 0 ) then
         call CCTK_WARN ( 0, 'Could not select shift for boundary condition' )
       end if
   
-      ierr = Carpet_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
+      ierr = Boundary_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
                                                 'ADMBase::curv', 'None' )
       if ( ierr /= 0 ) then
         call CCTK_WARN ( 0, 'Could not select curv for boundary condition' )
       end if
   
-      ierr = Carpet_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
+      ierr = Boundary_SelectGroupForBC ( cctkGH, int(CCTK_ALL_FACES,ik), 1_ik, -1_ik, &
                                                 'ADMBase::metric', 'None' )
       if ( ierr /= 0 ) then
         call CCTK_WARN ( 0, 'Could not select metric for boundary condition' )

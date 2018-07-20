@@ -1,7 +1,6 @@
 #include "cctk.h"
 #include "cctk_Arguments.h"
 #include "PreSync.h"
-#include <iostream>
 
 void Bndry_Exact_extrap(const cGH *cctkGH, CCTK_INT num_vars, CCTK_INT *var_indices,
                  CCTK_INT *faces, CCTK_INT *widths, CCTK_INT *table_handles);
@@ -9,42 +8,41 @@ void Bndry_Exact_extrap(const cGH *cctkGH, CCTK_INT num_vars, CCTK_INT *var_indi
 void Exact_RegisterBC(CCTK_ARGUMENTS)
 {
 
-//  int err = 0;
-  RegisterPhysicalBC(cctkGH, Bndry_Exact_extrap, "Exact_linear_extrap", 1);
-/*  err = Carpet_RegisterPhysicalBC(cctkGH, BndScalar, "scalar", 1);
+  int err = 0;
+  err = Boundary_RegisterPhysicalBC(cctkGH, (boundary_function)Bndry_Exact_extrap, "Exact_linear_extrap");
   if (err) {
     CCTK_VWarn(1, __LINE__, __FILE__, CCTK_THORNSTRING,
                "Error %d when registering routine to handle \"Scalar\" "
                "boundary condition",
                err);
-  }*/
+  }
 }
 
 void Exact_SelectBCs(CCTK_ARGUMENTS)
 {
   int ierr = 0;
 
-  ierr = Carpet_SelectGroupForBC(cctkGH, CCTK_ALL_FACES, 1, -1,
+  ierr = Boundary_SelectGroupForBC(cctkGH, CCTK_ALL_FACES, 1, -1,
                                          "ADMBase::metric", "Exact_linear_extrap");
   if (ierr < 0)
      CCTK_ERROR("Failed to register Exact_linear_extrap BC for ADMBase::metric!");
 
-  ierr = Carpet_SelectGroupForBC(cctkGH, CCTK_ALL_FACES, 1, -1,
+  ierr = Boundary_SelectGroupForBC(cctkGH, CCTK_ALL_FACES, 1, -1,
                                          "ADMBase::curv", "Exact_linear_extrap");
   if (ierr < 0)
      CCTK_ERROR("Failed to register Exact_linear_extrap BC for ADMBase::curv!");
 
-  ierr = Carpet_SelectGroupForBC(cctkGH, CCTK_ALL_FACES, 1, -1,
+  ierr = Boundary_SelectGroupForBC(cctkGH, CCTK_ALL_FACES, 1, -1,
                                          "Exact::Exact_slice", "Exact_linear_extrap");
   if (ierr < 0)
      CCTK_ERROR("Failed to register Exact_linear_extrap BC for Exact::Exact_slice!");
 
-  ierr = Carpet_SelectGroupForBC(cctkGH, CCTK_ALL_FACES, 1, -1,
+  ierr = Boundary_SelectGroupForBC(cctkGH, CCTK_ALL_FACES, 1, -1,
                                          "Exact::Exact_slicetemp1", "Exact_linear_extrap");
   if (ierr < 0)
      CCTK_ERROR("Failed to register Exact_linear_extrap BC for Exact::Exact_slicetemp1!");
 
-  ierr = Carpet_SelectGroupForBC(cctkGH, CCTK_ALL_FACES, 1, -1,
+  ierr = Boundary_SelectGroupForBC(cctkGH, CCTK_ALL_FACES, 1, -1,
                                          "Exact::Exact_slicetemp2", "Exact_linear_extrap");
   if (ierr < 0)
      CCTK_ERROR("Failed to register Exact_linear_extrap BC for Exact::Exact_slicetemp2!");
