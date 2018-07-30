@@ -52,9 +52,6 @@ void Hydro_rnsid_init(CCTK_ARGUMENTS)
   CCTK_REAL gamma_center;  /* central value of 3-determinant of metric,
                               needed for applying perturbations */
 
-  int i, j, k, handle, ierr, Reduction_Handle;
-  int sw[3];
-
   if ( (RNS_K < 0.0) || (RNS_Gamma < 0.0)) {
     CCTK_WARN(0,"RNS_K and RNS_Gamma must be greater than 0: using 100.0 and 2!");
     eos_k                 = 100.0;
@@ -79,7 +76,7 @@ void Hydro_rnsid_init(CCTK_ARGUMENTS)
   if (CCTK_ActiveTimeLevels(cctkGH, "ADMBase::metric") > 1)
     {
       #pragma omp parallel for
-      for(i = 0; i < cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2]; i++)
+      for(int i = 0; i < cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2]; i++)
 	{
 	  gxx_p[i] = gxx[i];
 	  gyy_p[i] = gyy[i];
@@ -90,7 +87,7 @@ void Hydro_rnsid_init(CCTK_ARGUMENTS)
 	}
       if (CCTK_ActiveTimeLevels(cctkGH, "ADMBase::metric") > 2)
 	{
-	  for(i = 0; i < cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2]; i++)
+	  for(int i = 0; i < cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2]; i++)
 	    {
 	      gxx_p_p[i] = gxx[i];
 	      gyy_p_p[i] = gyy[i];
@@ -105,7 +102,7 @@ void Hydro_rnsid_init(CCTK_ARGUMENTS)
   if (CCTK_ActiveTimeLevels(cctkGH, "ADMBase::curv") > 1)
     {
       #pragma omp parallel for
-      for(i = 0; i < cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2]; i++)
+      for(int i = 0; i < cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2]; i++)
 	{
 	  kxx_p[i] = kxx[i];
 	  kyy_p[i] = kyy[i];
@@ -117,7 +114,7 @@ void Hydro_rnsid_init(CCTK_ARGUMENTS)
       if (CCTK_ActiveTimeLevels(cctkGH, "ADMBase::curv") > 2)
 	{
           #pragma omp parallel for
-	  for(i = 0; i < cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2]; i++)
+	  for(int i = 0; i < cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2]; i++)
 	    {
 	      kxx_p_p[i] = kxx[i];
 	      kyy_p_p[i] = kyy[i];
@@ -132,14 +129,14 @@ void Hydro_rnsid_init(CCTK_ARGUMENTS)
   if (CCTK_ActiveTimeLevels(cctkGH, "ADMBase::lapse") > 1)
     {
       #pragma omp parallel for
-      for(i = 0; i < cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2]; i++)
+      for(int i = 0; i < cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2]; i++)
 	{
 	  alp_p[i] = alp[i];
 	}
       if (CCTK_ActiveTimeLevels(cctkGH, "ADMBase::lapse") > 2)
 	{
           #pragma omp parallel for
-	  for(i = 0; i < cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2]; i++)
+	  for(int i = 0; i < cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2]; i++)
 	    {
 	      alp_p_p[i] = alp[i];
 	    }
@@ -149,7 +146,7 @@ void Hydro_rnsid_init(CCTK_ARGUMENTS)
   if (CCTK_ActiveTimeLevels(cctkGH, "ADMBase::shift") > 1)
     {
       #pragma omp parallel for
-      for(i = 0; i < cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2]; i++)
+      for(int i = 0; i < cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2]; i++)
 	{
 	  betax_p[i] = betax[i];
 	  betay_p[i] = betay[i];
@@ -158,7 +155,7 @@ void Hydro_rnsid_init(CCTK_ARGUMENTS)
       if (CCTK_ActiveTimeLevels(cctkGH, "ADMBase::shift") > 2)
 	{
           #pragma omp parallel for
-	  for(i = 0; i < cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2]; i++)
+	  for(int i = 0; i < cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2]; i++)
 	    {
 	      betax_p_p[i] = betax[i];
 	      betay_p_p[i] = betay[i];
@@ -170,7 +167,7 @@ void Hydro_rnsid_init(CCTK_ARGUMENTS)
   if (CCTK_ActiveTimeLevels(cctkGH, "HydroBase::rho") > 1)
     {
       #pragma omp parallel for
-      for(i = 0; i < cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2]; i++)
+      for(int i = 0; i < cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2]; i++)
 	{
 	  rho_p[i] = rho[i];
 	  velx_p[i] = velx[i];
@@ -183,7 +180,7 @@ void Hydro_rnsid_init(CCTK_ARGUMENTS)
       if (CCTK_ActiveTimeLevels(cctkGH, "HydroBase::rho") > 2)
 	{
           #pragma omp parallel for
-	  for(i = 0; i < cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2]; i++)
+	  for(int i = 0; i < cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2]; i++)
 	    {
 	      rho_p_p[i] = rho[i];
 	      velx_p_p[i] = velx[i];
@@ -199,7 +196,7 @@ void Hydro_rnsid_init(CCTK_ARGUMENTS)
   if (CCTK_ActiveTimeLevels(cctkGH, "GRHydro::dens") > 1)
     {
       #pragma omp parallel for
-      for(i = 0; i < cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2]; i++)
+      for(int i = 0; i < cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2]; i++)
 	{
 	  dens_p[i] = dens[i];
 	  sx_p[i] = sx[i];
@@ -209,7 +206,7 @@ void Hydro_rnsid_init(CCTK_ARGUMENTS)
 	}
       if (CCTK_ActiveTimeLevels(cctkGH, "GRHydro::dens") > 2)
 	{
-	  for(i = 0; i < cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2]; i++)
+	  for(int i = 0; i < cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2]; i++)
 	    {
 	      dens_p_p[i] = dens[i];
 	      sx_p_p[i] = sx[i];
