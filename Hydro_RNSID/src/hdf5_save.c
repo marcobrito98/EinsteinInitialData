@@ -128,7 +128,7 @@ void hdf5_save_var(int *sdiv, int *mdiv,
     } else if (attrblist[varIndex].H5type == H5T_NATIVE_INT) {
       printf("Save attribute %s value is %d\n",attrblist[varIndex].name,*((int *)attrblist[varIndex].data));
     } else if (attrblist[varIndex].H5type == H5T_C_S1) {
-      printf("Save attribute %s value is %s\n",attrblist[varIndex].name,attrblist[varIndex].data);
+      printf("Save attribute %s value is %s\n",attrblist[varIndex].name,(char*)attrblist[varIndex].data);
     } else {
       printf("Save attribute %s value is not knowns\n",attrblist[varIndex].name);
     }
@@ -342,7 +342,7 @@ void hdf5_read_var(int *sdiv, int *mdiv,
     else if (attrblist[varIndex].H5type == H5T_NATIVE_INT) 
       printf("Read attribute %s value is %d\n",attrblist[varIndex].name,*((int *)attrblist[varIndex].data));
     else if (attrblist[varIndex].H5type == H5T_C_S1) 
-      printf("Read attribute %s value is %s\n",attrblist[varIndex].name,attrblist[varIndex].data);
+      printf("Read attribute %s value is %s\n",attrblist[varIndex].name,(char*)attrblist[varIndex].data);
     else 
       printf("Read attribute %s value is not knowns\n",attrblist[varIndex].name);
 #endif
