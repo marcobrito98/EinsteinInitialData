@@ -302,7 +302,7 @@ void comp_values(double s_gp[SDIV+1],
 
    if(strcmp(eos_type,"tab")==0)
        (*R_e) = r_e*exp((gama_equator-rho_equator)/2.0);
-/*       (*R_e) = sqrt(KAPPA)*r_e*exp((gama_equator-rho_equator)/2.0);/*conversion*/
+/*       (*R_e) = sqrt(KAPPA)*r_e*exp((gama_equator-rho_equator)/2.0); */ /*conversion*/
    else
      (*R_e) = r_e*exp((gama_equator-rho_equator)/2.0);
 
@@ -320,8 +320,8 @@ void comp_values(double s_gp[SDIV+1],
       for(m=1;m<=MDIV;m++) {
            if(energy[s][m]>e_surface)
 /*             rho_0[s][m]=n0_at_e(energy[s][m], log_n0_tab, log_e_tab, n_tab,
-                                             &n_nearest)*MB*KSCALE*SQ(C);/*this conversion factor should be
-									   MB*cactusM*/
+                                             &n_nearest)*MB*KSCALE*SQ(C); */
+             /*this conversion factor should be MB*cactusM*/
 	     rho_0[s][m]=n0_at_e(energy[s][m], log_n0_tab, log_e_tab, n_tab,
 				 &n_nearest)*MB*cactusM;
            else
@@ -468,7 +468,7 @@ void comp_values(double s_gp[SDIV+1],
 
 
     if(strcmp(eos_type,"tab")==0)     
-/*	(*W) = Mass_p*C*C - (*Mass)*C*C + (*T); /* conversions*/
+/*	(*W) = Mass_p*C*C - (*Mass)*C*C + (*T); */ /* conversions*/
 	(*W) = Mass_p - (*Mass) + (*T);
     else 
       (*W) = Mass_p - (*Mass) + (*T);
@@ -495,7 +495,7 @@ void comp_values(double s_gp[SDIV+1],
         -dre)) + pow((doe/(8.0+dge-dre))*r_e*exp(-rho_equator),2.0));
 
   if(strcmp(eos_type,"tab")==0) 
-/*      (*Omega_K) = (C/sqrt(KAPPA))*(omega_equator+vek*exp(rho_equator)/r_e); /*conversions*/
+/*      (*Omega_K) = (C/sqrt(KAPPA))*(omega_equator+vek*exp(rho_equator)/r_e); */ /*conversions*/
       (*Omega_K) = (omega_equator+vek*exp(rho_equator)/r_e); 
   else 
     (*Omega_K) = omega_equator + vek*exp(rho_equator)/r_e;
@@ -1944,7 +1944,7 @@ double   sum_rho=0.0,         /* intermediate sum in eqn for rho */
   /* COMPUTE OMEGA */  
   
   if(strcmp(eos_type,"tab")==0) 
-/*      (*Omega) = Omega_h*C/(r_e*sqrt(KAPPA));/*this should be a conversion*/
+/*      (*Omega) = Omega_h*C/(r_e*sqrt(KAPPA)); */ /*this should be a conversion*/
       (*Omega) = Omega_h/r_e;
   else
     (*Omega) = Omega_h/r_e;
