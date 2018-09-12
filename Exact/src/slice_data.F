@@ -375,6 +375,34 @@ C     Calculate K_ij.
          end do
       end do
 
+C     Synchronize and bound slicetmp2, which contains dx^A/dt.
+
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS_Exact__linear_extrap_one_bndry,slicetmp2x)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS_Exact__linear_extrap_one_bndry,slicetmp2y)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS_Exact__linear_extrap_one_bndry,slicetmp2z)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS_Exact__linear_extrap_one_bndry,slicetmp2t)
+ 
+      call CCTK_SyncGroup(ierr,cctkGH,"Exact::Exact_slicetemp2")
+
+C     Bound and synchronize the 3-metric and extrinsic curvature.
+
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS_Exact__linear_extrap_one_bndry,gxx)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS_Exact__linear_extrap_one_bndry,gxy)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS_Exact__linear_extrap_one_bndry,gxz)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS_Exact__linear_extrap_one_bndry,gyy)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS_Exact__linear_extrap_one_bndry,gyz)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS_Exact__linear_extrap_one_bndry,gzz)
+
+      call CCTK_SyncGroup(ierr,cctkGH,"admbase::metric")
+
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS_Exact__linear_extrap_one_bndry,kxx)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS_Exact__linear_extrap_one_bndry,kxy)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS_Exact__linear_extrap_one_bndry,kxz)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS_Exact__linear_extrap_one_bndry,kyy)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS_Exact__linear_extrap_one_bndry,kyz)
+      call Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS_Exact__linear_extrap_one_bndry,kzz)
+
+      call CCTK_SyncGroup(ierr,cctkGH,"admbase::curv")
 #endif
 
       return

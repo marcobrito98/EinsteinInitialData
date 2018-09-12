@@ -62,16 +62,13 @@ if ( (CCTK_Equals(initial_data,"slice")) && ! (CCTK_Equals(evolution_method,"sli
   {
     STORAGE: Exact_slice
     LANG: Fortran
-    SYNC: ADMBase::metric
-    SYNC: ADMBase::curv
-    SYNC: Exact_slicetemp2
     READS: GRID::x, y, z
     READS: ADMBase::shift(interior), alp
     READS: StaticConformal::conformal_state #scalar
     READS: Exact::decoded_exact_model #scalar
-    WRITES: ADMBase::metric(interior), curv
+    WRITES: ADMBase::metric(everywhere), curv
     WRITES: Exact::Exact_slice(everywhere)
-    WRITES: Exact::Exact_slicetemp2(interior)
+    WRITES: Exact::Exact_slicetemp2(everywhere)
   } "Set initial data from exact solution on an arbitrary slice"
 }
 
@@ -145,9 +142,6 @@ if ( (CCTK_Equals(evolution_method,"slice")) && (CCTK_Equals(initial_data,"slice
   schedule Exact__slice_initialize in ADMBase_InitialData after Exact__decode_pars
   {
     LANG: Fortran
-    SYNC: ADMBase::metric
-    SYNC: ADMBase::curv
-    SYNC: Exact_slicetemp2
     READS: GRID::x, y, z
     READS: ADMBase::shift(interior), alp
     READS: StaticConformal::conformal_state #scalar
@@ -160,19 +154,14 @@ if ( (CCTK_Equals(evolution_method,"slice")) && (CCTK_Equals(initial_data,"slice
   schedule Exact__slice_evolve at CCTK_EVOL
   {
     LANG: Fortran
-    SYNC: ADMBase::metric
-    SYNC: ADMBase::curv
-    SYNC: Exact_slice
-    SYNC: Exact_slicetemp1
-    SYNC: Exact_slicetemp2
     READS: GRID::x, y, z
     READS: ADMBase::shift(interior), alp
     READS: Exact::Exact_slice(everywhere), Exact_slicetemp2
     READS: StaticConformal::conformal_state(everywhere) #scalar
     READS: Exact::decoded_exact_model(everywhere) #scalar
-    WRITES: ADMBase::metric(interior), curv
+    WRITES: ADMBase::metric(everywhere), curv
     WRITES: Exact::Exact_slice(everywhere), Exact_slicetemp1
-    WRITES: Exact::Exact_slicetemp2(interior)
+    WRITES: Exact::Exact_slicetemp2(everywhere)
   } "Evolve arbitrary slice and extract Cauchy data"
 }
 
@@ -220,35 +209,32 @@ if (CCTK_Equals(overwrite_boundary,"exact"))
   } "Overwrite g and K on the boundary with exact solution data"
 }
 
-schedule Exact_RegisterBC in PreSync_Registration
-{
-  LANG: C
-} "Register boundary conditions that this thorn provides"
-
-schedule Exact_SelectBCs in PreSync_Selection
-{
-  LANG: C
-} "Select boundary conditions for PreSync"
-
 #######################################################
-##    Pseudo-Scheduling for Prototype CST Change     ##
+##      Pseudo-Scheduling for Macro Generation       ##
 #######################################################
 
 schedule Exact__slice_data
 {
   LANG: Fortran
-  SYNC: ADMBase::metric
-  SYNC: ADMBase::curv
-  SYNC: Exact_slicetemp2
   READS: GRID::x, y, z
   READS: Exact::Exact_slice(interior)
   READS: ADMBase::shift(interior), alp
   READS: StaticConformal::conformal_state(everywhere) #scalar
   READS: Exact::decoded_exact_model(everywhere) #scalar
-  WRITES: ADMBase::metric(interior), curv
-  WRITES: Exact::Exact_slicetemp2(interior)
+  WRITES: ADMBase::metric(everywhere), curv
+  WRITES: Exact::Exact_slicetemp2(everywhere)
 } ""
 
+schedule Exact__linear_extrap_one_bndry
+{
+  LANG: Fortran
+} ""
+
+######################################################
+##            Unused functions:                     ##
+##       Exact__blended_boundary                    ##
+##       Exact__xyz_blended_boundary                ##
+##       ComparisonMetric                           ##
 ######################################################
 ##            Unused functions:                     ##
 ##       Exact__blended_boundary                    ##
