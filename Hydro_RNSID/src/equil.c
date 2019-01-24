@@ -900,7 +900,7 @@ double   sum_rho=0.0,         /* intermediate sum in eqn for rho */
 	 sum_gama=0.0,        /* intermediate sum in eqn for gama */
 	 sum_omega=0.0,       /* intermediate sum in eqn for omega */
          r_e_old,             /* equatorial radius in previus cycle */
-   	 dif=1.0,             /* difference | r_e_old - r_e | */
+   	 dif,                 /* difference | r_e_old - r_e | */
          d_gama_s,            /* derivative of gama w.r.t. s */
          d_gama_m,            /* derivative of gama w.r.t. m */
          d_rho_s,             /* derivative of rho w.r.t. s */
@@ -1179,7 +1179,7 @@ double   sum_rho=0.0,         /* intermediate sum in eqn for rho */
 
   /* START MAIN ITERATIVE LOOP */
 
-  while(dif> accuracy || n_of_it<2) { 
+  do {
       ITERATION_COUNT += 1;
       if ( ITERATION_COUNT > MAX_ITERATION ) {
           CCTK_VERROR("Max number of iteration %d reached ! Exiting.", MAX_ITERATION);
@@ -1906,7 +1906,7 @@ double   sum_rho=0.0,         /* intermediate sum in eqn for rho */
       dif=fabs(r_e_old-r_e)/r_e;
       n_of_it++;
 
-  }   /* end while */
+  } while(dif> accuracy || n_of_it<=2);   /* end do */
   
   
   
