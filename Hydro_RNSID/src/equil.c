@@ -232,12 +232,9 @@ void comp_values(double s_gp[SDIV+1],
  
  double **velocity,                /* velocity */
         **rho_0,                   /* rest mass density */
-        gama_pole,                 /* gama at pole */  
         gama_equator,              /* gama at equator */
-        rho_pole,                  /* rho at pole */ 
         rho_equator,               /* rho at equator */
         omega_equator,             /* omega at equator */
-        velocity_equator,
         D_m[SDIV+1],               /* int. quantity for M */
         D_m_0[SDIV+1],             /* int. quantity for M_0 */ 
         D_m_p[SDIV+1],             /* int. quantity for M_p */
@@ -245,27 +242,19 @@ void comp_values(double s_gp[SDIV+1],
         d_o_e[SDIV+1],
         d_g_e[SDIV+1],
         d_r_e[SDIV+1],
-        d_v_e[SDIV+1],
         doe,
         dge, 
         dre,
-        dve,
         vek,
         s_e,
-        gama_mu_1[SDIV+1],                
         gama_mu_0[SDIV+1],                   
         rho_mu_0[SDIV+1],                    
-        rho_mu_1[SDIV+1],                  
         omega_mu_0[SDIV+1],
         Mass_p,
-        r_p,
-        s_p,
         T_diff,
         D_T[SDIV+1];               /* int. quantity for J */
 
         
-   r_p= r_ratio*r_e;                      /* radius at pole */
-   s_p= r_p/(r_p+r_e);                    /* s-coordinate at pole */
    s_e=0.5;
 
    velocity = array_allocate(1,SDIV,1,MDIV); 
@@ -276,27 +265,20 @@ void comp_values(double s_gp[SDIV+1],
      velocity[s][m]=sqrt(velocity_sq[s][m]);
  
    for(s=1;s<=SDIV;s++) {
-      gama_mu_1[s]=gama[s][MDIV];                
       gama_mu_0[s]=gama[s][1];                   
       rho_mu_0[s]=rho[s][1];                     
-      rho_mu_1[s]=rho[s][MDIV];                  
       omega_mu_0[s]=omega[s][1];                 
    }
 
    n_nearest= SDIV/2;
-   gama_pole=interp(s_gp,gama_mu_1,SDIV,s_p, &n_nearest);    
    gama_equator=interp(s_gp,gama_mu_0,SDIV,s_e, &n_nearest); 
-   rho_pole=interp(s_gp,rho_mu_1,SDIV,s_p, &n_nearest);      
    rho_equator=interp(s_gp,rho_mu_0,SDIV,s_e, &n_nearest);   
 
    if(r_ratio==1.0) {
-    velocity_equator=0.0;
     omega_equator=0.0;
    }
    else {
     omega_equator=interp(s_gp,omega_mu_0,SDIV,s_e, &n_nearest);
-    velocity_equator=sqrt(1.0-exp(gama_pole+rho_pole-gama_equator
-                                                              -rho_equator));
    }
 
 /* Circumferential radius */
@@ -483,14 +465,12 @@ void comp_values(double s_gp[SDIV+1],
      d_o_e[s]=deriv_s(omega,s,1);
      d_g_e[s]=deriv_s(gama,s,1);
      d_r_e[s]=deriv_s(rho,s,1);
-     d_v_e[s]=deriv_s(velocity,s,1);
    }
 
    n_nearest=SDIV/2; 
    doe=interp(s_gp,d_o_e,SDIV,s_e, &n_nearest);
    dge=interp(s_gp,d_g_e,SDIV,s_e, &n_nearest);
    dre=interp(s_gp,d_r_e,SDIV,s_e, &n_nearest);
-   dve=interp(s_gp,d_v_e,SDIV,s_e, &n_nearest);
 
   vek=(doe/(8.0+dge-dre))*r_e*exp(-rho_equator) + sqrt(((dge+dre)/(8.0+dge
         -dre)) + pow((doe/(8.0+dge-dre))*r_e*exp(-rho_equator),2.0));
@@ -623,7 +603,6 @@ void integrate(int    i_check,
          c1,c2,c3,c4,
          k_rescale, 
          r_gp[RDIV+1],
-         m_gp[RDIV+1],
          e_d_gp[RDIV+1];   
 
 
@@ -650,7 +629,6 @@ void integrate(int    i_check,
 
     r_is_gp[1]=0.0;
     r_gp[1]=0.0;
-    m_gp[1]=0.0;
     lambda_gp[1]=0.0;
     e_d_gp[1] = e_center; 
 
@@ -663,7 +641,6 @@ void integrate(int    i_check,
      if((i_check==3) && (r_is>r_is_check) && (i<=RDIV)) {
       r_is_gp[i]=r_is;
       r_gp[i]=r;
-      m_gp[i]=m;
       e_d_gp[i]=e_d; 
       i++;   
       r_is_check += dr_is_save;
@@ -730,7 +707,6 @@ void integrate(int    i_check,
 
     r_is_gp[RDIV]=(*r_is_final);
     r_gp[RDIV]=(*r_final);
-    m_gp[RDIV]=(*m_final);
 
 
 /* Rescale r_is and compute lambda */
@@ -1003,8 +979,6 @@ double   sum_rho=0.0,         /* intermediate sum in eqn for rho */
          Omega_upper_bracket,
          Omega_e_lower_bracket,
          Omega_e_upper_bracket,
-         Omega_m_lower_bracket,
-         Omega_m_upper_bracket,
          Omega_c,
          tol; 
 
@@ -1307,26 +1281,19 @@ double   sum_rho=0.0,         /* intermediate sum in eqn for rho */
 
                      Omega_e_lower_bracket = 0.0;
                      Omega_e_upper_bracket = 1.0*Omega_h;
-
-                     Omega_m_lower_bracket = 0.0;
-                     Omega_m_upper_bracket = 1.5*Omega_h;
                   }               
                   else {
                        Omega_e_lower_bracket = (*Omega_e)/2.0;
-                       Omega_m_lower_bracket = (*Omega_e);
 
                        if(A_diff<(0.7/r_e)) {
                          Omega_e_upper_bracket = 2.0*(*Omega_e);
-                         Omega_m_upper_bracket = 2.0*Omega_c;
                        }
                        else {
 			     if(A_diff<(0.8/r_e)) {
                                Omega_e_upper_bracket = 1.75*(*Omega_e);
-                               Omega_m_upper_bracket = 1.75*Omega_c;
                              } 
                              else {
                                Omega_e_upper_bracket = 1.5*(*Omega_e);
-                               Omega_m_upper_bracket = 1.5*Omega_c;
                              } 
 		            }
                   }
