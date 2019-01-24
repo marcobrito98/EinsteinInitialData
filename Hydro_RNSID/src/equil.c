@@ -27,6 +27,8 @@ equil.c		PROCEDURES USED TO COMPUTE THE EQUILIBRIUM STAR
 #include "equil_util.h"
 #include "rnsid_util.h"
 
+#include <cctk.h>
+
 /*******************************************************************/
 /* Create computational grid.                                      */
 /* Points in the mu-direction are stored in the array mu[i].       */
@@ -69,8 +71,7 @@ void load_eos( char eos_file[],
     /* OPEN FILE TO READ */
 
     if((f_eos=fopen(eos_file,"r")) == NULL ) {    
-       printf("cannot open file:  %s\n",eos_file); 
-       exit(0);
+       CCTK_VERROR("cannot open file:  %s\n",eos_file);
     }
     
     /* READ NUMBER OF TABULATED POINTS */
@@ -1205,8 +1206,7 @@ double   sum_rho=0.0,         /* intermediate sum in eqn for rho */
   while(dif> accuracy || n_of_it<2) { 
       ITERATION_COUNT += 1;
       if ( ITERATION_COUNT > MAX_ITERATION ) {
-          printf("Max number of iteration %d reached ! Exiting. \n", MAX_ITERATION);
-          exit(1);
+          CCTK_VERROR("Max number of iteration %d reached ! Exiting.", MAX_ITERATION);
 	  }
 
       if(print_dif!=0)
