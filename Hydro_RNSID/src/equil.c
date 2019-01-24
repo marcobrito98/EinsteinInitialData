@@ -982,6 +982,8 @@ double   sum_rho=0.0,         /* intermediate sum in eqn for rho */
          Omega_c,
          tol; 
 
+    const int is_uniform_rotation = strcmp(rotation_type,"uniform")==0;
+
     f2n = array_allocate(1,RNS_lmax+1,1,SDIV);           
     f_rho = tensor_allocate(1,SDIV,1,RNS_lmax+1,1,SDIV); 
     f_gama = tensor_allocate(1,SDIV,1,RNS_lmax+1,1,SDIV);
@@ -1208,7 +1210,7 @@ double   sum_rho=0.0,         /* intermediate sum in eqn for rho */
 
       /* Find location of maximum energy density */
 
-      if( strcmp(rotation_type,"diff")==0) {
+      if( is_uniform_rotation) {
 
 	if(energy[1][1]==0.0) {  /* AT FIRST ITERATION SET s_max AT CENTER */
           s_max=0.0;
@@ -1247,7 +1249,7 @@ double   sum_rho=0.0,         /* intermediate sum in eqn for rho */
 
       /* Compute angular velocity Omega */
  
-      if( strcmp(rotation_type,"uniform")==0) {
+      if( is_uniform_rotation) {
 
         if(r_ratio==1.0) {
           Omega_h=0.0;
@@ -1351,7 +1353,7 @@ double   sum_rho=0.0,         /* intermediate sum in eqn for rho */
  
       n_nearest=n_tab/2; 
 
-      if( strcmp(rotation_type,"uniform")==0) {
+      if( is_uniform_rotation) {
 	
 	/* uniform rotation */
 
@@ -1401,7 +1403,7 @@ double   sum_rho=0.0,         /* intermediate sum in eqn for rho */
          for(m=1;m<=MDIV;m++) {
             rsm=rho[s][m];
             
-            if( strcmp(rotation_type,"uniform")==0) 
+            if( is_uniform_rotation)
               enthalpy[s][m] = enthalpy_min + 0.5*(SQ(r_e)*(gama_pole_h
 				+rho_pole_h-gama[s][m]-rsm) 
                                -log(1.0-velocity_sq[s][m]));
@@ -1461,7 +1463,7 @@ double   sum_rho=0.0,         /* intermediate sum in eqn for rho */
       S_omega = array_allocate(1,SDIV,1,MDIV);
 
 
-      if( strcmp(rotation_type,"uniform")==0) {
+      if( is_uniform_rotation) {
 
        for(s=1;s<=SDIV;s++)
          for(m=1;m<=MDIV;m++) {
