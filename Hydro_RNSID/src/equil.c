@@ -1185,9 +1185,6 @@ double   sum_rho=0.0,         /* intermediate sum in eqn for rho */
           CCTK_VERROR("Max number of iteration %d reached ! Exiting.", MAX_ITERATION);
 	  }
 
-      if(print_dif!=0)
-         printf(" %4.3e\n",dif);
-
  
       /* Rescale potentials and construct arrays with the potentials along
        | the equatorial and polar directions.
@@ -1272,6 +1269,9 @@ double   sum_rho=0.0,         /* intermediate sum in eqn for rho */
 	  for(m=1;m<=MDIV;m++) 
 	    Omega_diff[s][m] = Omega_h;
 
+        /* this pacifies the compiler. The variable is not used in the uniform
+         * case. */
+        Omega_c = atof("nan");
       }
       else { 
               omega_equator_h=interp(s_gp,omega_mu_0,SDIV,s_e, &n_nearest);
@@ -1905,6 +1905,9 @@ double   sum_rho=0.0,         /* intermediate sum in eqn for rho */
 
       dif=fabs(r_e_old-r_e)/r_e;
       n_of_it++;
+
+      if(print_dif!=0)
+         printf(" %4.3e\n",dif);
 
   } while(dif> accuracy || n_of_it<=2);   /* end do */
   
