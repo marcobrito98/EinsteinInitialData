@@ -233,9 +233,11 @@ Hydro_rnsid::model2D_file  = "./A2.h5"
 ###################################################
 
 IOBasic::outInfo_every              = 1
-IOBasic::outInfo_vars               = "Carpet::physical_time_per_hour HydroBase::rho ADMBase::lapse"
+IOBasic::outInfo_vars               = "HydroBase::rho ADMBase::lapse"
 
 IO::out_dir      = $parfile
+IO::out_fileinfo = "none"
+IO::parfile_write = "no"
 
 
 IOScalar::outScalar_every = 1
