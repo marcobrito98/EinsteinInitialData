@@ -27,7 +27,11 @@ equil.c		PROCEDURES USED TO COMPUTE THE EQUILIBRIUM STAR
 #include "equil_util.h"
 #include "rnsid_util.h"
 
+#ifndef RNS_SEQ_COMPILATION
 #include <cctk.h>
+#else
+#define CCTK_VERROR(...) do {fprintf(stderr, __VA_ARGS__); exit(1);} while(0)
+#endif
 
 /*******************************************************************/
 /* Create computational grid.                                      */
