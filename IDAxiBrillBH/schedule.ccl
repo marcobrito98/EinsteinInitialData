@@ -12,6 +12,9 @@ if (CCTK_Equals(initial_data,"axibrillbh"))
   schedule IDAxiBrillBH in ADMBase_InitialData
   {
     LANG: Fortran
+    WRITES: ADMBASE::metric(everywhere)
+    WRITES: StaticConformal::confac(everywhere)
+
     STORAGE: StaticConformal::confac
     STORAGE: StaticConformal::confac_1derivs
     STORAGE: StaticConformal::confac_2derivs

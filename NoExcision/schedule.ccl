@@ -7,6 +7,7 @@ if (CCTK_EQUALS(method,"old")) {
   SCHEDULE NoExcision_Overwrite IN ADMBase_PostInitial
   {
     LANG: Fortran
+    WRITES: ADMBASE::gxx(everywhere), gyy, gxy, gzz, gxz, gyz, kxx, kyy, kzz, kxy, kxz, kyz
   } "Overwrite regions with Minkowski"
 }
 
@@ -14,6 +15,7 @@ if (CCTK_Equals(method,"new")) {
   schedule NoExcision_SetSym at CCTK_BASEGRID
   {
     LANG: Fortran
+    WRITES: ADMBASE::gxx(everywhere), gyy, gxy, gzz, gxz, gyz, kxx, kyy, kzz, kxy, kxz, kyz
   } "Register the symmetries for the conjugate gradient functions."
 }
 

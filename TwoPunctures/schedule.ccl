@@ -30,6 +30,10 @@ if (CCTK_Equals(initial_data, "twopunctures"))
   {
     LANG: C
     STORAGE: puncture_u
+    READS: Grid::coordinates(Everywhere)
+    WRITES: Twopunctures::mp(Everywhere), mm, mp_adm, mm_adm, E, J1, J2, J3, puncture_u
+    WRITES: StaticConformal::conformal_state(Everywhere), confac_2derivs, confac_1derivs, confac
+    WRITES: AdmBase::alp(Everywhere), metric, curv
     # SYNC: ADMBase::metric ADMBase::curv ADMBase::lapse
   } "Create puncture black hole initial data"
 
