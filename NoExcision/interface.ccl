@@ -3,7 +3,7 @@
 
 IMPLEMENTS: NoExcision
 
-INHERITS: ADMBase StaticConformal grid SphericalSurface Boundary2
+INHERITS: ADMBase StaticConformal grid SphericalSurface Boundary
 
 USES INCLUDE: Boundary.h
 
