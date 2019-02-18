@@ -228,7 +228,7 @@ Hydro_rnsid::rho_central = 0.00107207
 Hydro_rnsid::axes_ratio  = 0.875
 Hydro_rnsid::rotation_type = "diff"
 Hydro_rnsid::A_diff        = 1
-Hydro_rnsid::model2D_file  = "./A2.h5"
+Hydro_rnsid::model2D_file  = $parfile + "/A2.h5"
 
 ###################################################
 
