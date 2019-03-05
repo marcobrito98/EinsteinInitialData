@@ -23,6 +23,25 @@
 #define free_dmatrix TP_free_dmatrix
 #define free_d3tensor TP_free_d3tensor
 
+#define minimum2 TP_minimum2
+#define minimum3 TP_minimum3
+#define maximum2 TP_maximum2
+#define maximum3 TP_maximum3
+#define pow_int TP_pow_int
+
+#define chebft_Zeros TP_chebft_Zeros
+#define chebft_Extremes TP_chebft_Extremes
+#define chder TP_chder
+#define chebev TP_chebev
+#define fourft TP_fourft
+#define fourder TP_fourder
+#define fourder2 TP_fourder2
+#define fourev TP_fourev
+
+#define norm1 TP_norm1
+#define norm2 TP_norm2
+#define scalarproduct TP_scalarproduct
+
 void nrerror (char error_text[]);
 int *ivector (long nl, long nh);
 CCTK_REAL *dvector (long nl, long nh);
