@@ -2,14 +2,14 @@
 ## mclachlan grhydro rns
 ##----------------------------------------------
 ActiveThorns = "Time MoL"
-ActiveThorns = "Coordbase CartGrid3d Boundary StaticConformal"
-ActiveThorns = "SymBase ADMBase TmunuBase HydroBase InitBase ADMCoupling ADMMacros"
+ActiveThorns = "Coordbase CartGrid3d Boundary"
+ActiveThorns = "SymBase ADMBase HydroBase InitBase"
 ActiveThorns = "IOUtil"
 ActiveThorns = "SpaceMask CoordGauge Constants LocalReduce aeilocalinterp LoopControl"
 ActiveThorns = "Carpet CarpetLib CarpetReduce CarpetRegrid2 CarpetInterp CarpetEvolutionMask"
 ActiveThorns = "CarpetIOASCII CarpetIOScalar CarpetIOHDF5 CarpetIOBasic"
 
-ActiveThorns = "ML_ADMConstraints NaNChecker"
+ActiveThorns = "NaNChecker"
 
 # grid parameters
 CartGrid3D::type         = "coordbase"
@@ -47,22 +47,12 @@ ReflectionSymmetry::avoid_origin_y = "no"
 ReflectionSymmetry::avoid_origin_z = "no"
 
 
-TmunuBase::stress_energy_storage = yes
-TmunuBase::stress_energy_at_RHS  = yes
-TmunuBase::timelevels            =  1
-TmunuBase::prolongation_type     = none
-TmunuBase::support_old_CalcTmunu_mechanism = "no"
-
 HydroBase::timelevels            = 3
-
-ADMMacros::spatial_order = 4
 
 ADMBase::metric_type     = "physical"
 ADMBase::metric_timelevels = 3
 ADMBase::lapse_timelevels = 3
 ADMBase::shift_timelevels = 3
-
-ML_ADMConstraints::timelevels = 3
 
 SpaceMask::use_mask      = "yes"
 cactus::cctk_itlast         = 0
@@ -180,8 +170,6 @@ IOASCII::out1D_vars      = "
  ADMBase::lapse
  ADMBase::metric
  ADMBase::curv
- ML_ADMConstraints::ML_Ham
- ML_ADMConstraints::ML_mom 
 "
 
 
