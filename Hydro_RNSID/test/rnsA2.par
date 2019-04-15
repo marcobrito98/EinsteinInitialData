@@ -127,6 +127,7 @@ Hydro_rnsid::save_2Dmodel    = "yes"
 Hydro_rnsid::recover_2Dmodel = "yes"
 
 Hydro_rnsid::accuracy  = 1e-10
+Hydro_rnsid::RNS_rho_min = 1e-11
 Hydro_rnsid::RNS_Gamma = 2
 Hydro_rnsid::RNS_K     = 100
 Hydro_rnsid::rho_central = 0.00107207
