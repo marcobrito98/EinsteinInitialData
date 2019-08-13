@@ -193,30 +193,6 @@ void Hydro_rnsid_init(CCTK_ARGUMENTS)
 	}
     }
   
-  if (CCTK_ActiveTimeLevels(cctkGH, "GRHydro::dens") > 1)
-    {
-      #pragma omp parallel for
-      for(int i = 0; i < cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2]; i++)
-	{
-	  dens_p[i] = dens[i];
-	  sx_p[i] = sx[i];
-	  sy_p[i] = sy[i];
-	  sz_p[i] = sz[i];
-	  tau_p[i] = tau[i];
-	}
-      if (CCTK_ActiveTimeLevels(cctkGH, "GRHydro::dens") > 2)
-	{
-	  for(int i = 0; i < cctk_lsh[0]*cctk_lsh[1]*cctk_lsh[2]; i++)
-	    {
-	      dens_p_p[i] = dens[i];
-	      sx_p_p[i] = sx[i];
-	      sy_p_p[i] = sy[i];
-	      sz_p_p[i] = sz[i];
-	      tau_p_p[i] = tau[i];
-	    }
-	}
-    }  
-
   return;
 }
 

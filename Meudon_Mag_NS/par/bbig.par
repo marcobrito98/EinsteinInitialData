@@ -37,7 +37,6 @@ Carpet::verbose           = no
 Carpet::schedule_barriers = no
 Carpet::veryverbose       = no
 Carpet::storage_verbose   = no
-Carpet::timers_verbose    = no
 CarpetLib::output_bboxes  = no
 
 Carpet::domain_from_coordbase = yes
@@ -107,7 +106,7 @@ ADMMacros::spatial_order = 4
 
 
 
-ActiveThorns = "ID_Mag_NS"
+ActiveThorns = "Meudon_Mag_NS"
 
 ADMBase::initial_data    = "ID_Mag_NS"
 ADMBase::initial_lapse   = "ID_Mag_NS"
@@ -118,16 +117,12 @@ ADMBase::initial_dtshift = "ID_Mag_NS"
 HydroBase::initial_hydro = "ID_Mag_NS"
 HydroBase::initial_Bvec  = "ID_Mag_NS"
 
-ID_Mag_NS::filename = "/Users/eschnett/Calpha/arrangements/LSUThorns/ID_Mag_NS/data/bbig.d"
+# assume data file is in a directory "data" one level up from parfile directory
+Meudon_Mag_NS::filename = $parfile + "/../data/bbig.d"
 
 
 
-ActiveThorns = "ADMConstraints"
-
-ADMConstraints::constraints_persist    = yes
-ADMConstraints::constraints_timelevels = 2   # 3
-
-
+ActiveThorns = "ML_ADMConstraints"
 
 ActiveThorns = "CarpetIOBasic"
 
@@ -135,7 +130,7 @@ IOBasic::outInfo_every      = 1280
 IOBasic::outInfo_reductions = "norm2"
 IOBasic::outInfo_vars       = "
         Carpet::physical_time_per_hour
-        ADMConstraints::ham
+        ML_ADMConstraints::ML_Ham
         HydroBase::rho
 "
 
@@ -158,8 +153,8 @@ IOScalar::outScalar_vars  = "
         HydroBase::eps
         HydroBase::vel
         HydroBase::Bvec
-        ADMConstraints::hamiltonian
-        ADMConstraints::momentum
+        ML_ADMConstraints::ML_Ham
+        ML_ADMConstraints::ML_Mom
 "
 
 
@@ -185,8 +180,8 @@ IOASCII::out0D_vars  = "
         HydroBase::eps
         HydroBase::vel
         HydroBase::Bvec
-        ADMConstraints::hamiltonian
-        ADMConstraints::momentum
+        ML_ADMConstraints::ML_Ham
+        ML_ADMConstraints::ML_Mom
 "
 
 IOASCII::out1D_every = 1280
@@ -202,8 +197,8 @@ IOASCII::out1D_vars  = "
         HydroBase::eps
         HydroBase::vel
         HydroBase::Bvec
-        ADMConstraints::hamiltonian
-        ADMConstraints::momentum
+        ML_ADMConstraints::ML_ham
+        ML_ADMConstraints::ML_mom
 "
 
 
