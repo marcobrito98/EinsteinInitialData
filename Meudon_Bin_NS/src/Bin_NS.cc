@@ -137,6 +137,18 @@ void Meudon_Bin_NS_initialise (CCTK_ARGUMENTS)
   CCTK_VInfo (CCTK_THORNSTRING, "rad2_y [km]:         %g", bin_ns.rad2_y);
   CCTK_VInfo (CCTK_THORNSTRING, "rad2_z [km]:         %g", bin_ns.rad2_z);
   CCTK_VInfo (CCTK_THORNSTRING, "rad2_x_opp [km]:     %g", bin_ns.rad2_x_opp);
+  // LORENE's EOS is in terms on number density n = rho/m_nucleon:
+  // P = K n^Gamma
+  // to convert to SI units:
+  // K_SI(n) = K_LORENE rho_nuc c^2 / n_nuc^gamma
+  // Converting this to be in terms of the mass density rho = n m_nucleon gets
+  // changes n_nuc to rho_nuc:
+  // K_SI(rho) = K_LORENE c^2 / rho_nuc^(gamma-1)
+  // In SI units P has units of M / (L T^2) and rho has units of M/L^3 thus
+  // K_SI has units of (L^3/M)^Gamma M/(L T^2).
+  // In Cactus units P and rho have the same units thus K_Cactus is unitless.
+  // Conversion between K_SI and K_Cactus thus amounts to dividing out the
+  // units of the SI quantity.
   double K = bin_ns.kappa_poly1 * pow((pow(c_light, 6.0) /
              ( pow(G_grav, 3.0) * M_sun * M_sun *
                nuc_dens )),bin_ns.gamma_poly1-1.);
