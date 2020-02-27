@@ -54,6 +54,11 @@ if (smooth_regions) {
     SCHEDULE NoExcision_CGInit_1 IN NoExcision_CGSmoothing AFTER CopyMask
     {
       LANG: Fortran
+      READS: admbase::metric(Everywhere), curv, alp, shift
+      READS: noexcision::nes_mask(Everywhere), red_mask, cg_res_metric, cg_res_curv
+      WRITES: noexcision::cg_res_shift(Everywhere), cg_res_lapse, cg_d_metric, cg_d_curv, cg_red_all, cg_d_lapse, cg_d_shift
+      WRITES: noexcision::cg_q_metric(Everywhere), cg_q_shift, cg_q_curv, cg_q_lapse
+      WRITES: noexcision::loop_control
     } "Initialise the conjugate gradient method 1"
 
     SCHEDULE NoExcision_CGApplySym AS NoExcision_CGApplySym_p1 IN NoExcision_CGSmoothing AFTER NoExcision_CGInit_1
@@ -77,6 +82,7 @@ if (smooth_regions) {
     SCHEDULE NoExcision_CGInit_2 IN NoExcision_CGSmoothing AFTER NoExcision_CGApplySym_p1
     {
       LANG: Fortran
+      READS: admbase::alp(Everywhere), gxx
       OPTIONS: level
     } "Initialise the conjugate gradient method 2"
 
