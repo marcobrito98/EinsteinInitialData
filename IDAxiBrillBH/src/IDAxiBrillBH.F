@@ -10,6 +10,7 @@ c@@*/
 #include "cctk.h"
 #include "cctk_Parameters.h"
 #include "cctk_Arguments.h"
+#include "cctk_Arguments_Checked.h"
 #include "cctk_Functions.h"
 
 c/*@@
@@ -26,12 +27,14 @@ c
 c  @endhistory
 c@@*/
 
+c      subroutine IDAxiBrillBH(CCTK_ARGUMENTS_IDAxiBrillBH)
       subroutine IDAxiBrillBH(CCTK_ARGUMENTS)
 
       use cctk
 
       implicit none
 
+c      DECLARE_CCTK_ARGUMENTS_IDAxiBrillBH
       DECLARE_CCTK_ARGUMENTS
       DECLARE_CCTK_PARAMETERS
       DECLARE_CCTK_FUNCTIONS

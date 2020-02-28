@@ -4,12 +4,13 @@ C $Header$
 
 #include "cctk.h"
 #include "cctk_Arguments.h"
+#include "cctk_Arguments_Checked.h"
 #include "cctk_Functions.h"
 #include "Exact.inc"
 
       subroutine Exact__slice_data(CCTK_ARGUMENTS)
       implicit none
-      DECLARE_CCTK_ARGUMENTS
+      DECLARE_CCTK_ARGUMENTS_Exact__slice_data
 
 c #define-ing the symbol EXACT_NO_F90 will turn this subroutine into a no-op
 #ifndef EXACT_NO_F90

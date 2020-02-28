@@ -36,6 +36,7 @@ schedule GROUP TOV_Initial_Data IN HydroBase_Initial
 schedule TOV_C_Integrate_RHS IN TOV_Initial_Data
 {
   LANG: C
+  WRITES: StaticConformal::conformal_state(everywhere) #scalar
   OPTIONS: GLOBAL
 } "Integrate the 1d equations for the TOV star"
 
@@ -63,6 +64,22 @@ if (CCTK_Equals(initial_data, "tov") || CCTK_Equals(initial_hydro, "tov") ||
   schedule TOV_C_Exact IN TOV_Initial_Data AFTER TOV_C_Integrate_RHS
   {
     LANG: C
+    READS: StaticConformal::conformal_state #scalar
+    READS: ADMBase::shift_state #scalar
+    READS: GRID::coordinates
+    WRITES: ADMBASE::alp(everywhere)
+    WRITES: ADMBASE::curv(everywhere)
+    WRITES: ADMBASE::gxx_p_p(everywhere), gxy_p_p, gxz_p_p, gyy_p_p, gyz_p_p, gzz_p_p
+    WRITES: ADMBASE::gxx_p(everywhere), gxy_p, gxz_p, gyy_p, gyz_p, gzz_p
+    WRITES: ADMBASE::metric(everywhere)
+    WRITES: ADMBASE::shift(everywhere)
+    WRITES: HYDROBASE::eps_p_p(everywhere), rho_p_p, vel_p_p, w_lorentz_p_p
+    WRITES: HYDROBASE::eps_p(everywhere), rho_p, vel_p, w_lorentz_p
+    WRITES: HYDROBASE::eps(everywhere), rho, vel, w_lorentz
+    WRITES: HYDROBASE::press(everywhere)
+    WRITES: StaticConformal::psi(everywhere)
+    WRITES: StaticConformal::confac_1derivs(everywhere)
+    WRITES: StaticConformal::confac_2derivs(everywhere)
   } "Set up the 3d quantities for the TOV star"
 }
 
@@ -75,6 +92,20 @@ if (TOV_fake_evolution)
   schedule TOV_C_Exact IN MoL_PostStep AFTER HydroBase_PostStep
   {
     LANG: C
+    READS: StaticConformal::conformal_state #scalar
+    READS: ADMBase::shift_state #scalar
+    WRITES: ADMBASE::alp(everywhere)
+    WRITES: ADMBASE::curv(everywhere)
+    WRITES: ADMBASE::metric(everywhere)
+    WRITES: ADMBASE::shift(everywhere)
+    WRITES: HYDROBASE::eps(everywhere)
+    WRITES: HYDROBASE::press(everywhere)
+    WRITES: HYDROBASE::rho(everywhere)
+    WRITES: HYDROBASE::w_lorentz(everywhere)
+    WRITES: HYDROBASE::vel(everywhere)
+    WRITES: StaticConformal::psi(everywhere)
+    WRITES: StaticConformal::confac_1derivs(everywhere)
+    WRITES: StaticConformal::confac_2derivs(everywhere)
   } "use fake evolution"
 }
 

@@ -2,6 +2,7 @@
 
 #include "cctk.h"
 #include "cctk_Arguments.h"
+#include "cctk_Arguments_Checked.h"
 #include "cctk_Functions.h"
 #include "cctk_Parameters.h"
 
@@ -11,7 +12,7 @@ subroutine NoExcision_CGInit_1 (CCTK_ARGUMENTS)
 
   implicit none
 
-  DECLARE_CCTK_ARGUMENTS
+  DECLARE_CCTK_ARGUMENTS_NoExcision_CGInit_1
   DECLARE_CCTK_FUNCTIONS
   DECLARE_CCTK_PARAMETERS
 

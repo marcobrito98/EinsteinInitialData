@@ -1,7 +1,7 @@
 
 void TOV_C_AllocateMemory(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS;
+  DECLARE_CCTK_ARGUMENTS_TOV_C_AllocateMemory;
   DECLARE_CCTK_PARAMETERS;
 
   assert(TOV_Surface==0);
@@ -31,7 +31,7 @@ void TOV_C_AllocateMemory(CCTK_ARGUMENTS)
 
 void TOV_C_FreeMemory (CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS;
+  DECLARE_CCTK_ARGUMENTS_TOV_C_AllocateMemory;
   DECLARE_CCTK_PARAMETERS;
 
   assert(TOV_Surface!=0);

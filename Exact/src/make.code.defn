@@ -19,7 +19,7 @@ SRCS = ParamCheck.c			\
 					\
        boundary.F			\
        blended_boundary.F		\
-       xyz_blended_boundary.F		\
+       xyz_blended_boundary.F  \
        linear_extrap_one_bndry.F
 
 # Subdirectories containing source files to be compiled

@@ -28,3 +28,5 @@ TEST twopunctures_carpet
   # the metric is singular and assumes large values near the punctures
   RELTOL 2e-6 ^gxx\.[dyz]?\.asc$
 }
+
+

@@ -14,6 +14,7 @@
 
 #include "cctk.h"
 #include "cctk_Arguments.h"
+#include "cctk_Arguments_Checked.h"
 #include "cctk_Parameters.h"
 
 #include "IDAnalyticBH.h"
@@ -40,7 +41,7 @@ CCTK_FILEVERSION(CactusEinstein_IDAnalyticBH_Kerr_c)
  @@*/
 void KerrID(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS
+  DECLARE_CCTK_ARGUMENTS_KerrID
   DECLARE_CCTK_PARAMETERS
 
   int i, do_lapse=0, do_shift=0;

@@ -9,7 +9,7 @@ C $Header$
 
 c #define-ing the symbol EXACT_NO_F90 will turn this file into a no-op
 #ifndef EXACT_NO_F90
-      subroutine Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS,var)
+      subroutine Exact__linear_extrap_one_bndry(CCTK_ARGUMENTS_Exact__linear_extrap_one_bndry,var)
 
       implicit none
 

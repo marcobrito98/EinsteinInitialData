@@ -11,6 +11,7 @@
 #include "cctk.h"
 
 #include "cctk_Arguments.h"
+#include "cctk_Arguments_Checked.h"
 #include "cctk_Parameters.h"
 
 static const char *rcsid = "$Header$";
@@ -45,7 +46,7 @@ void IDAxiBrillBH_ParamChecker(CCTK_ARGUMENTS);
 
 void IDAxiBrillBH_ParamChecker(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS
+  DECLARE_CCTK_ARGUMENTS_IDAxiBrillBH_ParamChecker
   DECLARE_CCTK_PARAMETERS
 
   /* Do we know how to deal with this type of metric ? */
