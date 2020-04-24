@@ -22,7 +22,7 @@ if (CCTK_Equals(initial_data,"schwarzschild"))
      STORAGE: confac[1]
      LANG: C
      READS: GRID::coordinates
-     WRITES: StaticConformal::conformal_state(everywhere) #scalar
+     WRITES: StaticConformal::conformal_state(everywhere)
      WRITES: StaticConformal::psi(everywhere)
      WRITES: StaticConformal::confac_1derivs(everywhere)
      WRITES: StaticConformal::confac_2derivs(everywhere)
@@ -42,7 +42,7 @@ else if (CCTK_Equals(initial_data,"kerr"))
      STORAGE: confac[1]
      LANG: C
      READS: GRID::x, y, z
-     WRITES: StaticConformal::conformal_state(everywhere) #scalar
+     WRITES: StaticConformal::conformal_state(everywhere)
      WRITES: StaticConformal::psi(everywhere)
      WRITES: StaticConformal::confac_1derivs(everywhere)
      WRITES: StaticConformal::confac_2derivs(everywhere)
@@ -63,7 +63,7 @@ else if (CCTK_Equals(initial_data,"bl_bh"))
      STORAGE: confac[1]
      LANG: C
      READS: GRID::x, y, z
-     WRITES: StaticConformal::conformal_state(everywhere) #scalar
+     WRITES: StaticConformal::conformal_state(everywhere)
      WRITES: StaticConformal::psi(everywhere)
      WRITES: StaticConformal::confac_1derivs(everywhere)
      WRITES: StaticConformal::confac_2derivs(everywhere)
@@ -82,7 +82,7 @@ else if (CCTK_Equals(initial_data,"misner_bh"))
      STORAGE: confac[1]
      LANG: C
      READS: GRID::x, y, z
-     WRITES: StaticConformal::conformal_state(everywhere) #scalar
+     WRITES: StaticConformal::conformal_state(everywhere)
      WRITES: StaticConformal::psi(everywhere)
      WRITES: StaticConformal::confac_1derivs(everywhere)
      WRITES: StaticConformal::confac_2derivs(everywhere)
@@ -99,7 +99,7 @@ else if (CCTK_Equals(initial_data,"multiple_misner_bh"))
      STORAGE: confac[1]
      LANG: C
      READS: GRID::x, y, z
-     WRITES: StaticConformal::conformal_state(everywhere) #scalar
+     WRITES: StaticConformal::conformal_state(everywhere)
      WRITES: StaticConformal::psi(everywhere)
      WRITES: StaticConformal::confac_1derivs(everywhere)
      WRITES: StaticConformal::confac_2derivs(everywhere)

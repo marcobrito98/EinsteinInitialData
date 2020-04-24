@@ -36,7 +36,7 @@ schedule GROUP TOV_Initial_Data IN HydroBase_Initial
 schedule TOV_C_Integrate_RHS IN TOV_Initial_Data
 {
   LANG: C
-  WRITES: StaticConformal::conformal_state(everywhere) #scalar
+  WRITES: StaticConformal::conformal_state(everywhere)
   OPTIONS: GLOBAL
 } "Integrate the 1d equations for the TOV star"
 
@@ -64,8 +64,8 @@ if (CCTK_Equals(initial_data, "tov") || CCTK_Equals(initial_hydro, "tov") ||
   schedule TOV_C_Exact IN TOV_Initial_Data AFTER TOV_C_Integrate_RHS
   {
     LANG: C
-    READS: StaticConformal::conformal_state #scalar
-    READS: ADMBase::shift_state #scalar
+    READS: StaticConformal::conformal_state
+    READS: ADMBase::shift_state
     READS: GRID::coordinates
     WRITES: ADMBASE::alp(everywhere)
     WRITES: ADMBASE::curv(everywhere)
@@ -92,8 +92,8 @@ if (TOV_fake_evolution)
   schedule TOV_C_Exact IN MoL_PostStep AFTER HydroBase_PostStep
   {
     LANG: C
-    READS: StaticConformal::conformal_state #scalar
-    READS: ADMBase::shift_state #scalar
+    READS: StaticConformal::conformal_state
+    READS: ADMBase::shift_state
     WRITES: ADMBASE::alp(everywhere)
     WRITES: ADMBASE::curv(everywhere)
     WRITES: ADMBASE::metric(everywhere)

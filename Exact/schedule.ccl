@@ -32,8 +32,8 @@ Schedule Exact_ParamCheck at PARAMCHECK
 Schedule Exact__decode_pars in ADMBase_InitialData
 {
   LANG: Fortran
-  WRITES: Exact::decoded_exact_model(everywhere) #scalar
-  WRITES: Exact::Exact_pars_real(everywhere) #scalar
+  WRITES: Exact::decoded_exact_model(everywhere)
+  WRITES: Exact::Exact_pars_real(everywhere)
 } "decode/copy thorn Exact parameters into grid scalars"
 
 # Initial data (g and K) from a trivial slice through an exact solution.
@@ -44,11 +44,11 @@ if (CCTK_Equals(initial_data,"exact"))
   {
     LANG: Fortran
     READS: GRID::x, y, z
-    READS: Exact::decoded_exact_model #scalar
+    READS: Exact::decoded_exact_model
     WRITES: ADMBase::metric(Everywhere), curv
     WRITES: StaticConformal::psi(Everywhere), confac_1derivs
     WRITES: StaticConformal::confac_2derivs(Everywhere)
-    WRITES: StaticConformal::conformal_state(everywhere) #scalar
+    WRITES: StaticConformal::conformal_state(everywhere)
   } "Set initial data from exact solution on a trivial slice"
 }
 
@@ -64,8 +64,8 @@ if ( (CCTK_Equals(initial_data,"slice")) && ! (CCTK_Equals(evolution_method,"sli
     LANG: Fortran
     READS: GRID::x, y, z
     READS: ADMBase::shift(interior), alp
-    READS: StaticConformal::conformal_state #scalar
-    READS: Exact::decoded_exact_model #scalar
+    READS: StaticConformal::conformal_state
+    READS: Exact::decoded_exact_model
     WRITES: ADMBase::metric(everywhere), curv
     WRITES: Exact::Exact_slice(everywhere)
     WRITES: Exact::Exact_slicetemp2(everywhere)
@@ -85,8 +85,8 @@ if ( (CCTK_Equals(initial_lapse,"exact")) || (CCTK_Equals(initial_shift,"exact")
   {
     LANG: Fortran
     READS: GRID::x, y, z
-    READS: StaticConformal::conformal_state #scalar
-    READS: Exact::decoded_exact_model #scalar
+    READS: StaticConformal::conformal_state
+    READS: Exact::decoded_exact_model
     WRITES: ADMBase::alp(everywhere), shift, dtalp, dtshift
   } "Set initial lapse and/or shift from exact solution on a trivial slice"
 }
@@ -106,8 +106,8 @@ if ( (CCTK_Equals(lapse_evolution_method,"exact")) || (CCTK_Equals(shift_evoluti
   {
     LANG: Fortran
     READS: GRID::x, y, z
-    READS: StaticConformal::conformal_state #scalar
-    READS: Exact::decoded_exact_model #scalar
+    READS: StaticConformal::conformal_state
+    READS: Exact::decoded_exact_model
     WRITES: ADMBase::alp(everywhere), shift, dtalp, dtshift
   } "Set evolution lapse and/or shift from exact solution on a trivial slice"
 
@@ -116,8 +116,8 @@ if ( (CCTK_Equals(lapse_evolution_method,"exact")) || (CCTK_Equals(shift_evoluti
   {
     LANG: Fortran
     READS: GRID::x, y, z
-    READS: StaticConformal::conformal_state #scalar
-    READS: Exact::decoded_exact_model #scalar
+    READS: StaticConformal::conformal_state
+    READS: Exact::decoded_exact_model
     WRITES: ADMBase::alp(everywhere), shift, dtalp, dtshift
   } "Set evolution lapse and/or shift from exact solution on a trivial slice"
 }
@@ -144,8 +144,8 @@ if ( (CCTK_Equals(evolution_method,"slice")) && (CCTK_Equals(initial_data,"slice
     LANG: Fortran
     READS: GRID::x, y, z
     READS: ADMBase::shift(interior), alp
-    READS: StaticConformal::conformal_state #scalar
-    READS: Exact::decoded_exact_model #scalar
+    READS: StaticConformal::conformal_state
+    READS: Exact::decoded_exact_model
     WRITES: ADMBase::metric(interior), curv
     WRITES: Exact::Exact_slice(everywhere)
     WRITES: Exact::Exact_slicetemp2(interior)
@@ -157,8 +157,8 @@ if ( (CCTK_Equals(evolution_method,"slice")) && (CCTK_Equals(initial_data,"slice
     READS: GRID::x, y, z
     READS: ADMBase::shift(interior), alp
     READS: Exact::Exact_slice(everywhere), Exact_slicetemp2
-    READS: StaticConformal::conformal_state(everywhere) #scalar
-    READS: Exact::decoded_exact_model(everywhere) #scalar
+    READS: StaticConformal::conformal_state(everywhere)
+    READS: Exact::decoded_exact_model(everywhere)
     WRITES: ADMBase::metric(everywhere), curv
     WRITES: Exact::Exact_slice(everywhere), Exact_slicetemp1
     WRITES: Exact::Exact_slicetemp2(everywhere)
@@ -174,22 +174,22 @@ if (CCTK_Equals(evolution_method,"exact"))
   {
     LANG: Fortran
     READS: GRID::x, y, z
-    READS: Exact::decoded_exact_model #scalar
+    READS: Exact::decoded_exact_model
     WRITES: ADMBase::metric(Everywhere), curv
     WRITES: StaticConformal::psi(Everywhere), confac_1derivs
     WRITES: StaticConformal::confac_2derivs(Everywhere)
-    WRITES: StaticConformal::conformal_state(everywhere) #scalar
+    WRITES: StaticConformal::conformal_state(everywhere)
   } "Set data from exact solution on an exact slice"
   # Necessary if MoL is used
   schedule Exact__initialize in MoL_PostStep BEFORE ADMBase_SetADMVars
   {
     LANG: Fortran
     READS: GRID::x, y, z
-    READS: Exact::decoded_exact_model #scalar
+    READS: Exact::decoded_exact_model
     WRITES: ADMBase::metric(Everywhere), curv
     WRITES: StaticConformal::psi(Everywhere), confac_1derivs
     WRITES: StaticConformal::confac_2derivs(Everywhere)
-    WRITES: StaticConformal::conformal_state(everywhere) #scalar
+    WRITES: StaticConformal::conformal_state(everywhere)
   } "Set data from exact solution on an exact slice"
 }
 
@@ -203,8 +203,8 @@ if (CCTK_Equals(overwrite_boundary,"exact"))
   {
     LANG: Fortran
     READS: GRID::x, y, z
-    READS: StaticConformal::conformal_state(everywhere) #scalar
-    READS: Exact::decoded_exact_model(everywhere) #scalar
+    READS: StaticConformal::conformal_state(everywhere)
+    READS: Exact::decoded_exact_model(everywhere)
     WRITES: ADMBase::metric(boundary), curv, alp, shift, dtalp, dtshift
   } "Overwrite g and K on the boundary with exact solution data"
 }
@@ -219,8 +219,8 @@ schedule Exact__slice_data
   READS: GRID::x, y, z
   READS: Exact::Exact_slice(interior)
   READS: ADMBase::shift(interior), alp
-  READS: StaticConformal::conformal_state(everywhere) #scalar
-  READS: Exact::decoded_exact_model(everywhere) #scalar
+  READS: StaticConformal::conformal_state(everywhere)
+  READS: Exact::decoded_exact_model(everywhere)
   WRITES: ADMBase::metric(everywhere), curv
   WRITES: Exact::Exact_slicetemp2(everywhere)
 } ""
