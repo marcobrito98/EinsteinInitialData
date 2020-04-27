@@ -9,13 +9,11 @@ C $Header$
 #include "cctk_Arguments_Checked.h"
 #include "cctk_Functions.h"
 
-!      subroutine Exact__gauge(CCTK_ARGUMENTS_Exact__gauge)
       subroutine Exact__gauge(CCTK_ARGUMENTS)
 
       implicit none
 
-!      DECLARE_CCTK_ARGUMENTS_Exact__gauge
-      DECLARE_CCTK_ARGUMENTS
+      DECLARE_CCTK_ARGUMENTS_EXACT__GAUGE
       DECLARE_CCTK_PARAMETERS
       DECLARE_CCTK_FUNCTIONS
 

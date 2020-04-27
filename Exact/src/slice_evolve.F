@@ -15,7 +15,7 @@ C
 
       subroutine Exact__slice_evolve(CCTK_ARGUMENTS)
       implicit none
-      DECLARE_CCTK_ARGUMENTS
+      DECLARE_CCTK_ARGUMENTS_EXACT__SLICE_EVOLVE
 
 c #define-ing the symbol EXACT_NO_F90 will turn this subroutine into a no-op
 #ifndef EXACT_NO_F90

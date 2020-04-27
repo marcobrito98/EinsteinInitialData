@@ -7,12 +7,10 @@ C $Header$
 #include "cctk_Functions.h"
 
       subroutine Exact__boundary(CCTK_ARGUMENTS)
-!      subroutine Exact__boundary(CCTK_ARGUMENTS_Exact__boundary)
 
       implicit none
 
-      DECLARE_CCTK_ARGUMENTS
-!      DECLARE_CCTK_ARGUMENTS_Exact__boundary
+      DECLARE_CCTK_ARGUMENTS_EXACT__BOUNDARY
 
       integer i,j,k
       integer nx,ny,nz

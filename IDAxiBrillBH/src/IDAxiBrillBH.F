@@ -27,15 +27,13 @@ c
 c  @endhistory
 c@@*/
 
-c      subroutine IDAxiBrillBH(CCTK_ARGUMENTS_IDAxiBrillBH)
       subroutine IDAxiBrillBH(CCTK_ARGUMENTS)
 
       use cctk
 
       implicit none
 
-c      DECLARE_CCTK_ARGUMENTS_IDAxiBrillBH
-      DECLARE_CCTK_ARGUMENTS
+      DECLARE_CCTK_ARGUMENTS_IDAXIbRILLBH
       DECLARE_CCTK_PARAMETERS
       DECLARE_CCTK_FUNCTIONS
 

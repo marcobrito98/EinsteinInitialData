@@ -229,17 +229,3 @@ schedule Exact__linear_extrap_one_bndry
 {
   LANG: Fortran
 } ""
-
-######################################################
-##            Unused functions:                     ##
-##       Exact__blended_boundary                    ##
-##       Exact__xyz_blended_boundary                ##
-##       ComparisonMetric                           ##
-######################################################
-##            Unused functions:                     ##
-##       Exact__blended_boundary                    ##
-##       Exact__xyz_blended_boundary                ##
-##       ComparisonMetric                           ##
-##       ComparisonCurvature                        ##
-##       ComparisonGauge                            ##
-######################################################
