@@ -12,8 +12,12 @@ if (CCTK_Equals(initial_data,"axibrillbh"))
   schedule IDAxiBrillBH in ADMBase_InitialData
   {
     LANG: Fortran
-    WRITES: ADMBASE::metric(everywhere), curv, lapse, shift
-    WRITES: StaticConformal::confac(everywhere), confac_1derivs, confac_2derivs, conformal_state
+    WRITES: ADMBASE::metric(everywhere), ADMBASE::curv(everywhere),
+            ADMBASE::lapse(everywhere), ADMBASE::shift(everywhere)
+    WRITES: StaticConformal::confac(everywhere),
+            StaticConformal::confac_1derivs(everywhere),
+            StaticConformal::confac_2derivs(everywhere),
+            StaticConformal::conformal_state(everywhere)
     READS: Grid::coordinates(everywhere)
 
     STORAGE: StaticConformal::confac
