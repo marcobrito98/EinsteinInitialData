@@ -69,13 +69,16 @@ if (CCTK_Equals(initial_data, "tov") || CCTK_Equals(initial_hydro, "tov") ||
     READS: GRID::coordinates
     WRITES: ADMBASE::alp(everywhere)
     WRITES: ADMBASE::curv(everywhere)
-    WRITES: ADMBASE::gxx_p_p(everywhere), gxy_p_p, gxz_p_p, gyy_p_p, gyz_p_p, gzz_p_p
-    WRITES: ADMBASE::gxx_p(everywhere), gxy_p, gxz_p, gyy_p, gyz_p, gzz_p
+    WRITES: ADMBASE::metric_p_p(everywhere)
+    WRITES: ADMBASE::metric_p(everywhere)
     WRITES: ADMBASE::metric(everywhere)
     WRITES: ADMBASE::shift(everywhere)
-    WRITES: HYDROBASE::eps_p_p(everywhere), rho_p_p, vel_p_p, w_lorentz_p_p
-    WRITES: HYDROBASE::eps_p(everywhere), rho_p, vel_p, w_lorentz_p
-    WRITES: HYDROBASE::eps(everywhere), rho, vel, w_lorentz
+    WRITES: HYDROBASE::eps_p_p(everywhere), HYDROBASE::rho_p_p(everywhere),
+            HYDROBASE::vel_p_p(everywhere), HYDROBASE::w_lorentz_p_p(everywhere)
+    WRITES: HYDROBASE::eps_p(everywhere), HYDROBASE::rho_p(everywhere),
+            HYDROBASE::vel_p(everywhere), HYDROBASE::w_lorentz_p(everywhere)
+    WRITES: HYDROBASE::eps(everywhere), HYDROBASE::rho(everywhere),
+            HYDROBASE::vel(everywhere), HYDROBASE::w_lorentz(everywhere)
     WRITES: HYDROBASE::press(everywhere)
     WRITES: StaticConformal::psi(everywhere)
     WRITES: StaticConformal::confac_1derivs(everywhere)
