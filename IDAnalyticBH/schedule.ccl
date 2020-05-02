@@ -41,7 +41,7 @@ else if (CCTK_Equals(initial_data,"kerr"))
    {	
      STORAGE: confac[1]
      LANG: C
-     READS: GRID::x, y, z
+     READS: GRID::x, GRID::y, GRID::z
      WRITES: StaticConformal::conformal_state(everywhere)
      WRITES: StaticConformal::psi(everywhere)
      WRITES: StaticConformal::confac_1derivs(everywhere)
@@ -62,7 +62,7 @@ else if (CCTK_Equals(initial_data,"bl_bh"))
    {
      STORAGE: confac[1]
      LANG: C
-     READS: GRID::x, y, z
+     READS: GRID::x, GRID::y, GRID::z
      WRITES: StaticConformal::conformal_state(everywhere)
      WRITES: StaticConformal::psi(everywhere)
      WRITES: StaticConformal::confac_1derivs(everywhere)
@@ -81,7 +81,7 @@ else if (CCTK_Equals(initial_data,"misner_bh"))
    {
      STORAGE: confac[1]
      LANG: C
-     READS: GRID::x, y, z
+     READS: GRID::x, GRID::y, GRID::z
      WRITES: StaticConformal::conformal_state(everywhere)
      WRITES: StaticConformal::psi(everywhere)
      WRITES: StaticConformal::confac_1derivs(everywhere)
@@ -98,7 +98,7 @@ else if (CCTK_Equals(initial_data,"multiple_misner_bh"))
    {
      STORAGE: confac[1]
      LANG: C
-     READS: GRID::x, y, z
+     READS: GRID::x, GRID::y, GRID::z
      WRITES: StaticConformal::conformal_state(everywhere)
      WRITES: StaticConformal::psi(everywhere)
      WRITES: StaticConformal::confac_1derivs(everywhere)
