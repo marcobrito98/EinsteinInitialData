@@ -1,4 +1,39 @@
-#ifdef FCODE
+#include "cctk.h"
+#include "cctk_Arguments.h"
+#include "cctk_Parameters.h"
+
+      subroutine Exact_AddToTmunu(CCTK_ARGUMENTS)
+      
+        implicit none
+      
+        DECLARE_CCTK_ARGUMENTS
+        DECLARE_CCTK_PARAMETERS
+        CCTK_LOOP3_ALL_DECLARE(Exact_AddToTmunu)
+      
+        integer :: i,j,k
+      
+C temporary variables
+        CCTK_REAL  unu,doi,trei,rr,kkkk
+        CCTK_REAL  aaaa,bbbb,aaaa1,bbbb1,kkkk1,r3,bass,term1,term2
+        CCTK_REAL  unu1, raz, raz2, razsch2, coefsch, pppsch, unusch
+        CCTK_REAL  treiori
+        CCTK_REAL  star_m, star_r
+        CCTK_REAL Txx, Txy, Txz, Tyy, Tyz, Tzz
+        CCTK_REAL Ttx, Tty, Ttz, Ttt
+      
+        CCTK_LOOP3_ALL(Exact_AddToTmunu, i,j,k)
+
+          Txx = 0.
+          Txy = 0.
+          Txz = 0.
+          Tyy = 0.
+          Tyz = 0.
+          Tzz = 0.
+          Ttx = 0.
+          Tty = 0.
+          Ttz = 0.
+          Ttt = 0.
+
 C Here we added the matter variables for several of the metrics
 C you can find in "src" directory through the components of the
 C stress-eergy tensor. Being different in specific cases it is
@@ -350,4 +385,7 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
         else
           call CCTK_WARN(0,"Unknown value of Exact::decoded_exact_model")
         endif 
-#endif
+
+        CCTK_ENDLOOP3_ALL(Exact_AddToTmunu)
+
+      end subroutine

@@ -11,6 +11,8 @@ SRCS = ParamCheck.c			\
        slice_evolve.F			\
        slice_data.F			\
 					\
+       tmunu.F				\
+					\
        gauge.F			\
        Bona_Masso_data.F		\
 					\
