@@ -30,7 +30,7 @@ IOBasic::outInfo_every 			= 	1
 IOBasic::outScalar_style    = "gnuplot"
 IOBasic::outInfo_vars 			= 	"hydrobase::rho"
 
-ActiveThorns = "tmunubase admbase admcoupling spacemask staticconformal"
+ActiveThorns = "tmunubase admbase spacemask staticconformal"
 
 IOBasic::outScalar_every                =       1
 IOBasic::outScalar_reductions = "minimum maximum"
@@ -45,7 +45,7 @@ ActiveThorns = "nanchecker mol"
 MoL::ode_method				=	"rk2"
 MoL::MoL_Intermediate_Steps		=	2
 
-ActiveThorns = "ADMBase StaticConformal SpaceMask CoordGauge ADMMacros ADMCoupling"
+ActiveThorns = "ADMBase StaticConformal SpaceMask CoordGauge ADMMacros"
 
 ADMBase::evolution_method		=	"none"
 ADMBase::initial_shift			=	"zero"
