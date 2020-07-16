@@ -2,7 +2,7 @@
 #!DESC "Initial data for axisymmetric distored black hole"
 ######################################################################
 
-ActiveThorns = "coordgauge admmacros admanalysis tmunubase admbase staticconformal time boundary ellbase pugh pughinterp pughreduce pughslab cartgrid3d RotatingDBHIVP ioascii iobasic ioutil ADMCoupling CoordBase SpaceMask LocalReduce LocalInterp SymBase"
+ActiveThorns = "coordgauge admmacros admanalysis tmunubase admbase staticconformal time boundary ellbase pugh pughinterp pughreduce pughslab cartgrid3d RotatingDBHIVP ioascii iobasic ioutil CoordBase SpaceMask LocalReduce LocalInterp SymBase"
 
 # GENERAL 
 

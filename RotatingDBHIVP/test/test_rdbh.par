@@ -2,7 +2,7 @@
 # single rotating black hole
 #==============================================================================
 
-ActiveThorns = "RotatingDBHIVP coordbase coordgauge staticconformal spacemask tmunubase admbase admcoupling admmacros admanalysis ellbase cartgrid3d time pugh pughreduce pughslab ioascii ioutil iobasic symbase boundary pughinterp LocalInterp nanchecker LocalReduce"
+ActiveThorns = "RotatingDBHIVP coordbase coordgauge staticconformal spacemask tmunubase admbase admmacros admanalysis ellbase cartgrid3d time pugh pughreduce pughslab ioascii ioutil iobasic symbase boundary pughinterp LocalInterp nanchecker LocalReduce"
 IOBasic::outScalar_vars = " admbase::metric admbase::curv admbase::lapse admbase::shift"
 IOBasic::outInfo_vars = " admbase::alp "
 IOASCII::out1D_vars = " admbase::metric admbase::curv admbase::lapse admbase::shift "
