@@ -3,7 +3,6 @@
 
 implements: exact
 inherits: admbase grid coordgauge staticconformal
-friend: ADMCoupling
 
 CCTK_INT FUNCTION Boundary_RegisterPhysicalBC(CCTK_POINTER_TO_CONST IN GH, \
   CCTK_INT IN CCTK_FPOINTER function_pointer(CCTK_POINTER_TO_CONST IN GH, \
