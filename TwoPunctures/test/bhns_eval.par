@@ -3,7 +3,7 @@ ActiveThorns = "Loopcontrol InitBase Carpet CarpetLib CarpetInterp CarpetReduce 
 
 ActiveThorns = "ADMBase"
 ActiveThorns = "StaticConformal"
-ActiveThorns = "ADMCoupling ADMMacros"
+ActiveThorns = "ADMMacros"
 ActiveThorns = "TmunuBase Constants SpaceMask HydroBase"
 ActiveThorns = "TOVSolver eos_omni"
 ActiveThorns = "TwoPunctures"
