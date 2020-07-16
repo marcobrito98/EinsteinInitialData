@@ -1,7 +1,7 @@
 # Schwarzschild/Eddington-Finkelstein initial data
 
 # Required thorns
-ActiveThorns = "Time CartGrid3D CoordBase SymBase Boundary PUGH PUGHReduce PUGHSlab IOAscii IOUtil IOBasic ADMBase ADMCoupling StaticConformal CoordGauge Exact"
+ActiveThorns = "Time CartGrid3D CoordBase SymBase Boundary PUGH PUGHReduce PUGHSlab IOAscii IOUtil IOBasic ADMBase StaticConformal CoordGauge Exact"
 
 # Grid
 driver::global_nx = 30
