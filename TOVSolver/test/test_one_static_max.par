@@ -1,4 +1,4 @@
-ActiveThorns = "time MoL pugh pughreduce pughslab coordbase symbase cartgrid3d ioutil ioascii iobasic boundary admbase staticconformal spacemask admcoupling coordgauge admmacros hydrobase grhydro grhydro_initdata tovsolver nanchecker eos_omni admconstraints Constants LocalReduce TmunuBase InitBase"
+ActiveThorns = "time MoL pugh pughreduce pughslab coordbase symbase cartgrid3d ioutil ioascii iobasic boundary admbase staticconformal spacemask coordgauge admmacros hydrobase grhydro grhydro_initdata tovsolver nanchecker eos_omni admconstraints Constants LocalReduce TmunuBase InitBase"
 
 TmunuBase::stress_energy_storage	=	yes
 TmunuBase::stress_energy_at_RHS		=	yes
