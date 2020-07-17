@@ -4,8 +4,14 @@ ActiveThorns = "Boundary CartGrid3D Time CoordBase SymBase"
 ActiveThorns = "PUGH PUGHReduce PUGHSlab LocalReduce"
 ActiveThorns = "IOASCII IOBasic IOUtil"
 ActiveThorns = "ADMBase StaticConformal"
-ActiveThorns = "TmunuBase ADMConstraints ADMMacros SpaceMask"
+ActiveThorns = "TmunuBase ML_ADMConstraints SpaceMask"
 ActiveThorns = "TwoPunctures"
+
+# ML_ADMConstraints needs MoL groups
+ActiveThorns = "MoL"
+MoL::ODE_Method = "Euler"
+MoL::MoL_Intermediate_Steps = 1
+ADMBase::admbase_boundary_condition = "none"
 
 Cactus::cctk_itlast		= 0
 
@@ -22,6 +28,14 @@ Grid::zmax			=  4
 Driver::global_nx		= 35
 Driver::global_ny		= 35
 Driver::global_nz		= 35
+
+Driver::ghost_size              = 2
+CoordBase::boundary_size_x_lower = 2
+CoordBase::boundary_size_y_lower = 2
+CoordBase::boundary_size_z_lower = 2
+CoordBase::boundary_size_x_upper = 2
+CoordBase::boundary_size_y_upper = 2
+CoordBase::boundary_size_z_upper = 2
 
 ADMBase::initial_data		= "twopunctures"
 
@@ -50,7 +64,7 @@ IO::out_dir			= $parfile
 IO::out_fileinfo		= "axis labels"
 
 IOBasic::outScalar_every	= 1
-IOBasic::outScalar_vars		= "admbase::metric admbase::curv admconstraints::hamiltonian admconstraints::momentum TwoPunctures::puncture_u"
+IOBasic::outScalar_vars		= "admbase::metric admbase::curv ml_admconstraints::ml_ham ml_admconstraints::ml_mom TwoPunctures::puncture_u"
 
 IOASCII::out1D_every		= 1
-IOASCII::out1D_vars		= "admbase::metric admbase::curv admconstraints::hamiltonian admconstraints::momentum TwoPunctures::puncture_u"
+IOASCII::out1D_vars		= "admbase::metric admbase::curv ml_admconstraints::ml_ham ml_admconstraints::ml_mom TwoPunctures::puncture_u"
