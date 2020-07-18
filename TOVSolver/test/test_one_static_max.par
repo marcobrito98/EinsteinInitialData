@@ -1,12 +1,9 @@
-ActiveThorns = "time MoL pugh pughreduce pughslab coordbase symbase cartgrid3d ioutil ioascii iobasic boundary admbase staticconformal spacemask coordgauge admmacros hydrobase grhydro grhydro_initdata tovsolver nanchecker eos_omni admconstraints Constants LocalReduce TmunuBase InitBase"
+ActiveThorns = "time MoL pugh pughreduce pughslab coordbase symbase cartgrid3d ioutil ioascii iobasic boundary admbase staticconformal spacemask coordgauge admmacros hydrobase grhydro grhydro_initdata tovsolver nanchecker eos_omni ml_admconstraints Constants LocalReduce TmunuBase InitBase"
 
 TmunuBase::stress_energy_storage	=	yes
 TmunuBase::stress_energy_at_RHS		=	yes
 
 time::dtfac = 0.375
-
-ADMConstraints::constraints_persist	= yes
-admconstraints::bound     = "static"
 
 boundary::radpower        = 2
 
@@ -49,8 +46,8 @@ IO::out_dir			= $parfile
 IO::out_fileinfo="none"
 
 IOBasic::outScalar_every = 1
-IOBasic::outScalar_vars  = "HydroBase::w_lorentz hydrobase::rho hydrobase::press hydrobase::eps HydroBase::vel GRHydro::dens GRHydro::tau GRHydro::scon admbase::lapse admbase::metric admbase::curv admconstraints::ham admconstraints::momentum"
+IOBasic::outScalar_vars  = "HydroBase::w_lorentz hydrobase::rho hydrobase::press hydrobase::eps HydroBase::vel GRHydro::dens GRHydro::tau GRHydro::scon admbase::lapse admbase::metric admbase::curv ml_admconstraints::ml_ham ml_admconstraints::ml_mom"
 
 IOASCII::out1D_every     = 1
-IOASCII::out1D_vars      = "HydroBase::w_lorentz hydrobase::rho hydrobase::press hydrobase::eps HydroBase::vel GRHydro::dens GRHydro::tau GRHydro::scon admbase::lapse admbase::metric admbase::curv admconstraints::ham admconstraints::momentum"
+IOASCII::out1D_vars      = "HydroBase::w_lorentz hydrobase::rho hydrobase::press hydrobase::eps HydroBase::vel GRHydro::dens GRHydro::tau GRHydro::scon admbase::lapse admbase::metric admbase::curv ml_admconstraints::ml_ham ml_admconstraints::ml_mom"
 IOASCII::out_format      = ".10e"
