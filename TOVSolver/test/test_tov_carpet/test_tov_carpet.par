@@ -1,13 +1,10 @@
 !DESC "Carpet unigrid, one TOV" 
-ActiveThorns = "time MoL coordbase symbase cartgrid3d ioutil boundary admbase staticconformal spacemask admcoupling coordgauge admmacros hydrobase grhydro grhydro_initdata tovsolver eos_omni admconstraints Constants LocalReduce Carpet CarpetLib CarpetInterp CarpetReduce CarpetIOScalar CarpetIOBasic LoopControl TmunuBase InitBase"
+ActiveThorns = "time MoL coordbase symbase cartgrid3d ioutil boundary admbase staticconformal spacemask coordgauge admmacros hydrobase grhydro tovsolver eos_omni ml_admconstraints Constants LocalReduce Carpet CarpetLib CarpetInterp CarpetReduce CarpetIOScalar CarpetIOBasic LoopControl TmunuBase InitBase"
 
 TmunuBase::stress_energy_storage	=	yes
 TmunuBase::stress_energy_at_RHS		=	yes
 
 time::dtfac = 0.375
-
-ADMConstraints::constraints_persist	= yes
-admconstraints::bound     = "static"
 
 boundary::radpower        = 2
 
@@ -29,6 +26,13 @@ CoordBase::ncells_y = 32
 CoordBase::ncells_z = 32
 
 driver::ghost_size   = 3
+
+coordbase::boundary_size_x_lower = 2
+coordbase::boundary_size_y_lower = 2
+coordbase::boundary_size_z_lower = 2
+coordbase::boundary_size_x_upper = 2
+coordbase::boundary_size_y_upper = 2
+coordbase::boundary_size_z_upper = 2
 
 cactus::cctk_itlast   =       0
 
@@ -52,8 +56,8 @@ ADMBase::initial_lapse = "tov"
 ADMBase::initial_shift = "tov"
 
 tovsolver::TOV_Rho_Central[0] = 1.28e-3
-tovsolver::TOV_Gamma[0]       = 2.0
-tovsolver::TOV_K[0]           = 100.0
+tovsolver::TOV_Gamma          = 2.0
+tovsolver::TOV_K              = 100.0
 tovsolver::TOV_Combine_Method = "maximum"
 
 Carpet::prolongation_order_space  = 3
@@ -63,5 +67,5 @@ IO::out_dir			= $parfile
 IO::out_fileinfo= "none"
 
 IOScalar::outScalar_every = 1
-IOScalar::outScalar_vars  = "hydrobase::rho hydrobase::press hydrobase::eps hydrobase::vel GRHydro::dens GRHydro::tau GRHydro::scon admbase::lapse admbase::metric admbase::curv admconstraints::ham admconstraints::momentum HydroBase::w_lorentz"
+IOScalar::outScalar_vars  = "hydrobase::rho hydrobase::press hydrobase::eps hydrobase::vel GRHydro::dens GRHydro::tau GRHydro::scon admbase::lapse admbase::metric admbase::curv ml_admconstraints::ml_ham ml_admconstraints::ml_mom HydroBase::w_lorentz"
 IOScalar::outScalar_reductions  = "minimum maximum norm1 norm2"

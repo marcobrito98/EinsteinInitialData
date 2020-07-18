@@ -27,6 +27,13 @@ CoordBase::ncells_z = 32
 
 driver::ghost_size   = 3
 
+coordbase::boundary_size_x_lower = 2
+coordbase::boundary_size_y_lower = 2
+coordbase::boundary_size_z_lower = 2
+coordbase::boundary_size_x_upper = 2
+coordbase::boundary_size_y_upper = 2
+coordbase::boundary_size_z_upper = 2
+
 cactus::cctk_itlast   =       0
 
 methodoflines::ode_method        = "icn"
@@ -55,7 +62,6 @@ tovsolver::TOV_Combine_Method = "maximum"
 
 Carpet::prolongation_order_space  = 3
 Carpet::prolongation_order_time   = 2
-CarpetLib::poison_value = 0
 
 IO::out_dir			= $parfile
 IO::out_fileinfo= "none"
