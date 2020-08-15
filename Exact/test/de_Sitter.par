@@ -3,21 +3,25 @@
 # $Header$
 
 # Required thorns
-ActiveThorns = "CartGrid3D CoordBase SymBase Boundary Time   PUGH PUGHReduce PUGHSlab   IOAscii IOUtil IOBasic LocalReduce  TmunuBase  ADMBase ADMMacros ADMConstraints StaticConformal CoordGauge SpaceMask  ReflectionSymmetry Exact"
+ActiveThorns = "CartGrid3D CoordBase SymBase Boundary Time MoL PUGH PUGHReduce PUGHSlab   IOAscii IOUtil IOBasic LocalReduce  TmunuBase  ADMBase ADMMacros ml_ADMConstraints StaticConformal CoordGauge SpaceMask  ReflectionSymmetry Exact"
 
 # Grid
-driver::global_nx = 10
-driver::global_ny = 10
-driver::global_nz = 10
+driver::global_nx = 12
+driver::global_ny = 12
+driver::global_nz = 12
 grid::type    = "byrange"
 grid::domain  = "full"
 
-grid::xmin = -0.125
-grid::xmax = 1.0
-grid::ymin = -.785
-grid::ymax = 6.28
-grid::zmin = -.785
-grid::zmax = 6.28
+grid::xmin = -0.25
+grid::xmax = 1.125
+grid::ymin = -1.57
+grid::ymax = 7.065
+grid::zmin = -1.57
+grid::zmax = 7.065
+
+driver::ghost_size_x = 2
+driver::ghost_size_y = 2
+driver::ghost_size_z = 2
 
 CoordBase::boundary_size_x_lower = pugh::ghost_size_x
 CoordBase::boundary_size_y_lower = pugh::ghost_size_y
@@ -29,6 +33,11 @@ CoordBase::boundary_size_z_upper = pugh::ghost_size_z
 ReflectionSymmetry::reflection_x = yes
 ReflectionSymmetry::reflection_y = yes
 ReflectionSymmetry::reflection_z = yes
+
+MoL::ODE_Method = "Euler"
+MoL::MoL_Intermediate_Steps = 1
+TmunuBase::stress_energy_storage = yes
+TmunuBase::stress_energy_at_RHS  = yes
 
 cactus::cctk_initial_time = 1
 cactus::cctk_itlast       = 3
@@ -53,12 +62,12 @@ IO::out_fileinfo = "none"
 IO::parfile_write = "no"
 
 IOBasic::outInfo_every = 1
-IOBasic::outInfo_vars  = "admconstraints::ham"
+IOBasic::outInfo_vars  = "ml_admconstraints::ml_ham"
 
 IOBasic::outScalar_every =  1 
-IOBasic::outScalar_vars  = "admbase::gxx admbase::gyy admbase::gzz admconstraints::ham admbase::lapse"
+IOBasic::outScalar_vars  = "admbase::gxx admbase::gyy admbase::gzz ml_admconstraints::ml_ham admbase::lapse"
 
 IOASCII::out1D_every =  1
-IOASCII::out1D_vars  = "admbase::gxx admbase::gyy admbase::gzz admconstraints::ham admbase::lapse"
+IOASCII::out1D_vars  = "admbase::gxx admbase::gyy admbase::gzz ml_admconstraints::ml_ham admbase::lapse"
 
 
