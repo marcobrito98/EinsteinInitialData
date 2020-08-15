@@ -3,6 +3,8 @@
 
 implements: exact
 inherits: admbase grid coordgauge staticconformal
+# Exact sets Tmunu but does not inherit it to support pure vacuum setups
+# in a backwards compatible manner
 
 CCTK_INT FUNCTION Boundary_RegisterPhysicalBC(CCTK_POINTER_TO_CONST IN GH, \
   CCTK_INT IN CCTK_FPOINTER function_pointer(CCTK_POINTER_TO_CONST IN GH, \
@@ -18,6 +20,22 @@ CCTK_INT FUNCTION Boundary_SelectGroupForBC(CCTK_POINTER_TO_CONST IN GH, \
   CCTK_INT IN faces, CCTK_INT IN boundary_width, CCTK_INT IN table_handle, \
   CCTK_STRING IN group_name, CCTK_STRING IN bc_name)
 USES FUNCTION Boundary_SelectGroupForBC
+
+CCTK_INT FUNCTION Driver_RequireValidData
+  (CCTK_POINTER_TO_CONST IN cctkGH,
+   CCTK_INT ARRAY        IN variables,
+   CCTK_INT ARRAY        IN tls,
+   CCTK_INT              IN nvariables,
+   CCTK_INT ARRAY        IN where)
+USES FUNCTION Driver_RequireValidData
+
+CCTK_INT FUNCTION Driver_NotifyDataModified
+  (CCTK_POINTER_TO_CONST IN cctkGH,
+   CCTK_INT ARRAY        IN variables,
+   CCTK_INT ARRAY        IN tls,
+   CCTK_INT              IN nvariables,
+   CCTK_INT ARRAY        IN where)
+USES FUNCTION Driver_NotifyDataModified
 
 USES INCLUDE   : Slicing.h
 

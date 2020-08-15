@@ -1,5 +1,6 @@
 #include "cctk.h"
 #include "cctk_Arguments.h"
+#include "cctk_Functions.h"
 #include "cctk_Parameters.h"
 
 subroutine Exact_AddToTmunu(CCTK_ARGUMENTS)
@@ -8,6 +9,8 @@ subroutine Exact_AddToTmunu(CCTK_ARGUMENTS)
 
   DECLARE_CCTK_ARGUMENTS
   DECLARE_CCTK_PARAMETERS
+  DECLARE_CCTK_FUNCTIONS
+
   CCTK_LOOP3_ALL_DECLARE(Exact_AddToTmunu)
 
   integer :: i,j,k
@@ -18,21 +21,61 @@ subroutine Exact_AddToTmunu(CCTK_ARGUMENTS)
   CCTK_REAL  unu1, raz, raz2, razsch2, coefsch, pppsch, unusch
   CCTK_REAL  treiori
   CCTK_REAL  star_m, star_r
-  CCTK_REAL Txx, Txy, Txz, Tyy, Tyz, Tzz
-  CCTK_REAL Ttx, Tty, Ttz, Ttt
+  CCTK_REAL, dimension(cctk_ash(1),cctk_ash(2),cctk_ash(3)) :: eTxx, eTxy, &
+             eTxz, eTyy, eTyz, eTzz, eTtx, eTty, eTtz, eTtt
+  CCTK_POINTER pTxx, pTxy, pTxz, pTyy, pTyz, pTzz, pTtx, pTty, pTtz, pTtt
+  integer :: vi_eTxx, vi_eTxy, vi_eTxz, vi_eTyy, vi_eTyz, vi_eTzz, vi_eTtx, &
+             vi_eTty, vi_eTtz, vi_eTtt
+
+  CCTK_INT, dimension(10) :: variable_list, timelevel_list, where_list
+  CCTK_INT :: ierr
+  integer :: have_presync
+
+  pointer (pTxx, eTxx)
+  pointer (pTxy, eTxy)
+  pointer (pTxz, eTxz)
+  pointer (pTyy, eTyy)
+  pointer (pTyz, eTyz)
+  pointer (pTzz, eTzz)
+  pointer (pTtx, eTtx)
+  pointer (pTty, eTty)
+  pointer (pTtz, eTtz)
+  pointer (pTtt, eTtt)
+
+  call CCTK_VarIndex(vi_eTxx, "TmunuBase::eTxx")
+  call CCTK_VarIndex(vi_eTxy, "TmunuBase::eTxy")
+  call CCTK_VarIndex(vi_eTxz, "TmunuBase::eTxz")
+  call CCTK_VarIndex(vi_eTyy, "TmunuBase::eTyy")
+  call CCTK_VarIndex(vi_eTyz, "TmunuBase::eTyz")
+  call CCTK_VarIndex(vi_eTzz, "TmunuBase::eTzz")
+  call CCTK_VarIndex(vi_eTtx, "TmunuBase::eTtx")
+  call CCTK_VarIndex(vi_eTty, "TmunuBase::eTty")
+  call CCTK_VarIndex(vi_eTtz, "TmunuBase::eTtz")
+  call CCTK_VarIndex(vi_eTtt, "TmunuBase::eTtt")
+
+  call CCTK_VarDataPtrI(pTxx, cctkGH, 0, vi_eTxx)
+  call CCTK_VarDataPtrI(pTxy, cctkGH, 0, vi_eTxy)
+  call CCTK_VarDataPtrI(pTxz, cctkGH, 0, vi_eTxz)
+  call CCTK_VarDataPtrI(pTyy, cctkGH, 0, vi_eTyy)
+  call CCTK_VarDataPtrI(pTyz, cctkGH, 0, vi_eTyz)
+  call CCTK_VarDataPtrI(pTzz, cctkGH, 0, vi_eTzz)
+  call CCTK_VarDataPtrI(pTtx, cctkGH, 0, vi_eTtx)
+  call CCTK_VarDataPtrI(pTty, cctkGH, 0, vi_eTty)
+  call CCTK_VarDataPtrI(pTtz, cctkGH, 0, vi_eTtz)
+  call CCTK_VarDataPtrI(pTtt, cctkGH, 0, vi_eTtt)
+
+  call CCTK_IsFunctionAliased(have_presync, "Driver_RequireValidData")
+  ! tell Cactus that we are modifying Tmunu
+  if (have_presync .ne. 0) then
+    variable_list = (/ vi_eTxx, vi_eTxy, vi_eTxz, vi_eTyy, vi_eTyz, vi_eTzz, &
+                     vi_eTtx, vi_eTty, vi_eTtz, vi_eTtt/)
+    timelevel_list = 0
+    where_list = CCTK_VALID_EVERYWHERE
+    ierr = Driver_RequireValidData(cctkGH, variable_list, timelevel_list, 10, &
+                                   where_list)
+  end if
 
   CCTK_LOOP3_ALL(Exact_AddToTmunu, i,j,k)
-
-    Txx = 0.
-    Txy = 0.
-    Txz = 0.
-    Tyy = 0.
-    Tyz = 0.
-    Tzz = 0.
-    Ttx = 0.
-    Tty = 0.
-    Ttz = 0.
-    Ttt = 0.
 
 !C Here we added the matter variables for several of the metrics
 !C you can find in "src" directory through the components of the
@@ -113,16 +156,16 @@ subroutine Exact_AddToTmunu(CCTK_ARGUMENTS)
 &               -Schwarzschild_Lemaitre___Lambda*razsch2/3.0D0
    unusch=(1.0D0-pppsch)/pppsch/razsch2
 
-   Ttt =  Ttt-coefsch*pppsch
-   Ttx =  Ttx
-   Tty =  Tty
-   Ttz =  Ttz
-   Txx  = Txx+coefsch*(1.0D0+x(i,j,k)*x(i,j,k)*unusch)
-   Tyy  = Tyy+coefsch*(1.0D0+y(i,j,k)*y(i,j,k)*unusch)
-   Tzz  = Tzz+coefsch*(1.0D0+z(i,j,k)*z(i,j,k)*unusch)
-   Txy  = Txy+coefsch*x(i,j,k)*y(i,j,k)*unusch
-   Txz  = Txz+coefsch*x(i,j,k)*z(i,j,k)*unusch
-   Tyz  = Tyz+coefsch*y(i,j,k)*z(i,j,k)*unusch
+   eTtt(i,j,k) =  eTtt(i,j,k)-coefsch*pppsch
+   eTtx(i,j,k) =  eTtx(i,j,k)
+   eTty(i,j,k) =  eTty(i,j,k)
+   eTtz(i,j,k) =  eTtz(i,j,k)
+   eTxx(i,j,k)  = eTxx(i,j,k)+coefsch*(1.0D0+x(i,j,k)*x(i,j,k)*unusch)
+   eTyy(i,j,k)  = eTyy(i,j,k)+coefsch*(1.0D0+y(i,j,k)*y(i,j,k)*unusch)
+   eTzz(i,j,k)  = eTzz(i,j,k)+coefsch*(1.0D0+z(i,j,k)*z(i,j,k)*unusch)
+   eTxy(i,j,k)  = eTxy(i,j,k)+coefsch*x(i,j,k)*y(i,j,k)*unusch
+   eTxz(i,j,k)  = eTxz(i,j,k)+coefsch*x(i,j,k)*z(i,j,k)*unusch
+   eTyz(i,j,k)  = eTyz(i,j,k)+coefsch*y(i,j,k)*z(i,j,k)*unusch
 
 !cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
@@ -153,14 +196,14 @@ subroutine Exact_AddToTmunu(CCTK_ARGUMENTS)
 &           +Lemaitre___epsilon0*Lemaitre___kappa &
 &                              *raz**(-3.0D0*Lemaitre___kappa-1.0D0)
 
-    Ttt = Ttt + Lemaitre___Lambda/8.0D0/EXACT__pi &
+    eTtt(i,j,k) = eTtt(i,j,k) + Lemaitre___Lambda/8.0D0/EXACT__pi &
 &              + Lemaitre___epsilon0*raz**(-3.0D0*(Lemaitre___kappa+1.0D0))
-    Txx = Txx + treiori
-    Tyy = Tyy + treiori
-    Tzz = Tzz + treiori
-    Txy = Txy
-    Tyz = Tyz
-    Txz = Txz
+    eTxx(i,j,k) = eTxx(i,j,k) + treiori
+    eTyy(i,j,k) = eTyy(i,j,k) + treiori
+    eTzz(i,j,k) = eTzz(i,j,k) + treiori
+    eTxy(i,j,k) = eTxy(i,j,k)
+    eTyz(i,j,k) = eTyz(i,j,k)
+    eTxz(i,j,k) = eTxz(i,j,k)
 
 !cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 !ccc
@@ -176,22 +219,22 @@ subroutine Exact_AddToTmunu(CCTK_ARGUMENTS)
 !cc     &                                  / (8.0D0*EXACT__pi*(raza(i,j,k)**2))
 !cc            aha2 = Robertson_Walker___k/(1.0D0 - Robertson_Walker___k*rr2) 
 !cc
-!cc            Ttt =  Ttt + 3.0D0*aha1/(raza(i,j,k)*raza(i,j,k))
-!cc            Txx =  Txx + aha1*(1.0D0 + aha2*x(i,j,k)*x(i,j,k))
-!cc            Tyy =  Tyy + aha1*(1.0D0 + aha2*y(i,j,k)*y(i,j,k))
-!cc            Tzz =  Tzz + aha1*(1.0D0 + aha2*z(i,j,k)*z(i,j,k))
-!cc            Txy =  Txy + aha1*aha2*x(i,j,k)*y(i,j,k)
-!cc            Txz =  Txz + aha1*aha2*x(i,j,k)*z(i,j,k)
-!cc            Tyz =  Tyz + aha1*aha2*y(i,j,k)*y(i,j,k)
+!cc            eTtt(i,j,k) =  eTtt(i,j,k) + 3.0D0*aha1/(raza(i,j,k)*raza(i,j,k))
+!cc            eTxx(i,j,k) =  eTxx(i,j,k) + aha1*(1.0D0 + aha2*x(i,j,k)*x(i,j,k))
+!cc            eTyy(i,j,k) =  eTyy(i,j,k) + aha1*(1.0D0 + aha2*y(i,j,k)*y(i,j,k))
+!cc            eTzz(i,j,k) =  eTzz(i,j,k) + aha1*(1.0D0 + aha2*z(i,j,k)*z(i,j,k))
+!cc            eTxy(i,j,k) =  eTxy(i,j,k) + aha1*aha2*x(i,j,k)*y(i,j,k)
+!cc            eTxz(i,j,k) =  eTxz(i,j,k) + aha1*aha2*x(i,j,k)*z(i,j,k)
+!cc            eTyz(i,j,k) =  eTyz(i,j,k) + aha1*aha2*y(i,j,k)*y(i,j,k)
 !cc          else
-!cc            Ttt = Ttt+Robertson_Walker___rho * (Robertson_Walker___R0**3)
+!cc            eTtt(i,j,k) = eTtt(i,j,k)+Robertson_Walker___rho * (Robertson_Walker___R0**3)
 !cc     &                                      / (raza(i,j,k)**3)
-!cc            Txx = Txx
-!cc            Tyy = Tyy
-!cc            Tzz = Tzz
-!cc            Txy = Txy
-!cc            Txz = Txz
-!cc            Tyz = Tyz
+!cc            eTxx(i,j,k) = eTxx(i,j,k)
+!cc            eTyy(i,j,k) = eTyy(i,j,k)
+!cc            eTzz(i,j,k) = eTzz(i,j,k)
+!cc            eTxy(i,j,k) = eTxy(i,j,k)
+!cc            eTxz(i,j,k) = eTxz(i,j,k)
+!cc            eTyz(i,j,k) = eTyz(i,j,k)
 !cc          endif
 !cc
 !cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
@@ -200,16 +243,16 @@ subroutine Exact_AddToTmunu(CCTK_ARGUMENTS)
 !c de Sitter spacetime
 !c
   elseif (decoded_exact_model .eq. EXACT__de_Sitter) then
-    Ttt =  Ttt + 1.0D0/6.0D0/EXACT__pi/(CCTK_time**2)
-    Ttx  = Ttx
-    Tty  = Tty
-    Ttz  = Ttz
-    Txx  = Txx 
-    Tyy  = Tyy 
-    Tzz  = Tzz 
-    Txy  = Txy
-    Txz  = Txz
-    Tyz  = Tyz
+    eTtt(i,j,k) =  eTtt(i,j,k) + 1.0D0/6.0D0/EXACT__pi/(CCTK_time**2)
+    eTtx(i,j,k)  = eTtx(i,j,k)
+    eTty(i,j,k)  = eTty(i,j,k)
+    eTtz(i,j,k)  = eTtz(i,j,k)
+    eTxx(i,j,k)  = eTxx(i,j,k)
+    eTyy(i,j,k)  = eTyy(i,j,k)
+    eTzz(i,j,k)  = eTzz(i,j,k)
+    eTxy(i,j,k)  = eTxy(i,j,k)
+    eTxz(i,j,k)  = eTxz(i,j,k)
+    eTyz(i,j,k)  = eTyz(i,j,k)
 
 !cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
@@ -220,16 +263,16 @@ subroutine Exact_AddToTmunu(CCTK_ARGUMENTS)
     aaaa = de_Sitter_Lambda___scale/(8.0D0*EXACT__pi)
     bbbb = aaaa*exp(2.0D0*sqrt(de_Sitter_Lambda___scale/3.0D0)*CCTK_time)
 
-    Ttt  = Ttt + aaaa
-    Ttx  = Ttx 
-    Tty  = Tty
-    Ttz  = Ttz
-    Txx  = Txx - bbbb
-    Tyy  = Tyy - bbbb
-    Tzz  = Tzz - bbbb
-    Txy  = Txy
-    Txz  = Txz
-    Tyz  = Tyz
+    eTtt(i,j,k)  = eTtt(i,j,k) + aaaa
+    eTtx(i,j,k)  = eTtx(i,j,k)
+    eTty(i,j,k)  = eTty(i,j,k)
+    eTtz(i,j,k)  = eTtz(i,j,k)
+    eTxx(i,j,k)  = eTxx(i,j,k) - bbbb
+    eTyy(i,j,k)  = eTyy(i,j,k) - bbbb
+    eTzz(i,j,k)  = eTzz(i,j,k) - bbbb
+    eTxy(i,j,k)  = eTxy(i,j,k)
+    eTxz(i,j,k)  = eTxz(i,j,k)
+    eTyz(i,j,k)  = eTyz(i,j,k)
 
 !cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
@@ -242,16 +285,16 @@ subroutine Exact_AddToTmunu(CCTK_ARGUMENTS)
     bbbb1 = aaaa1*exp(2.0D0*sqrt(-anti_de_Sitter_Lambda___scale/3.0D0) &
 &                           *x(i,j,k))
   
-    Ttt =  Ttt + bbbb1
-    Ttx  = Ttx 
-    Tty  = Tty
-    Ttz  = Ttz
-    Txx  = Txx - aaaa1
-    Tyy  = Tyy - bbbb1
-    Tzz  = Tzz - bbbb1
-    Txy  = Txy
-    Txz  = Txz
-    Tyz  = Tyz
+    eTtt(i,j,k) =  eTtt(i,j,k) + bbbb1
+    eTtx(i,j,k)  = eTtx(i,j,k)
+    eTty(i,j,k)  = eTty(i,j,k)
+    eTtz(i,j,k)  = eTtz(i,j,k)
+    eTxx(i,j,k)  = eTxx(i,j,k) - aaaa1
+    eTyy(i,j,k)  = eTyy(i,j,k) - bbbb1
+    eTzz(i,j,k)  = eTzz(i,j,k) - bbbb1
+    eTxy(i,j,k)  = eTxy(i,j,k)
+    eTxz(i,j,k)  = eTxz(i,j,k)
+    eTyz(i,j,k)  = eTyz(i,j,k)
 
 !cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
@@ -270,16 +313,16 @@ subroutine Exact_AddToTmunu(CCTK_ARGUMENTS)
     term1 = bass*exp(2.0D0*sqrt(-Bertotti___Lambda)*x(i,j,k))
     term2 = bass*exp(2.0D0*sqrt(-Bertotti___Lambda)*z(i,j,k))
 
-    Ttt =  Ttt + term1
-    Ttx  = Ttx 
-    Tty  = Tty
-    Ttz  = Ttz
-    Txx  = Txx - bass
-    Tyy  = Tyy - term2
-    Tzz  = Tzz - bass
-    Txy  = Txy
-    Txz  = Txz
-    Tyz  = Tyz
+    eTtt(i,j,k) =  eTtt(i,j,k) + term1
+    eTtx(i,j,k)  = eTtx(i,j,k)
+    eTty(i,j,k)  = eTty(i,j,k)
+    eTtz(i,j,k)  = eTtz(i,j,k)
+    eTxx(i,j,k)  = eTxx(i,j,k) - bass
+    eTyy(i,j,k)  = eTyy(i,j,k) - term2
+    eTzz(i,j,k)  = eTzz(i,j,k) - bass
+    eTxy(i,j,k)  = eTxy(i,j,k)
+    eTxz(i,j,k)  = eTxz(i,j,k)
+    eTyz(i,j,k)  = eTyz(i,j,k)
 
 !cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
@@ -291,16 +334,16 @@ subroutine Exact_AddToTmunu(CCTK_ARGUMENTS)
     kkkk=Kasner_like___q*(2.0D0-3.0D0*Kasner_like___q) &
 &                        /(8.0D0*EXACT__pi*(CCTK_time**2))
 
-    Ttt  = Ttt + kkkk
-    Ttx  = Ttx
-    Tty  = Tty
-    Ttz  = Ttz
-    Txx  = Txx + kkkk*CCTK_time**(2.0D0*Kasner_like___q)
-    Tyy  = Tyy + kkkk*CCTK_time**(2.0D0*Kasner_like___q)
-    Tzz  = Tzz + kkkk*CCTK_time**(2.0D0-4.0D0*Kasner_like___q)
-    Txy  = Txy
-    Txz  = Txz
-    Tyz  = Tyz
+    eTtt(i,j,k)  = eTtt(i,j,k) + kkkk
+    eTtx(i,j,k)  = eTtx(i,j,k)
+    eTty(i,j,k)  = eTty(i,j,k)
+    eTtz(i,j,k)  = eTtz(i,j,k)
+    eTxx(i,j,k)  = eTxx(i,j,k) + kkkk*CCTK_time**(2.0D0*Kasner_like___q)
+    eTyy(i,j,k)  = eTyy(i,j,k) + kkkk*CCTK_time**(2.0D0*Kasner_like___q)
+    eTzz(i,j,k)  = eTzz(i,j,k) + kkkk*CCTK_time**(2.0D0-4.0D0*Kasner_like___q)
+    eTxy(i,j,k)  = eTxy(i,j,k)
+    eTxz(i,j,k)  = eTxz(i,j,k)
+    eTyz(i,j,k)  = eTyz(i,j,k)
 
 !cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
@@ -319,17 +362,17 @@ subroutine Exact_AddToTmunu(CCTK_ARGUMENTS)
 &           - Kasner_generalized___p1*Kasner_generalized___p2 ) &
 &          / (8.0D0*EXACT__pi*(CCTK_time**2))
 
-  Ttt  = Ttt + kkkk1
-  Ttx  = Ttx
-  Tty  = Tty
-  Ttz  = Ttz
-  Txx  = Txx+kkkk1*CCTK_time**(2.0D0*Kasner_generalized___p1)
-  Tyy  = Tyy+kkkk1*CCTK_time**(2.0D0*Kasner_generalized___p2)
-  Tzz  = Tzz+kkkk1*CCTK_time**(2.0D0-2.0D0*Kasner_generalized___p1 &
+  eTtt(i,j,k)  = eTtt(i,j,k) + kkkk1
+  eTtx(i,j,k)  = eTtx(i,j,k)
+  eTty(i,j,k)  = eTty(i,j,k)
+  eTtz(i,j,k)  = eTtz(i,j,k)
+  eTxx(i,j,k)  = eTxx(i,j,k)+kkkk1*CCTK_time**(2.0D0*Kasner_generalized___p1)
+  eTyy(i,j,k)  = eTyy(i,j,k)+kkkk1*CCTK_time**(2.0D0*Kasner_generalized___p2)
+  eTzz(i,j,k)  = eTzz(i,j,k)+kkkk1*CCTK_time**(2.0D0-2.0D0*Kasner_generalized___p1 &
 &                                    -2.0D0*Kasner_generalized___p2)
-  Txy  = Txy
-  Txz  = Txz
-  Tyz  = Tyz
+  eTxy(i,j,k)  = eTxy(i,j,k)
+  eTxz(i,j,k)  = eTxz(i,j,k)
+  eTyz(i,j,k)  = eTyz(i,j,k)
 
 !cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
  elseif (decoded_exact_model .eq. EXACT__Gowdy_wave) then
@@ -366,18 +409,18 @@ subroutine Exact_AddToTmunu(CCTK_ARGUMENTS)
       unu = 3.0D0*sqrt(1.0D0-2.0D0*star_m/star_r)
       doi = sqrt(1.0D0-2.0D0*star_m*rr*rr/r3)
       trei= star_m*(unu-3.0D0*doi)/(2*EXACT__pi*(unu-doi)*r3)
-      Ttt = Ttt + 3.0D0*star_m* &
+      eTtt(i,j,k) = eTtt(i,j,k) + 3.0D0*star_m* &
 &        (5.0D0-9.0D0*star_m/star_r - unu*doi &
 &        -star_m*rr*rr/r3)/(8.0D0*EXACT__pi*r3)
-      Txx = Txx -trei*(1.0D0+2.0D0*star_m*x(i,j,k)*x(i,j,k)/ &
+      eTxx(i,j,k) = eTxx(i,j,k) -trei*(1.0D0+2.0D0*star_m*x(i,j,k)*x(i,j,k)/ &
 &      (doi*doi*r3))/2.0D0
-      Tyy = Tyy -trei*(1.0D0+2.0D0*star_m*y(i,j,k)*y(i,j,k)/ &
+      eTyy(i,j,k) = eTyy(i,j,k) -trei*(1.0D0+2.0D0*star_m*y(i,j,k)*y(i,j,k)/ &
 &      (doi*doi*r3))/2.0D0
-      Tzz = Tzz -trei*(1.0D0+2.0D0*star_m*z(i,j,k)*z(i,j,k)/ &
+      eTzz(i,j,k) = eTzz(i,j,k) -trei*(1.0D0+2.0D0*star_m*z(i,j,k)*z(i,j,k)/ &
 &      (doi*doi*r3))/2.0D0
-      Txy = Txy -trei*star_m*x(i,j,k)*y(i,j,k)/(doi*doi*r3)
-      Tyz = Tyz -trei*star_m*y(i,j,k)*z(i,j,k)/(doi*doi*r3)
-      Txz = Txz -trei*star_m*x(i,j,k)*z(i,j,k)/(doi*doi*r3)
+      eTxy(i,j,k) = eTxy(i,j,k) -trei*star_m*x(i,j,k)*y(i,j,k)/(doi*doi*r3)
+      eTyz(i,j,k) = eTyz(i,j,k) -trei*star_m*y(i,j,k)*z(i,j,k)/(doi*doi*r3)
+      eTxz(i,j,k) = eTxz(i,j,k) -trei*star_m*x(i,j,k)*z(i,j,k)/(doi*doi*r3)
     endif
 
 !cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
@@ -387,5 +430,11 @@ subroutine Exact_AddToTmunu(CCTK_ARGUMENTS)
   endif 
 
   CCTK_ENDLOOP3_ALL(Exact_AddToTmunu)
+
+  ! tell Cactus that we are modifying Tmunu
+  if (have_presync .ne. 0) then
+    ierr = Driver_NotifyDataModified(cctkGH, variable_list, timelevel_list, &
+                                     10, where_list)
+  end if
 
 end subroutine

@@ -214,6 +214,23 @@ if (CCTK_Equals(overwrite_boundary,"exact"))
   } "Overwrite g and K on the boundary with exact solution data"
 }
 
+#######################################################################
+# BOUNDARY DATA
+#######################################################################
+
+schedule Exact_AddToTmunu in AddToTmunu
+{
+  LANG: Fortran
+  READS: GRID::x, GRID::y, GRID::z
+  READS: StaticConformal::conformal_state(everywhere)
+  READS: Exact::decoded_exact_model(everywhere)
+  # for backwards compatibility we cannot inherit from TmunuBase, so handle
+  # these in C code
+  #WRITES: TmunuBase::stree_energy_scalar(everywhere),
+  #        TmunuBase::stree_energy_vector(everywhere),
+  #        TmunuBase::stree_energy_tensor(everywhere)
+} "Set stress energy tansor based on exact solution"
+
 #######################################################
 ##      Pseudo-Scheduling for Macro Generation       ##
 #######################################################
