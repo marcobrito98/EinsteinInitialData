@@ -65,6 +65,10 @@ void ReadInterpolate_CompareTestData(CCTK_ARGUMENTS)
  ***********************   Local Functions  *************************
  ********************************************************************/
 
+/* icc takes a very long time (>1hr) to compile this file when optimizing */
+#ifdef __INTEL_COMPILER
+#pragma GCC optimization_level 0
+#endif
 static CCTK_REAL
 test_data(const CCTK_REAL t, const CCTK_REAL x, const CCTK_REAL y,
           const CCTK_REAL z)
