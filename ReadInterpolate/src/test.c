@@ -53,7 +53,7 @@ void ReadInterpolate_CompareTestData(CCTK_ARGUMENTS)
           const CCTK_REAL diff = values[tl] -
                                  test_data(cctk_time - tl*CCTK_DELTA_TIME,
                                            x_shifted, y_shifted, z_shifted);
-          diff2 += diff*diff;
+          diff2 += diff*diff/(values[tl]*values[tl]);
         }
         test_results[idx] = sqrt(diff2);
       }
