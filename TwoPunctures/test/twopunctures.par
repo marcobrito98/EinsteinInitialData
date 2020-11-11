@@ -19,15 +19,15 @@ Time::dtfac			= 0.25
 
 Grid::type			= "byrange"
 Grid::domain			= "full"
-Grid::xmin                      = -4
-Grid::xmax                      =  4
+Grid::xmin                      = -1.25
+Grid::xmax                      =  1.25
 Grid::ymin                      = -4
 Grid::ymax			=  4
 Grid::zmin                      = -4
 Grid::zmax			=  4
-Driver::global_nx		= 35
-Driver::global_ny		= 35
-Driver::global_nz		= 35
+Driver::global_nx		= 10
+Driver::global_ny		= 32
+Driver::global_nz		= 32
 
 Driver::ghost_size              = 2
 CoordBase::boundary_size_x_lower = 2
