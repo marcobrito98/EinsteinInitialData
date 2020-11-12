@@ -21,13 +21,13 @@ Grid::type			= "byrange"
 Grid::domain			= "full"
 Grid::xmin                      = -1.25
 Grid::xmax                      =  1.25
-Grid::ymin                      = -4
-Grid::ymax			=  4
-Grid::zmin                      = -4
-Grid::zmax			=  4
-Driver::global_nx		= 10
-Driver::global_ny		= 32
-Driver::global_nz		= 32
+Grid::ymin                      = -2
+Grid::ymax			=  2
+Grid::zmin                      = -2
+Grid::zmax			=  2
+Driver::global_nx		= 26
+Driver::global_ny		= 41
+Driver::global_nz		= 41
 
 Driver::ghost_size              = 2
 CoordBase::boundary_size_x_lower = 2
@@ -41,21 +41,23 @@ ADMBase::initial_data		= "twopunctures"
 
 TwoPunctures::keep_u_around     = yes
 
-TwoPunctures::npoints_A         = 20
-TwoPunctures::npoints_B         = 20
-TwoPunctures::npoints_phi       = 12
+# Low accuracy initial data for fast execution
+TwoPunctures::grid_setup_method = "Taylor expansion"
+TwoPunctures::npoints_A         = 16
+TwoPunctures::npoints_B         = 16
+TwoPunctures::npoints_phi       = 8
 
 TwoPunctures::par_b             =  1.5
 
-TwoPunctures::par_m_plus        =  1.5
-TwoPunctures::par_P_plus[1]     =  2.0
-TwoPunctures::par_S_plus[1]     =  0.5
-TwoPunctures::par_S_plus[2]     = -0.5
+TwoPunctures::par_m_plus        =  0.375
+TwoPunctures::par_P_plus[1]     =  0.5
+TwoPunctures::par_S_plus[1]     =  0.125
+TwoPunctures::par_S_plus[2]     = -0.125
 
-TwoPunctures::par_m_minus       =  1.0
-TwoPunctures::par_P_minus[1]    = -2.0
-TwoPunctures::par_S_minus[0]    = -1.0
-TwoPunctures::par_S_minus[2]    = -1.0
+TwoPunctures::par_m_minus       =  0.25
+TwoPunctures::par_P_minus[1]    = -0.5
+TwoPunctures::par_S_minus[0]    = -0.25
+TwoPunctures::par_S_minus[2]    = -0.25
 
 ADMBase::lapse_evolution_method	= "static"
 ADMBase::initial_lapse		= "one"
