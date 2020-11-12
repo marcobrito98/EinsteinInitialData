@@ -1,6 +1,6 @@
 
 ActiveThorns = "CoordBase SymBase Boundary NanChecker CartGrid3d Time
-                MoL CarpetIOBasic CarpetIOScalar IOUtil Carpet
+                MoL CarpetIOBasic CarpetIOScalar IOUtil InitBase Carpet
                 CarpetLib CarpetIOASCII ADMBase CarpetReduce
                 StaticConformal SpaceMask GenericFD CoordGauge
                 LoopControl
