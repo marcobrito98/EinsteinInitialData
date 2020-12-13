@@ -186,7 +186,7 @@ Because of the isometry condition~\eqref{IDAxiBrillBH/eqn:isometry-inner-BC},
 the 2-D grid need only cover the region $\eta \ge 0$; the code just
 takes the absolute value of $\eta$ before interpolating.
 
-The 2-D grid covers the region $|\eta| \in [0,\texttt{etamax}]$,
+The 2-D grid covers the region $|\eta| \in [0,\code{etamax}]$,
 $\theta \in [0,\pi]$, where the parameter \verb|etamax| defaults to 5.
 If any 3-D grid point's $(|\eta|,\theta)$ is outside this 2-D grid,
 this thorn will abort with a fatal error message from the interpolator.
