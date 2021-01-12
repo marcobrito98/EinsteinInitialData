@@ -123,7 +123,7 @@ INT exact_order "finite differencing order"
 4 :: "4"
 } 2
 
-REAL exact_eps "finite differencing stencil size (in terms of the grid spacing)"
+REAL exact_eps "finite differencing stencil size"
 {
 (0.0:* :: "Positive please"
 } 1.0e-6
