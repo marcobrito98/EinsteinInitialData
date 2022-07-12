@@ -697,7 +697,7 @@ PunctEvalAtArbitPosition (CCTK_REAL *v, int ivar, CCTK_REAL A, CCTK_REAL B, CCTK
     for (j = 0; j < n2; j++)
     {
       for (i = 0; i < n1; i++)
-	p[i] = v[ivar + nvar * (i + n1 * (j + n2 * k))];
+	p[i] = v[Index (ivar, i, j, k, nvar, n1, n2, n3)];
       chebft_Zeros (p, n1, 0);
       values2[j][k] = chebev (-1, 1, p, n1, A);
     }
@@ -804,7 +804,7 @@ PunctTaylorExpandAtArbitPosition (int ivar, int nvar, int n1,
   i = rint (al * n1 / Pi - 0.5);
   j = rint (be * n2 / Pi - 0.5);
   k = rint (0.5 * phi * n3 / Pi);
-  
+
   a = al - Pi * (i + 0.5) / n1;
   b = be - Pi * (j + 0.5) / n2;
   c = phi - 2 * Pi * k / n3;
@@ -864,7 +864,7 @@ PunctIntPolAtArbitPosition (int ivar, int nvar, int n1,
 
 
 /* Calculates the value of v at an arbitrary position (A,B,phi)* using the fast routine */
-CCTK_REAL 
+CCTK_REAL
 PunctEvalAtArbitPositionFast (CCTK_REAL *v, int ivar, CCTK_REAL A, CCTK_REAL B, CCTK_REAL phi, int nvar, int n1, int n2, int n3)
 {
   int i, j, k, N;
@@ -872,7 +872,7 @@ PunctEvalAtArbitPositionFast (CCTK_REAL *v, int ivar, CCTK_REAL A, CCTK_REAL B, 
   // VASILIS: Nothing should be changed in this routine. This is used by PunctIntPolAtArbitPositionFast
 
   N = maximum3 (n1, n2, n3);
-  
+
   p = dvector (0, N);
   values1 = dvector (0, N);
   values2 = dmatrix (0, N, 0, N);
@@ -881,7 +881,7 @@ PunctEvalAtArbitPositionFast (CCTK_REAL *v, int ivar, CCTK_REAL A, CCTK_REAL B, 
   {
     for (j = 0; j < n2; j++)
     {
-      for (i = 0; i < n1; i++) p[i] = v[ivar + nvar * (i + n1 * (j + n2 * k))];
+      for (i = 0; i < n1; i++) p[i] = v[Index (ivar, i, j, k, nvar, n1, n2, n3)];
       //      chebft_Zeros (p, n1, 0);
       values2[j][k] = chebev (-1, 1, p, n1, A);
     }
@@ -896,7 +896,7 @@ PunctEvalAtArbitPositionFast (CCTK_REAL *v, int ivar, CCTK_REAL A, CCTK_REAL B, 
 
   //  fourft (values1, n3, 0);
   result = fourev (values1, n3, phi);
-  
+
   free_dvector (p, 0, N);
   free_dvector (values1, 0, N);
   free_dmatrix (values2, 0, N, 0, N);
@@ -944,58 +944,58 @@ PunctIntPolAtArbitPositionFast (int ivar, int nvar, int n1,
   return Ui;
 }
 
-// Evaluates the spectral expansion coefficients of v  
-void SpecCoef(int n1, int n2, int n3, int ivar, CCTK_REAL *v, CCTK_REAL *cf)
+// Evaluates the spectral expansion coefficients of v
+void SpecCoef(int n1, int n2, int n3, int nvar, CCTK_REAL *v, CCTK_REAL *cf)
 {
   DECLARE_CCTK_PARAMETERS;
   // VASILIS: Here v is a pointer to the values of the variable v at the collocation points and cf_v a pointer to the spectral coefficients that this routine calculates
 
 	int i, j, k, N, n, l;
 	CCTK_REAL *p, ***values3, ***values4;
-	
+
 	N=maximum3(n1,n2,n3);
 	p=dvector(0,N);
 	values3=d3tensor(0,n1,0,n2,0,n3);
 	values4=d3tensor(0,n1,0,n2,0,n3);
 
 
-
-	      // Caclulate values3[n,j,k] = a_n^{j,k} = (sum_i^(n1-1) f(A_i,B_j,phi_k) Tn(-A_i))/k_n , k_n = N/2 or N 
+  for (int ivar=0; ivar<nvar; ivar++){
+	      // Caclulate values3[n,j,k] = a_n^{j,k} = (sum_i^(n1-1) f(A_i,B_j,phi_k) Tn(-A_i))/k_n , k_n = N/2 or N
 	      for(k=0;k<n3;k++) {
 		for(j=0;j<n2;j++) {
 
-		  for(i=0;i<n1;i++) p[i]=v[ivar + (i + n1 * (j + n2 * k))];
-		  
-		  chebft_Zeros(p,n1,0); 
+		  for(i=0;i<n1;i++) p[i]=v[Index (ivar, i, j, k, nvar, n1, n2, n3)];
+
+		  chebft_Zeros(p,n1,0);
 		  for (n=0;n<n1;n++)	{
-		    values3[n][j][k] = p[n]; 
+		    values3[n][j][k] = p[n];
 		  }
 		}
 	      }
-	    
-	      // Caclulate values4[n,l,k] = a_{n,l}^{k} = (sum_j^(n2-1) a_n^{j,k} Tn(B_j))/k_l , k_l = N/2 or N 
+
+	      // Caclulate values4[n,l,k] = a_{n,l}^{k} = (sum_j^(n2-1) a_n^{j,k} Tn(B_j))/k_l , k_l = N/2 or N
 
 	      for (n = 0; n < n1; n++){
 		for(k=0;k<n3;k++) {
 		  for(j=0;j<n2;j++) p[j]=values3[n][j][k];
-		  chebft_Zeros(p,n2,0);   
+		  chebft_Zeros(p,n2,0);
 		  for (l = 0; l < n2; l++){
 		  values4[n][l][k] = p[l];
 		  }
 		}
 	      }
 
-	      // Caclulate coefficients  a_{n,l,m} = (sum_k^(n3-1) a_{n,m}^{k} fourier(phi_k))/k_m , k_m = N/2 or N 
+	      // Caclulate coefficients  a_{n,l,m} = (sum_k^(n3-1) a_{n,m}^{k} fourier(phi_k))/k_m , k_m = N/2 or N
 	      for (i = 0; i < n1; i++){
 		for (j = 0; j < n2; j++){
 		  for(k=0;k<n3;k++) p[k]=values4[i][j][k];
-		  fourft(p,n3,0); 
+		  fourft(p,n3,0);
 		  for (k = 0; k<n3; k++){
-		    cf[ivar + (i + n1 * (j + n2 * k))] = p[k];
+		    cf[Index (ivar, i, j, k, nvar, n1, n2, n3)] = p[k];
 		  }
 		}
 	      }
-   
+  }
 	      free_dvector(p,0,N);
 	      free_d3tensor(values3,0,n1,0,n2,0,n3);
 	      free_d3tensor(values4,0,n1,0,n2,0,n3);
