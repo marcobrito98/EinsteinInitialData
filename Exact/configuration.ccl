@@ -1,4 +1,4 @@
 # Configuration definition for thorn Exact
 # $Header$
 
-REQUIRES THORNS: CoordGauge
+REQUIRES CoordGauge
