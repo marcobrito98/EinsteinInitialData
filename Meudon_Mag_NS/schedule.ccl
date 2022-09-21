@@ -16,5 +16,16 @@ if (CCTK_EQUALS (initial_data,    "ID_Mag_NS") ||
   SCHEDULE ID_Mag_NS_initialise IN ADMBase_InitialData
   {
     LANG: C
+    READS: GRID::coordinates(everywhere)
+    WRITES: ADMBASE::metric(everywhere)
+    WRITES: ADMBASE::shift(everywhere)
+    WRITES: ADMBASE::dtshift(everywhere)
+    WRITES: ADMBASE::curv(everywhere)
+    WRITES: ADMBASE::alp(everywhere)
+    WRITES: ADMBASE::dtalp(everywhere)
+    WRITES: HYDROBASE::eps(everywhere)
+    WRITES: HYDROBASE::rho(everywhere)
+    WRITES: HYDROBASE::vel(everywhere)
+    WRITES: HYDROBASE::Bvec(everywhere)
   } "Set up magnetised neutron star initial data"
 }
