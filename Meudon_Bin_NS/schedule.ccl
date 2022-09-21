@@ -10,6 +10,20 @@ if (CCTK_EQUALS (initial_data,    "Meudon_Bin_NS") ||
   SCHEDULE Meudon_Bin_NS_initialise IN HydroBase_Initial
   {
     LANG: C
+    READS: GRID::coordinates(everywhere)
+    WRITES: init_eos_key(everywhere)
+    WRITES: ADMBASE::metric(everywhere)
+    WRITES: ADMBASE::shift(everywhere)
+    WRITES: ADMBASE::dtshift(everywhere)
+    WRITES: ADMBASE::curv(everywhere)
+    WRITES: ADMBASE::alp(everywhere)
+    WRITES: ADMBASE::dtalp(everywhere)
+    WRITES: HYDROBASE::eps(everywhere)
+    WRITES: HYDROBASE::rho(everywhere)
+    WRITES: HYDROBASE::vel(everywhere)
+    WRITES: HYDROBASE::press(everywhere)
+    WRITES: HYDROBASE::Y_e(everywhere)
+    WRITES: HYDROBASE::temperature(everywhere)
   } "Set up binary neutron star initial data"
   
   STORAGE:init_eos_key
