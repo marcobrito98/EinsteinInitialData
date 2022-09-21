@@ -14,5 +14,12 @@ if (CCTK_EQUALS (initial_data,    "ID_Bin_BH") ||
   SCHEDULE ID_Bin_BH_initialise IN ADMBase_InitialData
   {
     LANG: C
+    READS: GRID::coordinates(everywhere)
+    WRITES: ADMBASE::metric(everywhere)
+    WRITES: ADMBASE::shift(everywhere)
+    WRITES: ADMBASE::dtshift(everywhere)
+    WRITES: ADMBASE::curv(everywhere)
+    WRITES: ADMBASE::alp(everywhere)
+    WRITES: ADMBASE::dtalp(everywhere)
   } "Set up binary black hole initial data"
 }

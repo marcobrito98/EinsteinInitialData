@@ -7,7 +7,11 @@
 extern "C"
 void ID_Bin_BH_check_parameters (CCTK_ARGUMENTS)
 {
+  #ifdef DECLARE_CCTK_ARGUMENTS_ID_Bin_BH_check_parameters
+  DECLARE_CCTK_ARGUMENTS_CHECKED(ID_Bin_BH_check_parameters);
+  #else
   DECLARE_CCTK_ARGUMENTS;
+  #endif
   DECLARE_CCTK_PARAMETERS;
   
   if (not CCTK_EQUALS (initial_data,    "ID_Bin_BH") or
