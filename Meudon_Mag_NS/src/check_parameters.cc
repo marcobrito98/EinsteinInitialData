@@ -7,11 +7,7 @@
 extern "C"
 void ID_Mag_NS_check_parameters (CCTK_ARGUMENTS)
 {
-  #ifdef DECLARE_CCTK_ARGUMENTS_ID_Mag_NS_check_parameters
-  DECLARE_CCTK_ARGUMENTS_CHECKED(ID_Mag_NS_check_parameters);
-  #else
-  DECLARE_CCTK_ARGUMENTS;
-  #endif
+  DECLARE_CCTK_ARGUMENTS_ID_Mag_NS_check_parameters;
   DECLARE_CCTK_PARAMETERS;
   
   if (not CCTK_EQUALS (initial_data,    "ID_Mag_NS") or

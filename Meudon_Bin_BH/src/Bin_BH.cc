@@ -44,11 +44,7 @@ static void set_dt_from_domega (CCTK_ARGUMENTS,
 extern "C"
 void ID_Bin_BH_initialise (CCTK_ARGUMENTS)
 {
-  #ifdef DECLARE_CCTK_ARGUMENTS_ID_Bin_BH_initialise
-  DECLARE_CCTK_ARGUMENTS_CHECKED(ID_Bin_BH_initialise);
-  #else
-  DECLARE_CCTK_ARGUMENTS;
-  #endif
+  DECLARE_CCTK_ARGUMENTS_ID_Bin_BH_initialise;
   DECLARE_CCTK_PARAMETERS;
   
   CCTK_INFO ("Setting up LORENE Bin_BH initial data");

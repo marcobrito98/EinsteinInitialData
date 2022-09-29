@@ -47,11 +47,7 @@ static void set_dt_from_domega (CCTK_ARGUMENTS,
 extern "C"
 void Meudon_Bin_NS_initialise (CCTK_ARGUMENTS)
 {
-  #ifdef DECLARE_CCTK_ARGUMENTS_Meudon_Bin_NS_initialise
-  DECLARE_CCTK_ARGUMENTS_CHECKED(Meudon_Bin_NS_initialise);
-  #else
-  DECLARE_CCTK_ARGUMENTS;
-  #endif
+  DECLARE_CCTK_ARGUMENTS_Meudon_Bin_NS_initialise;
   DECLARE_CCTK_PARAMETERS;
 
   CCTK_INFO ("Setting up LORENE Bin_NS initial data");
