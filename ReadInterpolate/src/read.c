@@ -66,7 +66,7 @@ struct pulldata
 
 #define METADATA_GROUP "Parameters and Global Attributes"
 #define ALL_PARAMETERS "All Parameters"
-#define MAX_N_REGEX 200 // maximum number of comma separated reggular expression supported
+#define MAX_N_REGEX 200 // maximum number of comma separated regular expression supported
 
 /********************************************************************
  *********************     Local Data         ***********************
