@@ -99,7 +99,7 @@ my $par = <<PAR_EOF;
 ##----------------------------------------------
 ActiveThorns = "Time MoL"
 ActiveThorns = "Coordbase CartGrid3d Boundary StaticConformal"
-ActiveThorns = "SymBase ADMBase TmunuBase HydroBase InitBase ADMCoupling ADMMacros"
+ActiveThorns = "SymBase ADMBase TmunuBase HydroBase InitBase"
 ActiveThorns = "IOUtil Formaline"
 ActiveThorns = "SpaceMask CoordGauge Constants LocalReduce aeilocalinterp LoopControl"
 ActiveThorns = "Carpet CarpetLib CarpetReduce CarpetRegrid2 CarpetInterp CarpetEvolutionMask"

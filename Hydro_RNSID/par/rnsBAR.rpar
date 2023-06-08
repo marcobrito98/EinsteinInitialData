@@ -561,7 +561,7 @@ my $par = <<PAR_EOF;
 ##----------------------------------------------
 ActiveThorns = "Time MoL"
 ActiveThorns = "Coordbase CartGrid3d Boundary StaticConformal"
-ActiveThorns = "SymBase ADMBase TmunuBase HydroBase InitBase ADMCoupling ADMMacros"
+ActiveThorns = "SymBase ADMBase TmunuBase HydroBase InitBase"
 ActiveThorns = "IOUtil Formaline"
 ActiveThorns = "SpaceMask CoordGauge Constants LocalReduce aeilocalinterp LoopControl"
 ActiveThorns = "Carpet CarpetLib CarpetReduce CarpetRegrid2 CarpetInterp CarpetEvolutionMask"
@@ -612,8 +612,6 @@ TmunuBase::prolongation_type     = none
 TmunuBase::support_old_CalcTmunu_mechanism = "no"
 
 HydroBase::timelevels            = 3
-
-ADMMacros::spatial_order = 4
 
 ADMBase::metric_type     = "physical"
 
@@ -715,6 +713,7 @@ GRHydro::GRHydro_eos_table       = "Ideal_Fluid"
 GRHydro::recon_method            = "$reconstruction"
 GRHydro::GRHydro_stencil         = 3
 GRHydro::bound                   = "none"
+GRHydro::sources_spatial_order   = 4
 GRHydro::rho_abs_min             = 1.e-11
 GRHydro::GRHydro_atmo_tolerance  = 0.01
 
