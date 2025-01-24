@@ -23,7 +23,6 @@ subroutine Exact_AddToTmunu(CCTK_ARGUMENTS)
   CCTK_REAL  star_m, star_r
   CCTK_REAL, dimension(cctk_ash(1),cctk_ash(2),cctk_ash(3)) :: eTxx, eTxy, &
              eTxz, eTyy, eTyz, eTzz, eTtx, eTty, eTtz, eTtt
-  CCTK_POINTER pTxx, pTxy, pTxz, pTyy, pTyz, pTzz, pTtx, pTty, pTtz, pTtt
   integer :: vi_eTxx, vi_eTxy, vi_eTxz, vi_eTyy, vi_eTyz, vi_eTzz, vi_eTtx, &
              vi_eTty, vi_eTtz, vi_eTtt
 
