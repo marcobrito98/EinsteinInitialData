@@ -163,6 +163,16 @@ c
      $        guxx, guyy, guzz, guxy, guyz, guxz,
      $        psi, Tmunu_flag)
 
+
+      elseif (decoded_exact_model .eq. EXACT__Kerr_Quasi_isotropic) then
+         call Exact__Kerr_Quasi_isotropic(
+     $        x, y, z, t,
+     $        gdtt, gdtx, gdty, gdtz,
+     $        gdxx, gdyy, gdzz, gdxy, gdyz, gdxz,
+     $        gutt, gutx, guty, gutz,
+     $        guxx, guyy, guzz, guxy, guyz, guxz,
+     $        psi, Tmunu_flag)
+
       elseif (decoded_exact_model .eq. EXACT__Schwarzschild_Lemaitre) then
          call Exact__Schwarzschild_Lemaitre(
      $        x, y, z, t,

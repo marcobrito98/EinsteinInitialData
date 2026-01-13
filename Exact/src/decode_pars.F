@@ -86,6 +86,8 @@ c black hole spacetimes
 	     decoded_exact_model = EXACT__Alvi
 	elseif (CCTK_Equals(exact_model, "Thorne-fakebinary") .ne. 0) then
 	     decoded_exact_model = EXACT__Thorne_fakebinary
+	elseif (CCTK_Equals(exact_model, "Kerr/Quasi-Isotropic") .ne. 0) then
+	     decoded_exact_model = EXACT__Kerr_Quasi_isotropic
 
 c cosmological spacetimes
 	elseif (CCTK_Equals(exact_model, "Lemaitre") .ne. 0) then

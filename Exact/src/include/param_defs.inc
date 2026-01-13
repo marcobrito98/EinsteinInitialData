@@ -49,6 +49,7 @@
 #define EXACT__multi_BH				18
 #define EXACT__Alvi				19
 #define EXACT__Thorne_fakebinary		20
+#define EXACT__Kerr_Quasi_isotropic			21
 
 ! cosmological spacetimes
 #define EXACT__Lemaitre			50

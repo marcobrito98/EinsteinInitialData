@@ -270,6 +270,7 @@ KEYWORD exact_model "The exact solution/coordinates used in thorn exact"
 "Kerr/Boyer-Lindquist"       :: "Kerr spacetime in Boyer-Lindquist coordinates"
 "Kerr/Kerr-Schild"           :: "Kerr spacetime in Kerr-Schild coordinates"
 "Kerr/Kerr-Schild/spherical" :: "Kerr spacetime in distorted Kerr-Schild coordinates such that the horizon is a coordinate sphere"
+"Kerr/Quasi-Isotropic"       :: "Kerr spacetime in Quasi-Isotropic coordinates"
 "multi-BH"                   :: "Majumdar-Papapetrou or Kastor-Traschen maximally charged multi BH solutions"
 "Alvi"                       :: "Alvi post-Newtonian 2BH spacetime (not fully implemented yet)"
 "Thorne-fakebinary"          :: "Thorne's fake-binary spacetime (non-Einstein)"
@@ -559,6 +560,42 @@ REAL Kerr_KerrSchild__z \
 
 REAL Kerr_KerrSchild__t \
   "Kerr/Kerr-Schild: time offset of black hole"
+{
+(*:*) :: ""
+} 0.0
+
+################################################################################
+
+#
+# parameters for Kerr metric in Quasi-isotropic coordinates
+#
+
+CCTK_REAL Kerr_KerrQI__mass "Kerr/Quasi-Isotropic: BH mass"
+{
+0.0:* :: "any real number > 0"
+} 1.0
+
+CCTK_REAL Kerr_KerrQI__spin "Kerr/Quasi-Isotropic: spin parameter a = J/M"
+{
+*:* :: "spin parameter a = J/M for Kerr black hole"
+} 0.0
+
+CCTK_REAL Kerr_KerrQI__eps_r "floor value for rr"
+{
+  0:*  :: "any small positive value"
+} 1.0d-12
+
+REAL Kerr_KerrQI__x "Kerr/Quasi_isotropic: x-coordinate of black hole"
+{
+(*:*) :: ""
+} 0.0
+
+REAL Kerr_KerrQI__y "Kerr/Quasi_isotropic: y-coordinate of black hole"
+{
+(*:*) :: ""
+} 0.0
+
+REAL Kerr_KerrQI__z "Kerr/Quasi_isotropic: z-coordinate of black hole"
 {
 (*:*) :: ""
 } 0.0

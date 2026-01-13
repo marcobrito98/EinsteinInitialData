@@ -20,6 +20,7 @@ SRCS = Minkowski.F			\
        Kerr_BoyerLindquist.F		\
        Kerr_KerrSchild.F		\
        Kerr_KerrSchild_spherical.F	\
+       Kerr_Quasi_isotropic.F      \
        Schwarzschild_Lemaitre.F	\
        multi_BH.F			\
        Thorne_fakebinary.F		\
