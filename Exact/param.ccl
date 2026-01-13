@@ -580,7 +580,7 @@ CCTK_REAL Kerr_KerrQI__spin "Kerr/Quasi-Isotropic: spin parameter a = J/M"
 *:* :: "spin parameter a = J/M for Kerr black hole"
 } 0.0
 
-CCTK_REAL Kerr_KerrQI__eps_r "floor value for rr"
+CCTK_REAL Kerr_KerrQI__eps_r "floor value for r"
 {
   0:*  :: "any small positive value"
 } 1.0d-12
