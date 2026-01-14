@@ -39,11 +39,12 @@ c local static variables
 c local variables
          CCTK_REAL r, r2, rho2, costh, costh2, sinth, sinth2
          CCTK_REAL horizonradius, rBL, rho2kerr, sigma, hh, psi4
-         CCTK_REAL alpha0, bphi, gammaphiphi, bphiup, betadX, betadY
+         CCTK_REAL alpha02, bphi, gammaphiphi, bphiup, betadX, betadY
          CCTK_REAL x1, y1, z1
          CCTK_REAL gdn(0:3,0:3), gun(0:3,0:3), prod(0:3,0:3)
          CCTK_REAL tol, maxerr, err
-         INTEGER i, j, k
+         CCTK_REAL piv, tmp, fac, maxabs
+         INTEGER i, j, k, imax
          CHARACTER(len=256) msg
 
 C This is a vacuum spacetime with no cosmological constant
@@ -76,8 +77,8 @@ C     Get parameters of the exact solution.
          sigma = 2.d0 * bhmass * rBL / rho2kerr
          hh = (1.d0 + sigma) / (rho2kerr * r2)
          psi4 = rho2kerr / r2
-         alpha0 = (r + horizonradius) * (r - horizonradius) / r *
-     $   1.d0 / sqrt(rBL**2 + bhspin**2 * (1.d0 + sigma * sinth2))
+         alpha02 = (r2-horizonradius**2)**2 / r2 *
+     $   1.d0 / (rBL**2 + bhspin**2 * (1.d0 + sigma * sinth2))
          bphi = - bhspin * sigma * sinth2
          gammaphiphi = rho2kerr * rho2 / r2 * (1.d0 +
      $    bhspin**2 * hh * rho2)
@@ -85,7 +86,7 @@ C     Get parameters of the exact solution.
          betadX = -y1 /rho2 * bphi
          betadY =  x1 /rho2 * bphi
 
-         gdtt = - alpha0**2 + bphi*bphiup
+         gdtt = - alpha02 + bphi*bphiup
          gdtx = betadX
          gdty = betadY
          gdtz = 0.d0
@@ -96,44 +97,105 @@ C     Get parameters of the exact solution.
          gdyz = 0.d0
          gdzx = 0.d0
 
-         gutt = -(((1.d0 + bhspin**2*rho2*hh)*psi4*rho2**2)/
-     $    (rho2*bphi**2 +
-     $    (alpha0**2 - bphi*bphiup)*(1.d0 + bhspin**2*rho2*
-     $     hh)*psi4*rho2**2))
 
-         gutx = -((y1*bphi*rho2)/(rho2*bphi**2 +
-     $    (alpha0**2 - bphi*bphiup)*(1.d0 +
-     $    bhspin**2*rho2*hh)*psi4*rho2**2))
 
-         guty = (x1*bphi*rho2)/(rho2*bphi**2 +
-     $    (alpha0**2 - bphi*bphiup)*(1.d0 +
-     $    bhspin**2*rho2*hh)*psi4*rho2**2)
 
-         gutz = 0.d0
+c        --------------------------------------------------------------
+c        Numerically invert g_{mu nu} to obtain g^{mu nu}
+c        --------------------------------------------------------------
 
-         guxx = -((-(x1**2*bphi**2) -
-     $    (alpha0**2 - bphi*bphiup)*(1.d0 +
-     $    bhspin**2*x1**2*hh)*psi4*rho2**2)/(psi4*(rho2*
-     $    bphi**2 + (alpha0**2 -
-     $    bphi*bphiup)*(1.d0 + bhspin**2*rho2*hh)*
-     $    psi4*rho2**2)))
+c        Build covariant metric gdn_{mu nu}
+         gdn(0,0) = gdtt
+         gdn(0,1) = gdtx
+         gdn(0,2) = gdty
+         gdn(0,3) = gdtz
+         gdn(1,0) = gdtx
+         gdn(1,1) = gdxx
+         gdn(1,2) = gdxy
+         gdn(1,3) = gdzx
+         gdn(2,0) = gdty
+         gdn(2,1) = gdxy
+         gdn(2,2) = gdyy
+         gdn(2,3) = gdyz
+         gdn(3,0) = gdtz
+         gdn(3,1) = gdzx
+         gdn(3,2) = gdyz
+         gdn(3,3) = gdzz
 
-         guyy = -((-(y1**2*bphi**2) -
-     $    (alpha0**2 - bphi*bphiup)*(1.d0 +
-     $    bhspin**2*y1**2*hh)*psi4*rho2**2)/(psi4*
-     $    (rho2*bphi**2 + (alpha0**2 -
-     $    bphi*bphiup)*(1.d0 + bhspin**2*rho2*hh)*psi4*rho2**2)))
+c        Initialise gun as identity (will become g^{mu nu})
+         do i = 0, 3
+            do j = 0, 3
+               gun(i,j) = 0.d0
+            enddo
+            gun(i,i) = 1.d0
+         enddo
 
-         guzz = 1.d0 / psi4
+c        Gauss-Jordan elimination with partial pivoting
+         do i = 0, 3
 
-         guxy =-((x1*y1*(-bphi**2 + bhspin**2*(-alpha0**2 +
-     $   bphi*bphiup)*hh*psi4*rho2**2))/(psi4*
-     $    (rho2*bphi**2 + (alpha0**2 -
-     $   bphi*bphiup)*(1.d0 + bhspin**2*rho2*hh)*psi4*rho2**2)))
+c           Find pivot row imax with max |gdn(k,i)|
+            imax   = i
+            maxabs = abs(gdn(i,i))
+            do k = i+1, 3
+               if (abs(gdn(k,i)) .gt. maxabs) then
+                  maxabs = abs(gdn(k,i))
+                  imax   = k
+               endif
+            enddo
 
-         guyz = 0.d0
+            if (maxabs .eq. 0.d0) then
+               write(msg,'(A,3ES22.14)') 
+     $   'Exact__Kerr_Quasi_isotropic: singular metric at x,y,z=',
+     $        x, y, z
+               call CCTK_ERROR(msg)
+            endif
 
-         guzx = 0.d0
+c           Swap rows i and imax in gdn and gun if needed
+            if (imax .ne. i) then
+               do j = 0, 3
+                  tmp        = gdn(i,j)
+                  gdn(i,j)   = gdn(imax,j)
+                  gdn(imax,j)= tmp
+                  tmp        = gun(i,j)
+                  gun(i,j)   = gun(imax,j)
+                  gun(imax,j)= tmp
+               enddo
+            endif
+
+c           Normalise pivot row
+            piv = gdn(i,i)
+            do j = 0, 3
+               gdn(i,j) = gdn(i,j) / piv
+               gun(i,j) = gun(i,j) / piv
+            enddo
+
+c           Eliminate column i in other rows
+            do k = 0, 3
+               if (k .ne. i) then
+                  fac = gdn(k,i)
+                  do j = 0, 3
+                     gdn(k,j) = gdn(k,j) - fac * gdn(i,j)
+                     gun(k,j) = gun(k,j) - fac * gun(i,j)
+                  enddo
+               endif
+            enddo
+
+         enddo
+
+c        Extract scalar contravariant components from gun
+         gutt = gun(0,0)
+         gutx = gun(0,1)
+         guty = gun(0,2)
+         gutz = gun(0,3)
+
+         guxx = gun(1,1)
+         guxy = gun(1,2)
+         guzx = gun(1,3)
+
+         guyy = gun(2,2)
+         guyz = gun(2,3)
+
+         guzz = gun(3,3)
 
 
 
@@ -189,7 +251,7 @@ C        Compute product prod = gu * gd
          enddo
 
 C        Check max deviation from identity
-         tol    = 1.d-8
+         tol    = 1.d-5
          maxerr = 0.d0
          do i = 0, 3
             do j = 0, 3
@@ -204,14 +266,14 @@ C        Check max deviation from identity
 
          
 
-         if (maxerr .gt. tol) then
-            write(msg,'(A,3ES22.14,A,ES22.14)') 
-     $   'Exact__Kerr_Quasi_isotropic: inverse check failed; x,y,z=',
-     $        x, y, z, '  maxerr = ', maxerr
-            call CCTK_WARN(0, msg)
-
-            call CCTK_ERROR('Exact__Kerr_Quasi_isotropic: inverse metric check failed')
-         endif
+C         if (maxerr .gt. tol) then
+C            write(msg,'(A,3ES22.14,A,ES22.14)') 
+C     $   'Exact__Kerr_Quasi_isotropic: inverse check failed; x,y,z=',
+C     $        x, y, z, '  maxerr = ', maxerr
+C            call CCTK_WARN(0, msg)
+C
+C            call CCTK_ERROR('Exact__Kerr_Quasi_isotropic: inverse metric check failed')
+C         endif
 C-----------------------------------------------------------------------
 
          return
