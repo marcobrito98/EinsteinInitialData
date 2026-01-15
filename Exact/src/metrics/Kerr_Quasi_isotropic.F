@@ -40,10 +40,11 @@ c local variables
          CCTK_REAL r, r2, rho2, costh, costh2, sinth, sinth2
          CCTK_REAL horizonradius, rBL, rho2kerr, sigma, hh, psi4
          CCTK_REAL alpha02, bphi, gammaphiphi, bphiup, betadX, betadY
+         CCTK_REAL betauX, betauY
          CCTK_REAL x1, y1, z1
          CCTK_REAL gdn(0:3,0:3), gun(0:3,0:3), prod(0:3,0:3)
          CCTK_REAL tol, maxerr, err
-         CCTK_REAL piv, tmp, fac, maxabs
+C         CCTK_REAL piv, tmp, fac, maxabs
          INTEGER i, j, k, imax
          CHARACTER(len=256) msg
 
@@ -78,13 +79,24 @@ C     Get parameters of the exact solution.
          hh = (1.d0 + sigma) / (rho2kerr * r2)
          psi4 = rho2kerr / r2
          alpha02 = (r2-horizonradius**2)**2 / r2 *
-     $   1.d0 / (rBL**2 + bhspin**2 * (1.d0 + sigma * sinth2))
-         bphi = - bhspin * sigma * sinth2
+     $      1.d0 / (rBL**2 + bhspin**2 * (1.d0 + sigma * rho2/r2))
+
+C         if (r2 .ge. horizonradius**2 + 1.d-5 .OR.
+C     $     r2 .le. horizonradius**2 - 1.d-5) then
+C            alpha02 = (r2-horizonradius**2)**2 / r2 *
+C     $      1.d0 / (rBL**2 + bhspin**2 * (1.d0 + sigma * rho2/r2))
+C         else
+C            alpha02 = 1.d-12
+C         endif
+
+         bphi = - bhspin * sigma * rho2/r2
          gammaphiphi = rho2kerr * rho2 / r2 * (1.d0 +
      $    bhspin**2 * hh * rho2)
          bphiup = bphi / gammaphiphi
          betadX = -y1 /rho2 * bphi
          betadY =  x1 /rho2 * bphi
+         betauX = -y1 * bphiup
+         betauY =  x1 * bphiup
 
          gdtt = - alpha02 + bphi*bphiup
          gdtx = betadX
@@ -99,103 +111,32 @@ C     Get parameters of the exact solution.
 
 
 
+         gutt = - 1.d0 / alpha02
 
-c        --------------------------------------------------------------
-c        Numerically invert g_{mu nu} to obtain g^{mu nu}
-c        --------------------------------------------------------------
+         gutx = betauX / alpha02
 
-c        Build covariant metric gdn_{mu nu}
-         gdn(0,0) = gdtt
-         gdn(0,1) = gdtx
-         gdn(0,2) = gdty
-         gdn(0,3) = gdtz
-         gdn(1,0) = gdtx
-         gdn(1,1) = gdxx
-         gdn(1,2) = gdxy
-         gdn(1,3) = gdzx
-         gdn(2,0) = gdty
-         gdn(2,1) = gdxy
-         gdn(2,2) = gdyy
-         gdn(2,3) = gdyz
-         gdn(3,0) = gdtz
-         gdn(3,1) = gdzx
-         gdn(3,2) = gdyz
-         gdn(3,3) = gdzz
+         guty = betauY / alpha02
 
-c        Initialise gun as identity (will become g^{mu nu})
-         do i = 0, 3
-            do j = 0, 3
-               gun(i,j) = 0.d0
-            enddo
-            gun(i,i) = 1.d0
-         enddo
+         gutz = 0.d0
 
-c        Gauss-Jordan elimination with partial pivoting
-         do i = 0, 3
+         guxx = (1.d0 + bhspin**2*x1**2*hh)/((1.d0 + bhspin**2*
+     $    (x1**2 + y1**2)*hh)*psi4) - betauX*betauX/alpha02
 
-c           Find pivot row imax with max |gdn(k,i)|
-            imax   = i
-            maxabs = abs(gdn(i,i))
-            do k = i+1, 3
-               if (abs(gdn(k,i)) .gt. maxabs) then
-                  maxabs = abs(gdn(k,i))
-                  imax   = k
-               endif
-            enddo
+         guyy = (1.d0 + bhspin**2*y1**2*hh)/((1.d0 + bhspin**2*
+     $    (x1**2 + y1**2)*hh)*psi4) - betauY*betauY/alpha02
 
-            if (maxabs .eq. 0.d0) then
-               write(msg,'(A,3ES22.14)') 
-     $   'Exact__Kerr_Quasi_isotropic: singular metric at x,y,z=',
-     $        x, y, z
-               call CCTK_ERROR(msg)
-            endif
+         guzz = 1.d0 / psi4
 
-c           Swap rows i and imax in gdn and gun if needed
-            if (imax .ne. i) then
-               do j = 0, 3
-                  tmp        = gdn(i,j)
-                  gdn(i,j)   = gdn(imax,j)
-                  gdn(imax,j)= tmp
-                  tmp        = gun(i,j)
-                  gun(i,j)   = gun(imax,j)
-                  gun(imax,j)= tmp
-               enddo
-            endif
+         guxy = (bhspin**2*x1*y1*hh)/((1.d0 +
+     $    bhspin**2*(x1**2 + y1**2)*hh)*psi4) - betauX*betauY/alpha02
 
-c           Normalise pivot row
-            piv = gdn(i,i)
-            do j = 0, 3
-               gdn(i,j) = gdn(i,j) / piv
-               gun(i,j) = gun(i,j) / piv
-            enddo
+         guyz = 0.d0
 
-c           Eliminate column i in other rows
-            do k = 0, 3
-               if (k .ne. i) then
-                  fac = gdn(k,i)
-                  do j = 0, 3
-                     gdn(k,j) = gdn(k,j) - fac * gdn(i,j)
-                     gun(k,j) = gun(k,j) - fac * gun(i,j)
-                  enddo
-               endif
-            enddo
+         guzx = 0.d0
 
-         enddo
 
-c        Extract scalar contravariant components from gun
-         gutt = gun(0,0)
-         gutx = gun(0,1)
-         guty = gun(0,2)
-         gutz = gun(0,3)
 
-         guxx = gun(1,1)
-         guxy = gun(1,2)
-         guzx = gun(1,3)
 
-         guyy = gun(2,2)
-         guyz = gun(2,3)
-
-         guzz = gun(3,3)
 
 
 
@@ -264,11 +205,11 @@ C        Check max deviation from identity
             enddo
          enddo
 
-         
+
 
 C         if (maxerr .gt. tol) then
-C            write(msg,'(A,3ES22.14,A,ES22.14)') 
-C     $   'Exact__Kerr_Quasi_isotropic: inverse check failed; x,y,z=',
+C            write(msg,'(A,3ES22.14,A,ES22.14)')
+C     $      'Exact__Kerr_Quasi_isotropic: inverse check failed; x,y,z=',
 C     $        x, y, z, '  maxerr = ', maxerr
 C            call CCTK_WARN(0, msg)
 C
