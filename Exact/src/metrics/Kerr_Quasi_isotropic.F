@@ -39,8 +39,8 @@ c local static variables
 c local variables
          CCTK_REAL r, r2, rho2, costh, costh2, sinth, sinth2
          CCTK_REAL horizonradius, rBL, rho2kerr, sigma, hh, psi4
-         CCTK_REAL alpha02, bphi, gammaphiphi, bphiup, betadX, betadY
-         CCTK_REAL betauX, betauY
+         CCTK_REAL alpha0, alpha02, sqrtDelta ,bphi, gammaphiphi
+         CCTK_REAL bphiup, betadX, betadY, betauX, betauY
          CCTK_REAL x1, y1, z1
          CCTK_REAL gdn(0:3,0:3), gun(0:3,0:3), prod(0:3,0:3)
          CCTK_REAL tol, maxerr, err
@@ -69,7 +69,7 @@ C     Get parameters of the exact solution.
          rho2 = max(x1**2 + y1**2, eps**2)
          costh = z1 / r
          costh2 = costh**2
-         sinth2 = 1.d0 - costh2
+         sinth2 = rho2/r2
          sinth = sqrt(sinth2)
 
          horizonradius = 0.5 * sqrt(bhmass**2 - bhspin**2)
@@ -78,8 +78,9 @@ C     Get parameters of the exact solution.
          sigma = 2.d0 * bhmass * rBL / rho2kerr
          hh = (1.d0 + sigma) / (rho2kerr * r2)
          psi4 = rho2kerr / r2
-         alpha02 = (r2-horizonradius**2)**2 / r2 *
-     $      1.d0 / (rBL**2 + bhspin**2 * (1.d0 + sigma * rho2/r2))
+         sqrtDelta = r - (bhmass**2 - bhspin**2) / (4.d0 * r)
+         alpha0 = sqrtDelta/sqrt(bhspin**2 + rBL**2 - bhspin * 
+     $    (-2.d0 * bhmass* rBL*bhspin*sinth2/rho2kerr))
 
 C         if (r2 .ge. horizonradius**2 + 1.d-5 .OR.
 C     $     r2 .le. horizonradius**2 - 1.d-5) then
@@ -88,7 +89,7 @@ C     $      1.d0 / (rBL**2 + bhspin**2 * (1.d0 + sigma * rho2/r2))
 C         else
 C            alpha02 = 1.d-12
 C         endif
-
+         alpha02 = alpha0**2
          bphi = - bhspin * sigma * rho2/r2
          gammaphiphi = rho2kerr * rho2 / r2 * (1.d0 +
      $    bhspin**2 * hh * rho2)
